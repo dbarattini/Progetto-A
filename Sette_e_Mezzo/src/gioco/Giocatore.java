@@ -5,6 +5,9 @@
  */
 package gioco;
 
+import costanti.Valore_carta;
+import java.util.ArrayList;
+
 /**
  *
  * @author cl418308
@@ -13,5 +16,12 @@ public class Giocatore {
     private String nome;
     private int posizione;
     private boolean mazziere;
-    private boolean scoperta;
+    private Mazzo mazzo;
+    private ArrayList<Carta> carte_scoperte= new ArrayList<>();
+    private Carta carta_coperta;
+    private int borsello;
+    private int puntato;
+    private double valore_mano; Valore_carta carta;
+    
+    
 }

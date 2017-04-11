@@ -5,7 +5,6 @@
  */
 package gioco;
 
-import costanti.Seme;
 import costanti.Valore_carta;
 
 /**
@@ -14,6 +13,5 @@ import costanti.Valore_carta;
  */
 public class Carta {
     private Valore_carta valore;
-    private Seme seme;
     
 }

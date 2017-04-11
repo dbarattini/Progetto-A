@@ -14,4 +14,5 @@ import java.util.ArrayList;
 public class Mazzo {
     private ArrayList<Carta> da_giocare= new ArrayList<Carta>();
     private ArrayList<Carta> giocate= new ArrayList<Carta>();
+    private ArrayList<Carta> in_gioco= new ArrayList<Carta>();
 }
