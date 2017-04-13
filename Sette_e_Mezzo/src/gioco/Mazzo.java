@@ -1,9 +1,11 @@
 package gioco;
 
+
 import java.util.ArrayList;
 import classi_dati.DatiCarta;
 import eccezioni.FineMazzoException;
 import java.util.Collections;
+
 
 public class Mazzo {
     private ArrayList<Carta> carte_da_giocare= new ArrayList();

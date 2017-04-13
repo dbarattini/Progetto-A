@@ -1,7 +1,9 @@
 package gioco;
 
+
 import classi_dati.DatiCarta;
 import java.util.ArrayList;
+
 
 public class Giocatore {
     private String nome;

@@ -1,5 +1,6 @@
 package gioco;
 
+
 public class Carta {
     private final String valore;
     private final String seme;
