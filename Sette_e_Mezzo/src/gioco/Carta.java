@@ -1,17 +1,16 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package gioco;
 
-import costanti.Valore_carta;
-
-/**
- *
- * @author cl418308
- */
 public class Carta {
-    private Valore_carta valore;
+    private final String valore;
+    private final String seme;
     
+    public Carta(String valore, String seme){
+        this.valore = valore;
+        this.seme = seme;
+    }
+    
+    @Override
+    public String toString(){
+        return valore + seme;
+    }
 }

@@ -1,18 +1,57 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package gioco;
 
 import java.util.ArrayList;
+import classi_dati.DatiCarta;
+import eccezioni.FineMazzoException;
+import java.util.Collections;
 
-/**
- *
- * @author cl418308
- */
 public class Mazzo {
-    private ArrayList<Carta> da_giocare= new ArrayList<Carta>();
-    private ArrayList<Carta> giocate= new ArrayList<Carta>();
-    private ArrayList<Carta> in_gioco= new ArrayList<Carta>();
+    private ArrayList<Carta> carte_da_giocare= new ArrayList();
+    private ArrayList<Carta> carte_in_gioco= new ArrayList();
+    private ArrayList<Carta> carte_giocate= new ArrayList();
+    
+    public Mazzo(){
+        for(String seme : DatiCarta.semi){
+            for(String valore : DatiCarta.valori){
+                carte_da_giocare.add(new Carta(valore,seme));
+            }
+        }
+    }
+    
+    public void aggiorna_fine_mano(){
+        carte_giocate.addAll(carte_in_gioco);
+        carte_in_gioco.clear();
+    }
+    
+    public void mischia(){
+        Collections.shuffle(carte_da_giocare);
+    }
+    
+    public Carta estrai_carta() throws FineMazzoException{
+        try{
+            Carta carta_distribuita = carte_da_giocare.remove(0);
+            carte_in_gioco.add(carta_distribuita);
+            return carta_distribuita;
+        } catch(IndexOutOfBoundsException e){
+            throw new FineMazzoException();
+        }
+    }
+    
+    public void rimescola(){
+        carte_da_giocare.addAll(carte_giocate);
+        carte_giocate.clear();
+        this.mischia();
+    }
+    
+    public ArrayList<Carta> getCarteGiocate(){
+        return carte_giocate;
+    }
+    
+    public ArrayList<Carta> getCarteInGioco(){
+        return carte_in_gioco;
+    }
+    
+    public ArrayList<Carta> getCarteDaGiocare(){
+        return carte_da_giocare;
+    }
 }
