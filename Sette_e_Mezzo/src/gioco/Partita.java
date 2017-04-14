@@ -2,14 +2,15 @@ package gioco;
 
 
 import classi_dati.DifficoltaBot;
+import eccezioni.FineMazzoException;
 import java.util.ArrayList;
 
 
-public class partita {
+public class Partita {
     private ArrayList<Giocatore> giocatori=new ArrayList<>();
     private Mazzo mazzo = new Mazzo();
     
-    public partita(int numero_bot, int fiches_iniziali, DifficoltaBot difficolta_bot){
+    public Partita(int numero_bot, int fiches_iniziali, DifficoltaBot difficolta_bot){
         inizializza_partita(numero_bot, fiches_iniziali, difficolta_bot);
         estrai_mazziere();
         gioca_round();
@@ -32,7 +33,23 @@ public class partita {
     }
 
     private void gioca_round() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        distribuisci_carta_coperta();
+        for(Giocatore giocatore : giocatori){
+            giocatore.gioca_mano(mazzo);
+        }
+    }
+    
+    private void distribuisci_carta_coperta(){
+        for(Giocatore giocatore : giocatori){
+            while(true){
+                try {
+                    giocatore.prendi_carta_iniziale(mazzo);
+                    break;
+                } catch (FineMazzoException ex) {
+                    mazzo.rimescola();
+                }
+            }
+        }
     }
 
     private void fine_partita() {

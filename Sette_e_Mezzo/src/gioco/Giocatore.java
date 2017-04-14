@@ -2,12 +2,8 @@ package gioco;
 
 
 import classi_dati.Giocata;
-import eccezioni.PuntataNullaException;
-import eccezioni.PuntataNegativaException;
 import eccezioni.FineMazzoException;
-import eccezioni.GiocataNonValidaException;
 import eccezioni.MazzoRimescolatoException;
-import eccezioni.PuntataTroppoAltaException;
 import java.util.ArrayList;
 
 
@@ -19,7 +15,7 @@ public abstract class Giocatore {
     private Carta carta_coperta;    
     private int puntata;
     private ArrayList<Carta> carte_scoperte= new ArrayList<>();
-    private float valore_mano;
+    private double valore_mano = 0;
     
     public Giocatore(String nome, int posizione, int fiches){
         this.nome = nome;
@@ -27,9 +23,9 @@ public abstract class Giocatore {
         this.fiches = fiches;
     }
     
-    public Mazzo gioca_mano(Mazzo mazzo) throws FineMazzoException, PuntataTroppoAltaException, PuntataNegativaException, PuntataNullaException{
+    public Mazzo gioca_mano(Mazzo mazzo){
         boolean continua = true;
-        prendi_carta_iniziale(mazzo);
+        this.valore_mano = this.carta_coperta.getValore();
         int valore_puntata = decidi_puntata();
         punta(valore_puntata);
         while(continua){
@@ -65,7 +61,8 @@ public abstract class Giocatore {
         switch(giocata){                
             case Carta: {
                 try {
-                    this.chiedi_carta(mazzo);
+                    chiedi_carta(mazzo);
+                    aggiorna_valore_mano();
                     return true;
                 } catch (FineMazzoException ex) {
                     mazzo.rimescola();
@@ -89,7 +86,7 @@ public abstract class Giocatore {
         this.mazziere = mazziere;
     }
     
-    public float getValoreMano(){
+    public double getValoreMano(){
         return valore_mano;
     }
     
@@ -103,5 +100,18 @@ public abstract class Giocatore {
     
     public Carta getCartaCoperta(){
         return carta_coperta;
+    }
+    
+    public void aggiorna_valore_mano(){
+        this.valore_mano = calcola_valore_mano();
+    }
+    
+    private double calcola_valore_mano() {
+        double valore_mano;
+        valore_mano = carta_coperta.getValore();
+        for(Carta carta : carte_scoperte){
+            valore_mano += carta.getValore();
+        }
+        return valore_mano;
     }
 }

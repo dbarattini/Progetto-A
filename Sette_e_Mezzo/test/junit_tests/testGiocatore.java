@@ -52,5 +52,14 @@ public class testGiocatore {
         
         assertEquals(valore_puntato, giocatore.getPuntata());
         assertEquals(fiches_iniziali - valore_puntato, giocatore.getFiches());
-    }    
+    }
+
+    @Test
+    public void testAggiornaValoreMano() throws FineMazzoException{
+        Mazzo mazzo = new Mazzo(); //non sono mischiate apposta
+        giocatore.prendi_carta_iniziale(mazzo); //1c, non bisogna aggiornare la mano
+        giocatore.chiedi_carta(mazzo); //2c
+        giocatore.aggiorna_valore_mano();
+        assertEquals(3.0, giocatore.getValoreMano(), 0.001);
+    }
 }

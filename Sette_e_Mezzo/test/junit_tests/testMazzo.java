@@ -39,7 +39,8 @@ public class testMazzo {
         carta_estratta = mazzo.estrai_carta(); //prova ad estrarre la 41esima
     }
     
-    @Test public void testRimescola(){
+    @Test 
+    public void testRimescola(){
         mazzo.mischia();
         try {
             this.estrai_40_Carte(); //tutte le carte sono in gioco

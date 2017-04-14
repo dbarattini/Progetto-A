@@ -14,4 +14,12 @@ public class Carta {
     public String toString(){
         return valore + seme;
     }
+    
+    public double getValore(){
+        try{
+            return Double.parseDouble(valore);
+        } catch(NumberFormatException ex){
+            return 0.5;
+        }
+    }
 }
