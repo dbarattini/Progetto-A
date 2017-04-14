@@ -14,7 +14,11 @@ public class Partita {
         inizializza_partita(numero_bot, fiches_iniziali, difficolta_bot);
         estrai_mazziere();
         mazzo.mischia();
-        gioca_round();
+        for(int i = 0; i < 100; i++){
+            gioca_round();
+            fine_round();
+            mazzo.aggiorna_fine_mano();
+        }
         fine_partita();
     }
     
@@ -35,9 +39,16 @@ public class Partita {
     }
 
     private void gioca_round() {
+        inizializza_round();
         distribuisci_carta_coperta();
         for(Giocatore giocatore : giocatori){
             giocatore.gioca_mano(mazzo);
+        }
+    }
+    
+    private void inizializza_round(){
+        for(Giocatore giocatore : giocatori){
+            giocatore.inizializza_mano();
         }
     }
     
@@ -53,11 +64,16 @@ public class Partita {
             }
         }
     }
-
-    private void fine_partita() {
+    
+    private void fine_round(){
         for(Giocatore giocatore : giocatori){
             System.out.println(giocatore.nome + " " + giocatore.getValoreMano() + " " + giocatore.getStato());
         }
+        System.out.println("\n");
+    }
+
+    private void fine_partita() {
+        //da fare
     }
     
     

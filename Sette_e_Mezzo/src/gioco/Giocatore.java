@@ -31,7 +31,6 @@ public abstract class Giocatore {
     }
     
     public Mazzo gioca_mano(Mazzo mazzo){
-        stato = Stato.OK;
         boolean continua = true;
         this.valore_mano = this.carta_coperta.getValore();
         int valore_puntata = decidi_puntata();
@@ -51,6 +50,15 @@ public abstract class Giocatore {
         }
         return mazzo;
     };
+    
+    public void inizializza_mano(){
+        carta_coperta = null;
+        puntata = 0;
+        carte_scoperte.clear();
+        valore_mano = 0;
+        stato = Stato.OK;
+    }
+    
     
     public void prendi_carta_iniziale(Mazzo mazzo) throws FineMazzoException{
         carta_coperta = mazzo.estrai_carta();

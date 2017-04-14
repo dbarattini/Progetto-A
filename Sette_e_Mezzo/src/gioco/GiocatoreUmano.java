@@ -23,6 +23,7 @@ public class GiocatoreUmano extends Giocatore {
     }
     
     public int richiedi_puntata() throws InputMismatchException{
+        out.println("Carta Coperta: " + this.carta_coperta);
         out.println("Valore Mano: " +  valore_mano);
         out.print("Puntata: ");
         int puntata;
@@ -87,6 +88,9 @@ public class GiocatoreUmano extends Giocatore {
     @Override
     public Giocata decidi_giocata() {
         while(true){
+            if(carte_scoperte.size() != 0){
+                out.println("Carta Ottenuta: " + carte_scoperte.get(carte_scoperte.size() - 1));
+            }
             try {
                 String giocata = richiedi_giocata();
                 return seleziona_giocata(giocata);
