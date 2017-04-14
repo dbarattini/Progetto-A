@@ -10,12 +10,16 @@ public class BotFacile extends Giocatore{
 
     @Override
     public Giocata decidi_giocata() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if((valore_mano) < 6.0){
+            return Giocata.Carta;
+        } else{
+            return Giocata.Sto;
+        }
     }
 
     @Override
     public int decidi_puntata() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return this.getFiches()/10;
     }
     
 }

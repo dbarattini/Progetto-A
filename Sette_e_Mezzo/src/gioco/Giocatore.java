@@ -1,21 +1,28 @@
 package gioco;
 
 
+import eccezioni.SetteeMezzoException;
+import eccezioni.SetteeMezzoRealeException;
+import eccezioni.SballatoException;
 import classi_dati.Giocata;
+import classi_dati.Stato;
 import eccezioni.FineMazzoException;
 import eccezioni.MazzoRimescolatoException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 public abstract class Giocatore {
-    private final String nome;    
-    private int fiches;
-    private int posizione;
-    private boolean mazziere;
-    private Carta carta_coperta;    
-    private int puntata;
-    private ArrayList<Carta> carte_scoperte= new ArrayList<>();
-    private double valore_mano = 0;
+    protected final String nome;    
+    protected int fiches;
+    protected int posizione;
+    protected boolean mazziere;
+    protected Carta carta_coperta;    
+    protected int puntata;
+    protected ArrayList<Carta> carte_scoperte= new ArrayList<>();
+    protected double valore_mano = 0;
+    protected Stato stato;
     
     public Giocatore(String nome, int posizione, int fiches){
         this.nome = nome;
@@ -24,6 +31,7 @@ public abstract class Giocatore {
     }
     
     public Mazzo gioca_mano(Mazzo mazzo){
+        stato = Stato.OK;
         boolean continua = true;
         this.valore_mano = this.carta_coperta.getValore();
         int valore_puntata = decidi_puntata();
@@ -63,10 +71,20 @@ public abstract class Giocatore {
                 try {
                     chiedi_carta(mazzo);
                     aggiorna_valore_mano();
+                    controlla_valore_mano();
                     return true;
                 } catch (FineMazzoException ex) {
                     mazzo.rimescola();
                     throw new MazzoRimescolatoException();
+                } catch (SballatoException ex) {
+                    stato = Stato.Sballato;
+                    return false;
+                } catch (SetteeMezzoRealeException ex) {
+                    stato = Stato.SetteeMezzoReale;
+                    return false;
+                } catch (SetteeMezzoException ex) {
+                    stato = Stato.SetteeMezzo;
+                    return false;
                 }
             }
             case Sto: return false;
@@ -104,6 +122,18 @@ public abstract class Giocatore {
     
     public void aggiorna_valore_mano(){
         this.valore_mano = calcola_valore_mano();
+    }
+    
+    public void controlla_valore_mano() throws SballatoException, SetteeMezzoRealeException, SetteeMezzoException{
+        if(valore_mano > 7.5){
+            throw new SballatoException();
+        }
+        else if (carte_scoperte.size() == 1 && valore_mano == 7.5){
+            throw new SetteeMezzoRealeException();
+        }
+        else if (valore_mano == 7.5){
+            throw new SetteeMezzoException();
+        }
     }
     
     private double calcola_valore_mano() {
