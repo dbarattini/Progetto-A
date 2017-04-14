@@ -1,5 +1,6 @@
 package junit_tests;
 
+import classi_dati.Giocata;
 import eccezioni.FineMazzoException;
 import eccezioni.PuntataNegativaException;
 import eccezioni.PuntataNullaException;
@@ -16,6 +17,16 @@ public class testGiocatore {
             public Mazzo gioca_mano(Mazzo mazzo) {
                 throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
             }
+
+                @Override
+                public int decidi_puntata() {
+                    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                }
+
+                @Override
+                public Giocata decidi_giocata() {
+                    throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+                }
         };
             
     public testGiocatore() {

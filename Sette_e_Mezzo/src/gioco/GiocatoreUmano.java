@@ -2,9 +2,7 @@ package gioco;
 
 
 import classi_dati.Giocata;
-import eccezioni.FineMazzoException;
 import eccezioni.GiocataNonValidaException;
-import eccezioni.MazzoRimescolatoException;
 import eccezioni.PuntataNegativaException;
 import eccezioni.PuntataNullaException;
 import eccezioni.PuntataTroppoAltaException;
@@ -23,62 +21,22 @@ public class GiocatoreUmano extends Giocatore {
         this.in = in;
         this.out = out;
     }
-
-    @Override
-    public Mazzo gioca_mano(Mazzo mazzo) throws MazzoRimescolatoException{
-        Giocata giocata;
-        boolean continua = true;
-        while(continua){
-            while(true){
-                try {
-                    giocata = seleziona_giocata(richiedi_giocata());
-                    break;
-                } catch (GiocataNonValidaException ex) {
-                    out.println("Errore: La giocata non é stata riconosciuta.");
-                    out.println("I valori possibili sono: carta, punta, sto.");
-                }
-            }
-            switch(giocata){                
-                case Punta: {
-                    while(true){
-                        try {
-                            this.punta(this.getPuntata());
-                            break;
-                            } 
-                        catch (PuntataTroppoAltaException ex) {
-                            out.println("Errore: il valore inserito é troppo alto.");
-                            out.println("Il massimo valore che puoi puntare é: " + this.getFiches());
-                        }
-                        catch(InputMismatchException ex){
-                            out.println("Errore: Il valore inserito non é corretto.");
-                        } catch (PuntataNegativaException ex) {
-                            out.println("Errore: il valore inserito non puó essere negativo.");
-                        } catch (PuntataNullaException ex) {
-                            out.println("Errore: il valore inserito non puó essere nullo.");
-                        }
-                    }
-                }
-                case Carta: {
-                    try {
-                        this.chiedi_carta(mazzo);
-                    } catch (FineMazzoException ex) {
-                        mazzo.rimescola();
-                        throw new MazzoRimescolatoException();
-                    }
-                }
-                
-
-                case Sto: continua = false;
-            }
-        }
-        return mazzo;
-    }
     
     public int richiedi_puntata() throws InputMismatchException{
         int puntata;
         Scanner scan = new Scanner(in);
         puntata = scan.nextInt();
         return puntata;
+    }
+    
+    public void controlla_puntata(int puntata) throws PuntataTroppoAltaException, PuntataNegativaException, PuntataNullaException{
+        if(this.getFiches() - puntata < 0){
+            throw new PuntataTroppoAltaException();
+        }else if(puntata < 0){
+            throw new PuntataNegativaException();
+        }else if(puntata == 0){
+            throw new PuntataNullaException();
+        }
     }
 
     public String richiedi_giocata() {
@@ -94,13 +52,43 @@ public class GiocatoreUmano extends Giocatore {
         else if(giocata.toLowerCase().equals("sto")){
         return Giocata.Sto;
         }
-        else if(giocata.toLowerCase().equals("punta")){
-            return Giocata.Punta;
-        }
         else{
             throw new GiocataNonValidaException();
         }   
     }
-    
-    
+
+    @Override
+    public int decidi_puntata() {
+        int puntata;
+        while(true){
+            try {
+                puntata = richiedi_puntata();
+                controlla_puntata(puntata);
+                return puntata;
+            }catch(InputMismatchException ex){
+                out.println("Errore: Il valore inserito non é corretto.");
+            } catch (PuntataTroppoAltaException ex) {
+                out.println("Errore: il valore inserito é troppo alto.");
+                out.println("Il massimo valore che puoi puntare é: " + this.getFiches());
+            } catch (PuntataNegativaException ex) {
+                out.println("Errore: il valore inserito non puó essere negativo.");
+            } catch (PuntataNullaException ex) {
+                out.println("Errore: il valore inserito non puó essere nullo.");
+            }
+        }
+    }
+
+    @Override
+    public Giocata decidi_giocata() {
+        while(true){
+            try {
+                String giocata = richiedi_giocata();
+                return seleziona_giocata(giocata);
+            } catch (GiocataNonValidaException ex) {
+                out.println("Errore: La giocata non é stata riconosciuta.");
+                out.println("I valori possibili sono: carta o sto.");
+            }
+        }
+    }   
 }
+

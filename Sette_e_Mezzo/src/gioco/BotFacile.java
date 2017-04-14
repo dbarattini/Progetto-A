@@ -1,7 +1,11 @@
 package gioco;
 
 import classi_dati.Giocata;
+import eccezioni.FineMazzoException;
 import eccezioni.MazzoRimescolatoException;
+import eccezioni.PuntataNegativaException;
+import eccezioni.PuntataNullaException;
+import eccezioni.PuntataTroppoAltaException;
 
 public class BotFacile extends Giocatore implements Bot {
 
@@ -10,12 +14,12 @@ public class BotFacile extends Giocatore implements Bot {
     }
 
     @Override
-    public Mazzo gioca_mano(Mazzo mazzo) throws MazzoRimescolatoException {
+    public Giocata decidi_giocata() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public Giocata decidi() {
+    public int decidi_puntata() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     

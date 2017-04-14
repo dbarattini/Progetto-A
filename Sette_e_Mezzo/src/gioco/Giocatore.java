@@ -1,12 +1,16 @@
 package gioco;
 
 
+import classi_dati.Giocata;
 import eccezioni.PuntataNullaException;
 import eccezioni.PuntataNegativaException;
 import eccezioni.FineMazzoException;
+import eccezioni.GiocataNonValidaException;
 import eccezioni.MazzoRimescolatoException;
 import eccezioni.PuntataTroppoAltaException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 public abstract class Giocatore {
@@ -25,7 +29,27 @@ public abstract class Giocatore {
         this.fiches = fiches;
     }
     
-    public abstract Mazzo gioca_mano(Mazzo mazzo) throws MazzoRimescolatoException;
+    public Mazzo gioca_mano(Mazzo mazzo) throws FineMazzoException, PuntataTroppoAltaException, PuntataNegativaException, PuntataNullaException{
+        boolean continua = true;
+        prendi_carta_iniziale(mazzo);
+        int valore_puntata = decidi_puntata();
+        punta(valore_puntata);
+        while(continua){
+            Giocata giocata = decidi_giocata();
+            try {
+                continua = effettua_giocata(giocata,mazzo);
+            } catch (MazzoRimescolatoException ex) {
+                System.out.println("Rimescolo il mazzo.");
+                try {
+                    continua = effettua_giocata(giocata,mazzo);
+                } catch (MazzoRimescolatoException | GiocataNonValidaException ex1) {
+                    //giá gestita.
+                }
+            } catch (GiocataNonValidaException ex) {  
+            }
+        }
+        return mazzo;
+    };
     
     public void prendi_carta_iniziale(Mazzo mazzo) throws FineMazzoException{
         carta_coperta = mazzo.estrai_carta();
@@ -74,4 +98,24 @@ public abstract class Giocatore {
     public Carta getCartaCoperta(){
         return carta_coperta;
     }
+
+    public abstract int decidi_puntata();
+
+    private boolean effettua_giocata(Giocata giocata, Mazzo mazzo) throws MazzoRimescolatoException, GiocataNonValidaException {
+        switch(giocata){                
+            case Carta: {
+                try {
+                    this.chiedi_carta(mazzo);
+                    return true;
+                } catch (FineMazzoException ex) {
+                    mazzo.rimescola();
+                    throw new MazzoRimescolatoException();
+                }
+            }
+            case Sto: return false;
+            default: throw new GiocataNonValidaException();
+        }
+    }
+
+    public abstract Giocata decidi_giocata();
 }

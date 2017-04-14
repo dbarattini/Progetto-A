@@ -39,10 +39,10 @@ public class testGiocatoreUmano {
     public void testSelezionaGiocata() throws GiocataNonValidaException{
         GiocatoreUmano giocatore;
         Giocata giocata;
-        String giocate_fattibili[] = {"carta", "sto", "punta"};
+        String giocate_fattibili[] = {"carta", "sto"};
         Giocata giocate_possibili[] = Giocata.values();
         
-        for(int i=0; i<3; i++){
+        for(int i=0; i<2; i++){
             InputStream in = new ByteArrayInputStream(giocate_fattibili[i].getBytes(StandardCharsets.UTF_8));
             giocatore = new GiocatoreUmano("player1", 0, 100, in, System.out);
             giocata = giocatore.seleziona_giocata(giocatore.richiedi_giocata());
