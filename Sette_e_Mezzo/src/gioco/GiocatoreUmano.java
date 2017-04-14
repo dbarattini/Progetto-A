@@ -5,6 +5,8 @@ import classi_dati.Giocata;
 import eccezioni.FineMazzoException;
 import eccezioni.GiocataNonValidaException;
 import eccezioni.MazzoRimescolatoException;
+import eccezioni.PuntataNegativaException;
+import eccezioni.PuntataNullaException;
 import eccezioni.PuntataTroppoAltaException;
 import java.io.InputStream;
 import java.io.PrintStream;
@@ -58,6 +60,10 @@ public class GiocatoreUmano extends Giocatore {
                     }
                     catch(InputMismatchException ex){
                         out.println("Errore: Il valore inserito non é corretto.");
+                    } catch (PuntataNegativaException ex) {
+                        out.println("Errore: il valore inserito non puó essere negativo.");
+                    } catch (PuntataNullaException ex) {
+                        out.println("Errore: il valore inserito non puó essere nullo.");
                     }
                 }
             }
