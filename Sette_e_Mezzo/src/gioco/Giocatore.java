@@ -43,8 +43,8 @@ public abstract class Giocatore {
         this.puntata = puntata;
     }
     
-    public String stai(){
-        return "Stó";
+    public boolean stai(){
+        return true;
     }
     
     public void chiedi_carta(Mazzo mazzo) throws FineMazzoException{
