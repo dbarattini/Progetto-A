@@ -1,4 +1,4 @@
-package gioco;
+package giocatori;
 
 
 import eccezioni.SetteeMezzoException;
@@ -9,26 +9,38 @@ import classi_dati.Stato;
 import eccezioni.FineMazzoException;
 import eccezioni.MattaException;
 import eccezioni.MazzoRimescolatoException;
+import elementi_di_gioco.Carta;
+import elementi_di_gioco.Mazzo;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 
 public abstract class Giocatore {
-    protected final String nome;    
-    protected int fiches;
-    protected int posizione;
-    protected boolean mazziere;
+    private final String nome;    
+    private int fiches;
+    private int posizione;
+    private boolean mazziere;
     protected Carta carta_coperta;    
-    protected int puntata;
+    private int puntata;
     protected ArrayList<Carta> carte_scoperte= new ArrayList<>();
     protected double valore_mano = 0;
-    protected Stato stato;
+    private Stato stato;
     
     public Giocatore(String nome, int posizione, int fiches){
         this.nome = nome;
         this.posizione = posizione;
         this.fiches = fiches;
+    }
+    
+    public void inizializza_mano(){
+        carta_coperta = null;
+        puntata = 0;
+        carte_scoperte.clear();
+        valore_mano = 0;
+        stato = Stato.OK;
+    }
+    
+    public void prendi_carta_iniziale(Mazzo mazzo) throws FineMazzoException{
+        carta_coperta = mazzo.estrai_carta();
     }
     
     public Mazzo gioca_mano(Mazzo mazzo){
@@ -55,19 +67,6 @@ public abstract class Giocatore {
         }
         return mazzo;
     };
-    
-    public void inizializza_mano(){
-        carta_coperta = null;
-        puntata = 0;
-        carte_scoperte.clear();
-        valore_mano = 0;
-        stato = Stato.OK;
-    }
-    
-    
-    public void prendi_carta_iniziale(Mazzo mazzo) throws FineMazzoException{
-        carta_coperta = mazzo.estrai_carta();
-    }
     
     public abstract int decidi_puntata();
     
@@ -109,44 +108,8 @@ public abstract class Giocatore {
         carte_scoperte.add(mazzo.estrai_carta());
     }
     
-    public boolean isMazziere(){
-        return mazziere;
-    }
-    
-    public void setMazziere(boolean mazziere){
-        this.mazziere = mazziere;
-    }
-    
-    public double getValoreMano(){
-        return valore_mano;
-    }
-    
-    public int getFiches(){
-        return fiches;
-    }
-    
-    public int getPuntata(){
-        return puntata;
-    }
-    
-    public Carta getCartaCoperta(){
-        return carta_coperta;
-    }
-    
     public void aggiorna_valore_mano(){
         this.valore_mano = calcola_valore_mano();
-    }
-    
-    public void controlla_valore_mano() throws SballatoException, SetteeMezzoRealeException, SetteeMezzoException{
-        if(valore_mano > 7.5){
-            throw new SballatoException();
-        }
-        else if (carte_scoperte.size() == 1 && valore_mano == 7.5){
-            throw new SetteeMezzoRealeException();
-        }
-        else if (valore_mano == 7.5){
-            throw new SetteeMezzoException();
-        }
     }
     
     private double calcola_valore_mano() {
@@ -172,6 +135,50 @@ public abstract class Giocatore {
             }
         }
         return valore_mano;
+    }
+    
+    public void controlla_valore_mano() throws SballatoException, SetteeMezzoRealeException, SetteeMezzoException{
+        if(valore_mano > 7.5){
+            throw new SballatoException();
+        }
+        else if (carte_scoperte.size() == 1 && valore_mano == 7.5){
+            throw new SetteeMezzoRealeException();
+        }
+        else if (valore_mano == 7.5){
+            throw new SetteeMezzoException();
+        }
+    }
+    
+    public Carta getUltimaCartaOttenuta(){
+        return carte_scoperte.get(carte_scoperte.size() - 1);
+    }
+    
+    public boolean isMazziere(){
+        return mazziere;
+    }
+    
+    public void setMazziere(boolean mazziere){
+        this.mazziere = mazziere;
+    }
+    
+    public double getValoreMano(){
+        return valore_mano;
+    }
+    
+    public int getFiches(){
+        return fiches;
+    }
+    
+    public int getPuntata(){
+        return puntata;
+    }
+    
+    public Carta getCartaCoperta(){
+        return carta_coperta;
+    }
+    
+    public String getNome(){
+        return nome;
     }
     
     public Stato getStato(){

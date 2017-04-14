@@ -5,7 +5,7 @@ import eccezioni.GiocataNonValidaException;
 import eccezioni.PuntataNegativaException;
 import eccezioni.PuntataNullaException;
 import eccezioni.PuntataTroppoAltaException;
-import gioco.GiocatoreUmano;
+import giocatori.GiocatoreUmano;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;

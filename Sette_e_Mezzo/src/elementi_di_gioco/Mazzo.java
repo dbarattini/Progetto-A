@@ -1,4 +1,4 @@
-package gioco;
+package elementi_di_gioco;
 
 
 import java.util.ArrayList;
@@ -20,11 +20,6 @@ public class Mazzo {
         }
     }
     
-    public void aggiorna_fine_mano(){
-        carte_giocate.addAll(carte_in_gioco);
-        carte_in_gioco.clear();
-    }
-    
     public void mischia(){
         Collections.shuffle(carte_da_giocare);
     }
@@ -37,6 +32,11 @@ public class Mazzo {
         } catch(IndexOutOfBoundsException e){
             throw new FineMazzoException();
         }
+    }
+    
+    public void aggiorna_fine_round(){
+        carte_giocate.addAll(carte_in_gioco);
+        carte_in_gioco.clear();
     }
     
     public void rimescola(){

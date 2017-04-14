@@ -1,4 +1,5 @@
-package gioco;
+package elementi_di_gioco;
+
 
 import eccezioni.MattaException;
 
@@ -12,11 +13,6 @@ public class Carta {
         this.seme = seme;
     }
     
-    @Override
-    public String toString(){
-        return valore + seme;
-    }
-    
     public double getValore() throws MattaException{
         try{
             return Double.parseDouble(valore);
@@ -27,4 +23,10 @@ public class Carta {
             return 0.5;
         }
     }
+    
+    @Override
+    public String toString(){
+        return valore + seme;
+    }
+    
 }

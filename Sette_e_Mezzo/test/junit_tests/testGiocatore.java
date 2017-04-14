@@ -5,9 +5,9 @@ import eccezioni.FineMazzoException;
 import eccezioni.PuntataNegativaException;
 import eccezioni.PuntataNullaException;
 import eccezioni.PuntataTroppoAltaException;
-import gioco.Carta;
-import gioco.Giocatore;
-import gioco.Mazzo;
+import elementi_di_gioco.Carta;
+import giocatori.Giocatore;
+import elementi_di_gioco.Mazzo;
 import org.junit.Test;
 import static org.junit.Assert.*;
 

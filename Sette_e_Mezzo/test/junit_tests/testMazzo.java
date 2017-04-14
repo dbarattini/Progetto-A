@@ -2,8 +2,8 @@ package junit_tests;
 
 
 import eccezioni.FineMazzoException;
-import gioco.Carta;
-import gioco.Mazzo;
+import elementi_di_gioco.Carta;
+import elementi_di_gioco.Mazzo;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -26,7 +26,7 @@ public class testMazzo {
         mazzo.mischia();
         carta_estratta = mazzo.estrai_carta();
         
-        mazzo.aggiorna_fine_mano();
+        mazzo.aggiorna_fine_round();
         assertFalse(mazzo.getCarteInGioco().contains(carta_estratta));
         assertTrue(mazzo.getCarteGiocate().contains(carta_estratta));
     }
@@ -46,7 +46,7 @@ public class testMazzo {
             this.estrai_40_Carte(); //tutte le carte sono in gioco
             carta_estratta = mazzo.estrai_carta();
         } catch (FineMazzoException ex) {
-            mazzo.aggiorna_fine_mano(); //tutte le carte sono giocate
+            mazzo.aggiorna_fine_round(); //tutte le carte sono giocate
             mazzo.rimescola();
             assertEquals(mazzo.getCarteDaGiocare().size(),40);
             assertEquals(mazzo.getCarteGiocate().size(),0);
