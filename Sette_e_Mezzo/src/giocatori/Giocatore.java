@@ -149,6 +149,13 @@ public abstract class Giocatore {
         }
     }
     
+    public ArrayList<Carta> getVettoreCarte(){
+        ArrayList<Carta> carte = new ArrayList<>();
+        carte.add(carta_coperta);
+        carte.addAll(carte_scoperte);
+        return carte;
+    }
+    
     public Carta getUltimaCartaOttenuta(){
         return carte_scoperte.get(carte_scoperte.size() - 1);
     }

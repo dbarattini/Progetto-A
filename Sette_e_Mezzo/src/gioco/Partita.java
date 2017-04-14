@@ -119,7 +119,7 @@ public class Partita {
     
     private void fine_round(){
         for(Giocatore giocatore : giocatori){
-            System.out.println(giocatore.getNome() + " " + giocatore.getValoreMano() + " " + giocatore.getStato());
+            System.out.println(giocatore.getNome() + " " + giocatore.getVettoreCarte() + " " + giocatore.getValoreMano() + " "+ giocatore.getStato());
         }
         System.out.println("\n");
     }
