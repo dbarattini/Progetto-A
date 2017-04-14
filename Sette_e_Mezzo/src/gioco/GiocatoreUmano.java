@@ -23,9 +23,12 @@ public class GiocatoreUmano extends Giocatore {
     }
     
     public int richiedi_puntata() throws InputMismatchException{
+        out.println("Valore Mano: " +  valore_mano);
+        out.print("Puntata: ");
         int puntata;
         Scanner scan = new Scanner(in);
         puntata = scan.nextInt();
+        out.print("\n");
         return puntata;
     }
     
@@ -40,8 +43,11 @@ public class GiocatoreUmano extends Giocatore {
     }
 
     public String richiedi_giocata() {
+        out.println("Valore Mano: " + valore_mano);
+        out.println("Cosa Vuoi Fare?");
         Scanner scan = new Scanner(in);
         String giocata = scan.next();
+        out.print("\n");
         return giocata;
     }
     

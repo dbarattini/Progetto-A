@@ -144,4 +144,8 @@ public abstract class Giocatore {
         }
         return valore_mano;
     }
+    
+    public Stato getStato(){
+        return stato;
+    }
 }

@@ -13,6 +13,7 @@ public class Partita {
     public Partita(int numero_bot, int fiches_iniziali, DifficoltaBot difficolta_bot){
         inizializza_partita(numero_bot, fiches_iniziali, difficolta_bot);
         estrai_mazziere();
+        mazzo.mischia();
         gioca_round();
         fine_partita();
     }
@@ -29,7 +30,8 @@ public class Partita {
     }
 
     private void estrai_mazziere() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        //per ora imposta il primo giocatore...da sviluppare.
+        giocatori.get(0).setMazziere(true);
     }
 
     private void gioca_round() {
@@ -53,7 +55,9 @@ public class Partita {
     }
 
     private void fine_partita() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        for(Giocatore giocatore : giocatori){
+            System.out.println(giocatore.nome + " " + giocatore.getValoreMano() + " " + giocatore.getStato());
+        }
     }
     
     
