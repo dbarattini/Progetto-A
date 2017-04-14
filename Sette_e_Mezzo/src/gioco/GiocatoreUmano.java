@@ -1,15 +1,18 @@
 package gioco;
 
+
 import classi_dati.Giocata;
+import eccezioni.FineMazzoException;
 import eccezioni.GiocataNonValidaException;
+import eccezioni.MazzoRimescolatoException;
 import eccezioni.PuntataTroppoAltaException;
 import java.io.InputStream;
 import java.io.PrintStream;
 import java.util.InputMismatchException;
-import java.util.NoSuchElementException;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
 
 public class GiocatoreUmano extends Giocatore {
     private final InputStream in;
@@ -22,7 +25,7 @@ public class GiocatoreUmano extends Giocatore {
     }
 
     @Override
-    public Mazzo gioca_mano(Mazzo mazzo) {
+    public Mazzo gioca_mano(Mazzo mazzo) throws MazzoRimescolatoException{
         Giocata giocata;
         while(true){
             try {
@@ -34,7 +37,14 @@ public class GiocatoreUmano extends Giocatore {
             }
         }
         switch(giocata){
-            case Carta: this.chiedi_carta();
+            case Carta: {
+                try {
+                    this.chiedi_carta(mazzo);
+                } catch (FineMazzoException ex) {
+                    mazzo.rimescola();
+                    throw new MazzoRimescolatoException();
+                }
+            }
             case Sto: this.stai();
             case Punta: {
                 while(true){

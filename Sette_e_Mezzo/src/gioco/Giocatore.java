@@ -1,6 +1,10 @@
 package gioco;
 
 
+import eccezioni.PuntataNullaException;
+import eccezioni.PuntataNegativaException;
+import eccezioni.FineMazzoException;
+import eccezioni.MazzoRimescolatoException;
 import eccezioni.PuntataTroppoAltaException;
 import java.util.ArrayList;
 
@@ -21,23 +25,19 @@ public abstract class Giocatore {
         this.fiches = fiches;
     }
     
-    public abstract Mazzo gioca_mano(Mazzo mazzo);
+    public abstract Mazzo gioca_mano(Mazzo mazzo) throws MazzoRimescolatoException;
     
-    public String chiedi_carta(){
-        return "Carta";
+    public void prendi_carta_iniziale(Mazzo mazzo) throws FineMazzoException{
+        carta_coperta = mazzo.estrai_carta();
     }
     
-    public void prendi_carta_coperta(Carta carta){
-        carta_coperta = carta;
-    }
-    
-    public void prendi_carta_scoperta(Carta carta){
-        carte_scoperte.add(carta);
-    }
-    
-    public void punta(int puntata) throws PuntataTroppoAltaException{
+    public void punta(int puntata) throws PuntataTroppoAltaException, PuntataNegativaException, PuntataNullaException{
         if(this.fiches - puntata < 0){
             throw new PuntataTroppoAltaException();
+        }else if(puntata < 0){
+            throw new PuntataNegativaException();
+        }else if(puntata == 0){
+            throw new PuntataNullaException();
         }
         fiches = fiches - puntata;
         this.puntata = puntata;
@@ -45,6 +45,10 @@ public abstract class Giocatore {
     
     public String stai(){
         return "Stó";
+    }
+    
+    public void chiedi_carta(Mazzo mazzo) throws FineMazzoException{
+        carte_scoperte.add(mazzo.estrai_carta());
     }
     
     public boolean isMazziere(){
@@ -65,5 +69,9 @@ public abstract class Giocatore {
     
     public int getPuntata(){
         return puntata;
+    }
+    
+    public Carta getCartaCoperta(){
+        return carta_coperta;
     }
 }
