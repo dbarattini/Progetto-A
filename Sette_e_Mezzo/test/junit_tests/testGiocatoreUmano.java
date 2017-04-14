@@ -2,6 +2,9 @@ package junit_tests;
 
 import classi_dati.Giocata;
 import eccezioni.GiocataNonValidaException;
+import eccezioni.PuntataNegativaException;
+import eccezioni.PuntataNullaException;
+import eccezioni.PuntataTroppoAltaException;
 import gioco.GiocatoreUmano;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -34,6 +37,24 @@ public class testGiocatoreUmano {
         
         int puntata = giocatore.richiedi_puntata();
     }
+    
+    @Test (expected = PuntataTroppoAltaException.class)
+    public void testPuntataTroppoAltaException() throws PuntataTroppoAltaException, PuntataNegativaException, PuntataNullaException{
+        GiocatoreUmano giocatore = new GiocatoreUmano("player1", 0, 100, System.in, System.out);  
+        giocatore.controlla_puntata(giocatore.getFiches() + 10);
+    }
+    
+    @Test (expected = PuntataNegativaException.class)
+    public void testPuntataNegativaException() throws PuntataTroppoAltaException, PuntataNegativaException, PuntataNullaException{
+        GiocatoreUmano giocatore = new GiocatoreUmano("player1", 0, 100, System.in, System.out);  
+        giocatore.controlla_puntata(-10);
+    }
+    
+    @Test (expected = PuntataNullaException.class)
+    public void testPuntataNullaException() throws PuntataTroppoAltaException, PuntataNegativaException, PuntataNullaException{
+        GiocatoreUmano giocatore = new GiocatoreUmano("player1", 0, 100, System.in, System.out);  
+        giocatore.controlla_puntata(0);
+    }  
     
     @Test
     public void testSelezionaGiocata() throws GiocataNonValidaException{

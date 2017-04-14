@@ -54,14 +54,7 @@ public abstract class Giocatore {
     
     public abstract int decidi_puntata();
     
-    public void punta(int puntata) throws PuntataTroppoAltaException, PuntataNegativaException, PuntataNullaException{
-        if(this.fiches - puntata < 0){
-            throw new PuntataTroppoAltaException();
-        }else if(puntata < 0){
-            throw new PuntataNegativaException();
-        }else if(puntata == 0){
-            throw new PuntataNullaException();
-        }
+    public void punta(int puntata){
         fiches = fiches - puntata;
         this.puntata = puntata;
     }

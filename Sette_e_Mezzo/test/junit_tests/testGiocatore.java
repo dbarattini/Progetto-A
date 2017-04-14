@@ -52,28 +52,5 @@ public class testGiocatore {
         
         assertEquals(valore_puntato, giocatore.getPuntata());
         assertEquals(fiches_iniziali - valore_puntato, giocatore.getFiches());
-    }
-    
-    @Test (expected = PuntataTroppoAltaException.class)
-    public void testPuntataTroppoAltaException() throws PuntataTroppoAltaException, PuntataNegativaException, PuntataNullaException{
-        int fiches_iniziali = giocatore.getFiches();
-        int valore_puntato = fiches_iniziali + 1;  
-        
-        giocatore.punta(valore_puntato);
-    }
-    
-    @Test (expected = PuntataNegativaException.class)
-    public void testPuntataNegativaException() throws PuntataTroppoAltaException, PuntataNegativaException, PuntataNullaException{
-        int valore_puntato = -10;  
-        
-        giocatore.punta(valore_puntato);
-    }
-    
-    @Test (expected = PuntataNullaException.class)
-    public void testPuntataNullaException() throws PuntataTroppoAltaException, PuntataNegativaException, PuntataNullaException{
-        int valore_puntato = 0;  
-        
-        giocatore.punta(valore_puntato);
-    }
-    
+    }    
 }

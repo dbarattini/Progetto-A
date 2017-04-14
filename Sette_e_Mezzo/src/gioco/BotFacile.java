@@ -1,13 +1,8 @@
 package gioco;
 
 import classi_dati.Giocata;
-import eccezioni.FineMazzoException;
-import eccezioni.MazzoRimescolatoException;
-import eccezioni.PuntataNegativaException;
-import eccezioni.PuntataNullaException;
-import eccezioni.PuntataTroppoAltaException;
 
-public class BotFacile extends Giocatore implements Bot {
+public class BotFacile extends Giocatore{
 
     public BotFacile(String nome, int posizione, int fiches) {
         super(nome, posizione, fiches);
