@@ -9,8 +9,6 @@ import eccezioni.GiocataNonValidaException;
 import eccezioni.MazzoRimescolatoException;
 import eccezioni.PuntataTroppoAltaException;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 
 public abstract class Giocatore {
@@ -39,14 +37,13 @@ public abstract class Giocatore {
             try {
                 continua = effettua_giocata(giocata,mazzo);
             } catch (MazzoRimescolatoException ex) {
-                System.out.println("Rimescolo il mazzo.");
+                //utile per notifica a gui
                 try {
                     continua = effettua_giocata(giocata,mazzo);
-                } catch (MazzoRimescolatoException | GiocataNonValidaException ex1) {
+                } catch (MazzoRimescolatoException ex1) {
                     //giá gestita.
                 }
-            } catch (GiocataNonValidaException ex) {  
-            }
+            } 
         }
         return mazzo;
     };
@@ -54,6 +51,8 @@ public abstract class Giocatore {
     public void prendi_carta_iniziale(Mazzo mazzo) throws FineMazzoException{
         carta_coperta = mazzo.estrai_carta();
     }
+    
+    public abstract int decidi_puntata();
     
     public void punta(int puntata) throws PuntataTroppoAltaException, PuntataNegativaException, PuntataNullaException{
         if(this.fiches - puntata < 0){
@@ -67,8 +66,22 @@ public abstract class Giocatore {
         this.puntata = puntata;
     }
     
-    public boolean stai(){
-        return true;
+    public abstract Giocata decidi_giocata();
+    
+    private boolean effettua_giocata(Giocata giocata, Mazzo mazzo) throws MazzoRimescolatoException{
+        switch(giocata){                
+            case Carta: {
+                try {
+                    this.chiedi_carta(mazzo);
+                    return true;
+                } catch (FineMazzoException ex) {
+                    mazzo.rimescola();
+                    throw new MazzoRimescolatoException();
+                }
+            }
+            case Sto: return false;
+            default : return true; //impossibile ma senza da errore
+        }
     }
     
     public void chiedi_carta(Mazzo mazzo) throws FineMazzoException{
@@ -98,24 +111,4 @@ public abstract class Giocatore {
     public Carta getCartaCoperta(){
         return carta_coperta;
     }
-
-    public abstract int decidi_puntata();
-
-    private boolean effettua_giocata(Giocata giocata, Mazzo mazzo) throws MazzoRimescolatoException, GiocataNonValidaException {
-        switch(giocata){                
-            case Carta: {
-                try {
-                    this.chiedi_carta(mazzo);
-                    return true;
-                } catch (FineMazzoException ex) {
-                    mazzo.rimescola();
-                    throw new MazzoRimescolatoException();
-                }
-            }
-            case Sto: return false;
-            default: throw new GiocataNonValidaException();
-        }
-    }
-
-    public abstract Giocata decidi_giocata();
 }
