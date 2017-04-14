@@ -7,6 +7,7 @@ import eccezioni.SballatoException;
 import classi_dati.Giocata;
 import classi_dati.Stato;
 import eccezioni.FineMazzoException;
+import eccezioni.MattaException;
 import eccezioni.MazzoRimescolatoException;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -32,7 +33,11 @@ public abstract class Giocatore {
     
     public Mazzo gioca_mano(Mazzo mazzo){
         boolean continua = true;
-        this.valore_mano = this.carta_coperta.getValore();
+        try {
+            this.valore_mano = this.carta_coperta.getValore();
+        } catch (MattaException ex) {
+           valore_mano = 7;
+        }
         int valore_puntata = decidi_puntata();
         punta(valore_puntata);
         while(continua){
@@ -145,10 +150,26 @@ public abstract class Giocatore {
     }
     
     private double calcola_valore_mano() {
-        double valore_mano;
-        valore_mano = carta_coperta.getValore();
+        double valore_mano = 0;
+        boolean matta = false;
+        try {
+            valore_mano = carta_coperta.getValore();
+        } catch (MattaException ex) {
+            matta = true;
+        }
         for(Carta carta : carte_scoperte){
-            valore_mano += carta.getValore();
+            try {
+                valore_mano += carta.getValore();
+            } catch (MattaException ex) {
+                matta = true;
+            }
+        }
+        if(matta){
+            if(valore_mano == 7){
+                valore_mano += 0.5;
+            } else {
+                valore_mano += Math.abs((int)(7 - valore_mano));
+            }
         }
         return valore_mano;
     }

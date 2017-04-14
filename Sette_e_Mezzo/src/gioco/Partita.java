@@ -2,6 +2,7 @@ package gioco;
 
 
 import classi_dati.DifficoltaBot;
+import classi_dati.Stato;
 import eccezioni.FineMazzoException;
 import java.util.ArrayList;
 
@@ -43,6 +44,11 @@ public class Partita {
         distribuisci_carta_coperta();
         for(Giocatore giocatore : giocatori){
             giocatore.gioca_mano(mazzo);
+            if(giocatore instanceof GiocatoreUmano && giocatore.stato != Stato.OK){
+                System.out.println("Carta Ottenuta: " + giocatore.carte_scoperte.get(giocatore.carte_scoperte.size() - 1));
+                System.out.println(giocatore.stato);
+                System.out.print("\n");
+            }
         }
     }
     

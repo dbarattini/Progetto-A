@@ -1,5 +1,7 @@
 package gioco;
 
+import eccezioni.MattaException;
+
 
 public class Carta {
     private final String valore;
@@ -15,10 +17,13 @@ public class Carta {
         return valore + seme;
     }
     
-    public double getValore(){
+    public double getValore() throws MattaException{
         try{
             return Double.parseDouble(valore);
         } catch(NumberFormatException ex){
+            if(valore.equals("K") && seme.equals("q")){
+                throw new MattaException();
+            }
             return 0.5;
         }
     }
