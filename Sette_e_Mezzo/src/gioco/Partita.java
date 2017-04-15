@@ -112,7 +112,21 @@ public class Partita {
                 mazziere = giocatore;
             } else if(giocatore.getValoreMano() > mazziere.getValoreMano()){
                 mazziere = giocatore;
-            } 
+            } else if(giocatore.getValoreMano() == mazziere.getValoreMano()){
+                if(giocatore.getCartaCoperta().getSeme().equals("c")){
+                    mazziere = giocatore;
+                } else if(giocatore.getCartaCoperta().getSeme().equals("q") && ! mazziere.getCartaCoperta().getSeme().equals("c")){
+                    mazziere = giocatore;
+                } else if(giocatore.getCartaCoperta().getSeme().equals("f") && mazziere.getCartaCoperta().getSeme().equals("p")){
+                    mazziere = giocatore;
+                }else if(giocatore.getCartaCoperta().getSeme().equals(mazziere.getCartaCoperta().getSeme())){
+                    if(giocatore.getCartaCoperta().getSimbolo().equals("K")){
+                        mazziere = giocatore;
+                    } else if(giocatore.getCartaCoperta().getSimbolo().equals("Q") && mazziere.getCartaCoperta().getSimbolo().equals("J")){
+                        mazziere = giocatore;
+                    }
+                }
+            }
         }
         System.out.println("\nIl Mazziere é: " + mazziere.getNome() + "\n");
         Thread.sleep(pausa_lunga);

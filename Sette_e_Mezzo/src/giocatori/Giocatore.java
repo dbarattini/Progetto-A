@@ -144,7 +144,7 @@ public abstract class Giocatore {
         if(valore_mano > 7.5){
             throw new SballatoException();
         }
-        else if (carte_scoperte.size() == 1 && valore_mano == 7.5){
+        else if (carte_scoperte.size() == 1 && valore_mano == 7.5 && carta_coperta.getSeme().equals(carte_scoperte.get(0).getSeme())){
             throw new SetteeMezzoRealeException();
         }
         else if (valore_mano == 7.5){

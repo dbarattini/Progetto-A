@@ -24,6 +24,14 @@ public class Carta {
         }
     }
     
+    public String getSimbolo(){
+        return valore;
+    }
+    
+    public String getSeme(){
+        return seme;
+    }
+    
     @Override
     public String toString(){
         return valore + seme;
