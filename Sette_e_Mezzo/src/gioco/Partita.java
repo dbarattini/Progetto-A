@@ -130,6 +130,7 @@ public class Partita {
                 giocatore.gioca_mano(mazzo);
                 if(giocatore instanceof GiocatoreUmano && giocatore.getStato() != Stato.OK){
                     System.out.println("Carta Ottenuta: " + giocatore.getUltimaCartaOttenuta());
+                    System.out.println("Valore Mano: " + giocatore.getValoreMano());
                     System.out.println(giocatore.getStato());
                     System.out.print("\n");
                     Thread.sleep(pausa_lunga);
@@ -163,6 +164,7 @@ public class Partita {
             System.out.println(giocatore.isMazziere() + " " + giocatore.getNome() + " " + giocatore.getVettoreCarte() + " " + giocatore.getValoreMano() + " "+ giocatore.getStato());
             Thread.sleep(pausa_breve);
         }
+        System.out.print("\n");
         Thread.sleep(pausa_lunga);
     }
 
