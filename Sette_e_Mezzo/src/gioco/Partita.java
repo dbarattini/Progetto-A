@@ -20,18 +20,20 @@ import java.util.Scanner;
 
 public class Partita {
     private ArrayList<Giocatore> giocatori=new ArrayList<>();
-    private ArrayList<Giocatore> bot_sconfitti=new ArrayList<>();
     private final Mazzo mazzo = new Mazzo();
     private Giocatore mazziere = null;
     private Giocatore next_mazziere;
     int pausa_breve = 1000; //ms
     int pausa_lunga = 2000; //ms
+    int n_bot;
+    int n_bot_sconfitti = 0;
     InputStream in;
     PrintStream out;
     
     public Partita(int numero_bot, int fiches_iniziali, DifficoltaBot difficolta_bot, InputStream in, PrintStream out) throws InterruptedException{
         this.in = in;
         this.out = out;
+        this.n_bot = numero_bot;
         try {
             inizializza_partita(numero_bot, fiches_iniziali, difficolta_bot);
             estrai_mazziere();
@@ -46,6 +48,9 @@ public class Partita {
                 }
                 fine_round();
                 mazzo.aggiorna_fine_round();
+                if(n_bot_sconfitti == n_bot){
+                    vittoria();
+                }
             }
             fine_partita();
         }catch (NumeroBotException ex) {
@@ -165,6 +170,9 @@ public class Partita {
         inizializza_round();
         distribuisci_carta_coperta();
         for(int i = 0; i < giocatori.size(); i++){
+            if(pos_next_giocatore == giocatori.size()){
+                pos_next_giocatore = 0;
+            }
             giocatore = getProssimoGiocatore(pos_next_giocatore);
             if(! giocatore.haPerso()){
                 giocatore.gioca_mano(mazzo);
@@ -177,6 +185,7 @@ public class Partita {
                             game_over();
                         }else{
                             giocatore.perde();
+                            n_bot_sconfitti += 1;
                         }
                     }
                 }
@@ -217,9 +226,6 @@ public class Partita {
     }
     
     private Giocatore getProssimoGiocatore(int posizione){
-        if(posizione == giocatori.size()){
-                posizione = 0;
-            }
         return giocatori.get(posizione);
     }
     
@@ -336,6 +342,7 @@ public class Partita {
                     game_over();
                 } else {
                     giocatore.perde();
+                    n_bot_sconfitti += 1;
                 }
             }
         }
@@ -353,6 +360,11 @@ public class Partita {
 
     private void game_over() {
         out.println("Game Over");
+        System.exit(0);
+    }
+
+    private void vittoria() throws InterruptedException {
+        out.println("Complimenti! Hai vinto.");
         System.exit(0);
     }
 }
