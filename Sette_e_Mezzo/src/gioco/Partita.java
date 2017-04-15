@@ -170,8 +170,13 @@ public class Partita {
                     Thread.sleep(pausa_lunga);
                 }
             }
+            if(! (giocatore instanceof GiocatoreUmano)){
+                Thread.sleep(pausa_breve);
+                System.out.println(giocatore.isMazziere() + " " + giocatore.getNome() + " " + giocatore.getCarteScoperte() + " " + giocatore.getStato() + " " + giocatore.getPuntata());
+            }
             pos_next += 1;
         }
+        System.out.print("\n");
     }
     
     private void inizializza_round(){
@@ -184,7 +189,9 @@ public class Partita {
         for(Giocatore giocatore : giocatori){
             while(true){
                 try {
-                    giocatore.prendi_carta_iniziale(mazzo);
+                    if(! giocatore.haPerso()){
+                        giocatore.prendi_carta_iniziale(mazzo);
+                    }
                     break;
                 } catch (FineMazzoException ex) {
                     mazzo.rimescola();
@@ -197,6 +204,13 @@ public class Partita {
         for(Giocatore giocatore : giocatori){
             System.out.println(giocatore.isMazziere() + " " + giocatore.getNome() + " " + giocatore.getVettoreCarte() + " " + giocatore.getValoreMano() + " "+ giocatore.getStato() + " " + giocatore.getFiches() + " " + giocatore.haPerso());
             Thread.sleep(pausa_breve);
+            if(giocatore.getFiches() == 0){
+                if(giocatore instanceof GiocatoreUmano){
+                    game_over();
+                } else {
+                    giocatore.perde();
+                }
+            }
         }
         System.out.print("\n");
         Thread.sleep(pausa_lunga);
@@ -209,8 +223,11 @@ public class Partita {
                     case Sballato: {
                         switch(giocatore.getStato()){
                             case SetteeMezzo: giocatore.riscuoti(mazziere.paga_giocatore(giocatore.getPuntata()));
+                                    break;
                             case OK: giocatore.riscuoti(mazziere.paga_giocatore(giocatore.getPuntata()));
+                                    break;
                             case SetteeMezzoReale: giocatore.riscuoti(mazziere.paga_reale_giocatore(giocatore.getPuntata()));  
+                                    break;
                         }
                     }
                     case OK: {

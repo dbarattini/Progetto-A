@@ -176,7 +176,9 @@ public abstract class Giocatore {
         fiches = fiches - puntata;
         if(fiches < 0){
             perso = true;
-            return puntata + (fiches + puntata);
+            int buf = fiches;
+            fiches = 0;
+            return puntata + (buf + puntata);
         }
         return puntata * 2;
     }
@@ -232,5 +234,9 @@ public abstract class Giocatore {
     
     public Stato getStato(){
         return stato;
+    }
+
+    public ArrayList<Carta> getCarteScoperte() {
+        return carte_scoperte;
     }
 }
