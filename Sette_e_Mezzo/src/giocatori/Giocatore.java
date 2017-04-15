@@ -168,7 +168,7 @@ public abstract class Giocatore {
         if(fiches - (puntata * 2) < 0){
             throw new MazzierePerdeException();
         }
-        punta(puntata);
+        punta(puntata * 2);
         return paga_reale_mazziere();
     }
     
@@ -181,8 +181,8 @@ public abstract class Giocatore {
         return puntata * 2;
     }
     
-    public void riscuoti(int puntata){
-        fiches = fiches + puntata;
+    public void riscuoti(int vincita){
+        fiches = fiches + puntata + vincita;
     }
     
     public ArrayList<Carta> getVettoreCarte(){
@@ -196,6 +196,9 @@ public abstract class Giocatore {
         return carte_scoperte.get(carte_scoperte.size() - 1);
     }
     
+    public void perde(){
+        perso = true;
+    }
     public boolean haPerso(){
         return perso;
     }

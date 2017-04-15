@@ -11,6 +11,7 @@ import giocatori.Giocatore;
 import classi_dati.DifficoltaBot;
 import classi_dati.Stato;
 import eccezioni.FineMazzoException;
+import eccezioni.MazzierePerdeException;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.logging.Level;
@@ -31,6 +32,11 @@ public class Partita {
             mazzo.mischia();
             for(int i = 0; i < 100; i++){ //ci sono 100 round solo per prova
                 gioca_round();
+                try {
+                    calcola_risultato();
+                } catch (MazzierePerdeException ex) {
+                    //da fare
+                }
                 fine_round();
                 mazzo.aggiorna_fine_round();
             }
@@ -130,6 +136,17 @@ public class Partita {
                 giocatore.gioca_mano(mazzo);
                 if(!giocatore.isMazziere() && giocatore.getStato() == Stato.Sballato){
                     mazziere.riscuoti(giocatore.paga_mazziere()); //giocatore se sballa paga subito.
+                    if(giocatore.getFiches() == 0){
+                        if(giocatore instanceof GiocatoreUmano){
+                            System.out.println("Carta Ottenuta: " + giocatore.getUltimaCartaOttenuta());
+                            System.out.println("Valore Mano: " + giocatore.getValoreMano());
+                            System.out.println(giocatore.getStato());
+                            System.out.print("\n");
+                            Thread.sleep(pausa_lunga);
+                            game_over();
+                        }
+                        giocatore.perde();
+                    }
                 }
                 if(giocatore instanceof GiocatoreUmano && giocatore.getStato() != Stato.OK){
                     System.out.println("Carta Ottenuta: " + giocatore.getUltimaCartaOttenuta());
@@ -164,19 +181,58 @@ public class Partita {
     
     private void fine_round() throws InterruptedException{
         for(Giocatore giocatore : giocatori){
-            System.out.println(giocatore.isMazziere() + " " + giocatore.getNome() + " " + giocatore.getVettoreCarte() + " " + giocatore.getValoreMano() + " "+ giocatore.getStato());
+            System.out.println(giocatore.isMazziere() + " " + giocatore.getNome() + " " + giocatore.getVettoreCarte() + " " + giocatore.getValoreMano() + " "+ giocatore.getStato() + " " + giocatore.getFiches() + " " + giocatore.haPerso());
             Thread.sleep(pausa_breve);
         }
         System.out.print("\n");
         Thread.sleep(pausa_lunga);
     }
     
-    private void calcola_risultato(){
+    private void calcola_risultato() throws MazzierePerdeException{
         for(Giocatore giocatore : giocatori){
             if(! giocatore.isMazziere()){
-                if(mazziere.getStato() == Stato.Sballato){
-                    switch(giocatore.getStato()){
-                        case Sballato:
+                switch(mazziere.getStato()){
+                    case Sballato: {
+                        switch(giocatore.getStato()){
+                            case SetteeMezzo: giocatore.riscuoti(mazziere.paga_giocatore(giocatore.getPuntata()));
+                            case OK: giocatore.riscuoti(mazziere.paga_giocatore(giocatore.getPuntata()));
+                            case SetteeMezzoReale: giocatore.riscuoti(mazziere.paga_reale_giocatore(giocatore.getPuntata()));  
+                        }
+                    }
+                    case OK: {
+                        switch(giocatore.getStato()){
+                            case SetteeMezzo: giocatore.riscuoti(mazziere.paga_giocatore(giocatore.getPuntata()));
+                                              break;
+                            case OK: if(mazziere.getValoreMano() >= giocatore.getValoreMano()){
+                                mazziere.riscuoti(giocatore.paga_mazziere());
+                            } else{
+                                giocatore.riscuoti(mazziere.paga_giocatore(giocatore.getPuntata()));
+                            } break;
+                            case SetteeMezzoReale: giocatore.riscuoti(mazziere.paga_reale_giocatore(giocatore.getPuntata()));
+                                                    break;
+                        } break;
+                    }
+                    case SetteeMezzo: {
+                        switch(giocatore.getStato()){
+                            case SetteeMezzo: mazziere.riscuoti(giocatore.paga_mazziere());
+                                              break;
+                            case OK: mazziere.riscuoti(giocatore.paga_mazziere());
+                                     break;
+                            case SetteeMezzoReale: giocatore.riscuoti(mazziere.paga_reale_giocatore(giocatore.getPuntata()));  
+                                                   break;
+                        }
+                        break;
+                    }
+                    case SetteeMezzoReale: {
+                        switch(giocatore.getStato()){
+                            case SetteeMezzo: mazziere.riscuoti(giocatore.paga_reale_mazziere());
+                                              break;
+                            case OK: mazziere.riscuoti(giocatore.paga_reale_mazziere());
+                                     break;
+                            case SetteeMezzoReale: mazziere.riscuoti(giocatore.paga_mazziere());  
+                                                    break;
+                        }
+                        break;
                     }
                 }
             }
@@ -186,4 +242,9 @@ public class Partita {
     private void fine_partita() {
         //da fare
     }   
+
+    private void game_over() {
+        System.out.println("Game Over");
+        System.exit(0);
+    }
 }
