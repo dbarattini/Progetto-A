@@ -21,7 +21,7 @@ public class Partita {
     private ArrayList<Giocatore> giocatori=new ArrayList<>();
     private final Mazzo mazzo = new Mazzo();
     
-    public Partita(int numero_bot, int fiches_iniziali, DifficoltaBot difficolta_bot){
+    public Partita(int numero_bot, int fiches_iniziali, DifficoltaBot difficolta_bot) throws InterruptedException{
         try {
             inizializza_partita(numero_bot, fiches_iniziali, difficolta_bot);
             estrai_mazziere();
@@ -80,12 +80,38 @@ public class Partita {
         return nome;
     }
 
-    private void estrai_mazziere() {
-        //per ora imposta il primo giocatore...da sviluppare.
-        giocatori.get(0).setMazziere(true);
+    private void estrai_mazziere() throws InterruptedException {
+        mazzo.mischia();
+        Thread.sleep(1000);
+        System.out.println("Estrazione del mazziere:\n");
+        Thread.sleep(1000);
+        Giocatore mazziere = null;
+        for(Giocatore giocatore : giocatori){
+            while(true){
+                try {
+                    giocatore.prendi_carta_iniziale(mazzo);
+                    giocatore.aggiorna_valore_mano();
+                    System.out.println(giocatore.getNome() + " " + giocatore.getCartaCoperta() + " " + giocatore.getValoreMano());
+                    Thread.sleep(1000);
+                    break;
+                } catch (FineMazzoException ex) {
+                    mazzo.rimescola();
+                }
+            }
+            if(mazziere == null){
+                mazziere = giocatore;
+            } else if(giocatore.getValoreMano() > mazziere.getValoreMano()){
+                mazziere = giocatore;
+            }
+        }
+        System.out.println("\nIl Mazziere é: " + mazziere.getNome() + "\n");
+        Thread.sleep(1000);
+        mazziere.setMazziere(true);
+        mazzo.aggiorna_fine_round();
+        mazzo.rimescola();
     }
 
-    private void gioca_round() {
+    private void gioca_round() throws InterruptedException {
         inizializza_round();
         distribuisci_carta_coperta();
         for(Giocatore giocatore : giocatori){
@@ -94,6 +120,7 @@ public class Partita {
                 System.out.println("Carta Ottenuta: " + giocatore.getUltimaCartaOttenuta());
                 System.out.println(giocatore.getStato());
                 System.out.print("\n");
+                Thread.sleep(1000);
             }
         }
     }
@@ -117,11 +144,13 @@ public class Partita {
         }
     }
     
-    private void fine_round(){
+    private void fine_round() throws InterruptedException{
         for(Giocatore giocatore : giocatori){
-            System.out.println(giocatore.getNome() + " " + giocatore.getVettoreCarte() + " " + giocatore.getValoreMano() + " "+ giocatore.getStato());
+            System.out.println(giocatore.isMazziere() + " " + giocatore.getNome() + " " + giocatore.getVettoreCarte() + " " + giocatore.getValoreMano() + " "+ giocatore.getStato());
+            Thread.sleep(1000);
         }
         System.out.println("\n");
+        Thread.sleep(1000);
     }
 
     private void fine_partita() {
