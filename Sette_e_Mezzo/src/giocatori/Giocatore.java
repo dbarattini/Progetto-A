@@ -169,11 +169,11 @@ public abstract class Giocatore {
             throw new MazzierePerdeException();
         }
         punta(puntata * 2);
-        return paga_reale_mazziere();
+        return paga_mazziere();
     }
     
     public int paga_reale_mazziere(){
-        fiches = fiches - puntata;
+        fiches = fiches - (2 *puntata);
         if(fiches < 0){
             perso = true;
             int buf = fiches;

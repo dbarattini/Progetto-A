@@ -229,6 +229,7 @@ public class Partita {
                             case SetteeMezzoReale: giocatore.riscuoti(mazziere.paga_reale_giocatore(giocatore.getPuntata()));  
                                     break;
                         }
+                        break;
                     }
                     case OK: {
                         switch(giocatore.getStato()){
