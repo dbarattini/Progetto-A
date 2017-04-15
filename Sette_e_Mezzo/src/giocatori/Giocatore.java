@@ -42,7 +42,9 @@ public abstract class Giocatore {
     
     public void prendi_carta_iniziale(Mazzo mazzo) throws FineMazzoException{
         carta_coperta = mazzo.estrai_carta();
+        aggiorna_valore_mano();
     }
+    
     
     public Mazzo gioca_mano(Mazzo mazzo){
         boolean continua = true;

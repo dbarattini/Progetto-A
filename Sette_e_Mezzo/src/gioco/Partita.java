@@ -12,24 +12,31 @@ import classi_dati.DifficoltaBot;
 import classi_dati.Stato;
 import eccezioni.FineMazzoException;
 import eccezioni.MazzierePerdeException;
+import java.io.InputStream;
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Scanner;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 
 public class Partita {
     private ArrayList<Giocatore> giocatori=new ArrayList<>();
+    private ArrayList<Giocatore> bot_sconfitti=new ArrayList<>();
     private final Mazzo mazzo = new Mazzo();
-    private Giocatore mazziere;
+    private Giocatore mazziere = null;
+    private Giocatore next_mazziere;
     int pausa_breve = 1000; //ms
     int pausa_lunga = 2000; //ms
+    InputStream in;
+    PrintStream out;
     
-    public Partita(int numero_bot, int fiches_iniziali, DifficoltaBot difficolta_bot) throws InterruptedException{
+    public Partita(int numero_bot, int fiches_iniziali, DifficoltaBot difficolta_bot, InputStream in, PrintStream out) throws InterruptedException{
+        this.in = in;
+        this.out = out;
         try {
             inizializza_partita(numero_bot, fiches_iniziali, difficolta_bot);
             estrai_mazziere();
-            mazzo.mischia();
+            mazzo.aggiorna_fine_round();
+            mazzo.rimescola();
             for(int i = 0; i < 100; i++){ //ci sono 100 round solo per prova
                 gioca_round();
                 try {
@@ -41,12 +48,12 @@ public class Partita {
                 mazzo.aggiorna_fine_round();
             }
             fine_partita();
-        } catch (NumeroBotException ex) {
-            System.out.println("Il numero di bot dev'essere un valore compreso tra 1 ed 11.");
-        } catch (FichesInizialiException ex) {
-            System.out.println("Il numero di fiches iniziali dev'essere maggiore di 0");
-        } catch (DifficoltaBotException ex) {
-            System.out.println("Le difficolta disponibili sono: Facile.");
+        }catch (NumeroBotException ex) {
+            this.out.println("Il numero di bot dev'essere un valore compreso tra 1 ed 11.");
+        }catch (FichesInizialiException ex) {
+            this.out.println("Il numero di fiches iniziali dev'essere maggiore di 0");
+        }catch (DifficoltaBotException ex) {
+            this.out.println("Le difficolta disponibili sono: Facile. //Work in Progress\\");
         }
     }
     
@@ -65,20 +72,19 @@ public class Partita {
         for(int i = 0; i < numero_bot; i++){
             switch(difficolta_bot){
                 case Facile : {
-                    giocatori.add(new BotFacile("bot"+i, fiches_iniziali));
+                    giocatori.add(new BotFacile("bot"+i, fiches_iniziali)); //nomi bot: bot0, bot1, ...
                     break;
                 }
-                default: throw new DifficoltaBotException();
-                   
+                default: throw new DifficoltaBotException();       
             }
         }
     }
     
     private void inizializza_giocatore(int fiches_iniziali){
-        System.out.println("Come ti chiami?");
+        out.println("Come ti chiami?");
         String nome = richiedi_nome_giocatore();
         giocatori.add(new GiocatoreUmano(nome,fiches_iniziali,System.in,System.out));
-        System.out.print("\n");
+        out.print("\n");
     }
     
     private String richiedi_nome_giocatore(){
@@ -90,93 +96,102 @@ public class Partita {
     }
 
     private void estrai_mazziere() throws InterruptedException {
-        //rivedere il caso di paritá
         mazzo.mischia();
         Thread.sleep(pausa_breve);
-        System.out.println("Estrazione del mazziere:\n");
+        out.println("Estrazione del mazziere:\n");
         Thread.sleep(pausa_breve);
-        mazziere = null;
         for(Giocatore giocatore : giocatori){
             while(true){
                 try {
                     giocatore.prendi_carta_iniziale(mazzo);
-                    giocatore.aggiorna_valore_mano();
-                    System.out.println(giocatore.getNome() + " " + giocatore.getCartaCoperta() + " " + giocatore.getValoreMano());
+                    mostra_carta_coperta_e_valore_mano(giocatore);
                     Thread.sleep(pausa_breve);
                     break;
-                } catch (FineMazzoException ex) {
+                }catch (FineMazzoException ex) {
                     mazzo.rimescola();
+                    stampa_messaggio_rimescola_mazzo();
                 }
             }
-            if(mazziere == null){
-                mazziere = giocatore;
-            } else if(giocatore.getValoreMano() > mazziere.getValoreMano()){
-                mazziere = giocatore;
-            } else if(giocatore.getValoreMano() == mazziere.getValoreMano()){
-                if(giocatore.getCartaCoperta().getSeme().equals("c")){
-                    mazziere = giocatore;
-                } else if(giocatore.getCartaCoperta().getSeme().equals("q") && ! mazziere.getCartaCoperta().getSeme().equals("c")){
-                    mazziere = giocatore;
-                } else if(giocatore.getCartaCoperta().getSeme().equals("f") && mazziere.getCartaCoperta().getSeme().equals("p")){
-                    mazziere = giocatore;
-                }else if(giocatore.getCartaCoperta().getSeme().equals(mazziere.getCartaCoperta().getSeme())){
-                    if(giocatore.getCartaCoperta().getSimbolo().equals("K")){
-                        mazziere = giocatore;
-                    } else if(giocatore.getCartaCoperta().getSimbolo().equals("Q") && mazziere.getCartaCoperta().getSimbolo().equals("J")){
-                        mazziere = giocatore;
-                    }
+            seleziona_mazziere(giocatore);
+        }
+        stampa_messaggio_mazziere();
+        Thread.sleep(pausa_lunga);
+        mazziere.setMazziere(true);
+    }
+    
+    private void mostra_carta_coperta_e_valore_mano(Giocatore giocatore){
+        out.println(giocatore.getNome() + " " + giocatore.getCartaCoperta() + " " + giocatore.getValoreMano());
+    }
+    
+    private void stampa_messaggio_rimescola_mazzo(){
+        out.println("Rimescolo il mazzo.");
+    }
+    
+    private void seleziona_mazziere(Giocatore giocatore){
+        if(mazziere == null){
+            aggiorna_mazziere(giocatore);
+        }else if(giocatore.getValoreMano() > mazziere.getValoreMano()){
+            aggiorna_mazziere(giocatore);
+        }else if(giocatore.getValoreMano() == mazziere.getValoreMano()){
+            if(giocatore.getCartaCoperta().getSeme().equals("c")){
+                aggiorna_mazziere(giocatore);
+            }else if(giocatore.getCartaCoperta().getSeme().equals("q") && ! mazziere.getCartaCoperta().getSeme().equals("c")){
+                aggiorna_mazziere(giocatore);
+            }else if(giocatore.getCartaCoperta().getSeme().equals("f") && mazziere.getCartaCoperta().getSeme().equals("p")){
+                aggiorna_mazziere(giocatore);
+            }else if(giocatore.getCartaCoperta().getSeme().equals(mazziere.getCartaCoperta().getSeme())){
+                if(giocatore.getCartaCoperta().getSimbolo().equals("K")){
+                    aggiorna_mazziere(giocatore);
+                }else if(giocatore.getCartaCoperta().getSimbolo().equals("Q") && mazziere.getCartaCoperta().getSimbolo().equals("J")){
+                    aggiorna_mazziere(giocatore);
                 }
             }
         }
-        System.out.println("\nIl Mazziere é: " + mazziere.getNome() + "\n");
-        Thread.sleep(pausa_lunga);
-        mazziere.setMazziere(true);
-        mazzo.aggiorna_fine_round();
-        mazzo.rimescola();
+    }
+    
+    private void aggiorna_mazziere(Giocatore giocatore){
+        mazziere = giocatore;
+    }
+    
+    private void stampa_messaggio_mazziere(){
+        out.println("\nIl Mazziere é: " + mazziere.getNome() + "\n");
     }
 
     private void gioca_round() throws InterruptedException {
+        int pos_mazziere = giocatori.indexOf(mazziere);
+        int pos_next_giocatore = pos_mazziere + 1;
+        Giocatore giocatore;
+        
         inizializza_round();
         distribuisci_carta_coperta();
-        int pos_mazziere = giocatori.indexOf(mazziere);
-        int pos_next = pos_mazziere + 1;
-        Giocatore giocatore;
         for(int i = 0; i < giocatori.size(); i++){
-            if(pos_next == giocatori.size()){
-                pos_next = 0;
-            }
-            giocatore = giocatori.get(pos_next);
+            giocatore = getProssimoGiocatore(pos_next_giocatore);
             if(! giocatore.haPerso()){
                 giocatore.gioca_mano(mazzo);
                 if(!giocatore.isMazziere() && giocatore.getStato() == Stato.Sballato){
-                    mazziere.riscuoti(giocatore.paga_mazziere()); //giocatore se sballa paga subito.
+                    giocatore_paga_mazziere(giocatore); //giocatore se sballa paga subito.
                     if(giocatore.getFiches() == 0){
                         if(giocatore instanceof GiocatoreUmano){
-                            System.out.println("Carta Ottenuta: " + giocatore.getUltimaCartaOttenuta());
-                            System.out.println("Valore Mano: " + giocatore.getValoreMano());
-                            System.out.println(giocatore.getStato());
-                            System.out.print("\n");
+                            stampa_se_stato_non_ok(giocatore);
                             Thread.sleep(pausa_lunga);
                             game_over();
+                        }else{
+                            giocatore.perde();
                         }
-                        giocatore.perde();
                     }
                 }
                 if(giocatore instanceof GiocatoreUmano && giocatore.getStato() != Stato.OK){
-                    System.out.println("Carta Ottenuta: " + giocatore.getUltimaCartaOttenuta());
-                    System.out.println("Valore Mano: " + giocatore.getValoreMano());
-                    System.out.println(giocatore.getStato());
-                    System.out.print("\n");
+                    stampa_se_stato_non_ok(giocatore);
                     Thread.sleep(pausa_lunga);
                 }
             }
             if(! (giocatore instanceof GiocatoreUmano)){
                 Thread.sleep(pausa_breve);
-                System.out.println(giocatore.isMazziere() + " " + giocatore.getNome() + " " + giocatore.getCarteScoperte() + " " + giocatore.getStato() + " " + giocatore.getPuntata());
+                stampa_giocata_bot(giocatore);
             }
-            pos_next += 1;
+            pos_next_giocatore += 1;
         }
-        System.out.print("\n");
+        out.print("\n");
     }
     
     private void inizializza_round(){
@@ -195,14 +210,126 @@ public class Partita {
                     break;
                 } catch (FineMazzoException ex) {
                     mazzo.rimescola();
+                    stampa_messaggio_rimescola_mazzo();
                 }
             }
         }
     }
     
+    private Giocatore getProssimoGiocatore(int posizione){
+        if(posizione == giocatori.size()){
+                posizione = 0;
+            }
+        return giocatori.get(posizione);
+    }
+    
+    private void stampa_se_stato_non_ok(Giocatore giocatore){
+        out.println("Carta Ottenuta: " + giocatore.getUltimaCartaOttenuta());
+        out.println("Valore Mano: " + giocatore.getValoreMano() + "\n");
+        out.println(giocatore.getStato());
+        out.print("\n");
+    }
+    
+    private void stampa_giocata_bot(Giocatore giocatore){
+        out.println(giocatore.getNome() + " " + giocatore.getCarteScoperte() + " " + giocatore.getStato() + " " + giocatore.getPuntata());
+    }
+    
+    private void calcola_risultato() throws MazzierePerdeException{
+        for(Giocatore giocatore : giocatori){
+            if(! giocatore.isMazziere()){
+                switch(mazziere.getStato()){
+                    case Sballato: {
+                        switch(giocatore.getStato()){
+                            case SetteeMezzo:{
+                                mazziere_paga_giocatore(giocatore);
+                                break;
+                            }
+                            case OK:{
+                                mazziere_paga_giocatore(giocatore);
+                                break;
+                            }
+                            case SetteeMezzoReale:{
+                                mazziere_paga_reale_giocatore(giocatore);
+                                break;
+                            }
+                        } break;
+                    }
+                    case OK: {
+                        switch(giocatore.getStato()){
+                            case SetteeMezzo:{
+                                mazziere_paga_giocatore(giocatore);
+                                break;
+                            }
+                            case OK:{ 
+                                if(mazziere.getValoreMano() >= giocatore.getValoreMano()){
+                                    giocatore_paga_mazziere(giocatore);
+                                }else{
+                                    mazziere_paga_giocatore(giocatore);
+                                } 
+                                break;
+                            }
+                            case SetteeMezzoReale:{
+                                mazziere_paga_reale_giocatore(giocatore);
+                                break;
+                            }
+                        } break;
+                    }
+                    case SetteeMezzo: {
+                        switch(giocatore.getStato()){
+                            case SetteeMezzo:{
+                                giocatore_paga_mazziere(giocatore);
+                                break;
+                            }
+                            case OK:{
+                                giocatore_paga_mazziere(giocatore);
+                                break;
+                            }
+                            case SetteeMezzoReale:{
+                                mazziere_paga_reale_giocatore(giocatore);  
+                                break;
+                            }
+                        } break;
+                    }
+                    case SetteeMezzoReale: {
+                        switch(giocatore.getStato()){
+                            case SetteeMezzo:{
+                                giocatore_paga_reale_mazziere(giocatore);
+                                break;
+                            }
+                            case OK:{
+                                giocatore_paga_reale_mazziere(giocatore);
+                                break;
+                            }
+                            case SetteeMezzoReale:{
+                                giocatore_paga_mazziere(giocatore);  
+                                break;
+                            }
+                        }break;
+                    }
+                }
+            }
+        }
+    }
+    
+    private void giocatore_paga_mazziere(Giocatore giocatore){
+        mazziere.riscuoti(giocatore.paga_mazziere());
+    }
+    
+    private void giocatore_paga_reale_mazziere(Giocatore giocatore){
+        mazziere.riscuoti(giocatore.paga_reale_mazziere());
+    }
+    
+    private void mazziere_paga_giocatore(Giocatore giocatore) throws MazzierePerdeException{
+        giocatore.riscuoti(mazziere.paga_giocatore(giocatore.getPuntata()));
+    }
+    
+    private void mazziere_paga_reale_giocatore(Giocatore giocatore) throws MazzierePerdeException{
+        giocatore.riscuoti(mazziere.paga_reale_giocatore(giocatore.getPuntata()));
+    }
+    
     private void fine_round() throws InterruptedException{
         for(Giocatore giocatore : giocatori){
-            System.out.println(giocatore.isMazziere() + " " + giocatore.getNome() + " " + giocatore.getVettoreCarte() + " " + giocatore.getValoreMano() + " "+ giocatore.getStato() + " " + giocatore.getFiches() + " " + giocatore.haPerso());
+            stampa_risultato_round(giocatore);
             Thread.sleep(pausa_breve);
             if(giocatore.getFiches() == 0){
                 if(giocatore instanceof GiocatoreUmano){
@@ -212,63 +339,12 @@ public class Partita {
                 }
             }
         }
-        System.out.print("\n");
+        out.print("\n");
         Thread.sleep(pausa_lunga);
     }
     
-    private void calcola_risultato() throws MazzierePerdeException{
-        for(Giocatore giocatore : giocatori){
-            if(! giocatore.isMazziere()){
-                switch(mazziere.getStato()){
-                    case Sballato: {
-                        switch(giocatore.getStato()){
-                            case SetteeMezzo: giocatore.riscuoti(mazziere.paga_giocatore(giocatore.getPuntata()));
-                                    break;
-                            case OK: giocatore.riscuoti(mazziere.paga_giocatore(giocatore.getPuntata()));
-                                    break;
-                            case SetteeMezzoReale: giocatore.riscuoti(mazziere.paga_reale_giocatore(giocatore.getPuntata()));  
-                                    break;
-                        }
-                        break;
-                    }
-                    case OK: {
-                        switch(giocatore.getStato()){
-                            case SetteeMezzo: giocatore.riscuoti(mazziere.paga_giocatore(giocatore.getPuntata()));
-                                              break;
-                            case OK: if(mazziere.getValoreMano() >= giocatore.getValoreMano()){
-                                mazziere.riscuoti(giocatore.paga_mazziere());
-                            } else{
-                                giocatore.riscuoti(mazziere.paga_giocatore(giocatore.getPuntata()));
-                            } break;
-                            case SetteeMezzoReale: giocatore.riscuoti(mazziere.paga_reale_giocatore(giocatore.getPuntata()));
-                                                    break;
-                        } break;
-                    }
-                    case SetteeMezzo: {
-                        switch(giocatore.getStato()){
-                            case SetteeMezzo: mazziere.riscuoti(giocatore.paga_mazziere());
-                                              break;
-                            case OK: mazziere.riscuoti(giocatore.paga_mazziere());
-                                     break;
-                            case SetteeMezzoReale: giocatore.riscuoti(mazziere.paga_reale_giocatore(giocatore.getPuntata()));  
-                                                   break;
-                        }
-                        break;
-                    }
-                    case SetteeMezzoReale: {
-                        switch(giocatore.getStato()){
-                            case SetteeMezzo: mazziere.riscuoti(giocatore.paga_reale_mazziere());
-                                              break;
-                            case OK: mazziere.riscuoti(giocatore.paga_reale_mazziere());
-                                     break;
-                            case SetteeMezzoReale: mazziere.riscuoti(giocatore.paga_mazziere());  
-                                                    break;
-                        }
-                        break;
-                    }
-                }
-            }
-        }
+    private void stampa_risultato_round(Giocatore giocatore){
+        out.println(giocatore.haPerso() + " " + giocatore.isMazziere() + " " + giocatore.getNome() + " " + giocatore.getVettoreCarte() + " " + giocatore.getValoreMano() + " "+ giocatore.getStato() + " " + giocatore.getFiches());
     }
 
     private void fine_partita() {
@@ -276,7 +352,7 @@ public class Partita {
     }   
 
     private void game_over() {
-        System.out.println("Game Over");
+        out.println("Game Over");
         System.exit(0);
     }
 }

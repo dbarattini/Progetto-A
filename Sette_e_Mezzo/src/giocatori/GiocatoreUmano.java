@@ -44,6 +44,7 @@ public class GiocatoreUmano extends Giocatore {
     }
     
     public int richiedi_puntata() throws InputMismatchException{
+        out.print("\n");
         out.println("Carta Coperta: " + this.carta_coperta);
         out.println("Valore Mano: " +  valore_mano);
         out.print("Puntata: ");
@@ -68,6 +69,7 @@ public class GiocatoreUmano extends Giocatore {
     public Giocata decidi_giocata() {
         while(true){
             if(! carte_scoperte.isEmpty()){
+                out.print("\n");
                 out.println("Carta Ottenuta: " + carte_scoperte.get(carte_scoperte.size() - 1));
             }
             try {
@@ -81,11 +83,11 @@ public class GiocatoreUmano extends Giocatore {
     }  
 
     public String richiedi_giocata() {
+        out.print("\n");
         out.println("Valore Mano: " + valore_mano);
         out.println("Cosa Vuoi Fare?");
         Scanner scan = new Scanner(in);
         String giocata = scan.next();
-        out.print("\n");
         return giocata;
     }
     
