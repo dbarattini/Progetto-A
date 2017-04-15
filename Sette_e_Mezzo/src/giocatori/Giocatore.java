@@ -1,6 +1,7 @@
 package giocatori;
 
 
+import eccezioni.MazzierePerdeException;
 import eccezioni.PersoException;
 import eccezioni.SetteeMezzoException;
 import eccezioni.SetteeMezzoRealeException;
@@ -151,11 +152,37 @@ public abstract class Giocatore {
         }
     }
     
-    public void regola_conti(int posta) throws PersoException{
-        puntata = 0;
-        if(fiches == 0){
-            throw new PersoException();
+    public int paga_mazziere(){
+        return puntata;
+    }
+    
+    public int paga_giocatore(int puntata) throws MazzierePerdeException{
+        if(fiches - puntata < 0){
+            throw new MazzierePerdeException();
         }
+        punta(puntata);
+        return paga_mazziere();
+    }
+    
+    public int paga_reale_giocatore(int puntata) throws MazzierePerdeException{
+        if(fiches - (puntata * 2) < 0){
+            throw new MazzierePerdeException();
+        }
+        punta(puntata);
+        return paga_reale_mazziere();
+    }
+    
+    public int paga_reale_mazziere(){
+        fiches = fiches - puntata;
+        if(fiches < 0){
+            perso = true;
+            return puntata + (fiches + puntata);
+        }
+        return puntata * 2;
+    }
+    
+    public void riscuoti(int puntata){
+        fiches = fiches + puntata;
     }
     
     public ArrayList<Carta> getVettoreCarte(){

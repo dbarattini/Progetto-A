@@ -128,6 +128,9 @@ public class Partita {
             giocatore = giocatori.get(pos_next);
             if(! giocatore.haPerso()){
                 giocatore.gioca_mano(mazzo);
+                if(!giocatore.isMazziere() && giocatore.getStato() == Stato.Sballato){
+                    mazziere.riscuoti(giocatore.paga_mazziere()); //giocatore se sballa paga subito.
+                }
                 if(giocatore instanceof GiocatoreUmano && giocatore.getStato() != Stato.OK){
                     System.out.println("Carta Ottenuta: " + giocatore.getUltimaCartaOttenuta());
                     System.out.println("Valore Mano: " + giocatore.getValoreMano());
@@ -166,6 +169,18 @@ public class Partita {
         }
         System.out.print("\n");
         Thread.sleep(pausa_lunga);
+    }
+    
+    private void calcola_risultato(){
+        for(Giocatore giocatore : giocatori){
+            if(! giocatore.isMazziere()){
+                if(mazziere.getStato() == Stato.Sballato){
+                    switch(giocatore.getStato()){
+                        case Sballato:
+                    }
+                }
+            }
+        }
     }
 
     private void fine_partita() {
