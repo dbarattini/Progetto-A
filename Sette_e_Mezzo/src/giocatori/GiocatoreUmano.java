@@ -16,8 +16,8 @@ public class GiocatoreUmano extends Giocatore {
     private final InputStream in;
     private final PrintStream out;
     
-    public GiocatoreUmano(String nome, int posizione, int fiches, InputStream in, PrintStream out) {
-        super(nome, posizione, fiches);
+    public GiocatoreUmano(String nome, int fiches, InputStream in, PrintStream out) {
+        super(nome, fiches);
         this.in = in;
         this.out = out;
     }

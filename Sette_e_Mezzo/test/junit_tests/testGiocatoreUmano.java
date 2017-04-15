@@ -22,7 +22,7 @@ public class testGiocatoreUmano {
         int fiches_iniziali = 100;
         int valore_puntato = (int) (fiches_iniziali * Math.random());        
         InputStream in = new ByteArrayInputStream(Integer.toString(valore_puntato).getBytes(StandardCharsets.UTF_8));
-        GiocatoreUmano giocatore = new GiocatoreUmano("player1", 0, fiches_iniziali, in, System.out);
+        GiocatoreUmano giocatore = new GiocatoreUmano("player1", fiches_iniziali, in, System.out);
      
         int puntata = giocatore.richiedi_puntata();
         
@@ -33,26 +33,26 @@ public class testGiocatoreUmano {
     public void testRichiediPuntataInputMismatchException(){
         String puntata_errata = "Puntata Errata";
         InputStream in = new ByteArrayInputStream(puntata_errata.getBytes(StandardCharsets.UTF_8));
-        GiocatoreUmano giocatore = new GiocatoreUmano("player1", 0, 100, in, System.out);
+        GiocatoreUmano giocatore = new GiocatoreUmano("player1", 100, in, System.out);
         
         int puntata = giocatore.richiedi_puntata();
     }
     
     @Test (expected = PuntataTroppoAltaException.class)
     public void testPuntataTroppoAltaException() throws PuntataTroppoAltaException, PuntataNegativaException, PuntataNullaException{
-        GiocatoreUmano giocatore = new GiocatoreUmano("player1", 0, 100, System.in, System.out);  
+        GiocatoreUmano giocatore = new GiocatoreUmano("player1", 100, System.in, System.out);  
         giocatore.controlla_puntata(giocatore.getFiches() + 10);
     }
     
     @Test (expected = PuntataNegativaException.class)
     public void testPuntataNegativaException() throws PuntataTroppoAltaException, PuntataNegativaException, PuntataNullaException{
-        GiocatoreUmano giocatore = new GiocatoreUmano("player1", 0, 100, System.in, System.out);  
+        GiocatoreUmano giocatore = new GiocatoreUmano("player1", 100, System.in, System.out);  
         giocatore.controlla_puntata(-10);
     }
     
     @Test (expected = PuntataNullaException.class)
     public void testPuntataNullaException() throws PuntataTroppoAltaException, PuntataNegativaException, PuntataNullaException{
-        GiocatoreUmano giocatore = new GiocatoreUmano("player1", 0, 100, System.in, System.out);  
+        GiocatoreUmano giocatore = new GiocatoreUmano("player1", 100, System.in, System.out);  
         giocatore.controlla_puntata(0);
     }  
     
@@ -65,7 +65,7 @@ public class testGiocatoreUmano {
         
         for(int i=0; i<2; i++){
             InputStream in = new ByteArrayInputStream(giocate_fattibili[i].getBytes(StandardCharsets.UTF_8));
-            giocatore = new GiocatoreUmano("player1", 0, 100, in, System.out);
+            giocatore = new GiocatoreUmano("player1", 100, in, System.out);
             giocata = giocatore.seleziona_giocata(giocatore.richiedi_giocata());
             
             assertEquals(giocate_possibili[i], giocata);
@@ -76,7 +76,7 @@ public class testGiocatoreUmano {
     public void testSelezionaGiocataException() throws GiocataNonValidaException{
         String giocata_errata = "Giocata Errata";
         InputStream in = new ByteArrayInputStream(giocata_errata.getBytes(StandardCharsets.UTF_8));
-        GiocatoreUmano giocatore = new GiocatoreUmano("player1", 0, 100, in, System.out);
+        GiocatoreUmano giocatore = new GiocatoreUmano("player1", 100, in, System.out);
         
         giocatore.seleziona_giocata(giocatore.richiedi_giocata());
     }

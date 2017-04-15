@@ -1,6 +1,7 @@
 package giocatori;
 
 
+import eccezioni.PersoException;
 import eccezioni.SetteeMezzoException;
 import eccezioni.SetteeMezzoRealeException;
 import eccezioni.SballatoException;
@@ -17,17 +18,16 @@ import java.util.ArrayList;
 public abstract class Giocatore {
     private final String nome;    
     private int fiches;
-    private int posizione;
     private boolean mazziere;
     protected Carta carta_coperta;    
     private int puntata;
     protected ArrayList<Carta> carte_scoperte= new ArrayList<>();
     protected double valore_mano = 0;
     private Stato stato;
+    private boolean perso = false;
     
-    public Giocatore(String nome, int posizione, int fiches){
+    public Giocatore(String nome, int fiches){
         this.nome = nome;
-        this.posizione = posizione;
         this.fiches = fiches;
     }
     
@@ -50,8 +50,10 @@ public abstract class Giocatore {
         } catch (MattaException ex) {
            valore_mano = 7;
         }
-        int valore_puntata = decidi_puntata();
-        punta(valore_puntata);
+        if(! isMazziere()){
+            int valore_puntata = decidi_puntata();
+            punta(valore_puntata);
+        }
         while(continua){
             Giocata giocata = decidi_giocata();
             try {
@@ -149,6 +151,13 @@ public abstract class Giocatore {
         }
     }
     
+    public void regola_conti(int posta) throws PersoException{
+        puntata = 0;
+        if(fiches == 0){
+            throw new PersoException();
+        }
+    }
+    
     public ArrayList<Carta> getVettoreCarte(){
         ArrayList<Carta> carte = new ArrayList<>();
         carte.add(carta_coperta);
@@ -160,6 +169,9 @@ public abstract class Giocatore {
         return carte_scoperte.get(carte_scoperte.size() - 1);
     }
     
+    public boolean haPerso(){
+        return perso;
+    }
     public boolean isMazziere(){
         return mazziere;
     }

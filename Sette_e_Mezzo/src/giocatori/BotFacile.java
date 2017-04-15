@@ -6,13 +6,13 @@ import classi_dati.Giocata;
 
 public class BotFacile extends Giocatore{
 
-    public BotFacile(String nome, int posizione, int fiches) {
-        super(nome, posizione, fiches);
+    public BotFacile(String nome, int fiches) {
+        super(nome, fiches);
     }
     
     @Override
     public int decidi_puntata() {
-        return this.getFiches()/10;
+        return (int)this.getFiches()/10;
     }
 
     @Override

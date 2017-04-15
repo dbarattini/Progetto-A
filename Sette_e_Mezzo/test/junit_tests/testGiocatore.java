@@ -12,7 +12,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 public class testGiocatore {
-            private Giocatore giocatore = new Giocatore("player1", 0, 100){
+            private Giocatore giocatore = new Giocatore("player1", 100){
             @Override
             public Mazzo gioca_mano(Mazzo mazzo) {
                 throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
