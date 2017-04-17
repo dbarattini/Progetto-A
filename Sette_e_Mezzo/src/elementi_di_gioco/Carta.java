@@ -8,11 +8,21 @@ public class Carta {
     private final String valore;
     private final String seme;
     
+    /**
+     *
+     * @param valore indica il valore della carta (esempio: 1, 2, .., J, Q, K)
+     * @param seme indica il seme della carta(esempio: c, q, f, p)
+     */
     public Carta(String valore, String seme){
         this.valore = valore;
         this.seme = seme;
     }
     
+    /**
+     *
+     * @return valore numerico della carta in base alle regole del sette e mezzo
+     * @throws MattaException utile per il calcolo dinamico della matta (Kq).
+     */
     public double getValore() throws MattaException{
         try{
             return Double.parseDouble(valore);
@@ -24,6 +34,10 @@ public class Carta {
         }
     }
     
+    /**
+     *
+     * @return valore della carta in formato stringa.
+     */
     public String getSimbolo(){
         return valore;
     }

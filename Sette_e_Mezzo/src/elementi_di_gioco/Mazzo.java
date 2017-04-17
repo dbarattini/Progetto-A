@@ -20,10 +20,19 @@ public class Mazzo {
         }
     }
     
+    /**
+     * Mischia le carte_da_giocare.
+     */
     public void mischia(){
         Collections.shuffle(carte_da_giocare);
     }
     
+    /**
+     * Estrae la prima carta dall'ArrayList carte_da_giocare.
+     * 
+     * @return la carta estratta.
+     * @throws FineMazzoException lanciata se il mazzo non ha carte da giocare.
+     */
     public Carta estrai_carta() throws FineMazzoException{
         try{
             Carta carta_distribuita = carte_da_giocare.remove(0);
@@ -34,11 +43,19 @@ public class Mazzo {
         }
     }
     
+    /**
+     * Aggiorna il mazzo al termine di una mano.
+     * Sposta le carte_in_gioco in carte_giocate.
+     */
     public void aggiorna_fine_round(){
         carte_giocate.addAll(carte_in_gioco);
         carte_in_gioco.clear();
     }
     
+    /**
+     * Rimescola il mazzo quando sono finite le carte da giocare.
+     * Sposta le carte_giocate in carte_da_giocare e mischia il mazzo.
+     */
     public void rimescola(){
         carte_da_giocare.addAll(carte_giocate);
         carte_giocate.clear();

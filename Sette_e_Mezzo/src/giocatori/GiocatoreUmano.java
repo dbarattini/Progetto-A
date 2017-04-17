@@ -16,6 +16,13 @@ public class GiocatoreUmano extends Giocatore {
     private final InputStream in;
     private final PrintStream out;
     
+    /**
+     *
+     * @param nome nome del giocatore
+     * @param fiches numero di fiches iniziali
+     * @param in InputStream (es. System.in)
+     * @param out PrintStream (es.System.out)
+     */
     public GiocatoreUmano(String nome, int fiches, InputStream in, PrintStream out) {
         super(nome, fiches);
         this.in = in;
@@ -23,7 +30,7 @@ public class GiocatoreUmano extends Giocatore {
     }
     
     @Override
-    public int decidi_puntata() {
+    protected int decidi_puntata() {
         int puntata;
         while(true){
             try {
@@ -43,7 +50,7 @@ public class GiocatoreUmano extends Giocatore {
         }
     }
     
-    public int richiedi_puntata() throws InputMismatchException{
+    private int richiedi_puntata() throws InputMismatchException{
         out.print("\n");
         out.println("Carta Coperta: " + this.carta_coperta);
         out.println("Valore Mano: " +  valore_mano);
@@ -55,7 +62,7 @@ public class GiocatoreUmano extends Giocatore {
         return puntata;
     }
     
-    public void controlla_puntata(int puntata) throws PuntataTroppoAltaException, PuntataNegativaException, PuntataNullaException{
+    private void controlla_puntata(int puntata) throws PuntataTroppoAltaException, PuntataNegativaException, PuntataNullaException{
         if(this.getFiches() - puntata < 0){
             throw new PuntataTroppoAltaException();
         }else if(puntata < 0){
@@ -66,7 +73,7 @@ public class GiocatoreUmano extends Giocatore {
     }
     
     @Override
-    public Giocata decidi_giocata() {
+    protected Giocata decidi_giocata() {
         while(true){
             if(! carte_scoperte.isEmpty()){
                 out.print("\n");
@@ -82,7 +89,7 @@ public class GiocatoreUmano extends Giocatore {
         }
     }  
 
-    public String richiedi_giocata() {
+    private String richiedi_giocata() {
         out.print("\n");
         out.println("Valore Mano: " + valore_mano);
         out.println("Cosa Vuoi Fare?");
@@ -91,7 +98,7 @@ public class GiocatoreUmano extends Giocatore {
         return giocata;
     }
     
-    public Giocata seleziona_giocata(String giocata) throws GiocataNonValidaException{
+    private Giocata seleziona_giocata(String giocata) throws GiocataNonValidaException{
         if(giocata.toLowerCase().equals("carta")){
             return Giocata.Carta;
         } 

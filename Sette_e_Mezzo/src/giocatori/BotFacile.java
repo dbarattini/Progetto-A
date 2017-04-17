@@ -6,17 +6,22 @@ import classi_dati.Giocata;
 
 public class BotFacile extends Giocatore{
 
+    /**
+     *
+     * @param nome nome del bot
+     * @param fiches numero di fiches iniziali
+     */
     public BotFacile(String nome, int fiches) {
         super(nome, fiches);
     }
     
     @Override
-    public int decidi_puntata() {
+    protected int decidi_puntata() {
         return 10;
     }
 
     @Override
-    public Giocata decidi_giocata() {
+    protected Giocata decidi_giocata() {
         if((valore_mano) < 6.0){
             return Giocata.Carta;
         } else{

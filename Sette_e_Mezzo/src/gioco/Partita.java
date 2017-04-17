@@ -30,6 +30,15 @@ public class Partita {
     InputStream in;
     PrintStream out;
     
+    /**
+     *
+     * @param numero_bot numero di bot iniziali
+     * @param fiches_iniziali numero di fiche iniziali per ogni giocatore
+     * @param difficolta_bot difficoltá di tutti i bot della partita
+     * @param in InputStream (es. System.in)
+     * @param out PrintStream (es. System.out)
+     * @throws InterruptedException lanciata dai Thread.pause
+     */
     public Partita(int numero_bot, int fiches_iniziali, DifficoltaBot difficolta_bot, InputStream in, PrintStream out) throws InterruptedException{
         this.in = in;
         this.out = out;
@@ -378,7 +387,7 @@ public class Partita {
     }
     
     private void stampa_risultato_round(Giocatore giocatore){
-        out.println(giocatore.haPerso() + " " + giocatore.isMazziere() + " " + giocatore.getNome() + " " + giocatore.getVettoreCarte() + " " + giocatore.getValoreMano() + " "+ giocatore.getStato() + " " + giocatore.getFiches());
+        out.println(giocatore.haPerso() + " " + giocatore.isMazziere() + " " + giocatore.getNome() + " " + giocatore.getTutteLeCarte() + " " + giocatore.getValoreMano() + " "+ giocatore.getStato() + " " + giocatore.getFiches());
     }
     
     private void aggiorna_mazziere(){
