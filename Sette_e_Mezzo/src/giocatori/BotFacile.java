@@ -17,7 +17,11 @@ public class BotFacile extends Giocatore{
     
     @Override
     protected int decidi_puntata() {
-        return 10;
+        if(this.getFiches() >= 10){
+            return 10;
+        } else{
+            return 1;
+        }
     }
 
     @Override

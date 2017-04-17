@@ -207,8 +207,8 @@ public class Partita {
                 }
             }
             if(! (giocatore instanceof GiocatoreUmano)){
-                Thread.sleep(pausa_breve);
                 stampa_giocata_bot(giocatore);
+                Thread.sleep(pausa_breve);
             }
             pos_next_giocatore += 1;
         }
@@ -392,8 +392,10 @@ public class Partita {
     
     private void aggiorna_mazziere(){
         if(next_mazziere != null){
+            mazziere.setMazziere(false);
+            next_mazziere.setMazziere(true);
             mazziere = next_mazziere;
-            out.println("il nuovo mazziere é: " + mazziere.getNome());
+            out.println("il nuovo mazziere é: " + mazziere.getNome() + "\n");
         }
     }
 
