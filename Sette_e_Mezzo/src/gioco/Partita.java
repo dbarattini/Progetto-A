@@ -33,7 +33,7 @@ public class Partita {
     /**
      *
      * @param numero_bot numero di bot iniziali
-     * @param fiches_iniziali numero di fiche iniziali per ogni giocatore
+     * @param fiches_iniziali numero di fiches iniziali per ogni giocatore
      * @param difficolta_bot difficoltá di tutti i bot della partita
      * @param in InputStream (es. System.in)
      * @param out PrintStream (es. System.out)
