@@ -77,7 +77,7 @@ public class Partita {
     private void inizializza_partita(int numero_bot, int fiches_iniziali, DifficoltaBot difficolta_bot) throws NumeroBotException, FichesInizialiException, DifficoltaBotException{
         inizzializza_fiches(fiches_iniziali);
         inizializza_bots(numero_bot, fiches_iniziali, difficolta_bot);
-        inizializza_giocatore(fiches_iniziali);
+        inizializza_giocatore(fiches_iniziali); 
     }
 
     private void inizzializza_fiches(int fiches_iniziali) throws FichesInizialiException {
