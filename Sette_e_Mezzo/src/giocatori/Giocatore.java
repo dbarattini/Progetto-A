@@ -146,12 +146,8 @@ public abstract class Giocatore {
     private void chiedi_carta(Mazzo mazzo) throws FineMazzoException{
         carte_scoperte.add(mazzo.estrai_carta());
     }
-    
-    private void aggiorna_valore_mano(){
-        this.valore_mano = calcola_valore_mano();
-    }
-    
-    private double calcola_valore_mano() {
+      
+    private void aggiorna_valore_mano() {
         double valore_mano = 0;
         boolean matta = false;
         try {
@@ -173,7 +169,7 @@ public abstract class Giocatore {
                 valore_mano += Math.abs((int)(7 - valore_mano));
             }
         }
-        return valore_mano;
+        this.valore_mano= valore_mano;
     }
     
     private void controlla_valore_mano() throws SballatoException, SetteeMezzoRealeException, SetteeMezzoException{
