@@ -104,7 +104,7 @@ public class Partita {
     private void inizializza_giocatore(int fiches_iniziali){
         out.println("Come ti chiami?");
         String nome = richiedi_nome_giocatore();
-        giocatori.add(new GiocatoreUmano(nome,fiches_iniziali,System.in,System.out));
+        giocatori.add(new GiocatoreUmano(nome,fiches_iniziali,in,out));
         out.print("\n");
     }
     
