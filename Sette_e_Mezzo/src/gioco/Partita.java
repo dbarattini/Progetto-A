@@ -141,7 +141,7 @@ public class Partita {
     }
     
     private void mostra_carta_coperta_e_valore_mano(Giocatore giocatore){
-        out.println(giocatore.getNome() + " " + giocatore.getCartaCoperta() + " " + giocatore.getValoreMano());
+        out.println(giocatore.getNome() + " [" + giocatore.getCartaCoperta() + "] " + giocatore.getValoreMano());
     }
     
     private void stampa_messaggio_rimescola_mazzo(){
