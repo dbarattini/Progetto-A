@@ -1,6 +1,7 @@
 package giocatori;
 
 
+import eccezioni.PuntataNonValidaException;
 import classi_dati.Giocata;
 import eccezioni.GiocataNonValidaException;
 import eccezioni.PuntataNegativaException;
@@ -37,8 +38,9 @@ public class GiocatoreUmano extends Giocatore {
                 puntata = richiedi_puntata();
                 controlla_puntata(puntata);
                 return puntata;
-            }catch(InputMismatchException ex){
+            }catch(PuntataNonValidaException ex){
                 out.println("Errore: Il valore inserito non é corretto.");
+                out.println("I valori possibili sono un numero di fiches o all-in");
             } catch (PuntataTroppoAltaException ex) {
                 out.println("Errore: il valore inserito é troppo alto.");
                 out.println("Il massimo valore che puoi puntare é: " + this.getFiches());
@@ -50,15 +52,24 @@ public class GiocatoreUmano extends Giocatore {
         }
     }
     
-    private int richiedi_puntata() throws InputMismatchException{
+    private int richiedi_puntata() throws PuntataNonValidaException{
         out.print("\n");
         out.println("Carta Coperta: " + this.carta_coperta);
         out.println("Valore Mano: " +  valore_mano);
         out.print("Puntata: ");
         int puntata;
         Scanner scan = new Scanner(in);
-        puntata = scan.nextInt();
         out.print("\n");
+        String input = scan.next();
+        try{
+            puntata = Integer.valueOf(input);
+        } catch(NumberFormatException e){
+            if(input.toLowerCase().equals("allin") || input.toLowerCase().equals("all-in") || input.toLowerCase().equals("all")){
+                puntata= this.getFiches();
+            } else{
+                throw new PuntataNonValidaException();
+            }
+        }
         return puntata;
     }
     
