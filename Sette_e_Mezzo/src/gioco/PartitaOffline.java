@@ -18,7 +18,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 
 
-public class Partita {
+public class PartitaOffline {
     private ArrayList<Giocatore> giocatori=new ArrayList<>();
     private final Mazzo mazzo = new Mazzo();
     private Giocatore mazziere = null;
@@ -39,7 +39,7 @@ public class Partita {
      * @param out PrintStream (es. System.out)
      * @throws InterruptedException lanciata dai Thread.pause
      */
-    public Partita(int numero_bot, int fiches_iniziali, DifficoltaBot difficolta_bot, InputStream in, PrintStream out) throws InterruptedException{
+    public PartitaOffline(int numero_bot, int fiches_iniziali, DifficoltaBot difficolta_bot, InputStream in, PrintStream out) throws InterruptedException{
         this.in = in;
         this.out = out;
         this.n_bot = numero_bot;
