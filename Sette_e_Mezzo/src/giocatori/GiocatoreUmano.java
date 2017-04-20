@@ -99,10 +99,10 @@ public class GiocatoreUmano extends Giocatore {
     }
     
     private Giocata seleziona_giocata(String giocata) throws GiocataNonValidaException{
-        if(giocata.toLowerCase().equals("carta")){
+        if(giocata.toLowerCase().equals("carta") || giocata.equals("c")){
             return Giocata.Carta;
         } 
-        else if(giocata.toLowerCase().equals("sto")){
+        else if(giocata.toLowerCase().equals("sto") || giocata.equals("s")){
         return Giocata.Sto;
         }
         else{
