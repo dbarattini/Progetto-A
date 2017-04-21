@@ -229,7 +229,6 @@ public abstract class Giocatore {
     public int paga_reale_mazziere(){
         fiches = fiches - (2 *puntata);
         if(fiches < 0){
-            perso = true;
             int buf = fiches;
             fiches = 0;
             return puntata + (buf + puntata);
