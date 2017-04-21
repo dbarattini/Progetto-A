@@ -256,6 +256,10 @@ public abstract class Giocatore {
         return carte_scoperte.get(carte_scoperte.size() - 1);
     }
     
+    public void azzera_fiches(){
+        fiches = 0;
+    }
+    
     /**
      * Imposta il booleano perso a true.
      */

@@ -53,10 +53,15 @@ public class PartitaOffline {
                 try {
                     calcola_risultato();
                 } catch (MazzierePerdeException ex) {
-                    //da fare, per ora sceglie solo un nuovo mazziere
-                    out.println("Il mazziere ha perso");
+                    //da fare, per ora sceglie solo un nuovo mazziere ed azzera le fiches del vecchio
+                    out.println("Il mazziere ha perso\n");
+                    mazziere.azzera_fiches();
                     mazziere_successivo();
-                    out.println("il nuovo mazziere é: " + mazziere.getNome());
+                    for(Giocatore giocatore : giocatori){
+                        if(! giocatore.isMazziere()){
+                            giocatore.riscuoti(0);
+                        }
+                    }
                 }
                 fine_round();
                 mazzo.aggiorna_fine_round();
@@ -366,7 +371,7 @@ public class PartitaOffline {
                     pos_next_mazziere = 0;                
                 }              
            } else {
-               mazziere = giocatori.get(pos_next_mazziere);
+               next_mazziere = giocatori.get(pos_next_mazziere);
                break;
            }
        }
