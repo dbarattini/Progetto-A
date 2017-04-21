@@ -199,16 +199,6 @@ public class PartitaOffline {
                 giocatore.gioca_mano(mazzo);
                 if(!giocatore.isMazziere() && giocatore.getStato() == Stato.Sballato){
                     giocatore_paga_mazziere(giocatore); //giocatore se sballa paga subito.
-                    if(giocatore.getFiches() == 0){
-                        if(giocatore instanceof GiocatoreUmano){
-                            stampa_se_stato_non_ok(giocatore);
-                            Thread.sleep(pausa_lunga);
-                            game_over();
-                        }else{
-                            giocatore.perde();
-                            n_bot_sconfitti += 1;
-                        }
-                    }
                 }
                 if(giocatore instanceof GiocatoreUmano && giocatore.getStato() != Stato.OK){
                     stampa_se_stato_non_ok(giocatore);
@@ -378,12 +368,14 @@ public class PartitaOffline {
    }
     
     private void fine_round() throws InterruptedException{
+        boolean game_over = false;
         for(Giocatore giocatore : giocatori){
             stampa_risultato_round(giocatore);
             Thread.sleep(pausa_breve);
             if(giocatore.getFiches() == 0 && ! giocatore.haPerso()){
                 if(giocatore instanceof GiocatoreUmano){
-                    game_over();
+                    giocatore.perde();
+                    game_over = true;
                 } else {
                     giocatore.perde();
                     n_bot_sconfitti += 1;
@@ -391,6 +383,9 @@ public class PartitaOffline {
             }
         }
         out.print("\n");
+        if(game_over){
+            game_over();
+        }
         aggiorna_mazziere();
         Thread.sleep(pausa_lunga);
     }
