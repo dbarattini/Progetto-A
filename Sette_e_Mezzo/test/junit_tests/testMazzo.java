@@ -22,7 +22,7 @@ public class testMazzo {
     }
 
     @Test
-    public void testAggiornaFineMano() throws FineMazzoException{
+    public void testAggiornaFineRound() throws FineMazzoException{
         mazzo.mischia();
         carta_estratta = mazzo.estrai_carta();
         

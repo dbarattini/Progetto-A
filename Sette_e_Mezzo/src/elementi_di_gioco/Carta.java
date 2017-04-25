@@ -10,8 +10,8 @@ public class Carta {
     
     /**
      *
-     * @param valore indica il valore della carta (esempio: 1, 2, .., J, Q, K)
-     * @param seme indica il seme della carta(esempio: c, q, f, p)
+     * @param valore indica il valore della carta (esempio: 1, 2, .., J, Q, K).
+     * @param seme indica il seme della carta(esempio: c, q, f, p).
      */
     public Carta(String valore, String seme){
         this.valore = valore;
@@ -20,7 +20,7 @@ public class Carta {
     
     /**
      *
-     * @return valore numerico della carta in base alle regole del sette e mezzo
+     * @return valore numerico della carta in base alle regole del sette e mezzo.
      * @throws MattaException utile per il calcolo dinamico della matta (Kq).
      */
     public double getValoreNumerico() throws MattaException{
@@ -36,12 +36,16 @@ public class Carta {
     
     /**
      *
-     * @return valore della carta in formato stringa.
+     * @return valore della carta.
      */
     public String getValore(){
         return valore;
     }
     
+    /**
+     *
+     * @return seme della carta.
+     */
     public String getSeme(){
         return seme;
     }

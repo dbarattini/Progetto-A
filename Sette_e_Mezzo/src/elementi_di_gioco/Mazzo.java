@@ -62,14 +62,26 @@ public class Mazzo {
         this.mischia();
     }
     
+    /**
+     *
+     * @return Carte giá giocate nei round precedenti.
+     */
     public ArrayList<Carta> getCarteGiocate(){
         return carte_giocate;
     }
     
+    /**
+     *
+     * @return Carte in gioco nel round corrente.
+     */
     public ArrayList<Carta> getCarteInGioco(){
         return carte_in_gioco;
     }
     
+    /**
+     *
+     * @return Carte ancora non giocate e presenti nel mazzo.
+     */
     public ArrayList<Carta> getCarteDaGiocare(){
         return carte_da_giocare;
     }
