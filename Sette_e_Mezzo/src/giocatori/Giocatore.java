@@ -73,7 +73,7 @@ public abstract class Giocatore {
     public Mazzo gioca_mano(Mazzo mazzo){
         boolean continua = true;
         try {
-            this.valore_mano = this.carta_coperta.getValore();
+            this.valore_mano = this.carta_coperta.getValoreNumerico();
         } catch (MattaException ex) {
            valore_mano = 7;
         }
@@ -151,13 +151,13 @@ public abstract class Giocatore {
         double valore_mano = 0;
         boolean matta = false;
         try {
-            valore_mano = carta_coperta.getValore();
+            valore_mano = carta_coperta.getValoreNumerico();
         } catch (MattaException ex) {
             matta = true;
         }
         for(Carta carta : carte_scoperte){
             try {
-                valore_mano += carta.getValore();
+                valore_mano += carta.getValoreNumerico();
             } catch (MattaException ex) {
                 matta = true;
             }

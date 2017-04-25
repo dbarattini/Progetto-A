@@ -166,9 +166,9 @@ public class PartitaOffline {
             }else if(giocatore.getCartaCoperta().getSeme().equals("f") && mazziere.getCartaCoperta().getSeme().equals("p")){
                 aggiorna_mazziere(giocatore);
             }else if(giocatore.getCartaCoperta().getSeme().equals(mazziere.getCartaCoperta().getSeme())){
-                if(giocatore.getCartaCoperta().getSimbolo().equals("K")){
+                if(giocatore.getCartaCoperta().getValore().equals("K")){
                     aggiorna_mazziere(giocatore);
-                }else if(giocatore.getCartaCoperta().getSimbolo().equals("Q") && mazziere.getCartaCoperta().getSimbolo().equals("J")){
+                }else if(giocatore.getCartaCoperta().getValore().equals("Q") && mazziere.getCartaCoperta().getValore().equals("J")){
                     aggiorna_mazziere(giocatore);
                 }
             }

@@ -44,7 +44,7 @@ public class Mazzo {
     }
     
     /**
-     * Aggiorna il mazzo al termine di una mano.
+     * Aggiorna il mazzo al termine di un round.
      * Sposta le carte_in_gioco in carte_giocate.
      */
     public void aggiorna_fine_round(){
@@ -53,7 +53,7 @@ public class Mazzo {
     }
     
     /**
-     * Rimescola il mazzo quando sono finite le carte da giocare.
+     * Rimescola il mazzo.
      * Sposta le carte_giocate in carte_da_giocare e mischia il mazzo.
      */
     public void rimescola(){

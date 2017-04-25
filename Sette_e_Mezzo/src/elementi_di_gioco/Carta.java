@@ -23,7 +23,7 @@ public class Carta {
      * @return valore numerico della carta in base alle regole del sette e mezzo
      * @throws MattaException utile per il calcolo dinamico della matta (Kq).
      */
-    public double getValore() throws MattaException{
+    public double getValoreNumerico() throws MattaException{
         try{
             return Double.parseDouble(valore);
         } catch(NumberFormatException ex){
@@ -38,7 +38,7 @@ public class Carta {
      *
      * @return valore della carta in formato stringa.
      */
-    public String getSimbolo(){
+    public String getValore(){
         return valore;
     }
     
