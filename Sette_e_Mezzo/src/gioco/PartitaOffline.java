@@ -1,6 +1,7 @@
 package gioco;
 
 
+import GUI.FinestraDiGioco;
 import eccezioni.DifficoltaBotException;
 import eccezioni.FichesInizialiException;
 import eccezioni.NumeroBotException;
@@ -12,17 +13,21 @@ import classi_dati.DifficoltaBot;
 import classi_dati.Stato;
 import eccezioni.FineMazzoException;
 import eccezioni.MazzierePerdeException;
+import java.awt.Canvas;
 import java.io.InputStream;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Scanner;
+import musica.AudioPlayer;
 
 
-public class PartitaOffline {
+public class PartitaOffline extends Canvas {
     private ArrayList<Giocatore> giocatori=new ArrayList<>();
     private final Mazzo mazzo = new Mazzo();
     private Giocatore mazziere = null;
     private Giocatore next_mazziere = null;
+    private FinestraDiGioco finestra;
+    private AudioPlayer audio;
     int pausa_breve = 1000; //ms
     int pausa_lunga = 2000; //ms
     int n_bot;
@@ -40,6 +45,8 @@ public class PartitaOffline {
      * @throws InterruptedException lanciata dai Thread.pause
      */
     public PartitaOffline(int numero_bot, int fiches_iniziali, DifficoltaBot difficolta_bot, InputStream in, PrintStream out) throws InterruptedException{
+        audio = new AudioPlayer();
+        audio.loop("soundTrack");
         this.in = in;
         this.out = out;
         this.n_bot = numero_bot;
@@ -77,6 +84,8 @@ public class PartitaOffline {
         }catch (DifficoltaBotException ex) {
             this.out.println("Le difficolta disponibili sono: Facile. //Work in Progress\\");
         }
+        
+        finestra = new FinestraDiGioco(1280, 768, "Sette e mezzo", this);
     }
     
     private void inizializza_partita(int numero_bot, int fiches_iniziali, DifficoltaBot difficolta_bot) throws NumeroBotException, FichesInizialiException, DifficoltaBotException{
