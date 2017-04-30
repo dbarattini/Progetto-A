@@ -30,6 +30,8 @@ public class PartitaOffline extends Canvas {
     private final Mazzo mazzo = new Mazzo();
     private Giocatore mazziere = null;
     private Giocatore next_mazziere = null;
+    public static StatoGioco stato_gioco = StatoGioco.menu;
+    public static int LARGHEZZA = 1280, ALTEZZA = 768;
     int pausa_breve = 1000; //ms
     int pausa_lunga = 2000; //ms
     int n_bot;
@@ -52,6 +54,7 @@ public class PartitaOffline extends Canvas {
         this.n_bot = numero_bot;
         
         try {
+            finestra = new FinestraDiGioco(LARGHEZZA, ALTEZZA, "Sette e mezzo", this);
             inizializza_audio();
             audio.riproduci_in_loop("soundTrack");
             
@@ -94,8 +97,6 @@ public class PartitaOffline extends Canvas {
         } catch (CaricamentoCanzoneException ex) {
             out.println("Errore: Impossibile caricare la canzone " + ex.getCanzone());
         }
-        
-        finestra = new FinestraDiGioco(1280, 768, "Sette e mezzo", this);
     }
     
     private void inizializza_audio() throws CaricamentoCanzoneException{
