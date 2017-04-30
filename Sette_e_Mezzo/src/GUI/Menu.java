@@ -35,12 +35,22 @@ public class Menu extends MouseAdapter {
             g.setFont(fnt_bottoni);
             g.setColor(Color.white);
             g.drawRect(PartitaOffline.LARGHEZZA/2 - 100, 160, 200, 64);
-            larghezza_stringa = g.getFontMetrics().stringWidth("Play");
-            g.drawString("Play", PartitaOffline.LARGHEZZA/2 - larghezza_stringa/2, 205);
+            larghezza_stringa = g.getFontMetrics().stringWidth("Gioca offline");
+            g.drawString("Gioca offline", PartitaOffline.LARGHEZZA/2 - larghezza_stringa/2, 205);
 			
             g.drawRect(PartitaOffline.LARGHEZZA/2 - 100, 270, 200, 64);
-            larghezza_stringa = g.getFontMetrics().stringWidth("Regole");
-            g.drawString("Regole", PartitaOffline.LARGHEZZA/2 - larghezza_stringa/2, 315);
+            larghezza_stringa = g.getFontMetrics().stringWidth("Gioca online");
+            g.drawString("Gioca online", PartitaOffline.LARGHEZZA/2 - larghezza_stringa/2, 315);
+            
+            g.drawRect(PartitaOffline.LARGHEZZA/2 - 100, 270, 200, 64);
+            larghezza_stringa = g.getFontMetrics().stringWidth("Regole di gioco");
+            g.drawString("Regole di gioco", PartitaOffline.LARGHEZZA/2 - larghezza_stringa/2, 315);
+            
+            g.drawRect(PartitaOffline.LARGHEZZA/2 - 100, 270, 200, 64);
+            larghezza_stringa = g.getFontMetrics().stringWidth("Opzioni");
+            g.drawString("Opzioni", PartitaOffline.LARGHEZZA/2 - larghezza_stringa/2, 315);
+        } else if(PartitaOffline.stato_gioco == StatoGioco.menu_pre_offline) {
+            
         }
     }
     

@@ -2,6 +2,7 @@ package gioco;
 
 
 import GUI.FinestraDiGioco;
+import GUI.Menu;
 import eccezioni.DifficoltaBotException;
 import eccezioni.FichesInizialiException;
 import eccezioni.NumeroBotException;
@@ -16,6 +17,9 @@ import eccezioni.CaricamentoCanzoneException;
 import eccezioni.FineMazzoException;
 import eccezioni.MazzierePerdeException;
 import java.awt.Canvas;
+import java.awt.Color;
+import java.awt.Graphics;
+import java.awt.image.BufferStrategy;
 import java.io.InputStream;
 import java.io.PrintStream;
 import java.util.ArrayList;
@@ -32,6 +36,7 @@ public class PartitaOffline extends Canvas {
     private Giocatore next_mazziere = null;
     public static StatoGioco stato_gioco = StatoGioco.menu;
     public static int LARGHEZZA = 1280, ALTEZZA = 768;
+    private Menu menu = new Menu();
     int pausa_breve = 1000; //ms
     int pausa_lunga = 2000; //ms
     int n_bot;
@@ -55,6 +60,7 @@ public class PartitaOffline extends Canvas {
         
         try {
             finestra = new FinestraDiGioco(LARGHEZZA, ALTEZZA, "Sette e mezzo", this);
+            renderizza();
             inizializza_audio();
             audio.riproduci_in_loop("soundTrack");
             
@@ -439,5 +445,22 @@ public class PartitaOffline extends Canvas {
     private void vittoria() throws InterruptedException {
         out.println("Complimenti! Hai vinto.");
         System.exit(0);
+    }
+    
+    private void renderizza() {
+        BufferStrategy bs = this.getBufferStrategy();
+	if( bs == null) {
+            this.createBufferStrategy(3);
+            return;
+	}
+		
+	Graphics g = bs.getDrawGraphics();
+		
+	g.setColor(Color.black);
+        g.fillRect(0, 0, LARGHEZZA, ALTEZZA);
+        
+        if(stato_gioco == StatoGioco.menu) {
+            menu.renderizza(g);
+        }
     }
 }
