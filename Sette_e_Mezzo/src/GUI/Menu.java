@@ -16,13 +16,13 @@ public class Menu extends MouseAdapter {
         int my = e.getY();
         
         if(PartitaOffline.stato_gioco == StatoGioco.menu) {
-            if(controlla_posizione_mouse(mx, my, 10, 10, 10, 10))
+            if(controlla_posizione_mouse(mx, my, 10, 10, 10, 10))  // controlla posizione anche qui a caso finchè non si riesce a visualizzare la grafica
                 PartitaOffline.stato_gioco = StatoGioco.menu_pre_offline;
         }
     }
     
     // renderizza i bottoni di selezione del menù
-    public void renderizza(Graphics g) {
+    public void renderizza(Graphics g) {  // ATTENZIONE: posizioni dei bottoni a caso fino alla risoluzione del bug di render
         if(PartitaOffline.stato_gioco == StatoGioco.menu) {
             Font font_menu = new Font("arial", 1, 70);
             Font fnt_bottoni = new Font("arial", 1, 40);

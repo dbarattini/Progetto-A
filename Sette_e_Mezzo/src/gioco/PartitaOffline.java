@@ -36,7 +36,7 @@ public class PartitaOffline extends Canvas {
     private Giocatore next_mazziere = null;
     public static StatoGioco stato_gioco = StatoGioco.menu;
     public static int LARGHEZZA = 1280, ALTEZZA = 768;
-    private Menu menu = new Menu();
+    private Menu menu;
     int pausa_breve = 1000; //ms
     int pausa_lunga = 2000; //ms
     int n_bot;
@@ -60,6 +60,8 @@ public class PartitaOffline extends Canvas {
         
         try {
             finestra = new FinestraDiGioco(LARGHEZZA, ALTEZZA, "Sette e mezzo", this);
+            menu = new Menu();
+            this.addMouseListener(menu);
             renderizza();
             inizializza_audio();
             audio.riproduci_in_loop("soundTrack");
@@ -447,7 +449,7 @@ public class PartitaOffline extends Canvas {
         System.exit(0);
     }
     
-    private void renderizza() {
+    private void renderizza() {  // non visualizza la grafica (per ora senza gameloop)
         BufferStrategy bs = this.getBufferStrategy();
 	if( bs == null) {
             this.createBufferStrategy(3);
@@ -462,5 +464,8 @@ public class PartitaOffline extends Canvas {
         if(stato_gioco == StatoGioco.menu) {
             menu.renderizza(g);
         }
+        
+        g.dispose();
+        bs.show();
     }
 }

@@ -1,5 +1,7 @@
 package gioco;
 
+// StatoGioco serve per sapere in ogni momento in che stato si trova il gioco
+// per permettere alla GUI e al controller di sapere cosa fare
 public enum StatoGioco {
     menu,
     menu_pre_offline,
