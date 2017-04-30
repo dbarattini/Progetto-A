@@ -11,6 +11,8 @@ import giocatori.GiocatoreUmano;
 import giocatori.Giocatore;
 import classi_dati.DifficoltaBot;
 import classi_dati.Stato;
+import eccezioni.CanzoneNonTrovataException;
+import eccezioni.CaricamentoCanzoneException;
 import eccezioni.FineMazzoException;
 import eccezioni.MazzierePerdeException;
 import java.awt.Canvas;
@@ -22,12 +24,12 @@ import musica.AudioPlayer;
 
 
 public class PartitaOffline extends Canvas {
+    private FinestraDiGioco finestra;
+    private AudioPlayer audio = new AudioPlayer();
     private ArrayList<Giocatore> giocatori=new ArrayList<>();
     private final Mazzo mazzo = new Mazzo();
     private Giocatore mazziere = null;
     private Giocatore next_mazziere = null;
-    private FinestraDiGioco finestra;
-    private AudioPlayer audio;
     int pausa_breve = 1000; //ms
     int pausa_lunga = 2000; //ms
     int n_bot;
@@ -45,16 +47,20 @@ public class PartitaOffline extends Canvas {
      * @throws InterruptedException lanciata dai Thread.pause
      */
     public PartitaOffline(int numero_bot, int fiches_iniziali, DifficoltaBot difficolta_bot, InputStream in, PrintStream out) throws InterruptedException{
-        audio = new AudioPlayer();
-        audio.loop("soundTrack");
         this.in = in;
         this.out = out;
         this.n_bot = numero_bot;
+        
         try {
+            inizializza_audio();
+            audio.riproduci_in_loop("soundTrack");
+            
             inizializza_partita(numero_bot, fiches_iniziali, difficolta_bot);
+            
             estrai_mazziere();
             mazzo.aggiorna_fine_round();
             mazzo.rimescola();
+            
             for(int i = 0; i < 100; i++){ //ci sono 100 round solo per prova
                 gioca_round();
                 try {
@@ -83,9 +89,17 @@ public class PartitaOffline extends Canvas {
             this.out.println("Il numero di fiches iniziali dev'essere maggiore di 0");
         }catch (DifficoltaBotException ex) {
             this.out.println("Le difficolta disponibili sono: Facile. //Work in Progress\\");
+        } catch (CanzoneNonTrovataException ex) {
+            out.println("Errore: " + ex.getCanzone() + " non caricata/o");
+        } catch (CaricamentoCanzoneException ex) {
+            out.println("Errore: Impossibile caricare la canzone " + ex.getCanzone());
         }
         
         finestra = new FinestraDiGioco(1280, 768, "Sette e mezzo", this);
+    }
+    
+    private void inizializza_audio() throws CaricamentoCanzoneException{
+        audio.carica("LoungeBeat.wav", "soundTrack");
     }
     
     private void inizializza_partita(int numero_bot, int fiches_iniziali, DifficoltaBot difficolta_bot) throws NumeroBotException, FichesInizialiException, DifficoltaBotException{
