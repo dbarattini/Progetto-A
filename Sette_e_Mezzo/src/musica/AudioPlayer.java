@@ -61,7 +61,11 @@ public class AudioPlayer {
     }
 	
     public void chiudi(String s) throws CanzoneNonTrovataException {
-        musica.get(s).close();
+        try{
+            musica.get(s).close();
+        } catch(NullPointerException e){
+            throw new CanzoneNonTrovataException(s);
+        }
     }
     
     public void carica(String canzone, String nome_canzone) throws CaricamentoCanzoneException {
