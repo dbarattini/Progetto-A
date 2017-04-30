@@ -29,6 +29,7 @@ public class PartitaOffline {
     int n_bot_sconfitti = 0;
     InputStream in;
     PrintStream out;
+    PrintStream err;
     
     /**
      *
@@ -37,11 +38,13 @@ public class PartitaOffline {
      * @param difficolta_bot difficoltá di tutti i bot della partita
      * @param in InputStream (es. System.in)
      * @param out PrintStream (es. System.out)
+     * @param err PrintStream (es. System.err)
      * @throws InterruptedException lanciata dai Thread.pause
      */
-    public PartitaOffline(int numero_bot, int fiches_iniziali, DifficoltaBot difficolta_bot, InputStream in, PrintStream out) throws InterruptedException{
+    public PartitaOffline(int numero_bot, int fiches_iniziali, DifficoltaBot difficolta_bot, InputStream in, PrintStream out, PrintStream err) throws InterruptedException{
         this.in = in;
         this.out = out;
+        this.err = err;
         this.n_bot = numero_bot;
         try {
             inizializza_partita(numero_bot, fiches_iniziali, difficolta_bot);
@@ -71,11 +74,11 @@ public class PartitaOffline {
             }
             fine_partita();
         }catch (NumeroBotException ex) {
-            this.out.println("Il numero di bot dev'essere un valore compreso tra 1 ed 11.");
+            this.err.println("Errore: Il numero di bot dev'essere un valore compreso tra 1 ed 11.");
         }catch (FichesInizialiException ex) {
-            this.out.println("Il numero di fiches iniziali dev'essere maggiore di 0");
+            this.err.println("Errore: Il numero di fiches iniziali dev'essere maggiore di 0.");
         }catch (DifficoltaBotException ex) {
-            this.out.println("Le difficolta disponibili sono: Facile. //Work in Progress\\");
+            this.err.println("Errore: Le difficolta disponibili sono: Facile. //Work in Progress\\");
         }
     }
     
@@ -109,7 +112,7 @@ public class PartitaOffline {
     private void inizializza_giocatore(int fiches_iniziali){
         out.println("Come ti chiami?");
         String nome = richiedi_nome_giocatore();
-        giocatori.add(new GiocatoreUmano(nome,fiches_iniziali,in,out));
+        giocatori.add(new GiocatoreUmano(nome,fiches_iniziali,in,out,err));
         out.print("\n");
     }
     
