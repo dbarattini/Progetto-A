@@ -1,6 +1,8 @@
 package GUI;
 
 import gioco.PartitaOffline;
+import static gioco.PartitaOffline.ALTEZZA;
+import static gioco.PartitaOffline.LARGHEZZA;
 import gioco.StatoGioco;
 import java.awt.Color;
 import java.awt.Font;

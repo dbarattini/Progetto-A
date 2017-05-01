@@ -20,10 +20,12 @@ import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Scanner;
+import javax.imageio.ImageIO;
 import musica.AudioPlayer;
 
 
@@ -35,7 +37,7 @@ public class PartitaOffline extends Canvas {
     private Giocatore mazziere = null;
     private Giocatore next_mazziere = null;
     public static StatoGioco stato_gioco = StatoGioco.menu;
-    public static int LARGHEZZA = 1280, ALTEZZA = 768;
+    public static int LARGHEZZA = 1280, ALTEZZA = 720;
     private Menu menu;
     int pausa_breve = 1000; //ms
     int pausa_lunga = 2000; //ms
@@ -450,22 +452,13 @@ public class PartitaOffline extends Canvas {
     }
     
     private void renderizza() {  // non visualizza la grafica (per ora senza gameloop)
-        BufferStrategy bs = this.getBufferStrategy();
-	if( bs == null) {
-            this.createBufferStrategy(3);
-            return;
-	}
-		
-	Graphics g = bs.getDrawGraphics();
-		
-	g.setColor(Color.black);
-        g.fillRect(0, 0, LARGHEZZA, ALTEZZA);
+
+        Graphics g = this.getGraphics();
         
         if(stato_gioco == StatoGioco.menu) {
             menu.renderizza(g);
         }
         
         g.dispose();
-        bs.show();
     }
 }
