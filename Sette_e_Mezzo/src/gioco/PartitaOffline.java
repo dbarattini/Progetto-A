@@ -57,6 +57,10 @@ public class PartitaOffline {
         }
     }
     
+    /**
+     * Consente di giocare una partita di sette e mezzo.
+     * @throws InterruptedException
+     */
     public void gioca() throws InterruptedException{
         estrai_mazziere();
         mazzo.aggiorna_fine_round();
