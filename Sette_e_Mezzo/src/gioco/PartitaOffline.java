@@ -16,6 +16,7 @@ import elementi_di_gioco.Carta;
 import java.io.InputStream;
 import java.io.PrintStream;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Scanner;
 
 
@@ -190,7 +191,7 @@ public class PartitaOffline {
             }
             giocatore = getProssimoGiocatore(pos_next_giocatore);
             if(! giocatore.haPerso()){
-                giocatore.gioca_mano(mazzo);
+                giocatore.gioca_mano(mazzo); //da cambiare, devo passare solo carta
                 if(!giocatore.isMazziere() && giocatore.getStato() == Stato.Sballato){
                     giocatore_paga_mazziere(giocatore); //giocatore se sballa paga subito.
                 }
@@ -254,82 +255,31 @@ public class PartitaOffline {
     }
     
     private void calcola_risultato() throws MazzierePerdeException{
+        HashMap<String,String> risultato;
+        
         for(Giocatore giocatore : giocatori){
-            if(! giocatore.isMazziere()){
-                switch(mazziere.getStato()){
-                    case Sballato: {
-                        switch(giocatore.getStato()){
-                            case SetteeMezzo:{
-                                mazziere_paga_giocatore(giocatore);
-                                break;
-                            }
-                            case OK:{
-                                mazziere_paga_giocatore(giocatore);
-                                break;
-                            }
-                            case SetteeMezzoReale:{
-                                mazziere_paga_reale_giocatore(giocatore);
-                                next_mazziere = giocatore; //ultimo che fa sette e mezzo reale
-                                break;
-                            }
-                        } break;
+            if(! giocatore.isMazziere() && giocatore.getStato() != Stato.Sballato){              
+                risultato = regole_di_gioco.risultato_mano(mazziere, giocatore);
+                if(risultato.get("vincitore").equals("giocatore")){                   
+                    if(risultato.get("tipo_pagamento").equals("normale")){
+                        mazziere_paga_giocatore(giocatore);
+                    } else {
+                        mazziere_paga_reale_giocatore(giocatore);
+                    }                   
+                    if(risultato.get("cambia_mazziere").equals("si")){
+                        next_mazziere = giocatore;
                     }
-                    case OK: {
-                        switch(giocatore.getStato()){
-                            case SetteeMezzo:{
-                                mazziere_paga_giocatore(giocatore);
-                                break;
-                            }
-                            case OK:{ 
-                                if(mazziere.getValoreMano() >= giocatore.getValoreMano()){
-                                    giocatore_paga_mazziere(giocatore);
-                                }else{
-                                    mazziere_paga_giocatore(giocatore);
-                                } 
-                                break;
-                            }
-                            case SetteeMezzoReale:{
-                                mazziere_paga_reale_giocatore(giocatore);
-                                next_mazziere = giocatore; //ultimo che fa sette e mezzo reale
-                                break;
-                            }
-                        } break;
+                } 
+                else{
+                    if(risultato.get("tipo_pagamento").equals("normale")){
+                        giocatore_paga_mazziere(giocatore);
+                    } else {
+                        giocatore_paga_reale_mazziere(giocatore);
+                    }                    
+                    if(risultato.get("cambia_mazziere").equals("si")){
+                        next_mazziere = giocatore;
                     }
-                    case SetteeMezzo: {
-                        switch(giocatore.getStato()){
-                            case SetteeMezzo:{
-                                giocatore_paga_mazziere(giocatore);
-                                break;
-                            }
-                            case OK:{
-                                giocatore_paga_mazziere(giocatore);
-                                break;
-                            }
-                            case SetteeMezzoReale:{
-                                mazziere_paga_reale_giocatore(giocatore); 
-                                next_mazziere = giocatore; //ultimo che fa sette e mezzo reale
-                                break;
-                            }
-                        } break;
-                    }
-                    case SetteeMezzoReale: {
-                        switch(giocatore.getStato()){
-                            case SetteeMezzo:{
-                                giocatore_paga_reale_mazziere(giocatore);
-                                break;
-                            }
-                            case OK:{
-                                giocatore_paga_reale_mazziere(giocatore);
-                                break;
-                            }
-                            case SetteeMezzoReale:{
-                                giocatore_paga_mazziere(giocatore);
-                                next_mazziere = giocatore; //ultimo che fa sette e mezzo reale
-                                break;
-                            }
-                        }break;
-                    }
-                }
+                }               
             }
         }
     }

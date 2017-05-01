@@ -1,8 +1,12 @@
 package gioco;
 
+import eccezioni.MazzierePerdeException;
 import giocatori.Giocatore;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class RegoleDiGioco {
+    private HashMap<String,String> risultato = new HashMap<>();
     
     /**
      * Determina quale tra i due giocatori ha in mano la carta piú alta.
@@ -36,5 +40,84 @@ public class RegoleDiGioco {
         }
         return mazziere;
     }
+    
+    public HashMap<String,String> risultato_mano(Giocatore mazziere, Giocatore giocatore) throws MazzierePerdeException{
+        switch(mazziere.getStato()){
+            case Sballato: {
+                switch(giocatore.getStato()){
+                    case SetteeMezzo:{
+                        aggiorna_risultato("giocatore", "normale", "no");
+                        break;
+                    }
+                    case OK:{
+                        aggiorna_risultato("giocatore", "normale", "no");
+                        break;
+                    }
+                    case SetteeMezzoReale:{
+                        aggiorna_risultato("giocatore", "reale", "si");
+                        break;
+                    }
+                } break;
+            }
+            case OK: {
+                switch(giocatore.getStato()){
+                    case SetteeMezzo:{
+                        aggiorna_risultato("giocatore", "normale", "no");
+                        break;
+                    }
+                    case OK:{ 
+                        if(mazziere.getValoreMano() >= giocatore.getValoreMano()){
+                            aggiorna_risultato("mazziere", "normale", "no");
+                        }else{
+                        aggiorna_risultato("giocatore", "normale", "no");
+                        } 
+                        break;
+                    }
+                    case SetteeMezzoReale:{
+                        aggiorna_risultato("giocatore", "reale", "si");
+                        break;
+                    }
+                } break;
+            }
+            case SetteeMezzo: {
+                switch(giocatore.getStato()){
+                    case SetteeMezzo:{
+                        aggiorna_risultato("mazziere", "normale", "no");
+                        break;
+                    }
+                    case OK:{
+                        aggiorna_risultato("mazziere", "normale", "no");
+                        break;
+                    }
+                    case SetteeMezzoReale:{
+                        aggiorna_risultato("giocatore", "reale", "si");
+                        break;
+                    }
+                } break;
+            }
+            case SetteeMezzoReale: {
+                switch(giocatore.getStato()){
+                    case SetteeMezzo:{
+                        aggiorna_risultato("mazziere", "reale", "no");
+                        break;
+                    }
+                    case OK:{
+                        aggiorna_risultato("mazziere", "reale", "no");
+                        break;
+                    }
+                    case SetteeMezzoReale:{
+                        aggiorna_risultato("mazziere", "normale","si");
+                        break;
+                    }
+                }break;
+            }
+        }
+        return risultato;
+    }
+    
+    private void aggiorna_risultato(String vincitore, String tipo_pagamento, String cambia_mazziere){
+        risultato.put("vincitore", vincitore);
+        risultato.put("tipo_pagamento", tipo_pagamento);
+        risultato.put("cambia_mazziere", cambia_mazziere);
+    }
 }
-
