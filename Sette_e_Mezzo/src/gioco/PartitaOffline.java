@@ -62,9 +62,17 @@ public class PartitaOffline {
      * @throws InterruptedException
      */
     public void gioca() throws InterruptedException{
+        Thread.sleep(pausa_breve);
+        
+        out.println("Estrazione del mazziere:\n");
+        Thread.sleep(pausa_breve);
+        
         estrai_mazziere();
+        stampa_schermata_estrai_mazziere();
+        
         mazzo.aggiorna_fine_round();
         mazzo.rimescola();
+        
         while(true){
             gioca_round();
             try {
@@ -132,34 +140,18 @@ public class PartitaOffline {
 
     private void estrai_mazziere() throws InterruptedException {
         mazzo.mischia();
-        Thread.sleep(pausa_breve);
-        out.println("Estrazione del mazziere:\n");
-        Thread.sleep(pausa_breve);
         for(Giocatore giocatore : giocatori){
             while(true){
                 try {
                     giocatore.prendi_carta_iniziale(mazzo);
-                    mostra_carta_coperta_e_valore_mano(giocatore);
-                    Thread.sleep(pausa_breve);
                     break;
                 }catch (FineMazzoException ex) {
-                    mazzo.rimescola();
-                    stampa_messaggio_rimescola_mazzo();
+                    mazzo.rimescola(); //non dovrebbe accadere
                 }
             }
             seleziona_mazziere(giocatore);
         }
-        stampa_messaggio_mazziere();
-        Thread.sleep(pausa_lunga);
         mazziere.setMazziere(true);
-    }
-    
-    private void mostra_carta_coperta_e_valore_mano(Giocatore giocatore){
-        out.println(giocatore.getNome() + " [" + giocatore.getCartaCoperta() + "] " + giocatore.getValoreMano());
-    }
-    
-    private void stampa_messaggio_rimescola_mazzo(){
-        out.println("Rimescolo il mazzo.");
     }
     
     private void seleziona_mazziere(Giocatore giocatore){
@@ -186,6 +178,19 @@ public class PartitaOffline {
     
     private void aggiorna_mazziere(Giocatore giocatore){
         mazziere = giocatore;
+    }   
+    
+    private void stampa_schermata_estrai_mazziere() throws InterruptedException{
+        for(Giocatore giocatore : giocatori){
+            mostra_carta_coperta_e_valore_mano(giocatore);
+            Thread.sleep(pausa_breve);
+        }
+        stampa_messaggio_mazziere();
+        Thread.sleep(pausa_lunga);
+    }
+    
+    private void mostra_carta_coperta_e_valore_mano(Giocatore giocatore){
+        out.println(giocatore.getNome() + " [" + giocatore.getCartaCoperta() + "] " + giocatore.getValoreMano());
     }
     
     private void stampa_messaggio_mazziere(){
@@ -244,6 +249,10 @@ public class PartitaOffline {
                 }
             }
         }
+    }
+    
+    private void stampa_messaggio_rimescola_mazzo(){
+        out.println("Rimescolo il mazzo.");
     }
     
     private Giocatore getProssimoGiocatore(int posizione){
