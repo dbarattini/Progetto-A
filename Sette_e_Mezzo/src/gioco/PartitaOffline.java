@@ -19,6 +19,7 @@ import java.util.Scanner;
 
 
 public class PartitaOffline {
+    private RegoleDiGioco regole_di_gioco = new RegoleDiGioco();
     private ArrayList<Giocatore> giocatori=new ArrayList<>();
     private final Mazzo mazzo = new Mazzo();
     private Giocatore mazziere = null;
@@ -149,36 +150,10 @@ public class PartitaOffline {
                     mazzo.rimescola(); //non dovrebbe accadere
                 }
             }
-            seleziona_mazziere(giocatore);
+            mazziere = regole_di_gioco.carta_piu_alta(mazziere, giocatore);
         }
         mazziere.setMazziere(true);
     }
-    
-    private void seleziona_mazziere(Giocatore giocatore){
-        if(mazziere == null){
-            aggiorna_mazziere(giocatore);
-        }else if(giocatore.getValoreMano() > mazziere.getValoreMano()){
-            aggiorna_mazziere(giocatore);
-        }else if(giocatore.getValoreMano() == mazziere.getValoreMano()){
-            if(giocatore.getCartaCoperta().getSeme().equals("c")){
-                aggiorna_mazziere(giocatore);
-            }else if(giocatore.getCartaCoperta().getSeme().equals("q") && ! mazziere.getCartaCoperta().getSeme().equals("c")){
-                aggiorna_mazziere(giocatore);
-            }else if(giocatore.getCartaCoperta().getSeme().equals("f") && mazziere.getCartaCoperta().getSeme().equals("p")){
-                aggiorna_mazziere(giocatore);
-            }else if(giocatore.getCartaCoperta().getSeme().equals(mazziere.getCartaCoperta().getSeme())){
-                if(giocatore.getCartaCoperta().getValore().equals("K")){
-                    aggiorna_mazziere(giocatore);
-                }else if(giocatore.getCartaCoperta().getValore().equals("Q") && mazziere.getCartaCoperta().getValore().equals("J")){
-                    aggiorna_mazziere(giocatore);
-                }
-            }
-        }
-    }
-    
-    private void aggiorna_mazziere(Giocatore giocatore){
-        mazziere = giocatore;
-    }   
     
     private void stampa_schermata_estrai_mazziere() throws InterruptedException{
         for(Giocatore giocatore : giocatori){
