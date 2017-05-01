@@ -59,8 +59,8 @@ public abstract class Giocatore {
      * @param mazzo mazzo della partita
      * @throws FineMazzoException avvisa se il mazzo non ha piú carte estraibili
      */
-    public void prendi_carta_iniziale(Mazzo mazzo) throws FineMazzoException{
-        carta_coperta = mazzo.estrai_carta();
+    public void prendi_carta_iniziale(Carta carta) throws FineMazzoException{
+        carta_coperta = carta;
         aggiorna_valore_mano();
     }
     

@@ -12,6 +12,7 @@ import classi_dati.DifficoltaBot;
 import classi_dati.Stato;
 import eccezioni.FineMazzoException;
 import eccezioni.MazzierePerdeException;
+import elementi_di_gioco.Carta;
 import java.io.InputStream;
 import java.io.PrintStream;
 import java.util.ArrayList;
@@ -140,11 +141,15 @@ public class PartitaOffline {
     }
 
     private void estrai_mazziere() throws InterruptedException {
+        Carta carta_estratta;
+        
         mazzo.mischia();
+        
         for(Giocatore giocatore : giocatori){
             while(true){
                 try {
-                    giocatore.prendi_carta_iniziale(mazzo);
+                    carta_estratta = mazzo.estrai_carta();
+                    giocatore.prendi_carta_iniziale(carta_estratta);
                     break;
                 }catch (FineMazzoException ex) {
                     mazzo.rimescola(); //non dovrebbe accadere
@@ -211,11 +216,14 @@ public class PartitaOffline {
     }
     
     private void distribuisci_carta_coperta(){
+        Carta carta_estratta;
+        
         for(Giocatore giocatore : giocatori){
             while(true){
                 try {
                     if(! giocatore.haPerso()){
-                        giocatore.prendi_carta_iniziale(mazzo);
+                        carta_estratta = mazzo.estrai_carta();
+                        giocatore.prendi_carta_iniziale(carta_estratta);
                     }
                     break;
                 } catch (FineMazzoException ex) {
