@@ -48,36 +48,39 @@ public class PartitaOffline {
         this.n_bot = numero_bot;
         try {
             inizializza_partita(numero_bot, fiches_iniziali, difficolta_bot);
-            estrai_mazziere();
-            mazzo.aggiorna_fine_round();
-            mazzo.rimescola();
-            while(true){
-                gioca_round();
-                try {
-                    calcola_risultato();
-                } catch (MazzierePerdeException ex) {
-                    //da fare, per ora sceglie solo un nuovo mazziere ed azzera le fiches del vecchio
-                    out.println("Il mazziere ha perso\n");
-                    mazziere.azzera_fiches();
-                    mazziere_successivo();
-                    for(Giocatore giocatore : giocatori){
-                        if(! giocatore.isMazziere()){
-                            giocatore.riscuoti(0);
-                        }
-                    }
-                }
-                fine_round();
-                mazzo.aggiorna_fine_round();
-                if(n_bot_sconfitti == n_bot){
-                    vittoria();
-                }
-            }
         }catch (NumeroBotException ex) {
             this.err.println("Errore: Il numero di bot dev'essere un valore compreso tra 1 ed 11.");
         }catch (FichesInizialiException ex) {
             this.err.println("Errore: Il numero di fiches iniziali dev'essere maggiore di 0.");
         }catch (DifficoltaBotException ex) {
             this.err.println("Errore: Le difficolta disponibili sono: Facile. //Work in Progress\\");
+        }
+    }
+    
+    public void gioca() throws InterruptedException{
+        estrai_mazziere();
+        mazzo.aggiorna_fine_round();
+        mazzo.rimescola();
+        while(true){
+            gioca_round();
+            try {
+                calcola_risultato();
+            } catch (MazzierePerdeException ex) {
+                //da fare, per ora sceglie solo un nuovo mazziere ed azzera le fiches del vecchio
+                out.println("Il mazziere ha perso\n");
+                mazziere.azzera_fiches();
+                mazziere_successivo();
+                for(Giocatore giocatore : giocatori){
+                    if(! giocatore.isMazziere()){
+                        giocatore.riscuoti(0);
+                    }
+                }
+            }
+            fine_round();
+            mazzo.aggiorna_fine_round();
+            if(n_bot_sconfitti == n_bot){
+                vittoria();
+            }
         }
     }
     
