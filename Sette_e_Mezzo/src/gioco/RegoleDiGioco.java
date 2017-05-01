@@ -4,7 +4,16 @@ import giocatori.Giocatore;
 
 public class RegoleDiGioco {
     
-       
+    /**
+     * Determina quale tra i due giocatori ha in mano la carta piú alta.
+     * Le figure valgono 0.5 (per coerenza con le regole del gioco Sette e Mezzo).
+     * In caso di pari valore, si confrontano i semi (scala H: c,q,f,p :L).
+     * In caso di pari semi (caso possibile se entrambi i giocatori hanno in
+     * mano una figura) si utilizza la scala H: K,Q,J :L.
+     * @param mazziere
+     * @param giocatore
+     * @return giocatore che ha in mano la carta piú alta.
+     */
     public Giocatore carta_piu_alta(Giocatore mazziere, Giocatore giocatore){
         if(mazziere == null){
             return giocatore;
