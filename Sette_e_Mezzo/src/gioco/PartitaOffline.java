@@ -330,6 +330,10 @@ public class PartitaOffline {
                 } else {
                     giocatore.perde();
                     n_bot_sconfitti += 1;
+                    if(giocatore.isMazziere()){
+                        out.println("Il mazziere ha perso\n");
+                        mazziere_successivo();
+                    }
                 }
             }
         }
