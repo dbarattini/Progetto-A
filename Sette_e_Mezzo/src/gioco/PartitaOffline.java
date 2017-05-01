@@ -51,7 +51,7 @@ public class PartitaOffline {
             estrai_mazziere();
             mazzo.aggiorna_fine_round();
             mazzo.rimescola();
-            for(int i = 0; i < 100; i++){ //ci sono 100 round solo per prova
+            while(true){
                 gioca_round();
                 try {
                     calcola_risultato();
