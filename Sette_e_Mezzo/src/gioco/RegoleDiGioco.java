@@ -41,6 +41,13 @@ public class RegoleDiGioco {
         return mazziere;
     }
     
+    /**
+     * Caclola il risultato di una mano di Sette e Mezzo.
+     * @param mazziere
+     * @param giocatore
+     * @return [{"vincitore"="giocatore"/"mazziere"},{"tipo_pagamento"="normale"/"reale"},{"cambia_mazziere"="si"/"no"}]
+     * @throws MazzierePerdeException
+     */
     public HashMap<String,String> risultato_mano(Giocatore mazziere, Giocatore giocatore) throws MazzierePerdeException{
         switch(mazziere.getStato()){
             case Sballato: {
