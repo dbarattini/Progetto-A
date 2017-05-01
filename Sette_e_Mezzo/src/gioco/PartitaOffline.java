@@ -72,7 +72,6 @@ public class PartitaOffline {
                     vittoria();
                 }
             }
-            fine_partita();
         }catch (NumeroBotException ex) {
             this.err.println("Errore: Il numero di bot dev'essere un valore compreso tra 1 ed 11.");
         }catch (FichesInizialiException ex) {
@@ -405,10 +404,6 @@ public class PartitaOffline {
             out.println("il nuovo mazziere é: " + mazziere.getNome() + "\n");
         }
     }
-
-    private void fine_partita() {
-        //da fare
-    }   
 
     private void game_over() {
         out.println("Game Over");
