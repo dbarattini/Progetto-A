@@ -77,8 +77,8 @@ public class PartitaOffline {
         mazzo.rimescola();
         
         while(true){
-            gioca_round();
             try {
+                gioca_round();
                 calcola_risultato();
             } catch (MazzierePerdeException ex) {
                 //da fare, per ora sceglie solo un nuovo mazziere ed azzera le fiches del vecchio
@@ -179,7 +179,7 @@ public class PartitaOffline {
         out.println("\nIl Mazziere é: " + mazziere.getNome() + "\n");
     }
 
-    private void gioca_round() throws InterruptedException {
+    private void gioca_round() throws InterruptedException, MazzierePerdeException {
         int pos_mazziere = giocatori.indexOf(mazziere);
         int pos_next_giocatore = pos_mazziere + 1;
         Giocatore giocatore;
@@ -194,7 +194,7 @@ public class PartitaOffline {
             if(! giocatore.haPerso()){
                 giocatore.gioca_mano(mazzo); //da cambiare, devo passare solo carta
                 if(!giocatore.isMazziere() && giocatore.getStato() == Stato.Sballato){
-                    giocatore_paga_mazziere(giocatore); //giocatore se sballa paga subito.
+                    giocatore.paga(mazziere); //giocatore se sballa paga subito.
                 }
                 if(giocatore instanceof GiocatoreUmano && giocatore.getStato() != Stato.OK){
                     stampa_se_stato_non_ok(giocatore);
@@ -262,9 +262,9 @@ public class PartitaOffline {
                 risultato = regole_di_gioco.risultato_mano(mazziere, giocatore);
                 if(risultato.get("vincitore").equals("giocatore")){                   
                     if(risultato.get("tipo_pagamento").equals("normale")){
-                        mazziere_paga_giocatore(giocatore);
+                        mazziere.paga(giocatore);
                     } else {
-                        mazziere_paga_reale_giocatore(giocatore);
+                        mazziere.paga_reale(giocatore);
                     }                   
                     if(risultato.get("cambia_mazziere").equals("si")){
                         next_mazziere = giocatore;
@@ -272,9 +272,9 @@ public class PartitaOffline {
                 } 
                 else{
                     if(risultato.get("tipo_pagamento").equals("normale")){
-                        giocatore_paga_mazziere(giocatore);
+                        giocatore.paga(mazziere);
                     } else {
-                        giocatore_paga_reale_mazziere(giocatore);
+                        giocatore.paga_reale(mazziere);
                     }                    
                     if(risultato.get("cambia_mazziere").equals("si")){
                         next_mazziere = giocatore;
@@ -282,22 +282,6 @@ public class PartitaOffline {
                 }               
             }
         }
-    }
-    
-    private void giocatore_paga_mazziere(Giocatore giocatore){
-        mazziere.riscuoti(giocatore.paga_mazziere());
-    }
-    
-    private void giocatore_paga_reale_mazziere(Giocatore giocatore){
-        mazziere.riscuoti(giocatore.paga_reale_mazziere());
-    }
-    
-    private void mazziere_paga_giocatore(Giocatore giocatore) throws MazzierePerdeException{
-        giocatore.riscuoti(mazziere.paga_giocatore(giocatore.getPuntata()));
-    }
-    
-    private void mazziere_paga_reale_giocatore(Giocatore giocatore) throws MazzierePerdeException{
-        giocatore.riscuoti(mazziere.paga_reale_giocatore(giocatore.getPuntata()));
     }
     
    private void mazziere_successivo(){
