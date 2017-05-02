@@ -94,6 +94,7 @@ public class PartitaOffline {
             fine_round();
             mazzo.aggiorna_fine_round();
             if(n_bot_sconfitti == n_bot){
+                stampa_schermata_vittoria();
                 vittoria();
             }
         }
@@ -255,8 +256,7 @@ public class PartitaOffline {
     }
     
     private void calcola_risultato() throws MazzierePerdeException{
-        HashMap<String,String> risultato;
-        
+        HashMap<String,String> risultato;       
         for(Giocatore giocatore : giocatori){
             if(! giocatore.isMazziere() && giocatore.getStato() != Stato.Sballato){              
                 risultato = regole_di_gioco.risultato_mano(mazziere, giocatore);
@@ -321,7 +321,7 @@ public class PartitaOffline {
     private void fine_round() throws InterruptedException{
         boolean game_over = false;
         for(Giocatore giocatore : giocatori){
-            stampa_risultato_round(giocatore);
+            stampa_schermata_risultato_round(giocatore);
             Thread.sleep(pausa_breve);
             if(giocatore.getFiches() == 0 && ! giocatore.haPerso()){
                 if(giocatore instanceof GiocatoreUmano){
@@ -339,32 +339,43 @@ public class PartitaOffline {
         }
         out.print("\n");
         if(game_over){
+            stampa_schermata_game_over();
             game_over();
         }
-        aggiorna_mazziere();
+        if(next_mazziere != null){
+            aggiorna_mazziere();
+            stampa_schermata_aggiorna_mazziere();
+        }
         Thread.sleep(pausa_lunga);
     }
     
-    private void stampa_risultato_round(Giocatore giocatore){
+    private void stampa_schermata_risultato_round(Giocatore giocatore){
         out.println(giocatore.haPerso() + " " + giocatore.isMazziere() + " " + giocatore.getNome() + " " + giocatore.getTutteLeCarte() + " " + giocatore.getValoreMano() + " "+ giocatore.getStato() + " " + giocatore.getFiches());
     }
     
     private void aggiorna_mazziere(){
-        if(next_mazziere != null){
-            mazziere.setMazziere(false);
-            next_mazziere.setMazziere(true);
-            mazziere = next_mazziere;
-            out.println("il nuovo mazziere é: " + mazziere.getNome() + "\n");
-        }
+        mazziere.setMazziere(false);
+        next_mazziere.setMazziere(true);
+        mazziere = next_mazziere;
+    }
+    
+    private void stampa_schermata_aggiorna_mazziere(){
+        out.println("il nuovo mazziere é: " + mazziere.getNome() + "\n");
     }
 
-    private void game_over() {
+    private void game_over(){
+        System.exit(0);
+    }
+    
+    private void stampa_schermata_game_over(){
         out.println("Game Over");
-        System.exit(0);
     }
 
-    private void vittoria() throws InterruptedException {
-        out.println("Complimenti! Hai vinto.");
+    private void vittoria(){
         System.exit(0);
+    }
+    
+    private void stampa_schermata_vittoria(){
+        out.println("Complimenti! Hai Sconfitto tutti i bot.");
     }
 }
