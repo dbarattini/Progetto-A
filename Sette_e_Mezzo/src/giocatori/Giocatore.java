@@ -166,7 +166,7 @@ public abstract class Giocatore {
             if(valore_mano == 7){
                 valore_mano += 0.5;
             } else {
-                valore_mano += Math.abs((int)(7 - valore_mano));
+                valore_mano += Math.round(7 - valore_mano);
             }
         }
         this.valore_mano= valore_mano;
