@@ -16,7 +16,6 @@ import elementi_di_gioco.Carta;
 import java.io.InputStream;
 import java.io.PrintStream;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Scanner;
 
 
@@ -255,31 +254,10 @@ public class PartitaOffline {
         out.println(giocatore.getNome() + " " + giocatore.getCarteScoperte() + " " + giocatore.getStato() + " " + giocatore.getPuntata());
     }
     
-    private void calcola_risultato() throws MazzierePerdeException{
-        HashMap<String,String> risultato;       
+    private void calcola_risultato() throws MazzierePerdeException{      
         for(Giocatore giocatore : giocatori){
-            if(! giocatore.isMazziere() && giocatore.getStato() != Stato.Sballato){              
-                risultato = regole_di_gioco.risultato_mano(mazziere, giocatore);
-                if(risultato.get("vincitore").equals("giocatore")){                   
-                    if(risultato.get("tipo_pagamento").equals("normale")){
-                        mazziere.paga(giocatore);
-                    } else {
-                        mazziere.paga_reale(giocatore);
-                    }                   
-                    if(risultato.get("cambia_mazziere").equals("si")){
-                        next_mazziere = giocatore;
-                    }
-                } 
-                else{
-                    if(risultato.get("tipo_pagamento").equals("normale")){
-                        giocatore.paga(mazziere);
-                    } else {
-                        giocatore.paga_reale(mazziere);
-                    }                    
-                    if(risultato.get("cambia_mazziere").equals("si")){
-                        next_mazziere = giocatore;
-                    }
-                }               
+            if(! giocatore.isMazziere()){              
+                next_mazziere = regole_di_gioco.risultato_mano(mazziere, giocatore, next_mazziere);                       
             }
         }
     }

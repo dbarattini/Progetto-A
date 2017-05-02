@@ -42,26 +42,28 @@ public class RegoleDiGioco {
     }
     
     /**
-     * Caclola il risultato di una mano di Sette e Mezzo.
+     * Applica le regole del gioco Sette e Mezzo.
      * @param mazziere
      * @param giocatore
-     * @return [{"vincitore"="giocatore"/"mazziere"},{"tipo_pagamento"="normale"/"reale"},{"cambia_mazziere"="si"/"no"}]
+     * @param next_mazziere
+     * @return next_mazziere
      * @throws MazzierePerdeException
      */
-    public HashMap<String,String> risultato_mano(Giocatore mazziere, Giocatore giocatore) throws MazzierePerdeException{
+    public Giocatore risultato_mano(Giocatore mazziere, Giocatore giocatore, Giocatore next_mazziere) throws MazzierePerdeException{
         switch(mazziere.getStato()){
             case Sballato: {
                 switch(giocatore.getStato()){
                     case SetteeMezzo:{
-                        aggiorna_risultato("giocatore", "normale", "no");
+                        mazziere.paga(giocatore);
                         break;
                     }
                     case OK:{
-                        aggiorna_risultato("giocatore", "normale", "no");
+                        mazziere.paga(giocatore);
                         break;
                     }
                     case SetteeMezzoReale:{
-                        aggiorna_risultato("giocatore", "reale", "si");
+                        mazziere.paga_reale(giocatore);
+                        next_mazziere = scegli_next_mazziere(giocatore,next_mazziere);
                         break;
                     }
                 } break;
@@ -69,19 +71,20 @@ public class RegoleDiGioco {
             case OK: {
                 switch(giocatore.getStato()){
                     case SetteeMezzo:{
-                        aggiorna_risultato("giocatore", "normale", "no");
+                        mazziere.paga(giocatore);
                         break;
                     }
                     case OK:{ 
                         if(mazziere.getValoreMano() >= giocatore.getValoreMano()){
-                            aggiorna_risultato("mazziere", "normale", "no");
+                            giocatore.paga(mazziere);
                         }else{
-                        aggiorna_risultato("giocatore", "normale", "no");
+                            mazziere.paga(giocatore);
                         } 
                         break;
                     }
                     case SetteeMezzoReale:{
-                        aggiorna_risultato("giocatore", "reale", "si");
+                        mazziere.paga_reale(giocatore);
+                        next_mazziere = scegli_next_mazziere(giocatore,next_mazziere);
                         break;
                     }
                 } break;
@@ -89,15 +92,16 @@ public class RegoleDiGioco {
             case SetteeMezzo: {
                 switch(giocatore.getStato()){
                     case SetteeMezzo:{
-                        aggiorna_risultato("mazziere", "normale", "no");
+                        giocatore.paga(mazziere);
                         break;
                     }
                     case OK:{
-                        aggiorna_risultato("mazziere", "normale", "no");
+                        giocatore.paga(mazziere);
                         break;
                     }
                     case SetteeMezzoReale:{
-                        aggiorna_risultato("giocatore", "reale", "si");
+                        mazziere.paga_reale(giocatore);
+                        next_mazziere = scegli_next_mazziere(giocatore,next_mazziere);
                         break;
                     }
                 } break;
@@ -105,21 +109,27 @@ public class RegoleDiGioco {
             case SetteeMezzoReale: {
                 switch(giocatore.getStato()){
                     case SetteeMezzo:{
-                        aggiorna_risultato("mazziere", "reale", "no");
+                        giocatore.paga_reale(mazziere);
                         break;
                     }
                     case OK:{
-                        aggiorna_risultato("mazziere", "reale", "no");
+                        giocatore.paga_reale(mazziere);
                         break;
                     }
                     case SetteeMezzoReale:{
-                        aggiorna_risultato("mazziere", "normale","si");
+                        giocatore.paga(mazziere);
+                        next_mazziere = scegli_next_mazziere(giocatore,next_mazziere);
                         break;
                     }
                 }break;
             }
         }
-        return risultato;
+        return next_mazziere;
+    }
+    
+    private Giocatore scegli_next_mazziere(Giocatore giocatore,Giocatore next_mazziere){
+        //da fare
+        return giocatore;
     }
     
     private void aggiorna_risultato(String vincitore, String tipo_pagamento, String cambia_mazziere){
