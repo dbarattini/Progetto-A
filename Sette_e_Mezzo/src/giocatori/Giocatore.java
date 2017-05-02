@@ -184,6 +184,11 @@ public abstract class Giocatore {
         }
     }
     
+    /**
+     * Consente i pagamenti normali ad un avversario.
+     * @param avversario
+     * @throws MazzierePerdeException
+     */
     public void paga(Giocatore avversario) throws MazzierePerdeException{
         int puntata;
         if(this.isMazziere()){
@@ -196,6 +201,11 @@ public abstract class Giocatore {
         }
     }
     
+    /**
+     * Consente i pagamenti reali ad un avversario.
+     * @param avversario
+     * @throws MazzierePerdeException
+     */
     public void paga_reale(Giocatore avversario) throws MazzierePerdeException{
         int puntata;
         if(this.isMazziere()){
