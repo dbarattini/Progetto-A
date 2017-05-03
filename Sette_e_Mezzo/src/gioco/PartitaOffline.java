@@ -1,8 +1,5 @@
 package gioco;
 
-
-import GUI.FinestraDiGioco;
-import GUI.Menu;
 import eccezioni.DifficoltaBotException;
 import eccezioni.FichesInizialiException;
 import eccezioni.NumeroBotException;
@@ -16,21 +13,14 @@ import eccezioni.CanzoneNonTrovataException;
 import eccezioni.CaricamentoCanzoneException;
 import eccezioni.FineMazzoException;
 import eccezioni.MazzierePerdeException;
-import java.awt.Canvas;
-import java.awt.Color;
-import java.awt.Graphics;
-import java.awt.image.BufferStrategy;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Scanner;
-import javax.imageio.ImageIO;
 import musica.AudioPlayer;
 
 
-public class PartitaOffline extends Canvas {
-    private FinestraDiGioco finestra;
+public class PartitaOffline {
     private AudioPlayer audio = new AudioPlayer();
     private ArrayList<Giocatore> giocatori=new ArrayList<>();
     private final Mazzo mazzo = new Mazzo();
@@ -38,7 +28,6 @@ public class PartitaOffline extends Canvas {
     private Giocatore next_mazziere = null;
     public static StatoGioco stato_gioco = StatoGioco.menu;
     public static int LARGHEZZA = 1280, ALTEZZA = 720;
-    private Menu menu;
     int pausa_breve = 1000; //ms
     int pausa_lunga = 2000; //ms
     int n_bot;
@@ -61,10 +50,6 @@ public class PartitaOffline extends Canvas {
         this.n_bot = numero_bot;
         
         try {
-            finestra = new FinestraDiGioco(LARGHEZZA, ALTEZZA, "Sette e mezzo", this);
-            menu = new Menu();
-            this.addMouseListener(menu);
-            renderizza();
             inizializza_audio();
             audio.riproduci_in_loop("soundTrack");
             
@@ -449,16 +434,5 @@ public class PartitaOffline extends Canvas {
     private void vittoria() throws InterruptedException {
         out.println("Complimenti! Hai vinto.");
         System.exit(0);
-    }
-    
-    private void renderizza() {  // non visualizza la grafica (per ora senza gameloop)
-
-        Graphics g = this.getGraphics();
-        
-        if(stato_gioco == StatoGioco.menu) {
-            menu.renderizza(g);
-        }
-        
-        g.dispose();
     }
 }
