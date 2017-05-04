@@ -56,7 +56,7 @@ public abstract class Giocatore {
     /**
      * Prende la prima carta della mano e la usa come carta_coperta.
      * 
-     * @param mazzo mazzo della partita
+     * @param carta carta pescata
      * @throws FineMazzoException avvisa se il mazzo non ha piú carte estraibili
      */
     public void prendi_carta_iniziale(Carta carta) throws FineMazzoException{
@@ -163,7 +163,7 @@ public abstract class Giocatore {
             }
         }
         if(matta){
-            if(valore_mano == 7){
+            if(carte_scoperte.isEmpty() || valore_mano == 7){ //se la matta è la prima carta pescata, vale 0.5;
                 valore_mano += 0.5;
             } else {
                 valore_mano += Math.abs((int)(7 - valore_mano));
