@@ -56,11 +56,11 @@ public abstract class Giocatore {
     /**
      * Prende la prima carta della mano e la usa come carta_coperta.
      * 
-     * @param mazzo mazzo della partita
+     * @param carta carta pescata
      * @throws FineMazzoException avvisa se il mazzo non ha piú carte estraibili
      */
-    public void prendi_carta_iniziale(Mazzo mazzo) throws FineMazzoException{
-        carta_coperta = mazzo.estrai_carta();
+    public void prendi_carta_iniziale(Carta carta) throws FineMazzoException{
+        carta_coperta = carta;
         aggiorna_valore_mano();
     }
     
@@ -163,7 +163,7 @@ public abstract class Giocatore {
             }
         }
         if(matta){
-            if(valore_mano == 7){
+            if(carte_scoperte.isEmpty() || valore_mano == 7){ //se la matta è la prima carta pescata, vale 0.5;
                 valore_mano += 0.5;
             } else {
                 valore_mano += Math.round(7 - valore_mano);
@@ -185,48 +185,47 @@ public abstract class Giocatore {
     }
     
     /**
-     * 
-     * @return fiches che il giocatore paga al mazziere
+     * Consente i pagamenti normali ad un avversario.
+     * @param avversario
+     * @throws MazzierePerdeException
      */
-    public int paga_mazziere(){
-        return puntata;
+    public void paga(Giocatore avversario) throws MazzierePerdeException{
+        int puntata;
+        if(this.isMazziere()){
+            puntata = avversario.getPuntata();
+            this.paga_giocatore(puntata);
+            avversario.riscuoti(puntata);
+        } else{
+            puntata = this.puntata;
+            avversario.riscuoti(puntata);
+        }
     }
     
     /**
-     *
-     * @param puntata valore che il mazziere deve pagare al giocatore
-     * @return fiches che il mazziere paga al giocatore
-     * @throws MazzierePerdeException indica che il mazziere ha finito le fiches
+     * Consente i pagamenti reali ad un avversario.
+     * @param avversario
+     * @throws MazzierePerdeException
      */
-    public int paga_giocatore(int puntata) throws MazzierePerdeException{
+    public void paga_reale(Giocatore avversario) throws MazzierePerdeException{
+        int puntata;
+        if(this.isMazziere()){
+            puntata = avversario.getPuntata() * 2;
+            this.paga_giocatore(puntata);
+            avversario.riscuoti(puntata);
+        } else {
+            puntata = this.paga_reale_mazziere();
+            avversario.riscuoti(puntata);
+        }
+    }
+
+    private void paga_giocatore(int puntata) throws MazzierePerdeException{
         if(fiches - puntata < 0){
             throw new MazzierePerdeException();
         }
         punta(puntata);
-        return paga_mazziere();
     }
-    
-    /**
-     *
-     * @param puntata puntata che il mazziere deve pagare al giocatore
-     * @return fiches che il mazziere paga la giocatore
-     * @throws MazzierePerdeException indica che il mazziere ha finito le fiches
-     */
-    public int paga_reale_giocatore(int puntata) throws MazzierePerdeException{
-        if(fiches - (puntata * 2) < 0){
-            throw new MazzierePerdeException();
-        }
-        punta(puntata * 2);
-        return paga_mazziere();
-    }
-    
-    /**
-     * Se il giocatore finisce le fiches perde ed il mazziere viene pagato con 
-     * tutte le fiches restanti del giocatore.
-     * 
-     * @return fiches che il giocatore paga al mazziere
-     */
-    public int paga_reale_mazziere(){
+
+    private int paga_reale_mazziere(){
         fiches = fiches - (2 *puntata);
         if(fiches < 0){
             int buf = fiches;
@@ -236,10 +235,6 @@ public abstract class Giocatore {
         return puntata * 2;
     }
     
-    /**
-     *
-     * @param vincita fiches vinte.
-     */
     public void riscuoti(int vincita){
         fiches = fiches + puntata + vincita;
     }
