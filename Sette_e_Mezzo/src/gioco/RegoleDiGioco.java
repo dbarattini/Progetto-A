@@ -2,7 +2,6 @@ package gioco;
 
 import eccezioni.MazzierePerdeException;
 import giocatori.Giocatore;
-import java.util.ArrayList;
 import java.util.HashMap;
 
 public class RegoleDiGioco {
@@ -128,13 +127,16 @@ public class RegoleDiGioco {
     }
     
     private Giocatore scegli_next_mazziere(Giocatore giocatore,Giocatore next_mazziere){
-        //da fare
-        return giocatore;
-    }
-    
-    private void aggiorna_risultato(String vincitore, String tipo_pagamento, String cambia_mazziere){
-        risultato.put("vincitore", vincitore);
-        risultato.put("tipo_pagamento", tipo_pagamento);
-        risultato.put("cambia_mazziere", cambia_mazziere);
+        if(next_mazziere.equals(null)){
+            return giocatore;
+        }
+        if(giocatore.getCartaCoperta().getSeme().equals("c")){
+                return giocatore;
+            }else if(giocatore.getCartaCoperta().getSeme().equals("q") && ! next_mazziere.getCartaCoperta().getSeme().equals("c")){
+                return giocatore;
+            }else if(giocatore.getCartaCoperta().getSeme().equals("f") && next_mazziere.getCartaCoperta().getSeme().equals("p")){
+                return giocatore;
+            }
+        return next_mazziere;
     }
 }
