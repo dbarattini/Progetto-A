@@ -81,7 +81,6 @@ public class PartitaOffline {
                 calcola_risultato();
             } catch (MazzierePerdeException ex) {
                 //da fare, per ora sceglie solo un nuovo mazziere ed azzera le fiches del vecchio
-                out.println("Il mazziere ha perso\n");
                 mazziere.azzera_fiches();
                 mazziere_successivo();
                 for(Giocatore giocatore : giocatori){
@@ -293,7 +292,7 @@ public class PartitaOffline {
                     giocatore.perde();
                     n_bot_sconfitti += 1;
                     if(giocatore.isMazziere()){
-                        out.println("Il mazziere ha perso\n");
+                        out.println("\nIl mazziere ha perso\n");
                         mazziere_successivo();
                     }
                 }
