@@ -25,9 +25,9 @@ public class GUI extends JFrame {
 	pack();
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 	setResizable(false);
-	setLocationRelativeTo(null);                
+	setLocationRelativeTo(null);
         
-        sfondo = new Sfondo();
+        sfondo = new Sfondo("immagini/sfondo.png", 1275, 690);
         sfondo.setBounds(0, 0, PartitaOffline.LARGHEZZA, PartitaOffline.ALTEZZA);
         add(sfondo);
         
