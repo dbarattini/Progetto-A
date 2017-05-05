@@ -79,8 +79,7 @@ public class Menu extends JFrame {
                         + "assume il valore (intero da 1 a 7, o 1/2) desiderato dal giocatore,\n"
                         + "mentre in caso di sette e mezzo reale, si verrà pagati il doppio della posta e, al turno successivo,\n"
                         + "si diverrà mazzieri.\n"
-                        + "Buon sette e mezzo!",
-                                            "REGOLE DI GIOCO", JOptionPane.INFORMATION_MESSAGE);
+                        + "Buon sette e mezzo!", "REGOLE DI GIOCO", JOptionPane.INFORMATION_MESSAGE);
             };
         });
         
