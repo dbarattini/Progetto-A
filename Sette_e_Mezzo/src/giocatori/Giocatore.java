@@ -189,7 +189,7 @@ public abstract class Giocatore {
      * @param avversario
      * @throws MazzierePerdeException
      */
-    public void paga(Giocatore avversario) throws MazzierePerdeException{
+    public void paga(Giocatore avversario){
         int puntata;
         if(this.isMazziere()){
             puntata = avversario.getPuntata();
@@ -206,7 +206,7 @@ public abstract class Giocatore {
      * @param avversario
      * @throws MazzierePerdeException
      */
-    public void paga_reale(Giocatore avversario) throws MazzierePerdeException{
+    public void paga_reale(Giocatore avversario) {
         int puntata;
         if(this.isMazziere()){
             puntata = avversario.getPuntata() * 2;
@@ -218,11 +218,8 @@ public abstract class Giocatore {
         }
     }
 
-    private void paga_giocatore(int puntata) throws MazzierePerdeException{
-        if(fiches - puntata < 0){
-            throw new MazzierePerdeException();
-        }
-        punta(puntata);
+    private void paga_giocatore(int puntata) {
+         punta(puntata);
     }
 
     private int paga_reale_mazziere(){

@@ -49,7 +49,7 @@ public class RegoleDiGioco {
      * @return next_mazziere
      * @throws MazzierePerdeException
      */
-    public Giocatore risultato_mano(Giocatore mazziere, Giocatore giocatore, Giocatore next_mazziere) throws MazzierePerdeException{
+    public Giocatore risultato_mano(Giocatore mazziere, Giocatore giocatore, Giocatore next_mazziere){
         switch(mazziere.getStato()){
             case Sballato: {
                 switch(giocatore.getStato()){
@@ -125,6 +125,81 @@ public class RegoleDiGioco {
             }
         }
         return next_mazziere;
+    }
+    
+    public int controlla_finanze_mazziere(Giocatore mazziere, Giocatore giocatore){
+        int guadagno=0;
+        switch(mazziere.getStato()){
+            case Sballato: {
+                switch(giocatore.getStato()){
+                    case SetteeMezzo:{
+                        guadagno-=giocatore.getPuntata();
+                        break;
+                    }
+                    case OK:{
+                        guadagno-=giocatore.getPuntata();
+                        break;
+                    }
+                    case SetteeMezzoReale:{
+                        guadagno-=giocatore.getPuntata()*2;
+                        break;
+                    }
+                } break;
+            }
+            case OK: {
+                switch(giocatore.getStato()){
+                    case SetteeMezzo:{
+                       guadagno-=giocatore.getPuntata();
+                        break;
+                    }
+                    case OK:{ 
+                        if(mazziere.getValoreMano() >= giocatore.getValoreMano()){
+                            guadagno+=giocatore.getPuntata();
+                        }else{
+                            guadagno-=giocatore.getPuntata();
+                        } 
+                        break;
+                    }
+                    case SetteeMezzoReale:{
+                        guadagno-=giocatore.getPuntata()*2;
+                        break;
+                    }
+                } break;
+            }
+            case SetteeMezzo: {
+                switch(giocatore.getStato()){
+                    case SetteeMezzo:{
+                        guadagno+=giocatore.getPuntata();
+                        break;
+                    }
+                    case OK:{
+                        guadagno+=giocatore.getPuntata();
+                        break;
+                    }
+                    case SetteeMezzoReale:{
+                        guadagno-=giocatore.getPuntata()*2;
+                        break;
+                    }
+                } break;
+            }
+            case SetteeMezzoReale: {
+                switch(giocatore.getStato()){
+                    case SetteeMezzo:{
+                        guadagno+=giocatore.getPuntata()*2;
+                        break;
+                    }
+                    case OK:{
+                        guadagno+=giocatore.getPuntata()*2;
+                        break;
+                    }
+                    case SetteeMezzoReale:{
+                        guadagno+=giocatore.getPuntata();
+                        break;
+                    }
+                }break;
+            }
+        }
+        return guadagno;
     }
     
     private Giocatore scegli_next_mazziere(Giocatore giocatore,Giocatore next_mazziere){

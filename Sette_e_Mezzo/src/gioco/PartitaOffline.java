@@ -254,12 +254,27 @@ public class PartitaOffline {
         out.println(giocatore.getNome() + " " + giocatore.getCarteScoperte() + " " + giocatore.getStato() + " " + giocatore.getPuntata());
     }
     
-    private void calcola_risultato() throws MazzierePerdeException{      
+    private void calcola_risultato() throws MazzierePerdeException{ 
+        int fichesMazziere=controllaMazziere();
+        if(fichesMazziere>0){
         for(Giocatore giocatore : giocatori){
             if(! giocatore.isMazziere()){              
-                next_mazziere = regole_di_gioco.risultato_mano(mazziere, giocatore, next_mazziere);                       
+                next_mazziere = regole_di_gioco.risultato_mano(mazziere, giocatore, next_mazziere);
             }
         }
+        }
+        else 
+            throw new MazzierePerdeException();
+    }        
+
+    private int controllaMazziere() {
+        int guadagno=mazziere.getFiches();
+        for(Giocatore giocatore : giocatori){
+            if(! giocatore.isMazziere()){
+                guadagno+=regole_di_gioco.controlla_finanze_mazziere(mazziere, giocatore);                       
+            }
+        }
+        return guadagno;
     }
     
    private void mazziere_successivo(){
