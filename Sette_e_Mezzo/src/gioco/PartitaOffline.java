@@ -80,7 +80,6 @@ public class PartitaOffline {
                 gioca_round();
                 calcola_risultato();
             } catch (MazzierePerdeException ex) {
-                //da fare, per ora sceglie solo un nuovo mazziere ed azzera le fiches del vecchio
                 out.println("Il mazziere ha perso\n");
                 mazziere.azzera_fiches();
                 mazziere_successivo();
