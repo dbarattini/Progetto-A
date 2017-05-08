@@ -264,7 +264,8 @@ public class PartitaOffline {
             }
         }
         else {
-            double percentuale=mazziere.getFiches()/(mazziere.getFiches()-fichesMazziere);
+            double fichesAttualiMazziere=(double)mazziere.getFiches();
+            double percentuale=(double)(fichesAttualiMazziere/(fichesAttualiMazziere-fichesMazziere));
             for(Giocatore giocatore : giocatori){
                 if(! giocatore.isMazziere()){              
                     next_mazziere = regole_di_gioco.risultato_mano_percentuale(mazziere, giocatore, next_mazziere, percentuale);
