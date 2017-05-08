@@ -187,7 +187,6 @@ public abstract class Giocatore {
     /**
      * Consente i pagamenti normali ad un avversario.
      * @param avversario
-     * @throws MazzierePerdeException
      */
     public void paga(Giocatore avversario){
         int puntata;
@@ -201,10 +200,26 @@ public abstract class Giocatore {
         }
     }
     
+     /**
+     * Consente i pagamenti normali ad un avversario.
+     * @param avversario
+     * @param percentuale 
+     */
+    public void pagaPercentuale(Giocatore avversario, int percentuale){
+        int puntata;
+        if(this.isMazziere()){
+            puntata = avversario.getPuntata()*percentuale;
+            this.paga_giocatore(puntata);
+            avversario.riscuoti(puntata);
+        } else{
+            puntata = this.puntata*percentuale;
+            avversario.riscuoti(puntata);
+        }
+    }
+    
     /**
      * Consente i pagamenti reali ad un avversario.
      * @param avversario
-     * @throws MazzierePerdeException
      */
     public void paga_reale(Giocatore avversario) {
         int puntata;
@@ -217,10 +232,28 @@ public abstract class Giocatore {
             avversario.riscuoti(puntata);
         }
     }
-
+    
+    /**
+     * Consente i pagamenti reali percentuali ad un avversario.
+     * @param avversario
+     * @param percentuale
+     */
+    public void paga_reale_percentuale(Giocatore avversario, int percentuale) {
+        int puntata;
+        if(this.isMazziere()){
+            puntata = avversario.getPuntata() * 2*percentuale;
+            this.paga_giocatore(puntata);
+            avversario.riscuoti(puntata);
+        } else {
+            puntata = this.paga_reale_mazziere()*percentuale;
+            avversario.riscuoti(puntata);
+        }
+    }
     private void paga_giocatore(int puntata) {
          punta(puntata);
     }
+    
+   
 
     private int paga_reale_mazziere(){
         fiches = fiches - (2 *puntata);
@@ -295,4 +328,6 @@ public abstract class Giocatore {
     public ArrayList<Carta> getCarteScoperte() {
         return carte_scoperte;
     }
+
+    
 }

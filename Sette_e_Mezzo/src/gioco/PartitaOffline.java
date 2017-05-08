@@ -263,8 +263,11 @@ public class PartitaOffline {
             }
         }
         }
-        else 
-            throw new MazzierePerdeException();
+        else {
+             
+             throw new MazzierePerdeException();
+        }
+           
     }        
 
     private int controllaMazziere() {

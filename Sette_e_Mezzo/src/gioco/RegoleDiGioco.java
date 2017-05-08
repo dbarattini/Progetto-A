@@ -127,6 +127,100 @@ public class RegoleDiGioco {
         return next_mazziere;
     }
     
+    
+    /**
+     * Applica le regole del gioco Sette e Mezzo nel caso in cui il mazziere perde.
+     * @param mazziere
+     * @param giocatore
+     * @param next_mazziere
+     * @param percentuale
+     * @return next_mazziere
+     */
+    public Giocatore risultato_mano_percentuale(Giocatore mazziere, Giocatore giocatore, Giocatore next_mazziere, int percentuale){
+        switch(mazziere.getStato()){
+            case Sballato: {
+                switch(giocatore.getStato()){
+                    case SetteeMezzo:{
+                        mazziere.pagaPercentuale(giocatore, percentuale);
+                        break;
+                    }
+                    case OK:{
+                        mazziere.pagaPercentuale(giocatore, percentuale);
+                        break;
+                    }
+                    case SetteeMezzoReale:{
+                        mazziere.paga_reale_percentuale(giocatore, percentuale);
+                        next_mazziere = scegli_next_mazziere(giocatore,next_mazziere);
+                        break;
+                    }
+                } break;
+            }
+            case OK: {
+                switch(giocatore.getStato()){
+                    case SetteeMezzo:{
+                        mazziere.pagaPercentuale(giocatore, percentuale);
+                        break;
+                    }
+                    case OK:{ 
+                        if(mazziere.getValoreMano() >= giocatore.getValoreMano()){
+                            giocatore.pagaPercentuale(giocatore, percentuale);
+                        }else{
+                            mazziere.pagaPercentuale(giocatore, percentuale);
+                        } 
+                        break;
+                    }
+                    case SetteeMezzoReale:{
+                        mazziere.paga_reale_percentuale(giocatore, percentuale);
+                        next_mazziere = scegli_next_mazziere(giocatore,next_mazziere);
+                        break;
+                    }
+                } break;
+            }
+            case SetteeMezzo: {
+                switch(giocatore.getStato()){
+                    case SetteeMezzo:{
+                        giocatore.pagaPercentuale(giocatore, percentuale);
+                        break;
+                    }
+                    case OK:{
+                        giocatore.pagaPercentuale(giocatore, percentuale);
+                        break;
+                    }
+                    case SetteeMezzoReale:{
+                        mazziere.paga_reale_percentuale(giocatore, percentuale);
+                        next_mazziere = scegli_next_mazziere(giocatore,next_mazziere);
+                        break;
+                    }
+                } break;
+            }
+            case SetteeMezzoReale: {
+                switch(giocatore.getStato()){
+                    case SetteeMezzo:{
+                        giocatore.paga_reale_percentuale(giocatore, percentuale);
+                        break;
+                    }
+                    case OK:{
+                        giocatore.paga_reale_percentuale(giocatore, percentuale);
+                        break;
+                    }
+                    case SetteeMezzoReale:{
+                        giocatore.pagaPercentuale(giocatore, percentuale);
+                        next_mazziere = scegli_next_mazziere(giocatore,next_mazziere);
+                        break;
+                    }
+                }break;
+            }
+        }
+        return next_mazziere;
+    }
+    
+    
+     /**
+     * Calcla il guadagno dal mazziere alla fine del turno
+     * @param mazziere
+     * @param giocatore
+      * @return guadagno
+     */
     public int controlla_finanze_mazziere(Giocatore mazziere, Giocatore giocatore){
         int guadagno=0;
         switch(mazziere.getStato()){
