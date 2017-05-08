@@ -257,14 +257,19 @@ public class PartitaOffline {
     private void calcola_risultato() throws MazzierePerdeException{ 
         int fichesMazziere=controllaMazziere();
         if(fichesMazziere>0){
-        for(Giocatore giocatore : giocatori){
-            if(! giocatore.isMazziere()){              
-                next_mazziere = regole_di_gioco.risultato_mano(mazziere, giocatore, next_mazziere);
+            for(Giocatore giocatore : giocatori){
+                if(! giocatore.isMazziere()){              
+                    next_mazziere = regole_di_gioco.risultato_mano(mazziere, giocatore, next_mazziere);
+                }
             }
         }
-        }
         else {
-             
+            double percentuale=mazziere.getFiches()/(mazziere.getFiches()-fichesMazziere);
+            for(Giocatore giocatore : giocatori){
+                if(! giocatore.isMazziere()){              
+                    next_mazziere = regole_di_gioco.risultato_mano_percentuale(mazziere, giocatore, next_mazziere, percentuale);
+                }
+            }
              throw new MazzierePerdeException();
         }
            

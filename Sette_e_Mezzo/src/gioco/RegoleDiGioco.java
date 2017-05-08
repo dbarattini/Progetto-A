@@ -136,7 +136,7 @@ public class RegoleDiGioco {
      * @param percentuale
      * @return next_mazziere
      */
-    public Giocatore risultato_mano_percentuale(Giocatore mazziere, Giocatore giocatore, Giocatore next_mazziere, int percentuale){
+    public Giocatore risultato_mano_percentuale(Giocatore mazziere, Giocatore giocatore, Giocatore next_mazziere, double percentuale){
         switch(mazziere.getStato()){
             case Sballato: {
                 switch(giocatore.getStato()){
