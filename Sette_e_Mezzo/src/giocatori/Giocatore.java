@@ -9,9 +9,7 @@ import classi_dati.Giocata;
 import classi_dati.Stato;
 import eccezioni.FineMazzoException;
 import eccezioni.MattaException;
-import eccezioni.MazzoRimescolatoException;
 import elementi_di_gioco.Carta;
-import elementi_di_gioco.Mazzo;
 import java.util.ArrayList;
 
 
