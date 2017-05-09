@@ -2,10 +2,8 @@ package gioco;
 
 import eccezioni.MazzierePerdeException;
 import giocatori.Giocatore;
-import java.util.HashMap;
 
 public class RegoleDiGioco {
-    private HashMap<String,String> risultato = new HashMap<>();
     
     /**
      * Determina quale tra i due giocatori ha in mano la carta piú alta.
