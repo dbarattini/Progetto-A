@@ -104,6 +104,7 @@ public class PartitaOffline {
                 }
                 case Difficile : {
                     giocatori.add(new BotDifficile("bot"+i, fiches_iniziali, mazzo));
+                    break;
                 }
                 default: throw new DifficoltaBotException();       
             }

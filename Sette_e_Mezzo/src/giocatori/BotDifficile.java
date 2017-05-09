@@ -20,17 +20,7 @@ public class BotDifficile extends Giocatore{
 
     @Override
     protected int decidi_puntata() {
-        double valore_carta_coperta = 0;
-        try {
-            valore_carta_coperta = this.carta_coperta.getValoreNumerico();
-        } catch (MattaException ex) {
-            Logger.getLogger(BotDifficile.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        if (valore_carta_coperta < 2 || valore_carta_coperta > 6) {
-            return 30;
-        } else{
-            return 10;
-        }
+        return 15;
     }
 
     @Override
@@ -51,17 +41,18 @@ public class BotDifficile extends Giocatore{
     private double calcola_percentuale_sballo() {
         double sballo = calcola_valore_sballo();
         double percentuale = 0;
-        int contatore = 0;
+        double contatore = 0;
         for (Carta c : this.mazzo.getCarteDaGiocare()) {
             try {
                 if(c.getValoreNumerico() >= sballo) {
-                    contatore++;
+                    contatore += 1;
                 }
             } catch (MattaException ex) {
-                Logger.getLogger(BotDifficile.class.getName()).log(Level.SEVERE, null, ex);
+                // la matta non conta come carta da sballo
             }
         }
-        percentuale = contatore/this.mazzo.getCarteDaGiocare().size();
+        double daGioc=(double) this.mazzo.getCarteDaGiocare().size();
+        percentuale = (contatore/daGioc)*100;
         return percentuale;
     }
     
