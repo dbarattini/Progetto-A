@@ -9,14 +9,20 @@ import giocatori.BotFacile;
 import giocatori.GiocatoreUmano;
 import giocatori.Giocatore;
 import classi_dati.DifficoltaBot;
+import classi_dati.Giocata;
 import classi_dati.Stato;
 import eccezioni.FineMazzoException;
 import eccezioni.MazzierePerdeException;
+import eccezioni.SballatoException;
+import eccezioni.SetteeMezzoException;
+import eccezioni.SetteeMezzoRealeException;
 import elementi_di_gioco.Carta;
 import java.io.InputStream;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 public class PartitaOffline {
@@ -180,17 +186,48 @@ public class PartitaOffline {
     private void gioca_round() throws InterruptedException, MazzierePerdeException {
         int pos_mazziere = giocatori.indexOf(mazziere);
         int pos_next_giocatore = pos_mazziere + 1;
+        boolean continua;
         Giocatore giocatore;
+        Carta carta_estratta = null;
         
         inizializza_round();
         distribuisci_carta_coperta();
+        effettua_puntate();
         for(int i = 0; i < giocatori.size(); i++){
             if(pos_next_giocatore == giocatori.size()){
                 pos_next_giocatore = 0;
             }
             giocatore = getProssimoGiocatore(pos_next_giocatore);
-            if(! giocatore.haPerso()){
-                giocatore.gioca_mano(mazzo); //da cambiare, devo passare solo carta
+            if(! giocatore.haPerso()){  
+                continua = true;
+                while(continua){
+                    continua = giocatore.effettua_giocata();
+                    if(continua){
+                        try {
+                            carta_estratta = mazzo.estrai_carta();
+                        } catch (FineMazzoException ex) {
+                            mazzo.rimescola();
+                            mazziere_successivo();
+                            try {
+                                carta_estratta = mazzo.estrai_carta();
+                            } catch (FineMazzoException ex1) {
+                                //////////////////////////////
+                            }
+                        }
+                        try {
+                            giocatore.chiedi_carta(carta_estratta);
+                        } catch (SballatoException ex) {
+                            giocatore.setStato(Stato.Sballato);
+                            continua = false;
+                        } catch (SetteeMezzoRealeException ex) {
+                            giocatore.setStato(Stato.SetteeMezzoReale);
+                            continua = false;
+                        } catch (SetteeMezzoException ex) {
+                            giocatore.setStato(Stato.SetteeMezzo);
+                            continua = false;
+                        }
+                    }
+                }
                 if(!giocatore.isMazziere() && giocatore.getStato() == Stato.Sballato){
                     giocatore.paga(mazziere); //giocatore se sballa paga subito.
                 }
@@ -230,6 +267,14 @@ public class PartitaOffline {
                     mazzo.rimescola();
                     stampa_messaggio_rimescola_mazzo();
                 }
+            }
+        }
+    }
+    
+    private void effettua_puntate() {
+        for(Giocatore giocatore : giocatori){
+            if(! giocatore.equals(mazziere)){
+                giocatore.effettua_puntata();
             }
         }
     }

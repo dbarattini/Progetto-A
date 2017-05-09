@@ -63,40 +63,11 @@ public abstract class Giocatore {
         carta_coperta = carta;
         aggiorna_valore_mano();
     }
-    
-    /**
-     * Il giocatore puó giocare una mano di sette e mezzo.
-     * 
-     * @param mazzo Mazzo della partita
-     * @return Mazzo aggiornato
-     */
-    public Mazzo gioca_mano(Mazzo mazzo){
-        boolean continua = true;
-        try {
-            this.valore_mano = this.carta_coperta.getValoreNumerico();
-        } catch (MattaException ex) {
-           valore_mano = 7;
-        }
-        if(! isMazziere()){
-            int valore_puntata = decidi_puntata();
-            punta(valore_puntata);
-        }
-        while(continua){
-            Giocata giocata = decidi_giocata();
-            try {
-                continua = effettua_giocata(giocata,mazzo);
-            } catch (MazzoRimescolatoException ex) {
-                //utile per notifica a gui
-                try {
-                    continua = effettua_giocata(giocata,mazzo);
-                } catch (MazzoRimescolatoException ex1) {
-                    //giá gestita.
-                }
-            } 
-        }
-        return mazzo;
-    };
-    
+
+    public boolean effettua_giocata(){
+        Giocata giocata = decidi_giocata();
+        return gioca(giocata);
+    }
     /**
      * Consente di decidere la puntata da effettuare.
      * 
@@ -109,6 +80,11 @@ public abstract class Giocatore {
         this.puntata = puntata;
     }
     
+    public void effettua_puntata(){
+        int valore_puntata = decidi_puntata();
+        punta(valore_puntata);
+    }
+    
     /**
      * Consente di decidere la giocata da effettuare.
      * 
@@ -116,35 +92,18 @@ public abstract class Giocatore {
      */
     protected abstract Giocata decidi_giocata();
     
-    private boolean effettua_giocata(Giocata giocata, Mazzo mazzo) throws MazzoRimescolatoException{
+    private boolean gioca(Giocata giocata){
         switch(giocata){                
-            case Carta: {
-                try {
-                    chiedi_carta(mazzo);
-                    aggiorna_valore_mano();
-                    controlla_valore_mano();
-                    return true;
-                } catch (FineMazzoException ex) {
-                    mazzo.rimescola();
-                    throw new MazzoRimescolatoException();
-                } catch (SballatoException ex) {
-                    stato = Stato.Sballato;
-                    return false;
-                } catch (SetteeMezzoRealeException ex) {
-                    stato = Stato.SetteeMezzoReale;
-                    return false;
-                } catch (SetteeMezzoException ex) {
-                    stato = Stato.SetteeMezzo;
-                    return false;
-                }
-            }
+            case Carta: return true;
             case Sto: return false;
             default : return true; //impossibile ma senza da errore
         }
     }
     
-    private void chiedi_carta(Mazzo mazzo) throws FineMazzoException{
-        carte_scoperte.add(mazzo.estrai_carta());
+    public void chiedi_carta(Carta carta) throws SballatoException, SetteeMezzoRealeException, SetteeMezzoException{
+        carte_scoperte.add(carta);                    
+        aggiorna_valore_mano();
+        controlla_valore_mano();
     }
       
     private void aggiorna_valore_mano() {
@@ -295,6 +254,9 @@ public abstract class Giocatore {
         return stato;
     }
 
+    public void setStato(Stato stato){
+        this.stato = stato;
+    }
     public ArrayList<Carta> getCarteScoperte() {
         return carte_scoperte;
     }
