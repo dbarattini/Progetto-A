@@ -62,6 +62,11 @@ public abstract class Giocatore {
         aggiorna_valore_mano();
     }
 
+    /**
+     * Effettua una giocata.
+     * 
+     * @return continua o meno la mano.
+     */
     public boolean effettua_giocata(){
         Giocata giocata = decidi_giocata();
         return gioca(giocata);
@@ -78,6 +83,10 @@ public abstract class Giocatore {
         this.puntata = puntata;
     }
     
+    /**
+     * Effettua una puntata.
+     * 
+     */
     public void effettua_puntata(){
         int valore_puntata = decidi_puntata();
         punta(valore_puntata);
@@ -98,6 +107,15 @@ public abstract class Giocatore {
         }
     }
     
+    /**
+     * Prende la carta passata e la usa come carta scoperta.
+     * Aggiorna e controlla il valore della mano.
+     * 
+     * @param carta Carta pescata
+     * @throws SballatoException
+     * @throws SetteeMezzoRealeException
+     * @throws SetteeMezzoException
+     */
     public void chiedi_carta(Carta carta) throws SballatoException, SetteeMezzoRealeException, SetteeMezzoException{
         carte_scoperte.add(carta);                    
         aggiorna_valore_mano();
@@ -192,8 +210,44 @@ public abstract class Giocatore {
         return puntata * 2;
     }
     
+    /**
+     * Incassa una vincita aggiungendola alle proprie fiches.
+     * 
+     * @param vincita numero di fiches vinte
+     */
     public void riscuoti(int vincita){
         fiches = fiches + puntata + vincita;
+    }
+    
+    /**
+     * Azzera il numero di fiches del giocatore.
+     */
+    public void azzera_fiches(){
+        fiches = 0;
+    }
+    
+    /**
+     * Imposta il booleano perso a true.
+     */
+    public void perde(){
+        perso = true;
+    }
+    
+    public boolean haPerso(){
+        return perso;
+    }
+    
+    public boolean isMazziere(){
+        return mazziere;
+    }
+    
+    public void setMazziere(boolean mazziere){
+        this.mazziere = mazziere;
+    }
+    
+    
+    public void setStato(Stato stato){
+        this.stato = stato;
     }
     
     public ArrayList<Carta> getTutteLeCarte(){
@@ -205,27 +259,6 @@ public abstract class Giocatore {
     
     public Carta getUltimaCartaOttenuta(){
         return carte_scoperte.get(carte_scoperte.size() - 1);
-    }
-    
-    public void azzera_fiches(){
-        fiches = 0;
-    }
-    
-    /**
-     * Imposta il booleano perso a true.
-     */
-    public void perde(){
-        perso = true;
-    }
-    public boolean haPerso(){
-        return perso;
-    }
-    public boolean isMazziere(){
-        return mazziere;
-    }
-    
-    public void setMazziere(boolean mazziere){
-        this.mazziere = mazziere;
     }
     
     public double getValoreMano(){
@@ -251,10 +284,7 @@ public abstract class Giocatore {
     public Stato getStato(){
         return stato;
     }
-
-    public void setStato(Stato stato){
-        this.stato = stato;
-    }
+    
     public ArrayList<Carta> getCarteScoperte() {
         return carte_scoperte;
     }
