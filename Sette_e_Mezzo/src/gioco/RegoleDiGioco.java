@@ -127,7 +127,7 @@ public class RegoleDiGioco {
     }
     
     private Giocatore scegli_next_mazziere(Giocatore giocatore,Giocatore next_mazziere){
-        if(next_mazziere.equals(null)){
+        if(next_mazziere == null){
             return giocatore;
         }
         if(giocatore.getCartaCoperta().getSeme().equals("c")){

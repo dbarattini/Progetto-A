@@ -9,7 +9,6 @@ import giocatori.BotFacile;
 import giocatori.GiocatoreUmano;
 import giocatori.Giocatore;
 import classi_dati.DifficoltaBot;
-import classi_dati.Giocata;
 import classi_dati.Stato;
 import eccezioni.FineMazzoException;
 import eccezioni.MazzierePerdeException;
@@ -21,8 +20,6 @@ import java.io.InputStream;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Scanner;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 
 public class PartitaOffline {
@@ -186,9 +183,7 @@ public class PartitaOffline {
     private void gioca_round() throws InterruptedException, MazzierePerdeException {
         int pos_mazziere = giocatori.indexOf(mazziere);
         int pos_next_giocatore = pos_mazziere + 1;
-        boolean continua;
         Giocatore giocatore;
-        Carta carta_estratta = null;
         
         inizializza_round();
         distribuisci_carta_coperta();
@@ -199,38 +194,7 @@ public class PartitaOffline {
             }
             giocatore = getProssimoGiocatore(pos_next_giocatore);
             if(! giocatore.haPerso()){  
-                continua = true;
-                while(continua){
-                    continua = giocatore.effettua_giocata();
-                    if(continua){
-                        try {
-                            carta_estratta = mazzo.estrai_carta();
-                        } catch (FineMazzoException ex) {
-                            mazzo.rimescola();
-                            mazziere_successivo();
-                            try {
-                                carta_estratta = mazzo.estrai_carta();
-                            } catch (FineMazzoException ex1) {
-                                //////////////////////////////
-                            }
-                        }
-                        try {
-                            giocatore.chiedi_carta(carta_estratta);
-                        } catch (SballatoException ex) {
-                            giocatore.setStato(Stato.Sballato);
-                            continua = false;
-                        } catch (SetteeMezzoRealeException ex) {
-                            giocatore.setStato(Stato.SetteeMezzoReale);
-                            continua = false;
-                        } catch (SetteeMezzoException ex) {
-                            giocatore.setStato(Stato.SetteeMezzo);
-                            continua = false;
-                        }
-                    }
-                }
-                if(!giocatore.isMazziere() && giocatore.getStato() == Stato.Sballato){
-                    giocatore.paga(mazziere); //giocatore se sballa paga subito.
-                }
+                esegui_mano(giocatore);
                 if(giocatore instanceof GiocatoreUmano && giocatore.getStato() != Stato.OK){
                     stampa_se_stato_non_ok(giocatore);
                     Thread.sleep(pausa_lunga);
@@ -266,6 +230,7 @@ public class PartitaOffline {
                 } catch (FineMazzoException ex) {
                     mazzo.rimescola();
                     stampa_messaggio_rimescola_mazzo();
+                    this.mazziere_successivo();
                 }
             }
         }
@@ -285,6 +250,44 @@ public class PartitaOffline {
     
     private Giocatore getProssimoGiocatore(int posizione){
         return giocatori.get(posizione);
+    }
+    
+    private void esegui_mano(Giocatore giocatore) throws MazzierePerdeException{
+        Carta carta_estratta = null;
+        boolean continua = true;
+        
+        while(continua){
+            continua = giocatore.effettua_giocata();
+            if(continua){
+                try {
+                    carta_estratta = mazzo.estrai_carta();
+                } catch (FineMazzoException ex) {
+                    mazzo.rimescola();
+                    stampa_messaggio_rimescola_mazzo();
+                    mazziere_successivo();
+                    try {
+                        carta_estratta = mazzo.estrai_carta();
+                    } catch (FineMazzoException ex1) {
+                        //////////////////////////////
+                    }
+                }
+                try {
+                    giocatore.chiedi_carta(carta_estratta);
+                } catch (SballatoException ex) {
+                    giocatore.setStato(Stato.Sballato);
+                    if(!giocatore.isMazziere()){
+                        giocatore.paga(mazziere); //giocatore se sballa paga subito.
+                    }
+                    continua = false;
+                } catch (SetteeMezzoRealeException ex) {
+                    giocatore.setStato(Stato.SetteeMezzoReale);
+                    continua = false;
+                } catch (SetteeMezzoException ex) {
+                    giocatore.setStato(Stato.SetteeMezzo);
+                    continua = false;
+                }
+            }
+        }
     }
     
     private void stampa_se_stato_non_ok(Giocatore giocatore){
