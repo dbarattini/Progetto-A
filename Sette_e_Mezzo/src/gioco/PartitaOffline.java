@@ -242,6 +242,10 @@ public class PartitaOffline {
                 giocatore.effettua_puntata();
             }
         }
+        if(mazziere instanceof GiocatoreUmano){
+                GiocatoreUmano giocatore = (GiocatoreUmano) mazziere;
+                giocatore.stampaCartaCoperta();
+            }
     }
     
     private void stampa_messaggio_rimescola_mazzo(){

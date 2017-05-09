@@ -74,6 +74,13 @@ public class GiocatoreUmano extends Giocatore {
         return puntata;
     }
     
+    /**
+     * Stampa la carta coperta.
+     */
+    public void stampaCartaCoperta(){
+        out.println("Carta Coperta: " + this.carta_coperta);
+    }
+    
     private void controlla_puntata(int puntata) throws PuntataTroppoAltaException, PuntataNegativaException, PuntataNullaException{
         if(this.getFiches() - puntata < 0){
             throw new PuntataTroppoAltaException();
