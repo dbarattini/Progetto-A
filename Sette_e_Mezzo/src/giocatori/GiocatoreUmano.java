@@ -16,6 +16,7 @@ import java.util.Scanner;
 public class GiocatoreUmano extends Giocatore {
     private final InputStream in;
     private final PrintStream out;
+    private final PrintStream err;
     
     /**
      *
@@ -23,11 +24,13 @@ public class GiocatoreUmano extends Giocatore {
      * @param fiches numero di fiches iniziali
      * @param in InputStream (es. System.in)
      * @param out PrintStream (es.System.out)
+     * @param err PrintStream (es.System.err)
      */
-    public GiocatoreUmano(String nome, int fiches, InputStream in, PrintStream out) {
+    public GiocatoreUmano(String nome, int fiches, InputStream in, PrintStream out, PrintStream err) {
         super(nome, fiches);
         this.in = in;
         this.out = out;
+        this.err = err;
     }
     
     @Override
@@ -39,15 +42,13 @@ public class GiocatoreUmano extends Giocatore {
                 controlla_puntata(puntata);
                 return puntata;
             }catch(PuntataNonValidaException ex){
-                out.println("Errore: Il valore inserito non é corretto.");
-                out.println("I valori possibili sono un numero di fiches o all-in");
+                err.println("Errore: Il valore inserito non é corretto. I valori possibili sono un numero di fiches o all-in.");
             } catch (PuntataTroppoAltaException ex) {
-                out.println("Errore: il valore inserito é troppo alto.");
-                out.println("Il massimo valore che puoi puntare é: " + this.getFiches());
+                err.println("Errore: il valore inserito é troppo alto. Il massimo valore che puoi puntare é: " + this.getFiches() +".");
             } catch (PuntataNegativaException ex) {
-                out.println("Errore: il valore inserito non puó essere negativo.");
+                err.println("Errore: il valore inserito non puó essere negativo.");
             } catch (PuntataNullaException ex) {
-                out.println("Errore: il valore inserito non puó essere nullo.");
+                err.println("Errore: il valore inserito non puó essere nullo.");
             }
         }
     }
@@ -73,6 +74,13 @@ public class GiocatoreUmano extends Giocatore {
         return puntata;
     }
     
+    /**
+     * Stampa la carta coperta.
+     */
+    public void stampaCartaCoperta(){
+        out.println("Carta Coperta: " + this.carta_coperta);
+    }
+    
     private void controlla_puntata(int puntata) throws PuntataTroppoAltaException, PuntataNegativaException, PuntataNullaException{
         if(this.getFiches() - puntata < 0){
             throw new PuntataTroppoAltaException();
@@ -94,8 +102,7 @@ public class GiocatoreUmano extends Giocatore {
                 String giocata = richiedi_giocata();
                 return seleziona_giocata(giocata);
             } catch (GiocataNonValidaException ex) {
-                out.println("Errore: La giocata non é stata riconosciuta.");
-                out.println("I valori possibili sono: carta o sto.");
+                err.println("Errore: La giocata non é stata riconosciuta.I valori possibili sono: carta o sto.");
             }
         }
     }  

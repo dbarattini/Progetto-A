@@ -9,9 +9,7 @@ import classi_dati.Giocata;
 import classi_dati.Stato;
 import eccezioni.FineMazzoException;
 import eccezioni.MattaException;
-import eccezioni.MazzoRimescolatoException;
 import elementi_di_gioco.Carta;
-import elementi_di_gioco.Mazzo;
 import java.util.ArrayList;
 
 
@@ -56,47 +54,23 @@ public abstract class Giocatore {
     /**
      * Prende la prima carta della mano e la usa come carta_coperta.
      * 
-     * @param mazzo mazzo della partita
+     * @param carta carta pescata
      * @throws FineMazzoException avvisa se il mazzo non ha piú carte estraibili
      */
-    public void prendi_carta_iniziale(Mazzo mazzo) throws FineMazzoException{
-        carta_coperta = mazzo.estrai_carta();
+    public void prendi_carta_iniziale(Carta carta) throws FineMazzoException{
+        carta_coperta = carta;
         aggiorna_valore_mano();
     }
-    
+
     /**
-     * Il giocatore puó giocare una mano di sette e mezzo.
+     * Effettua una giocata.
      * 
-     * @param mazzo Mazzo della partita
-     * @return Mazzo aggiornato
+     * @return continua o meno la mano.
      */
-    public Mazzo gioca_mano(Mazzo mazzo){
-        boolean continua = true;
-        try {
-            this.valore_mano = this.carta_coperta.getValoreNumerico();
-        } catch (MattaException ex) {
-           valore_mano = 7;
-        }
-        if(! isMazziere()){
-            int valore_puntata = decidi_puntata();
-            punta(valore_puntata);
-        }
-        while(continua){
-            Giocata giocata = decidi_giocata();
-            try {
-                continua = effettua_giocata(giocata,mazzo);
-            } catch (MazzoRimescolatoException ex) {
-                //utile per notifica a gui
-                try {
-                    continua = effettua_giocata(giocata,mazzo);
-                } catch (MazzoRimescolatoException ex1) {
-                    //giá gestita.
-                }
-            } 
-        }
-        return mazzo;
-    };
-    
+    public boolean effettua_giocata(){
+        Giocata giocata = decidi_giocata();
+        return gioca(giocata);
+    }
     /**
      * Consente di decidere la puntata da effettuare.
      * 
@@ -110,41 +84,42 @@ public abstract class Giocatore {
     }
     
     /**
+     * Effettua una puntata.
+     * 
+     */
+    public void effettua_puntata(){
+        int valore_puntata = decidi_puntata();
+        punta(valore_puntata);
+    }
+    
+    /**
      * Consente di decidere la giocata da effettuare.
      * 
      * @return la giocata scelta
      */
     protected abstract Giocata decidi_giocata();
     
-    private boolean effettua_giocata(Giocata giocata, Mazzo mazzo) throws MazzoRimescolatoException{
+    private boolean gioca(Giocata giocata){
         switch(giocata){                
-            case Carta: {
-                try {
-                    chiedi_carta(mazzo);
-                    aggiorna_valore_mano();
-                    controlla_valore_mano();
-                    return true;
-                } catch (FineMazzoException ex) {
-                    mazzo.rimescola();
-                    throw new MazzoRimescolatoException();
-                } catch (SballatoException ex) {
-                    stato = Stato.Sballato;
-                    return false;
-                } catch (SetteeMezzoRealeException ex) {
-                    stato = Stato.SetteeMezzoReale;
-                    return false;
-                } catch (SetteeMezzoException ex) {
-                    stato = Stato.SetteeMezzo;
-                    return false;
-                }
-            }
+            case Carta: return true;
             case Sto: return false;
             default : return true; //impossibile ma senza da errore
         }
     }
     
-    private void chiedi_carta(Mazzo mazzo) throws FineMazzoException{
-        carte_scoperte.add(mazzo.estrai_carta());
+    /**
+     * Prende la carta passata e la usa come carta scoperta.
+     * Aggiorna e controlla il valore della mano.
+     * 
+     * @param carta Carta pescata
+     * @throws SballatoException
+     * @throws SetteeMezzoRealeException
+     * @throws SetteeMezzoException
+     */
+    public void chiedi_carta(Carta carta) throws SballatoException, SetteeMezzoRealeException, SetteeMezzoException{
+        carte_scoperte.add(carta);                    
+        aggiorna_valore_mano();
+        controlla_valore_mano();
     }
       
     private void aggiorna_valore_mano() {
@@ -163,10 +138,10 @@ public abstract class Giocatore {
             }
         }
         if(matta){
-            if(valore_mano == 7){
+            if(carte_scoperte.isEmpty() || valore_mano == 7){ //se la matta è la prima carta pescata, vale 0.5;
                 valore_mano += 0.5;
             } else {
-                valore_mano += Math.abs((int)(7 - valore_mano));
+                valore_mano += Math.round(7 - valore_mano);
             }
         }
         this.valore_mano= valore_mano;
@@ -185,48 +160,47 @@ public abstract class Giocatore {
     }
     
     /**
-     * 
-     * @return fiches che il giocatore paga al mazziere
+     * Consente i pagamenti normali ad un avversario.
+     * @param avversario
+     * @throws MazzierePerdeException
      */
-    public int paga_mazziere(){
-        return puntata;
+    public void paga(Giocatore avversario) throws MazzierePerdeException{
+        int puntata;
+        if(this.isMazziere()){
+            puntata = avversario.getPuntata();
+            this.paga_giocatore(puntata);
+            avversario.riscuoti(puntata);
+        } else{
+            puntata = this.puntata;
+            avversario.riscuoti(puntata);
+        }
     }
     
     /**
-     *
-     * @param puntata valore che il mazziere deve pagare al giocatore
-     * @return fiches che il mazziere paga al giocatore
-     * @throws MazzierePerdeException indica che il mazziere ha finito le fiches
+     * Consente i pagamenti reali ad un avversario.
+     * @param avversario
+     * @throws MazzierePerdeException
      */
-    public int paga_giocatore(int puntata) throws MazzierePerdeException{
+    public void paga_reale(Giocatore avversario) throws MazzierePerdeException{
+        int puntata;
+        if(this.isMazziere()){
+            puntata = avversario.getPuntata() * 2;
+            this.paga_giocatore(puntata);
+            avversario.riscuoti(puntata);
+        } else {
+            puntata = this.paga_reale_mazziere();
+            avversario.riscuoti(puntata);
+        }
+    }
+
+    private void paga_giocatore(int puntata) throws MazzierePerdeException{
         if(fiches - puntata < 0){
             throw new MazzierePerdeException();
         }
         punta(puntata);
-        return paga_mazziere();
     }
-    
-    /**
-     *
-     * @param puntata puntata che il mazziere deve pagare al giocatore
-     * @return fiches che il mazziere paga la giocatore
-     * @throws MazzierePerdeException indica che il mazziere ha finito le fiches
-     */
-    public int paga_reale_giocatore(int puntata) throws MazzierePerdeException{
-        if(fiches - (puntata * 2) < 0){
-            throw new MazzierePerdeException();
-        }
-        punta(puntata * 2);
-        return paga_mazziere();
-    }
-    
-    /**
-     * Se il giocatore finisce le fiches perde ed il mazziere viene pagato con 
-     * tutte le fiches restanti del giocatore.
-     * 
-     * @return fiches che il giocatore paga al mazziere
-     */
-    public int paga_reale_mazziere(){
+
+    private int paga_reale_mazziere(){
         fiches = fiches - (2 *puntata);
         if(fiches < 0){
             int buf = fiches;
@@ -237,11 +211,43 @@ public abstract class Giocatore {
     }
     
     /**
-     *
-     * @param vincita fiches vinte.
+     * Incassa una vincita aggiungendola alle proprie fiches.
+     * 
+     * @param vincita numero di fiches vinte
      */
     public void riscuoti(int vincita){
         fiches = fiches + puntata + vincita;
+    }
+    
+    /**
+     * Azzera il numero di fiches del giocatore.
+     */
+    public void azzera_fiches(){
+        fiches = 0;
+    }
+    
+    /**
+     * Imposta il booleano perso a true.
+     */
+    public void perde(){
+        perso = true;
+    }
+    
+    public boolean haPerso(){
+        return perso;
+    }
+    
+    public boolean isMazziere(){
+        return mazziere;
+    }
+    
+    public void setMazziere(boolean mazziere){
+        this.mazziere = mazziere;
+    }
+    
+    
+    public void setStato(Stato stato){
+        this.stato = stato;
     }
     
     public ArrayList<Carta> getTutteLeCarte(){
@@ -253,27 +259,6 @@ public abstract class Giocatore {
     
     public Carta getUltimaCartaOttenuta(){
         return carte_scoperte.get(carte_scoperte.size() - 1);
-    }
-    
-    public void azzera_fiches(){
-        fiches = 0;
-    }
-    
-    /**
-     * Imposta il booleano perso a true.
-     */
-    public void perde(){
-        perso = true;
-    }
-    public boolean haPerso(){
-        return perso;
-    }
-    public boolean isMazziere(){
-        return mazziere;
-    }
-    
-    public void setMazziere(boolean mazziere){
-        this.mazziere = mazziere;
     }
     
     public double getValoreMano(){
@@ -299,7 +284,7 @@ public abstract class Giocatore {
     public Stato getStato(){
         return stato;
     }
-
+    
     public ArrayList<Carta> getCarteScoperte() {
         return carte_scoperte;
     }
