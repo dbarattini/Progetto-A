@@ -13,6 +13,7 @@ import classi_dati.Stato;
 import eccezioni.FineMazzoException;
 import eccezioni.MazzierePerdeException;
 import giocatori.BotDifficile;
+import giocatori.BotMedio;
 import java.io.InputStream;
 import java.io.PrintStream;
 import java.util.ArrayList;
@@ -100,6 +101,10 @@ public class PartitaOffline {
             switch(difficolta_bot){
                 case Facile : {
                     giocatori.add(new BotFacile("bot"+i, fiches_iniziali, mazzo)); //nomi bot: bot0, bot1, ...
+                    break;
+                }
+                case Medio : {
+                    giocatori.add(new BotMedio("bot"+i, fiches_iniziali, mazzo));
                     break;
                 }
                 case Difficile : {

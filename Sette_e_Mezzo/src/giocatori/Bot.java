@@ -13,12 +13,18 @@ public abstract class Bot extends Giocatore {
         super(nome, fiches);
         this.mazzo = mazzo;
     }
-    
+    /**
+     * 
+     * @return ritorna il valore numerico della carta che se pescata farebbe sballare il giocatore
+     */
     protected double calcola_valore_sballo() {
         double prov = (7.5 - this.valore_mano) + 0.5;
         return prov;
     }
-    
+    /**
+     * 
+     * @return calcola la percentuale di sballare se si decide di chiedere una carta
+     */
     protected double calcola_percentuale_sballo() {
         double sballo = calcola_valore_sballo();
         double percentuale = 0;
