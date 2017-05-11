@@ -27,7 +27,11 @@ public class Menu {
             switch(opzione){
           
                 case GiocaOffline :
-                    PartitaOffline partita = new PartitaOffline(3, 100, DifficoltaBot.Facile, System.in, System.out);
+                    
+                    int n_bot = richiediNbot();
+                    int fiches_iniziali = richiediFichesIniziali();
+                    PartitaOffline partita = new PartitaOffline(n_bot, fiches_iniziali, DifficoltaBot.Facile, System.in, System.out);
+                    
                     break;
                 case GiocaOnline :
                     System.out.println("OPZIONE NON ANCORA DISPONIBILE");
@@ -67,6 +71,30 @@ public class Menu {
                   }
          return opzione;
         }
+    
+    private int richiediNbot() {
+        
+        System.out.println("\n");
+        System.out.println("Quanti bot vuoi affrontare?");
+        
+        Scanner scanner = new Scanner(in);
+        int n_bot;
+        n_bot = scanner.nextInt();
+        
+        return n_bot;
+    }
+    
+    private int richiediFichesIniziali(){
+        System.out.println("\n");
+        System.out.println("Con quante fiches vuoi iniziare?");
+        
+        Scanner scanner = new Scanner(in);
+        int fiches_iniziali;
+        fiches_iniziali = scanner.nextInt();
+        
+        return fiches_iniziali;
+        
+    }
     
 }
 
