@@ -99,7 +99,7 @@ public class PartitaOffline {
         for(int i = 0; i < numero_bot; i++){
             switch(difficolta_bot){
                 case Facile : {
-                    giocatori.add(new BotFacile("bot"+i, fiches_iniziali)); //nomi bot: bot0, bot1, ...
+                    giocatori.add(new BotFacile("bot"+i, fiches_iniziali, mazzo)); //nomi bot: bot0, bot1, ...
                     break;
                 }
                 case Difficile : {
