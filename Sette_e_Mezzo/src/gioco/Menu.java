@@ -17,7 +17,9 @@ public class Menu {
         }
     
     public void selezionaOpzione() throws InterruptedException {
-        while(true){   
+        
+        while(true){  
+            
         annuncio();
         richiediOpzione();
         
@@ -25,7 +27,7 @@ public class Menu {
             switch(opzione){
           
                 case GiocaOffline :
-                    PartitaOffline partita = new PartitaOffline(3, 100, DifficoltaBot.Facile, System.in, System.out);;
+                    PartitaOffline partita = new PartitaOffline(3, 100, DifficoltaBot.Facile, System.in, System.out);
                     break;
                 case GiocaOnline :
                     System.out.println("OPZIONE NON ANCORA DISPONIBILE");
@@ -36,7 +38,7 @@ public class Menu {
                 case RegoleDiGioco :
                     System.out.println("OPZIONE NON ANCORA DISPONIBILE");
                     break;
-            }   
+                }   
             }catch (NullPointerException e){
         }
       }
@@ -61,8 +63,8 @@ public class Menu {
         try{
               opzione = OpzioniMenu.valueOf(input);
               } catch (IllegalArgumentException exc){
-               System.out.println("OPZIONE NON VALIDA");   
-              }
+                  System.out.println("OPZIONE NON VALIDA");   
+                  }
          return opzione;
         }
     
