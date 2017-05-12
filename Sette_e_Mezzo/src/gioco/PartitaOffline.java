@@ -1,6 +1,5 @@
 package gioco;
 
-
 import eccezioni.DifficoltaBotException;
 import eccezioni.FichesInizialiException;
 import eccezioni.NumeroBotException;
@@ -10,29 +9,32 @@ import giocatori.GiocatoreUmano;
 import giocatori.Giocatore;
 import classi_dati.DifficoltaBot;
 import classi_dati.Stato;
+import eccezioni.CanzoneNonTrovataException;
+import eccezioni.CaricamentoCanzoneException;
 import eccezioni.FineMazzoException;
 import eccezioni.MazzierePerdeException;
-
 import eccezioni.SballatoException;
 import eccezioni.SetteeMezzoException;
 import eccezioni.SetteeMezzoRealeException;
 import elementi_di_gioco.Carta;
-
 import giocatori.BotDifficile;
 import giocatori.BotMedio;
-
 import java.io.InputStream;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Scanner;
+import musica.AudioPlayer;
 
 
 public class PartitaOffline {
     private RegoleDiGioco regole_di_gioco = new RegoleDiGioco();
+    private AudioPlayer audio = new AudioPlayer();
     private ArrayList<Giocatore> giocatori=new ArrayList<>();
     private final Mazzo mazzo = new Mazzo();
     private Giocatore mazziere = null;
     private Giocatore next_mazziere = null;
+    public static StatoGioco stato_gioco = StatoGioco.menu;
+    public static int LARGHEZZA = 1280, ALTEZZA = 720;
     int pausa_breve = 1000; //ms
     int pausa_lunga = 2000; //ms
     int n_bot;
@@ -56,14 +58,21 @@ public class PartitaOffline {
         this.out = out;
         this.err = err;
         this.n_bot = numero_bot;
+        
         try {
             inizializza_partita(numero_bot, fiches_iniziali, difficolta_bot);
+            inizializza_audio();
+            audio.riproduci_in_loop("soundTrack");
         }catch (NumeroBotException ex) {
             this.err.println("Errore: Il numero di bot dev'essere un valore compreso tra 1 ed 11.");
         }catch (FichesInizialiException ex) {
             this.err.println("Errore: Il numero di fiches iniziali dev'essere maggiore di 0.");
         }catch (DifficoltaBotException ex) {
             this.err.println("Errore: Le difficolta disponibili sono: Facile. //Work in Progress\\");
+        } catch (CaricamentoCanzoneException ex) {
+            this.err.println("Errore: Impossibile caricare la canzone " + ex.getCanzone());
+        } catch (CanzoneNonTrovataException ex) {
+            this.err.println("Errore: " +ex.getCanzone() + " non caricata/o");
         }
     }
     
@@ -104,6 +113,10 @@ public class PartitaOffline {
                 vittoria();
             }
         }
+    }
+    
+    private void inizializza_audio() throws CaricamentoCanzoneException{
+        audio.carica("LoungeBeat.wav", "soundTrack");
     }
     
     private void inizializza_partita(int numero_bot, int fiches_iniziali, DifficoltaBot difficolta_bot) throws NumeroBotException, FichesInizialiException, DifficoltaBotException{
