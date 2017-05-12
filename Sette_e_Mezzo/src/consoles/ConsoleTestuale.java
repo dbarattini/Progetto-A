@@ -33,26 +33,26 @@ public class ConsoleTestuale implements Console {
         try {
             Menu menu = new Menu();
             menu.selezionaOpzione();
-           OpzioniMenu opzione= menu.getOpzione();
+            OpzioniMenu opzione = menu.getOpzione();
         
-        try{ 
-            switch(opzione){
-          
-                case GiocaOffline :
-                    this.scegliParametri();
-                    break;
-                case GiocaOnline :
-                    System.out.println("OPZIONE NON ANCORA DISPONIBILE");
-                    break;
-                case Impostazioni :
-                    this.scegliOpzione();
-                    break;
-                case RegoleDiGioco :
-                    this.mostraRegole();
-                    break;
-                }   
-            }catch (NullPointerException e){
-        }
+            try{ 
+                switch(opzione){
+                    case GiocaOffline :
+                        this.scegliParametri();
+                        break;
+                    case GiocaOnline :
+                        System.out.println("OPZIONE NON ANCORA DISPONIBILE");
+                        break;
+                    case Impostazioni :
+                        this.scegliOpzione();
+                        break;
+                    case RegoleDiGioco :
+                        this.mostraRegole();
+                        break;
+                }
+            } catch (NullPointerException ex){
+                ex.printStackTrace();
+            }
         } catch (InterruptedException ex) {
             System.out.println("Opzione non valida");
             scegliModalità();

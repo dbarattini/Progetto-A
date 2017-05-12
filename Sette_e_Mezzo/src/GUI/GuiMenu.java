@@ -86,7 +86,8 @@ public class GuiMenu extends JFrame {
         opzioni.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e) {
-                // codice per opzioni
+                new GuiOpzioni();
+                chiudi();                
             };
         });
         
@@ -107,5 +108,9 @@ public class GuiMenu extends JFrame {
 	ClassLoader loader = getClass().getClassLoader();
 	URL percorso = loader.getResource(nome);
 	return new ImageIcon(percorso);
+    }
+    
+    private void chiudi() {
+        dispose();
     }
 }

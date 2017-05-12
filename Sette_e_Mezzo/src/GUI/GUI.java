@@ -12,8 +12,8 @@ public class GUI extends JFrame {
     Sfondo sfondo;
     
     
-    public GUI(String nome) {
-        setTitle(nome);
+    public GUI() {
+        setTitle("Sette e mezzo");
         setPreferredSize(new Dimension(1280, 720));
 	setMinimumSize(new Dimension(1280, 720));		
 	pack();
