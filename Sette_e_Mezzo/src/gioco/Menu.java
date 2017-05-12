@@ -30,8 +30,8 @@ public class Menu {
                     
                     int n_bot = richiediNbot();
                     int fiches_iniziali = richiediFichesIniziali();
-                    PartitaOffline partita = new PartitaOffline(n_bot, fiches_iniziali, DifficoltaBot.Facile, System.in, System.out);
-                    
+                    PartitaOffline partita = new PartitaOffline(n_bot, fiches_iniziali, DifficoltaBot.Facile, System.in, System.out, System.err);
+                    partita.gioca();
                     break;
                 case GiocaOnline :
                     System.out.println("OPZIONE NON ANCORA DISPONIBILE");
