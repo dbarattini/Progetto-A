@@ -7,14 +7,12 @@ import java.net.URL;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 public class GuiMenu extends JFrame {
     
     private JButton partita_off, partita_on, regole, opzioni, indietro;
     private Sfondo sfondo;
-    private JLabel regole_scritte;
     
     public GuiMenu() {
         setTitle("Menu");
@@ -41,14 +39,12 @@ public class GuiMenu extends JFrame {
         regole = new JButton(caricaImmagine("immagini/regole.png"));
         opzioni = new JButton(caricaImmagine("immagini/opzioni.png"));
         indietro = new JButton(caricaImmagine("immagini/indietro.png"));
-        regole_scritte = new JLabel(caricaImmagine("immagini/AssoDenari.png"));
         
         partita_off.setBounds(this.getWidth()/2 - 100, 150, 200, 80);
         partita_on.setBounds(this.getWidth()/2 - 100, 250, 200, 80);
         regole.setBounds(this.getWidth()/2 - 100, 350, 200, 80);
         opzioni.setBounds(this.getWidth()/2 - 100, 450, 200, 80);
         indietro.setBounds(this.getWidth()/2 - 100, 470, 200, 80);
-        regole_scritte.setBounds(this.getWidth()/2 - 50, 150, 500, 50);
         
         partita_off.addActionListener(new ActionListener(){
             @Override
