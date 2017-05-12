@@ -10,13 +10,13 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
-public class Menu extends JFrame {
+public class GuiMenu extends JFrame {
     
     private JButton partita_off, partita_on, regole, opzioni, indietro;
     private Sfondo sfondo;
     private JLabel regole_scritte;
     
-    public Menu() {
+    public GuiMenu() {
         setTitle("Menu");
         setPreferredSize(new Dimension(800, 600));
 	setMinimumSize(new Dimension(800, 600));		

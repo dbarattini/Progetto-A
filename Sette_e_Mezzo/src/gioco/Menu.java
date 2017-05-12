@@ -19,37 +19,17 @@ public class Menu {
     public void selezionaOpzione() throws InterruptedException {
         
         while(true){  
-            
-        annuncio();
-        richiediOpzione();
+            printScelte();
+            opzione=richiediOpzione();
         
-        try{ 
-            switch(opzione){
-          
-                case GiocaOffline :
-                    
-                    int n_bot = richiediNbot();
-                    int fiches_iniziali = richiediFichesIniziali();
-                    PartitaOffline partita = new PartitaOffline(n_bot, fiches_iniziali, DifficoltaBot.Facile, System.in, System.out, System.err);
-                    partita.gioca();
-                    break;
-                case GiocaOnline :
-                    System.out.println("OPZIONE NON ANCORA DISPONIBILE");
-                    break;
-                case Impostazioni :
-                    System.out.println("OPZIONE NON ANCORA DISPONIBILE");
-                    break;
-                case RegoleDiGioco :
-                    System.out.println("OPZIONE NON ANCORA DISPONIBILE");
-                    break;
-                }   
-            }catch (NullPointerException e){
-        }
       }
     }
-        
-    
-    private void annuncio(){
+
+    public OpzioniMenu getOpzione() {
+        return opzione;
+    }
+           
+    public void printScelte(){
         
      out.println("\n");   
      out.println("SELEZIONA UN OPZIONE DAL MENU");
@@ -61,14 +41,15 @@ public class Menu {
     }
     
     private OpzioniMenu richiediOpzione(){
-       
+       OpzioniMenu opzione=null;
         Scanner scanner = new Scanner(in);        
         String input = scanner.next();
         try{
               opzione = OpzioniMenu.valueOf(input);
               } catch (IllegalArgumentException exc){
                   System.out.println("OPZIONE NON VALIDA");   
-                  }
+                  richiediOpzione();
+               }
          return opzione;
         }
     
