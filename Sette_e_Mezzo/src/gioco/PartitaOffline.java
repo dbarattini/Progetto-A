@@ -12,10 +12,15 @@ import classi_dati.DifficoltaBot;
 import classi_dati.Stato;
 import eccezioni.FineMazzoException;
 import eccezioni.MazzierePerdeException;
+
 import eccezioni.SballatoException;
 import eccezioni.SetteeMezzoException;
 import eccezioni.SetteeMezzoRealeException;
 import elementi_di_gioco.Carta;
+
+import giocatori.BotDifficile;
+import giocatori.BotMedio;
+
 import java.io.InputStream;
 import java.io.PrintStream;
 import java.util.ArrayList;
@@ -120,7 +125,15 @@ public class PartitaOffline {
         for(int i = 0; i < numero_bot; i++){
             switch(difficolta_bot){
                 case Facile : {
-                    giocatori.add(new BotFacile("bot"+i, fiches_iniziali)); //nomi bot: bot0, bot1, ...
+                    giocatori.add(new BotFacile("bot"+i, fiches_iniziali, mazzo)); //nomi bot: bot0, bot1, ...
+                    break;
+                }
+                case Medio : {
+                    giocatori.add(new BotMedio("bot"+i, fiches_iniziali, mazzo));
+                    break;
+                }
+                case Difficile : {
+                    giocatori.add(new BotDifficile("bot"+i, fiches_iniziali, mazzo));
                     break;
                 }
                 default: throw new DifficoltaBotException();       
