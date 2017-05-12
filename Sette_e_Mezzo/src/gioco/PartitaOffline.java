@@ -88,7 +88,7 @@ public class PartitaOffline {
                 gioca_round();
                 calcola_risultato();
             } catch (MazzierePerdeException ex) {
-                //da fare, per ora sceglie solo un nuovo mazziere ed azzera le fiches del vecchio
+                out.println("Il mazziere ha perso\n");
                 mazziere.azzera_fiches();
                 mazziere_successivo();
                 for(Giocatore giocatore : giocatori){
@@ -318,12 +318,36 @@ public class PartitaOffline {
         out.println(giocatore.getNome() + " " + giocatore.getCarteScoperte() + " " + giocatore.getStato() + " " + giocatore.getPuntata());
     }
     
-    private void calcola_risultato() throws MazzierePerdeException{      
-        for(Giocatore giocatore : giocatori){
-            if(! giocatore.isMazziere()){              
-                next_mazziere = regole_di_gioco.risultato_mano(mazziere, giocatore, next_mazziere);                       
+    private void calcola_risultato() throws MazzierePerdeException{ 
+        int fichesMazziere=controllaMazziere();
+        if(fichesMazziere>0){
+            for(Giocatore giocatore : giocatori){
+                if(! giocatore.isMazziere()){              
+                    next_mazziere = regole_di_gioco.risultato_mano(mazziere, giocatore, next_mazziere);
+                }
             }
         }
+        else {
+            double fichesAttualiMazziere=(double)mazziere.getFiches();
+            double percentuale=(double)(fichesAttualiMazziere/(fichesAttualiMazziere-fichesMazziere));
+            for(Giocatore giocatore : giocatori){
+                if(! giocatore.isMazziere()){              
+                    next_mazziere = regole_di_gioco.risultato_mano_percentuale(mazziere, giocatore, next_mazziere, percentuale);
+                }
+            }
+             throw new MazzierePerdeException();
+        }
+           
+    }        
+
+    private int controllaMazziere() {
+        int guadagno=mazziere.getFiches();
+        for(Giocatore giocatore : giocatori){
+            if(! giocatore.isMazziere()){
+                guadagno+=regole_di_gioco.controlla_finanze_mazziere(mazziere, giocatore);                       
+            }
+        }
+        return guadagno;
     }
     
    private void mazziere_successivo(){

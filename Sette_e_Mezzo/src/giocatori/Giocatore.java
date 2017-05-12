@@ -162,9 +162,8 @@ public abstract class Giocatore {
     /**
      * Consente i pagamenti normali ad un avversario.
      * @param avversario
-     * @throws MazzierePerdeException
      */
-    public void paga(Giocatore avversario) throws MazzierePerdeException{
+    public void paga(Giocatore avversario){
         int puntata;
         if(this.isMazziere()){
             puntata = avversario.getPuntata();
@@ -176,12 +175,28 @@ public abstract class Giocatore {
         }
     }
     
+     /**
+     * Consente i pagamenti normali ad un avversario.
+     * @param avversario
+     * @param percentuale 
+     */
+    public void pagaPercentuale(Giocatore avversario, double percentuale){
+        int puntata;
+        if(this.isMazziere()){
+            puntata = (int) (avversario.getPuntata()*percentuale);
+            this.paga_giocatore(puntata);
+            avversario.riscuoti(puntata);
+        } else{
+            puntata = (int) (this.puntata*percentuale);
+            avversario.riscuoti(puntata);
+        }
+    }
+    
     /**
      * Consente i pagamenti reali ad un avversario.
      * @param avversario
-     * @throws MazzierePerdeException
      */
-    public void paga_reale(Giocatore avversario) throws MazzierePerdeException{
+    public void paga_reale(Giocatore avversario) {
         int puntata;
         if(this.isMazziere()){
             puntata = avversario.getPuntata() * 2;
@@ -192,13 +207,28 @@ public abstract class Giocatore {
             avversario.riscuoti(puntata);
         }
     }
-
-    private void paga_giocatore(int puntata) throws MazzierePerdeException{
-        if(fiches - puntata < 0){
-            throw new MazzierePerdeException();
+    
+    /**
+     * Consente i pagamenti reali percentuali ad un avversario.
+     * @param avversario
+     * @param percentuale
+     */
+    public void paga_reale_percentuale(Giocatore avversario, double percentuale) {
+        int puntata;
+        if(this.isMazziere()){
+            puntata = (int) (avversario.getPuntata() * 2*percentuale);
+            this.paga_giocatore(puntata);
+            avversario.riscuoti(puntata);
+        } else {
+            puntata = (int) (this.paga_reale_mazziere()*percentuale);
+            avversario.riscuoti(puntata);
         }
-        punta(puntata);
     }
+    private void paga_giocatore(int puntata) {
+         punta(puntata);
+    }
+    
+   
 
     private int paga_reale_mazziere(){
         fiches = fiches - (2 *puntata);
@@ -288,4 +318,6 @@ public abstract class Giocatore {
     public ArrayList<Carta> getCarteScoperte() {
         return carte_scoperte;
     }
+
+    
 }
