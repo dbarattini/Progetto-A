@@ -13,42 +13,50 @@ import javax.sound.sampled.*;
 public class AudioPlayer {
     
     private Map<String, Clip> musica;
+    private static boolean muto = false;
 	
     public AudioPlayer() {
 	musica = new HashMap<>();
     }
 	
     public void riproduci(String s) throws CanzoneNonTrovataException {
-        try{
-            musica.get(s).start();
-        } catch(NullPointerException e){
-            throw new CanzoneNonTrovataException(s);
+        if(!muto) {
+            try{
+                musica.get(s).start();
+            } catch(NullPointerException e){
+                throw new CanzoneNonTrovataException(s);
+            }
         }
     }
     
     public void riavvia(String s) throws CanzoneNonTrovataException{
-        try{
-            riavvolgi(s);
-            riproduci(s);
-        } catch(NullPointerException e){
-            throw new CanzoneNonTrovataException(s);
+        if(!muto) {
+            try{
+                riavvolgi(s);
+                riproduci(s);
+            } catch(NullPointerException e){
+                throw new CanzoneNonTrovataException(s);
+            }
         }
-
     }
     
     private void riavvolgi(String s) throws CanzoneNonTrovataException{
-        try{
-            musica.get(s).setFramePosition(0);
-        } catch(NullPointerException e){
-            throw new CanzoneNonTrovataException(s);
+        if(!muto) {
+            try{
+                musica.get(s).setFramePosition(0);
+            } catch(NullPointerException e){
+                throw new CanzoneNonTrovataException(s);
+            }
         }
     }
     
     public void riproduci_in_loop(String s) throws CanzoneNonTrovataException {
-        try{
-            musica.get(s).loop(Clip.LOOP_CONTINUOUSLY);
-        } catch(NullPointerException e){
-            throw new CanzoneNonTrovataException(s);
+        if(!muto) {
+            try{
+                musica.get(s).loop(Clip.LOOP_CONTINUOUSLY);
+            } catch(NullPointerException e){
+                throw new CanzoneNonTrovataException(s);
+            }
         }
     }
 	
