@@ -1,10 +1,12 @@
-package gioco;
+package menu;
+
+import menu.MenuPrincipale;
 
 public class TesterMenu {
 
     public static void main(String[] args) throws InterruptedException {
 
-        Menu menu = new Menu();
+        MenuPrincipale menu = new MenuPrincipale();
         menu.selezionaOpzione();
 
     }

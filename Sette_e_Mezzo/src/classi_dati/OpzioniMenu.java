@@ -4,6 +4,6 @@ package classi_dati;
 
 public enum OpzioniMenu {
     
-        GiocaOffline, GiocaOnline, Impostazioni, RegoleDiGioco 
+        GiocaOffline, GiocaOnline, Impostazioni, RegoleDiGioco, Esci
     
 }
