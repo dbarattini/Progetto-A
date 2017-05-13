@@ -5,6 +5,7 @@
  */
 package DB;
 
+import eccezioni.datoGiaPresente;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -23,28 +24,27 @@ public class SQL {
     }
 
     
-    public void creaTabella()
-  {
-    try {
-      Class.forName("org.sqlite.JDBC");
-      c = DriverManager.getConnection("jdbc:sqlite:setteEmezzo.db");
-      System.out.println("Database aperto");
-      stmt = c.createStatement();
-      String sql = "CREATE TABLE PROFILO " +
-                    "(USERNAME TEXT PRIMARY KEY     NOT NULL,"+
-                   " FICHES             INT , " + 
-                   "VITTORIE INT)" ;
-      stmt.executeUpdate(sql);
+    private void creaTabella(){
+        try {
+            Class.forName("org.sqlite.JDBC");
+            c = DriverManager.getConnection("jdbc:sqlite:setteEmezzo.db");
+            System.out.println("Database aperto");
+            stmt = c.createStatement();
+            String sql = "CREATE TABLE PROFILO " +
+                          "(USERNAME TEXT PRIMARY KEY     NOT NULL,"+
+                         " FICHES             INT , " + 
+                         "VITTORIE INT)" ;
+            stmt.executeUpdate(sql);
             chiudiDatabase();
-    } catch ( Exception e ) {
-            chiudiDatabase();
-    }
-    System.out.println("Tabella creata!");
+            System.out.println("Tabella creata!");
+        } catch ( Exception e ) {
+             chiudiDatabase();
+        }    
   }
 
     
     
-    public  void aggiungiDato(String user, int fiches, int vittorie  )
+    public  void aggiungiDato(String user, int fiches, int vittorie  ) throws datoGiaPresente
   {
        try {
       Class.forName("org.sqlite.JDBC");
@@ -59,31 +59,35 @@ public class SQL {
       stmt.executeUpdate(sql);      
       c.commit();
       chiudiDatabase();
+      System.out.println("Dato aggiunto correttamente");
     } catch ( Exception e ) {
-      System.err.println( e.getClass().getName() + ": " + e.getMessage() );
-      chiudiDatabase();
+           System.out.println("dato già presente");
+           chiudiDatabase();
+           throw new datoGiaPresente(e.getMessage());           
     }
-    System.out.println("Dato aggiunto correttamente");
+    
   }
     
     
     public void setFiches(String user, int fiches)
   {
     
-    try {
-      Class.forName("org.sqlite.JDBC");
-      c = DriverManager.getConnection("jdbc:sqlite:setteEmezzo.db");
-      c.setAutoCommit(false);
-      String dato= "UPDATE PROFILO set FICHES ="+fiches+" where USERNAME='"+user+"';";
-      String sql = dato;
-      stmt.executeUpdate(sql);
-      c.commit();
+        try {
+            Class.forName("org.sqlite.JDBC");
+            c = DriverManager.getConnection("jdbc:sqlite:setteEmezzo.db");
+            c.setAutoCommit(false);
+            stmt = c.createStatement();
+            String dato= "UPDATE PROFILO set FICHES ="+fiches+" where USERNAME= '"+user+"';";
+            String sql = dato;
+            stmt.executeUpdate(sql);
+            c.commit();
             chiudiDatabase();
-    } catch ( Exception e ) {
-      System.err.println( e.getClass().getName() + ": " + e.getMessage() );
-      chiudiDatabase();
-    }
-    System.out.println("fiches aggiornate con successo");
+            System.out.println("fiches aggiornate con successo");
+        } catch ( Exception e ) {
+            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+            chiudiDatabase();
+        }
+   
   }
     
    public int getFiches( String user )
@@ -97,8 +101,11 @@ public class SQL {
             while ( rs.next() ) {
                 String  username = rs.getString("USERNAME");
                 int fiches  = rs.getInt("FICHES");
-                if(username.equals(user))
+                if(username.equals(user)){
+                    rs.close();
+                    chiudiDatabase();
                     return fiches;
+                }
             }
             rs.close();
             chiudiDatabase();
@@ -115,7 +122,7 @@ public class SQL {
                     Class.forName("org.sqlite.JDBC");
                     c = DriverManager.getConnection("jdbc:sqlite:setteEmezzo.db");
                     c.setAutoCommit(false);
-
+                    stmt = c.createStatement();
                     ResultSet rs = stmt.executeQuery( "SELECT * FROM PROFILO;" );
                     while ( rs.next() ) {
                         String  username = rs.getString("USERNAME");
@@ -124,17 +131,44 @@ public class SQL {
                         if(username.equals(user))
                             vittorie=vit;
                     }
-            String dato= "UPDATE PROFILO set VITTORE ="+vittorie+" where USERNAME='"+user+"';";
+            String dato= "UPDATE PROFILO set VITTORIE ="+vittorie+" where USERNAME='"+user+"';";
             String sql = dato;
             stmt.executeUpdate(sql);
             c.commit();
             chiudiDatabase();
+            System.out.println("aggiunta vittoria");
     } catch ( Exception e ) {
             System.err.println( e.getClass().getName() + ": " + e.getMessage() );
             chiudiDatabase();
     }
-    System.out.println("aggiunta vittoria");
+    
   }
+    
+    public int getVittorie( String user )
+  {
+        try {
+            Class.forName("org.sqlite.JDBC");
+            c = DriverManager.getConnection("jdbc:sqlite:setteEmezzo.db");
+            c.setAutoCommit(false);   
+            stmt = c.createStatement();
+            ResultSet rs = stmt.executeQuery( "SELECT * FROM PROFILO;" );
+            while ( rs.next() ) {
+                String  username = rs.getString("USERNAME");
+                int vittorie  = rs.getInt("VITTORIE");
+                if(username.equals(user)){
+                    rs.close();
+                    chiudiDatabase();
+                    return vittorie;
+                }
+            }
+            rs.close();
+            chiudiDatabase();
+            } catch ( Exception e ) {
+                  System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+                  chiudiDatabase();
+            }
+            return 0;
+    }
     
     private void chiudiDatabase() {
         try {
@@ -144,8 +178,6 @@ public class SQL {
             Logger.getLogger(SQL.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    public static void main(String[] args) { 
-      
-    }
+    
     
 }
