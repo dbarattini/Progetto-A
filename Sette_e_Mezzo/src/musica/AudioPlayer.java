@@ -13,14 +13,14 @@ import javax.sound.sampled.*;
 public class AudioPlayer {
     
     private Map<String, Clip> musica;
-    private static boolean muto = false;
+    public static boolean MUTO = false;
 	
     public AudioPlayer() {
 	musica = new HashMap<>();
     }
 	
     public void riproduci(String s) throws CanzoneNonTrovataException {
-        if(!muto) {
+        if(!MUTO) {
             try{
                 musica.get(s).start();
             } catch(NullPointerException e){
@@ -30,7 +30,7 @@ public class AudioPlayer {
     }
     
     public void riavvia(String s) throws CanzoneNonTrovataException{
-        if(!muto) {
+        if(!MUTO) {
             try{
                 riavvolgi(s);
                 riproduci(s);
@@ -41,7 +41,7 @@ public class AudioPlayer {
     }
     
     private void riavvolgi(String s) throws CanzoneNonTrovataException{
-        if(!muto) {
+        if(!MUTO) {
             try{
                 musica.get(s).setFramePosition(0);
             } catch(NullPointerException e){
@@ -51,7 +51,7 @@ public class AudioPlayer {
     }
     
     public void riproduci_in_loop(String s) throws CanzoneNonTrovataException {
-        if(!muto) {
+        if(!MUTO) {
             try{
                 musica.get(s).loop(Clip.LOOP_CONTINUOUSLY);
             } catch(NullPointerException e){
