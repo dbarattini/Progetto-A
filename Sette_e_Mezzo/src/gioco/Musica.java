@@ -6,6 +6,8 @@
 package gioco;
 
 import classi_dati.ImpostazioniMusica;
+import eccezioni.CanzoneNonTrovataException;
+import eccezioni.CaricamentoCanzoneException;
 import static java.lang.System.in;
 import static java.lang.System.out;
 import java.util.Scanner;
@@ -21,33 +23,43 @@ public class Musica {
     private ImpostazioniMusica impostazioni;
 
     public Musica() {
-       
+       this.audio = new AudioPlayer();
     }
     
-    public void selezionaImpostazione() throws InterruptedException {
+    public void selezionaImpostazione() throws InterruptedException, CanzoneNonTrovataException, CaricamentoCanzoneException {
         while(true) {
             printOpzioniMusica();
             ImpostazioniMusica impostazioni = null;
             impostazioni = richiediImpostazioneMusica();
+            
+            
         
             try {
                 
                 switch(impostazioni) {
                 
                     case Play: 
-                        System.out.println("da implementare");
+                        audio.carica("LoungeBeat.wav", "soundTrack");
+                        audio.riproduci("soundTrack");
                         break;
                     case Stop:
-                        System.out.println("da implementare");
+                        audio.ferma("soundTrack");
                         break;
                     case Riavvia:
-                        System.out.println("da implementare");
+                        audio.riavvia("soundTrack");
                         break;
                     case Loop:
-                        System.out.println("Da implementare");
+                        audio.carica("LoungeBeat.wav", "soundTrack");
+                        audio.riproduci_in_loop("soundTrack");
                         break;
                     case Carica:
-                        System.out.println("da implementare");
+                        System.out.println("Inserisci la canzone da caricare");
+                        Scanner scanner = new Scanner(in);        
+                        String input = scanner.next();
+                        Scanner scanner2 = new Scanner(in);        
+                        String input2 = scanner.next();
+                        audio.carica(input, input2);
+                        audio.riproduci(input2);
                         break;
                 }
             } catch (NullPointerException e) {    
@@ -73,18 +85,23 @@ public class Musica {
         try { 
                 if(input.equals("1") || input.toLowerCase().equals("play")) {
                     impostazioni_prov=ImpostazioniMusica.Play;
+                    System.out.println("Hai selezionato PLAY");
                 }
                 if (input.equals("2") || input.toLowerCase().equals("stop")) {
                     impostazioni_prov=ImpostazioniMusica.Stop;
+                    System.out.println("Hai selezionato STOP");
                 }
                 if (input.equals("3") || input.toLowerCase().equals("riavvia")) {
-                impostazioni_prov=ImpostazioniMusica.Riavvia;
+                    impostazioni_prov=ImpostazioniMusica.Riavvia;
+                    System.out.println("Hai selezionato RIAVVIA");
                 }
                 if (input.equals("4") || input.toLowerCase().equals("loop")) {
-                impostazioni_prov=ImpostazioniMusica.Loop;
+                    impostazioni_prov=ImpostazioniMusica.Loop;
+                    System.out.println("Hai selezionato LOOP");
                 }
                 if (input.equals("5") || input.toLowerCase().equals("carica")) {
-                impostazioni_prov=ImpostazioniMusica.Carica;
+                    impostazioni_prov=ImpostazioniMusica.Carica;
+                    System.out.println("Hai selezionato CARICA");
                 }
             }   
                 catch (IllegalArgumentException ex){
