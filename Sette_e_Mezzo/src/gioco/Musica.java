@@ -33,7 +33,6 @@ public class Musica {
             impostazioni = richiediImpostazioneMusica();
             
             
-        
             try {
                 
                 switch(impostazioni) {
@@ -46,6 +45,7 @@ public class Musica {
                         audio.ferma("soundTrack");
                         break;
                     case Riavvia:
+                        audio.ferma("soundTrack");
                         audio.riavvia("soundTrack");
                         break;
                     case Loop:
