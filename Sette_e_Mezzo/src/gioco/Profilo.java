@@ -5,11 +5,17 @@
  */
 package gioco;
 
+import DB.SQL;
+import giocatori.Giocatore;
+
 /**
  *
  * @author Max & family
  */
 public class Profilo {
+    
+    private SQL db;
+    
     
     
 }
