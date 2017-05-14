@@ -6,6 +6,8 @@
 package gioco;
 
 import classi_dati.ImpostazioniMenu;
+import eccezioni.CanzoneNonTrovataException;
+import eccezioni.CaricamentoCanzoneException;
 import static java.lang.System.in;
 import static java.lang.System.out;
 import java.util.Scanner;
@@ -21,7 +23,7 @@ public class Impostazioni {
     public Impostazioni() {
     }
     
-    public void selezionaImpostazione() throws InterruptedException {
+    public void selezionaImpostazione() throws InterruptedException, CanzoneNonTrovataException, CaricamentoCanzoneException {
         while(true) {
             printImpostazioni();
             ImpostazioniMenu impostazioni = null;
@@ -39,7 +41,8 @@ public class Impostazioni {
                         System.out.println("da implementare");
                         break;
                     case Riconoscimenti:
-                        System.out.println("da implementare");
+                        Riconoscimenti riconoscimenti = new Riconoscimenti();
+                        riconoscimenti.printRiconoscimenti();
                         break;
                 }
             } catch (NullPointerException e) {    
@@ -51,8 +54,8 @@ public class Impostazioni {
         
         out.println("\n");
         out.println("SELEZIONA UN'IMPOSTAZIONE:");
-        out.println("1. Musica");
-        out.println("2. Profilo");
+        out.println("1. Musica\n");
+        out.println("2. Profilo\n");
         out.println("3. Riconoscimenti\n");
     }
     
@@ -73,7 +76,7 @@ public class Impostazioni {
                 } 
             }   
                 catch (IllegalArgumentException ex){
-                System.out.println("IMPOSTAZIONE NON VALIDA");
+                System.out.println("IMPOSTAZIONE NON VALIDA\n");
                 }
 
 //                if(impostazioni_prov == null) {
