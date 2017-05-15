@@ -50,7 +50,10 @@ public class PartitaOffline extends Observable {
      * @param fiches_iniziali numero di fiches iniziali per ogni giocatore
      * @param difficolta_bot difficoltá di tutti i bot della partita
      */
-    public PartitaOffline(int numero_bot, int fiches_iniziali, DifficoltaBot difficolta_bot){
+    public PartitaOffline(int numero_bot, int fiches_iniziali, DifficoltaBot difficolta_bot, InputStream in, PrintStream out, PrintStream err){
+        this.in = in;
+        this.out = out;
+        this.err = err;
         this.n_bot = numero_bot;
         this.setChanged();
         this.notifyObservers(n_bot);

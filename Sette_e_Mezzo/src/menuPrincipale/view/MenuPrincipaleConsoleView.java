@@ -74,7 +74,7 @@ public class MenuPrincipaleConsoleView implements MenuPrincipaleView, Observer{
                 case GiocaOffline: break;
                 case GiocaOnline : break;
                 case Impostazioni: break;
-                case RegoleDiGioco: new RegoleConsole();
+                case RegoleDiGioco: RegoleConsole regoleConsole = new RegoleConsole();
                                     break;
             }
             run();

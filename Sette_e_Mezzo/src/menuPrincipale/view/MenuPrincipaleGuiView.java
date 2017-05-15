@@ -82,8 +82,6 @@ public class MenuPrincipaleGuiView extends JFrame implements MenuPrincipaleView,
             public void actionPerformed(ActionEvent e) {
                 opzione = "RegoleDiGioco";
                 fireOpzioneSceltaEvent();
-                //lanciaregoledigioco
-                dispose();
             }
         });
         
