@@ -10,5 +10,7 @@ public class Sette_e_Mezzo_Textual {
         MenuPrincipaleModel model = new MenuPrincipaleModel();
         MenuPrincipaleConsoleView view = new MenuPrincipaleConsoleView(model);
         MenuPrincipaleController controller = new MenuPrincipaleController(model, view);
+        
+        view.run();
     }
 }

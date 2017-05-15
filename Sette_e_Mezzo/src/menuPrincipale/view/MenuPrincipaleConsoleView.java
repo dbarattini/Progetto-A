@@ -10,6 +10,7 @@ import menuPrincipale.events.OpzioneScelta;
 import menuPrincipale.events.OpzioneSceltaListener;
 import menuPrincipale.events.SceltaNonValida;
 import menuPrincipale.model.MenuPrincipaleModel;
+import modules.MenuPrePartitaConsole;
 import modules.RegoleConsole;
 
 
@@ -71,10 +72,11 @@ public class MenuPrincipaleConsoleView implements MenuPrincipaleView, Observer{
         } else{
             OpzioniMenu opzione = (OpzioniMenu) arg;
             switch(opzione){
-                case GiocaOffline: break;
+                case GiocaOffline: new MenuPrePartitaConsole();
+                                   break;
                 case GiocaOnline : break;
                 case Impostazioni: break;
-                case RegoleDiGioco: RegoleConsole regoleConsole = new RegoleConsole();
+                case RegoleDiGioco: new RegoleConsole();
                                     break;
             }
             run();
