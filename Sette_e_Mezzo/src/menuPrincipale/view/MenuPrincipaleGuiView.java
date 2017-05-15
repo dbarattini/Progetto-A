@@ -1,20 +1,33 @@
-package GUI;
+package menuPrincipale.view;
 
+import GUI.Sfondo;
 import classi_dati.OpzioniMenu;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.net.URL;
+import java.util.Observable;
+import java.util.Observer;
+import java.util.concurrent.CopyOnWriteArrayList;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
+import menuPrincipale.events.OpzioneScelta;
+import menuPrincipale.events.OpzioneSceltaListener;
+import menuPrincipale.events.SceltaNonValida;
+import menuPrincipale.model.MenuPrincipaleModel;
+import modules.RegoleGui;
 
-public class GuiMenuPrincipale extends JFrame{
-    OpzioniMenu modalita = null;
+public class MenuPrincipaleGuiView extends JFrame implements MenuPrincipaleView, Observer{
+    private String opzione;
     private JButton partita_off, partita_on, regole, opzioni;
     private Sfondo sfondo;
+    private final CopyOnWriteArrayList<OpzioneSceltaListener> listeners;
     
-    public GuiMenuPrincipale() {  
+    public MenuPrincipaleGuiView(MenuPrincipaleModel model) { 
+        listeners = new CopyOnWriteArrayList<>();
+        model.addObserver(this);
         inizializza_GUI();       
         setVisible(true);
     }
@@ -47,7 +60,9 @@ public class GuiMenuPrincipale extends JFrame{
         partita_off.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e) {
-                modalita = OpzioniMenu.GiocaOffline;
+                opzione = "GiocaOffline";
+                fireOpzioneSceltaEvent();
+                //lancia giocaoffline
                 dispose();
             };
         });
@@ -55,7 +70,9 @@ public class GuiMenuPrincipale extends JFrame{
         partita_on.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e) {
-                modalita = OpzioniMenu.GiocaOnline;
+                opzione = "GiocaOnline";
+                fireOpzioneSceltaEvent();
+                //lanciagiocaonline
                 dispose();
             };
         });
@@ -63,7 +80,9 @@ public class GuiMenuPrincipale extends JFrame{
         regole.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e) {
-                modalita = OpzioniMenu.RegoleDiGioco;
+                opzione = "RegoleDiGioco";
+                fireOpzioneSceltaEvent();
+                //lanciaregoledigioco
                 dispose();
             }
         });
@@ -71,7 +90,9 @@ public class GuiMenuPrincipale extends JFrame{
         opzioni.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e) {
-                modalita = OpzioniMenu.Impostazioni;
+                opzione = "Impostazioni";
+                fireOpzioneSceltaEvent();
+                //lanciaimpostazioni
                 dispose();
             };
         });
@@ -86,8 +107,39 @@ public class GuiMenuPrincipale extends JFrame{
 	URL percorso = loader.getResource(nome);
 	return new ImageIcon(percorso);
     }
+
+    @Override
+    public void addOpzioneSceltaListener(OpzioneSceltaListener l) {
+        listeners.add(l);
+    }
+
+    @Override
+    public void removeOpzioneSceltaListener(OpzioneSceltaListener l) {
+        listeners.remove(l);
+    }
     
-    public OpzioniMenu getModalita(){
-        return modalita;
+    protected void fireOpzioneSceltaEvent() {
+        OpzioneScelta evt = new OpzioneScelta(this, opzione);
+
+        for (OpzioneSceltaListener l : listeners) {
+            l.OpzioneSceltaEventReceived(evt);
+        }
+    }
+
+    @Override
+    public void update(Observable o, Object arg) {
+        if(arg instanceof SceltaNonValida){
+            JOptionPane.showMessageDialog(null, "La scelta effettuata non é valida.", "Scelta Non Valida", JOptionPane.ERROR_MESSAGE);
+        } else{            
+            OpzioniMenu opzione = (OpzioniMenu) arg;
+            switch(opzione){
+                case GiocaOffline: break;
+                case GiocaOnline : break;
+                case Impostazioni: break;
+                case RegoleDiGioco: new RegoleGui();
+                                    break;
+            }
+            
+        }
     }
 }

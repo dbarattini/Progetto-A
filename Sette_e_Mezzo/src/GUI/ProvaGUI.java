@@ -1,9 +1,11 @@
 package GUI;
 
+import menuPrincipale.view.MenuPrincipaleGuiView;
+
 public class ProvaGUI {
     
     public static void main(String[] args) {
         //GUI gui = new GUI("Sette e Mezzo");
-        GuiMenuPrincipale menu = new GuiMenuPrincipale();
+//        MenuPrincipaleGuiView menu = new MenuPrincipaleGuiView();
     }
 }

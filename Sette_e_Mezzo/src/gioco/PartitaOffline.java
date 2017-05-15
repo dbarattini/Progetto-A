@@ -22,11 +22,12 @@ import giocatori.BotMedio;
 import java.io.InputStream;
 import java.io.PrintStream;
 import java.util.ArrayList;
+import java.util.Observable;
 import java.util.Scanner;
 import musica.AudioPlayer;
 
 
-public class PartitaOffline {
+public class PartitaOffline extends Observable {
     private RegoleDiGioco regole_di_gioco = new RegoleDiGioco();
     private AudioPlayer audio = new AudioPlayer();
     private ArrayList<Giocatore> giocatori=new ArrayList<>();
@@ -48,16 +49,11 @@ public class PartitaOffline {
      * @param numero_bot numero di bot iniziali
      * @param fiches_iniziali numero di fiches iniziali per ogni giocatore
      * @param difficolta_bot difficoltá di tutti i bot della partita
-     * @param in InputStream (es. System.in)
-     * @param out PrintStream (es. System.out)
-     * @param err PrintStream (es. System.err)
-     * @throws InterruptedException lanciata dai Thread.pause
      */
-    public PartitaOffline(int numero_bot, int fiches_iniziali, DifficoltaBot difficolta_bot, InputStream in, PrintStream out, PrintStream err) throws InterruptedException{
-        this.in = in;
-        this.out = out;
-        this.err = err;
+    public PartitaOffline(int numero_bot, int fiches_iniziali, DifficoltaBot difficolta_bot){
         this.n_bot = numero_bot;
+        this.setChanged();
+        this.notifyObservers(n_bot);
         
         try {
             inizializza_partita(numero_bot, fiches_iniziali, difficolta_bot);
