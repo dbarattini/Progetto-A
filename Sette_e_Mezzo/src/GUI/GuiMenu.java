@@ -47,7 +47,8 @@ public class GuiMenu extends JFrame {
         partita_off.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e) {
-                // codice per gioca offline
+                new GuiPreOffline();
+                chiudi();
             };
         });
         

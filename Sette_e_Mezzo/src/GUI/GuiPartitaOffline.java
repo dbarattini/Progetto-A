@@ -7,12 +7,12 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
-public class GUI extends JFrame {
+public class GuiPartitaOffline extends JFrame {
     
     Sfondo sfondo;
     
     
-    public GUI() {
+    public GuiPartitaOffline() {
         setTitle("Sette e mezzo");
         setPreferredSize(new Dimension(1280, 720));
 	setMinimumSize(new Dimension(1280, 720));		

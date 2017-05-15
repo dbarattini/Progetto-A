@@ -17,7 +17,7 @@ public class GuiOpzioni  extends JFrame {
     private ImageIcon musicaOn, musicaOff;
     
     public GuiOpzioni() {
-        setTitle("Menu");
+        setTitle("Opzioni");
         setPreferredSize(new Dimension(800, 600));
         setMinimumSize(new Dimension(800, 600));		
         pack();
