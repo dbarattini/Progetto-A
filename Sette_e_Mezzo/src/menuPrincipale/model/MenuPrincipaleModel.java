@@ -1,7 +1,6 @@
 
 package menuPrincipale.model;
 
-import partitaOffline.view.PartitaOfflineGuiView;
 import dominio.classi_dati.OpzioniMenu;
 import java.util.Observable;
 import menuPrincipale.events.SceltaNonValida;

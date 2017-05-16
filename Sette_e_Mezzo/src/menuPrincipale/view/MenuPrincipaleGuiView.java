@@ -17,6 +17,7 @@ import menuPrincipale.events.OpzioneScelta;
 import menuPrincipale.events.OpzioneSceltaListener;
 import menuPrincipale.events.SceltaNonValida;
 import menuPrincipale.model.MenuPrincipaleModel;
+import modules.MenuPrePartitaGui;
 import modules.RegoleGui;
 
 public class MenuPrincipaleGuiView extends JFrame implements MenuPrincipaleView, Observer{
@@ -44,14 +45,14 @@ public class MenuPrincipaleGuiView extends JFrame implements MenuPrincipaleView,
         getContentPane().setLayout(null);
         
         
-        sfondo = new Sfondo("immagini/sfondomenu.jpg", 800, 570);
+        sfondo = new Sfondo("dominio/immagini/sfondomenu.jpg", 800, 570);
         sfondo.setBounds(0, 0, 800, 600);
         add(sfondo);
         
-        partita_off = new JButton(caricaImmagine("immagini/offline.png"));
-        partita_on = new JButton(caricaImmagine("immagini/online.png"));
-        regole = new JButton(caricaImmagine("immagini/regole.png"));
-        opzioni = new JButton(caricaImmagine("immagini/opzioni.png"));
+        partita_off = new JButton(caricaImmagine("dominio/immagini/offline.png"));
+        partita_on = new JButton(caricaImmagine("dominio/immagini/online.png"));
+        regole = new JButton(caricaImmagine("dominio/immagini/regole.png"));
+        opzioni = new JButton(caricaImmagine("dominio/immagini/opzioni.png"));
         
         partita_off.setBounds(this.getWidth()/2 - 100, 150, 200, 80);
         partita_on.setBounds(this.getWidth()/2 - 100, 250, 200, 80);
@@ -62,7 +63,6 @@ public class MenuPrincipaleGuiView extends JFrame implements MenuPrincipaleView,
             public void actionPerformed(ActionEvent e) {
                 opzione = "GiocaOffline";
                 fireOpzioneSceltaEvent();
-                //lancia giocaoffline
                 dispose();
             };
         });
@@ -72,7 +72,6 @@ public class MenuPrincipaleGuiView extends JFrame implements MenuPrincipaleView,
             public void actionPerformed(ActionEvent e) {
                 opzione = "GiocaOnline";
                 fireOpzioneSceltaEvent();
-                //lanciagiocaonline
                 dispose();
             };
         });
@@ -131,7 +130,8 @@ public class MenuPrincipaleGuiView extends JFrame implements MenuPrincipaleView,
         } else{            
             OpzioniMenu opzione = (OpzioniMenu) arg;
             switch(opzione){
-                case GiocaOffline: break;
+                case GiocaOffline: new MenuPrePartitaGui();
+                                    break;
                 case GiocaOnline : break;
                 case Impostazioni: break;
                 case RegoleDiGioco: new RegoleGui();
