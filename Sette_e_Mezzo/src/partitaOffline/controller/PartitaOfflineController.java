@@ -22,6 +22,7 @@ public class PartitaOfflineController implements PartitaOfflineViewEventListener
     
     public void run(){
         this.model.inizializza_partita(this.model.getN_bot(), this.model.getDifficolta_bot(), this.model.getFiches_iniziali());
+        model.addGiocatoreLocaleEventListener(view);
         try {
             this.model.gioca();
         } catch (InterruptedException ex) {

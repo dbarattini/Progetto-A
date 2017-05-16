@@ -8,7 +8,6 @@ import eccezioni.PuntataNegativaException;
 import eccezioni.PuntataNullaException;
 import eccezioni.PuntataTroppoAltaException;
 import giocatori.Giocatore;
-import java.util.Scanner;
 import java.util.concurrent.CopyOnWriteArrayList;
 import partitaOffline.events.GiocatoreLocaleEvent;
 import partitaOffline.events.GiocatoreLocaleEventListener;

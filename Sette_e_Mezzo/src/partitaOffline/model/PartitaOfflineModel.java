@@ -28,6 +28,8 @@ import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import musica.AudioPlayer;
+import partitaOffline.events.EstrattoMazziere;
+import partitaOffline.events.GiocatoreLocaleEventListener;
 import partitaOffline.events.Messaggio;
 import partitaOffline.events.RichiediNome;
 
@@ -36,6 +38,7 @@ public class PartitaOfflineModel extends Observable {
     private RegoleDiGioco regole_di_gioco = new RegoleDiGioco();
     private AudioPlayer audio = new AudioPlayer();
     private ArrayList<Giocatore> giocatori=new ArrayList<>();
+    private GiocatoreUmano giocatore_locale;
     private final Mazzo mazzo = new Mazzo();
     private Giocatore mazziere = null;
     private Giocatore next_mazziere = null;
@@ -88,7 +91,9 @@ public class PartitaOfflineModel extends Observable {
         Thread.sleep(pausa_breve);
         
         estrai_mazziere();
-        stampa_schermata_estrai_mazziere();
+        
+        this.setChanged();
+        this.notifyObservers(new EstrattoMazziere());
         
         mazzo.aggiorna_fine_round();
         mazzo.rimescola();
@@ -169,8 +174,8 @@ public class PartitaOfflineModel extends Observable {
     private void inizializza_giocatore(int fiches_iniziali){
         this.setChanged();
         this.notifyObservers(new RichiediNome());
-        
-        giocatori.add(new GiocatoreUmano(nome_giocatore,fiches_iniziali));
+        giocatore_locale = new GiocatoreUmano(nome_giocatore,fiches_iniziali);
+        giocatori.add(giocatore_locale);
     }
     
     public void setNomeGiocatore(String nome_giocatore){
@@ -462,5 +467,19 @@ public class PartitaOfflineModel extends Observable {
         return fiches_iniziali;
     }
     
+    public void addGiocatoreLocaleEventListener(GiocatoreLocaleEventListener l){
+        giocatore_locale.addGiocatoreLocaleEventListener(l);
+    }
     
+    public void removeGiocatoreLocaleEventListener(GiocatoreLocaleEventListener l){
+        giocatore_locale.removeGiocatoreLocaleEventListener(l);
+    }
+
+    public ArrayList<Giocatore> getGiocatori() {
+        return giocatori;
+    }
+
+    public Giocatore getMazziere() {
+        return mazziere;
+    }
 }
