@@ -1,11 +1,11 @@
 package partitaOffline.controller;
 
-import dominio.classi_dati.DifficoltaBot;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import partitaOffline.events.PartitaOfflineViewEvent;
 import partitaOffline.events.PartitaOfflineViewEventListener;
 import partitaOffline.events.SetNome;
+import partitaOffline.events.SetPuntata;
 import partitaOffline.model.PartitaOfflineModel;
 import partitaOffline.view.PartitaOfflineView;
 
@@ -34,7 +34,9 @@ public class PartitaOfflineController implements PartitaOfflineViewEventListener
     public void PartitaOfflineViewEventReceived(PartitaOfflineViewEvent evt) {
         if(evt.getArg() instanceof SetNome){
             model.setNomeGiocatore(((SetNome)evt.getArg()).getNome());
-        }
+        } else if(evt.getArg() instanceof SetPuntata){
+        model.getGiocatoreLocale().PuntataInserita(((SetPuntata)evt.getArg()).getPuntata());
+    }
     }
     
     

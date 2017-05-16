@@ -24,12 +24,10 @@ import java.io.InputStream;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Observable;
-import java.util.Scanner;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import dominio.musica.AudioPlayer;
 import partitaOffline.events.EstrattoMazziere;
 import partitaOffline.events.GiocatoreLocaleEventListener;
+import partitaOffline.events.MazzoRimescolato;
 import partitaOffline.events.Messaggio;
 import partitaOffline.events.RichiediNome;
 
@@ -97,6 +95,9 @@ public class PartitaOfflineModel extends Observable {
         
         mazzo.aggiorna_fine_round();
         mazzo.rimescola();
+        
+        this.setChanged();
+        this.notifyObservers(new MazzoRimescolato());
         
         while(true){
             try {
@@ -200,15 +201,6 @@ public class PartitaOfflineModel extends Observable {
             mazziere = regole_di_gioco.carta_piu_alta(mazziere, giocatore);
         }
         mazziere.setMazziere(true);
-    }
-    
-    private void stampa_schermata_estrai_mazziere() throws InterruptedException{
-        for(Giocatore giocatore : giocatori){
-            mostra_carta_coperta_e_valore_mano(giocatore);
-            Thread.sleep(pausa_breve);
-        }
-        stampa_messaggio_mazziere();
-        Thread.sleep(pausa_lunga);
     }
     
     private void mostra_carta_coperta_e_valore_mano(Giocatore giocatore){
@@ -481,5 +473,9 @@ public class PartitaOfflineModel extends Observable {
 
     public Giocatore getMazziere() {
         return mazziere;
+    }
+
+    public GiocatoreUmano getGiocatoreLocale() {
+        return giocatore_locale;
     }
 }

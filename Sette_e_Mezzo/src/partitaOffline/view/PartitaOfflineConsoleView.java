@@ -1,5 +1,6 @@
 package partitaOffline.view;
 
+import partitaOffline.events.SetPuntata;
 import dominio.giocatori.Giocatore;
 import java.util.Observable;
 import java.util.Observer;
@@ -9,10 +10,12 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import partitaOffline.events.EstrattoMazziere;
 import partitaOffline.events.GiocatoreLocaleEvent;
+import partitaOffline.events.MazzoRimescolato;
 import partitaOffline.events.Messaggio;
 import partitaOffline.events.PartitaOfflineViewEvent;
 import partitaOffline.events.PartitaOfflineViewEventListener;
 import partitaOffline.events.RichiediNome;
+import partitaOffline.events.RichiediPuntata;
 import partitaOffline.events.SetNome;
 import partitaOffline.model.PartitaOfflineModel;
 
@@ -86,12 +89,27 @@ public class PartitaOfflineConsoleView implements PartitaOfflineView, Observer{
             } catch (InterruptedException ex) {
                 Logger.getLogger(PartitaOfflineConsoleView.class.getName()).log(Level.SEVERE, null, ex);
             }
+        } else if(arg instanceof MazzoRimescolato){
+            System.out.println("\nRimescolo mazzo\n");
         }
     }
 
     @Override
     public void GiocatoreLocaleEventReceived(GiocatoreLocaleEvent evt) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if(evt.getArg() instanceof RichiediPuntata){
+            System.out.println("Carta coperta: " + ((RichiediPuntata) evt.getArg()).getCarta_coperta());
+            System.out.println("Valore Mano : " + ((RichiediPuntata) evt.getArg()).getValore_mano());
+            System.out.println("Fiches: " + ((RichiediPuntata) evt.getArg()).getFiches());
+            richiediPuntata();
+        } else if(evt.getArg() instanceof Error){
+            System.err.println(((Error)evt.getArg()).getMessage());
+        }
+    }
+
+    private void richiediPuntata() {
+        System.out.println("Quante fiches vuoi puntare?");
+        String puntata = scanner.next();
+        firePartitaOfflineViewEvent(new SetPuntata(puntata));
     }
     
 }

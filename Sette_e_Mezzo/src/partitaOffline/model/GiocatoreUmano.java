@@ -9,13 +9,17 @@ import dominio.eccezioni.PuntataNullaException;
 import dominio.eccezioni.PuntataTroppoAltaException;
 import dominio.giocatori.Giocatore;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import partitaOffline.events.GiocatoreLocaleEvent;
 import partitaOffline.events.GiocatoreLocaleEventListener;
+import partitaOffline.events.RichiediPuntata;
 
 
 public class GiocatoreUmano extends Giocatore{
     
     private final CopyOnWriteArrayList<GiocatoreLocaleEventListener> listeners;
+    private int puntata_effettuata;
     
     /**
      *
@@ -29,51 +33,36 @@ public class GiocatoreUmano extends Giocatore{
     
     @Override
     protected int decidi_puntata() {
-        int puntata;
-//        while(true){
-//            try {
-//                puntata = richiedi_puntata();
-//                controlla_puntata(puntata);
-//                return puntata;
-//            }catch(PuntataNonValidaException ex){
-//                this.fireGiocatoreLocaleEvent(new Error("Errore: Il valore inserito non é corretto. I valori possibili sono un numero di fiches o all-in."));
-//            } catch (PuntataTroppoAltaException ex) {
-//                this.fireGiocatoreLocaleEvent(new Error("Errore: il valore inserito é troppo alto. Il massimo valore che puoi puntare é: " + this.getFiches() +"."));
-//            } catch (PuntataNegativaException ex) {
-//                this.fireGiocatoreLocaleEvent(new Error("Errore: il valore inserito non puó essere negativo."));
-//            } catch (PuntataNullaException ex) {
-//                this.fireGiocatoreLocaleEvent(new Error("Errore: il valore inserito non puó essere nullo."));
-//            }
-//        }
-        return 0;
-    }
-    
-    public void setPuntata(String puntata_effettuata) throws PuntataNonValidaException{
-        int puntata;
-        try{
-            puntata = Integer.valueOf(puntata_effettuata);
-        } catch(NumberFormatException e){
-            if(puntata_effettuata.toLowerCase().equals("allin") || puntata_effettuata.toLowerCase().equals("all-in") || puntata_effettuata.toLowerCase().equals("all")){
-                puntata= this.getFiches();
-            } else{
-                throw new PuntataNonValidaException();
-            }
+        while(true){
+                fireGiocatoreLocaleEvent(new RichiediPuntata(this.carta_coperta, this.valore_mano, this.getFiches()));
+                if(puntata_effettuata != 0){
+                    return puntata_effettuata;
+                }
         }
     }
     
-//    private int richiedi_puntata() throws PuntataNonValidaException{
-//        int puntata;
-//        try{
-//            puntata = Integer.valueOf(puntata_effettuata);
-//        } catch(NumberFormatException e){
-//            if(pubtata_effettuata.toLowerCase().equals("allin") || puntata_effettuata.toLowerCase().equals("all-in") || puntata_effettuata.toLowerCase().equals("all")){
-//                puntata= this.getFiches();
-//            } else{
-//                throw new PuntataNonValidaException();
-//            }
-//        }
-//        return puntata;
-//    }
+    public void PuntataInserita(String puntata_effettuata){
+        try{
+            this.puntata_effettuata = Integer.valueOf(puntata_effettuata);
+            controlla_puntata(this.puntata_effettuata);
+        } catch(NumberFormatException e){
+            if(puntata_effettuata.toLowerCase().equals("allin") || puntata_effettuata.toLowerCase().equals("all-in") || puntata_effettuata.toLowerCase().equals("all")){
+                this.puntata_effettuata= this.getFiches();
+            } else{
+                this.puntata_effettuata = 0;
+                this.fireGiocatoreLocaleEvent(new Error("Puntata non valida."));
+            }
+        } catch (PuntataTroppoAltaException ex) {
+            this.puntata_effettuata = 0;
+            this.fireGiocatoreLocaleEvent(new Error("Errore: il valore inserito é troppo alto. Il massimo valore che puoi puntare é: " + this.getFiches() +"."));
+        } catch (PuntataNegativaException ex) {
+            this.puntata_effettuata = 0;
+            this.fireGiocatoreLocaleEvent(new Error("Errore: il valore inserito non puó essere negativo."));
+        } catch (PuntataNullaException ex) {
+            this.puntata_effettuata = 0;
+            this.fireGiocatoreLocaleEvent(new Error("Errore: il valore inserito non puó essere nullo."));
+        }
+    }
     
     /**
      * Stampa la carta coperta.
