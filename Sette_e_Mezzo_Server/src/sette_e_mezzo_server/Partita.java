@@ -1,5 +1,6 @@
 package sette_e_mezzo_server;
 
+import eccezioni.GiocatoreDisconnessoException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.logging.Level;

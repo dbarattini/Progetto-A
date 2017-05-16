@@ -1,5 +1,6 @@
 package sette_e_mezzo_server;
 
+import eccezioni.GiocatoreDisconnessoException;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintWriter;
