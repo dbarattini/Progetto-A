@@ -25,9 +25,10 @@ import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import musica.AudioPlayer;
 import partitaOffline.events.Messaggio;
-import partitaOffline.events.PartitaInizializzata;
 import partitaOffline.events.RichiediNome;
 
 
@@ -44,6 +45,8 @@ public class PartitaOfflineModel extends Observable {
     int pausa_lunga = 2000; //ms
     int n_bot;
     int n_bot_sconfitti = 0;
+    DifficoltaBot difficolta_bot;
+    int fiches_iniziali;
     String nome_giocatore;
     InputStream in;
     PrintStream out;
@@ -57,24 +60,12 @@ public class PartitaOfflineModel extends Observable {
      */
     public PartitaOfflineModel(int numero_bot, DifficoltaBot difficolta_bot, int fiches_iniziali){
         this.n_bot = numero_bot;
+        this.difficolta_bot = difficolta_bot;
+        this.fiches_iniziali = fiches_iniziali;
         
         try {
-            inizializza_partita(numero_bot, fiches_iniziali, difficolta_bot);
-            
-            this.setChanged();
-            this.notifyObservers(new PartitaInizializzata());
-            
             inizializza_audio();
             audio.riproduci_in_loop("soundTrack");
-        }catch (NumeroBotException ex) {
-            this.setChanged();
-            this.notifyObservers(new Error("Errore: Il numero di bot dev'essere un valore compreso tra 1 ed 11."));
-        }catch (FichesInizialiException ex) {
-            this.setChanged();
-            this.notifyObservers(new Error("Errore: Il numero di fiches iniziali dev'essere maggiore di 0."));
-        }catch (DifficoltaBotException ex) {
-            this.setChanged();
-            this.notifyObservers(new Error("Errore: Le difficolta disponibili sono: Facile, Medio, Difficile."));
         } catch (CaricamentoCanzoneException ex) {
             this.setChanged();
             this.notifyObservers(new Error("Errore: Impossibile caricare la canzone " + ex.getCanzone()));
@@ -129,10 +120,21 @@ public class PartitaOfflineModel extends Observable {
         audio.carica("LoungeBeat.wav", "soundTrack");
     }
     
-    private void inizializza_partita(int numero_bot, int fiches_iniziali, DifficoltaBot difficolta_bot) throws NumeroBotException, FichesInizialiException, DifficoltaBotException{
-        inizzializza_fiches(fiches_iniziali);
-        inizializza_bots(numero_bot, fiches_iniziali, difficolta_bot);
-        inizializza_giocatore(fiches_iniziali); 
+    public void inizializza_partita(int numero_bot, DifficoltaBot difficolta_bot, int fiches_iniziali){
+        try {
+            inizzializza_fiches(fiches_iniziali);
+            inizializza_bots(numero_bot, fiches_iniziali, difficolta_bot); 
+            inizializza_giocatore(fiches_iniziali);
+        }catch (NumeroBotException ex) {
+            this.setChanged();
+            this.notifyObservers(new Error("Errore: Il numero di bot dev'essere un valore compreso tra 1 ed 11."));
+        }catch (FichesInizialiException ex) {
+            this.setChanged();
+            this.notifyObservers(new Error("Errore: Il numero di fiches iniziali dev'essere maggiore di 0."));
+        }catch (DifficoltaBotException ex) {
+            this.setChanged();
+            this.notifyObservers(new Error("Errore: Le difficolta disponibili sono: Facile, Medio, Difficile."));
+        } 
     }
 
     private void inizzializza_fiches(int fiches_iniziali) throws FichesInizialiException {
@@ -447,4 +449,18 @@ public class PartitaOfflineModel extends Observable {
     private void stampa_schermata_vittoria(){
         out.println("Complimenti! Hai Sconfitto tutti i bot.");
     }
+
+    public int getN_bot() {
+        return n_bot;
+    }
+
+    public DifficoltaBot getDifficolta_bot() {
+        return difficolta_bot;
+    }
+
+    public int getFiches_iniziali() {
+        return fiches_iniziali;
+    }
+    
+    
 }

@@ -19,6 +19,6 @@ public class PartitaOfflineConsole {
         view = new PartitaOfflineConsoleView(model);
         controller = new PartitaOfflineController(model, view);
         
-        view.run();
+        controller.run();
     } 
 }

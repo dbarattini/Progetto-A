@@ -4,6 +4,7 @@ import java.util.Observable;
 import java.util.Observer;
 import java.util.Scanner;
 import java.util.concurrent.CopyOnWriteArrayList;
+import partitaOffline.events.Messaggio;
 import partitaOffline.events.PartitaOfflineViewEvent;
 import partitaOffline.events.PartitaOfflineViewEventListener;
 import partitaOffline.events.RichiediNome;
@@ -40,10 +41,6 @@ public class PartitaOfflineConsoleView implements PartitaOfflineView, Observer{
         }
     }
     
-    public void run(){
-        richiediNome();
-    }
-    
     private void richiediNome(){
         String nome;
         System.out.println("Come ti chiami?");
@@ -55,7 +52,10 @@ public class PartitaOfflineConsoleView implements PartitaOfflineView, Observer{
     public void update(Observable o, Object arg) {
         if(arg instanceof RichiediNome){
             richiediNome();
-            
+        }else if(arg instanceof Error){
+            System.err.println(((Error) arg).getMessage());
+        }else if(arg instanceof Messaggio){
+            System.out.println(((Messaggio) arg).getMessaggio());
         }
     }
     

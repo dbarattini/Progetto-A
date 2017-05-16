@@ -1,5 +1,8 @@
 package partitaOffline.controller;
 
+import classi_dati.DifficoltaBot;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import partitaOffline.events.PartitaOfflineViewEvent;
 import partitaOffline.events.PartitaOfflineViewEventListener;
 import partitaOffline.events.SetNome;
@@ -15,6 +18,15 @@ public class PartitaOfflineController implements PartitaOfflineViewEventListener
         this.model = model;
         this.view = view;
         view.addPartitaOfflineViewEventListener(this);
+    }
+    
+    public void run(){
+        this.model.inizializza_partita(this.model.getN_bot(), this.model.getDifficolta_bot(), this.model.getFiches_iniziali());
+        try {
+            this.model.gioca();
+        } catch (InterruptedException ex) {
+            Logger.getLogger(PartitaOfflineController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     @Override
