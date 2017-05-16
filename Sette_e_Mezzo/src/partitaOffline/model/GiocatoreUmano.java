@@ -1,6 +1,7 @@
 package partitaOffline.model;
 
 
+import partitaOffline.events.RichiediGiocata;
 import dominio.eccezioni.PuntataNonValidaException;
 import dominio.classi_dati.Giocata;
 import dominio.eccezioni.GiocataNonValidaException;
@@ -20,6 +21,7 @@ public class GiocatoreUmano extends Giocatore{
     
     private final CopyOnWriteArrayList<GiocatoreLocaleEventListener> listeners;
     private int puntata_effettuata;
+    private String giocata_effettuata;
     
     /**
      *
@@ -83,29 +85,19 @@ public class GiocatoreUmano extends Giocatore{
     
     @Override
     protected Giocata decidi_giocata() {
-        return null;
-//        while(true){
-//            if(! carte_scoperte.isEmpty()){
-//                out.print("\n");
-//                out.println("Carta Ottenuta: " + carte_scoperte.get(carte_scoperte.size() - 1));
-//            }
-//            try {
-//                String giocata = richiedi_giocata();
-//                return seleziona_giocata(giocata);
-//            } catch (GiocataNonValidaException ex) {
-//                err.println("Errore: La giocata non é stata riconosciuta.I valori possibili sono: carta o sto.");
-//            }
-//        }
-    }  
-
-//    private String richiedi_giocata() {
-//        out.print("\n");
-//        out.println("Valore Mano: " + valore_mano);
-//        out.println("Cosa Vuoi Fare?");
-//        Scanner scan = new Scanner(in);
-//        String giocata = scan.next();
-//        return giocata;
-//    }
+        while(true){
+            try {
+                this.fireGiocatoreLocaleEvent(new RichiediGiocata(this.getCartaCoperta(), this.getCarteScoperte(), this.getValoreMano()));
+                return seleziona_giocata(giocata_effettuata);
+            } catch (GiocataNonValidaException ex) {
+                this.fireGiocatoreLocaleEvent(new Error("Errore: La giocata non é stata riconosciuta.I valori possibili sono: carta o sto."));
+            }
+        }
+    }
+    
+    public void GiocataInserita(String giocata_effettuata){
+        this.giocata_effettuata = giocata_effettuata;
+    }
     
     private Giocata seleziona_giocata(String giocata) throws GiocataNonValidaException{
         if(giocata.toLowerCase().equals("carta") || giocata.equals("c")){

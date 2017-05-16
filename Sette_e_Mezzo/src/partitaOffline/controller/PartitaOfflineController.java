@@ -4,6 +4,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import partitaOffline.events.PartitaOfflineViewEvent;
 import partitaOffline.events.PartitaOfflineViewEventListener;
+import partitaOffline.events.SetGiocata;
 import partitaOffline.events.SetNome;
 import partitaOffline.events.SetPuntata;
 import partitaOffline.model.PartitaOfflineModel;
@@ -36,7 +37,9 @@ public class PartitaOfflineController implements PartitaOfflineViewEventListener
             model.setNomeGiocatore(((SetNome)evt.getArg()).getNome());
         } else if(evt.getArg() instanceof SetPuntata){
         model.getGiocatoreLocale().PuntataInserita(((SetPuntata)evt.getArg()).getPuntata());
-    }
+        } else if(evt.getArg() instanceof SetGiocata){
+            model.getGiocatoreLocale().GiocataInserita(((SetGiocata)evt.getArg()).getGiocata());
+        }
     }
     
     

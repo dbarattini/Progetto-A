@@ -227,12 +227,12 @@ public class PartitaOfflineModel extends Observable {
             if(! giocatore.haPerso()){  
                 esegui_mano(giocatore);
                 if(giocatore instanceof GiocatoreUmano && giocatore.getStato() != Stato.OK){
-                    stampa_se_stato_non_ok(giocatore);
+//                    stampa_se_stato_non_ok(giocatore);
                     Thread.sleep(pausa_lunga);
                 }
             }
             if(! (giocatore instanceof GiocatoreUmano)){
-                stampa_giocata_bot(giocatore);
+//                stampa_giocata_bot(giocatore);
                 Thread.sleep(pausa_breve);
             }
             pos_next_giocatore += 1;

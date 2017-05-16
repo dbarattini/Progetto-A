@@ -1,5 +1,6 @@
 package partitaOffline.view;
 
+import partitaOffline.events.SetGiocata;
 import partitaOffline.events.SetPuntata;
 import dominio.giocatori.Giocatore;
 import java.util.Observable;
@@ -14,6 +15,7 @@ import partitaOffline.events.MazzoRimescolato;
 import partitaOffline.events.Messaggio;
 import partitaOffline.events.PartitaOfflineViewEvent;
 import partitaOffline.events.PartitaOfflineViewEventListener;
+import partitaOffline.events.RichiediGiocata;
 import partitaOffline.events.RichiediNome;
 import partitaOffline.events.RichiediPuntata;
 import partitaOffline.events.SetNome;
@@ -97,19 +99,30 @@ public class PartitaOfflineConsoleView implements PartitaOfflineView, Observer{
     @Override
     public void GiocatoreLocaleEventReceived(GiocatoreLocaleEvent evt) {
         if(evt.getArg() instanceof RichiediPuntata){
-            System.out.println("Carta coperta: " + ((RichiediPuntata) evt.getArg()).getCarta_coperta());
-            System.out.println("Valore Mano : " + ((RichiediPuntata) evt.getArg()).getValore_mano());
-            System.out.println("Fiches: " + ((RichiediPuntata) evt.getArg()).getFiches());
-            richiediPuntata();
+            richiediPuntata(evt);
         } else if(evt.getArg() instanceof Error){
             System.err.println(((Error)evt.getArg()).getMessage());
+        } else if(evt.getArg() instanceof RichiediGiocata){
+            richiediGiocata(evt);
         }
     }
 
-    private void richiediPuntata() {
+    private void richiediPuntata(GiocatoreLocaleEvent evt) {
+        System.out.println("Carta coperta: " + ((RichiediPuntata) evt.getArg()).getCarta_coperta());
+        System.out.println("Valore Mano : " + ((RichiediPuntata) evt.getArg()).getValore_mano());
+        System.out.println("Fiches: " + ((RichiediPuntata) evt.getArg()).getFiches());
         System.out.println("Quante fiches vuoi puntare?");
         String puntata = scanner.next();
         firePartitaOfflineViewEvent(new SetPuntata(puntata));
+    }
+    
+    private void richiediGiocata(GiocatoreLocaleEvent evt){
+        System.out.println("Valore Mano : " + ((RichiediGiocata) evt.getArg()).getValoreMano());
+        System.out.println("Carta coperta: " + ((RichiediGiocata) evt.getArg()).getCartaCoperta());
+        System.out.println("Carte scoperte: " + ((RichiediGiocata) evt.getArg()).getCarteScoperte());
+        System.out.println("Carta o Stai?");
+        String giocata = scanner.next();
+        firePartitaOfflineViewEvent(new SetGiocata(giocata));
     }
     
 }
