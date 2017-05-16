@@ -18,8 +18,8 @@ import javax.crypto.spec.IvParameterSpec;
  */
 public class Criptazione {
 
-   private  Logger log = Logger.getLogger(Criptazione.class.getName());
-  private final String accountSeperator = ":";
+    private static Logger log = Logger.getLogger(Criptazione.class.getName());
+    private final static String accountSeperator = ":";
 
   private static String key = "SambaPis";
 
@@ -71,7 +71,7 @@ public class Criptazione {
   public  String[] decodificaAccount(String userEpw) {
     try {
       String origi = decrypt(userEpw);
-      String[] parts = origi.split(accountSeperator);
+      String[] parts = origi.split(Criptazione.accountSeperator);
       if (parts.length == 2 && !parts[0].equals("") && !parts[1].equals("")) {
         return parts;
       }
@@ -85,7 +85,7 @@ public class Criptazione {
   public String codificaAccount(String username, String password) {
     String encryptString = null;
     try {
-      encryptString =encrypt(username + accountSeperator + password);
+      encryptString =encrypt(username + Criptazione.accountSeperator + password);
     } catch (Exception e) {
       log.warning(e.getMessage());
     }

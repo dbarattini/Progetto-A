@@ -32,9 +32,8 @@ public class CriptazioneTest {
         System.out.println("codificaAccount");
         String username = "Mario";
         String password = "123stella";
-        String expResult = "Mario:123stella";
         String result = cript.codificaAccount(username, password);
-        assertNotEquals(expResult, result);
+        assertNotEquals(username+":"+password, result);
     }
     
     /**
@@ -57,9 +56,8 @@ public class CriptazioneTest {
     public void testCodificaMessaggio() {
         System.out.println("codifica Messaggio");
         String msg = "#La su io & te 4ever!";
-        String expResult = "#La su io & te 4ever!";
         String result =cript.codificaMessaggio(msg);
-        assertNotEquals(expResult, result);
+        assertNotEquals(msg, result);
     }
 
     /**
@@ -68,13 +66,13 @@ public class CriptazioneTest {
     @Test
     public void testDecodificaMessaggio() {
         System.out.println("decodificaMessaggio");
-        String msg = cript.codificaMessaggio("#La su io & te 4ever!");
         String expResult = "#La su io & te 4ever!";
+        String msg = cript.codificaMessaggio( expResult);
         String result = cript.decodificaMessaggio(msg);
         assertEquals(expResult, result);
        
     }
-//    
+    
 //    /**
 //     * Test of decodificaMessaggio method, of class Criptazione.
 //     */
@@ -84,18 +82,20 @@ public class CriptazioneTest {
 //        String msg = cript.codificaMessaggio("perchè non funzionò?");
 //        String expResult = "perchè non funzionò?";
 //        String result = cript.decodificaMessaggio(msg);
-//        assertEquals(expResult, result);
-//       
+//        System.out.println(result+"     "+expResult);
+//        assertEquals(expResult, result);       
 //    }
-    
+//    
     /**
      * Test of setKey method, of class Criptazione.
      */
     @Test
     public void testSetKey() {
         System.out.println("setKey");
+        String key = "SambaPis";
+        cript.setKey(key);
         String msg1 = cript.codificaMessaggio("#La su io & te 4ever!");
-        String key = "Catrame1";
+        key = "Catrame1";
         cript.setKey(key);
         String msg2 = cript.codificaMessaggio("#La su io & te 4ever!");
         assertNotEquals(msg1, msg2);
