@@ -1,18 +1,19 @@
-package GUI;
+package partitaOffline.view;
 
-import gioco.PartitaOffline;
+import GUI.Sfondo;
+import partitaOffline.model.PartitaOfflineModel;
 import java.awt.Dimension;
 import java.net.URL;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 
-public class GUI extends JFrame {
+public class PartitaOfflineGuiView extends JFrame {
     
     Sfondo sfondo;
     
     
-    public GUI(String nome) {
+    public PartitaOfflineGuiView(String nome) {
         setTitle(nome);
         setPreferredSize(new Dimension(1280, 720));
 	setMinimumSize(new Dimension(1280, 720));		
@@ -22,7 +23,7 @@ public class GUI extends JFrame {
 	setLocationRelativeTo(null);
         
         sfondo = new Sfondo("immagini/sfondo.png", 1275, 690);
-        sfondo.setBounds(0, 0, PartitaOffline.LARGHEZZA, PartitaOffline.ALTEZZA);
+        sfondo.setBounds(0, 0, PartitaOfflineModel.LARGHEZZA, PartitaOfflineModel.ALTEZZA);
         add(sfondo);
         
         // carte di prova

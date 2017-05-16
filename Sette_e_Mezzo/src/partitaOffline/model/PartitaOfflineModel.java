@@ -1,11 +1,10 @@
-package gioco;
+package partitaOffline.model;
 
 import eccezioni.DifficoltaBotException;
 import eccezioni.FichesInizialiException;
 import eccezioni.NumeroBotException;
 import elementi_di_gioco.Mazzo;
 import giocatori.BotFacile;
-import giocatori.GiocatoreUmano;
 import giocatori.Giocatore;
 import classi_dati.DifficoltaBot;
 import classi_dati.Stato;
@@ -19,15 +18,20 @@ import eccezioni.SetteeMezzoRealeException;
 import elementi_di_gioco.Carta;
 import giocatori.BotDifficile;
 import giocatori.BotMedio;
+import gioco.RegoleDiGioco;
+import gioco.StatoGioco;
 import java.io.InputStream;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Scanner;
 import musica.AudioPlayer;
+import partitaOffline.events.Messaggio;
+import partitaOffline.events.PartitaInizializzata;
+import partitaOffline.events.RichiediNome;
 
 
-public class PartitaOffline extends Observable {
+public class PartitaOfflineModel extends Observable {
     private RegoleDiGioco regole_di_gioco = new RegoleDiGioco();
     private AudioPlayer audio = new AudioPlayer();
     private ArrayList<Giocatore> giocatori=new ArrayList<>();
@@ -40,6 +44,7 @@ public class PartitaOffline extends Observable {
     int pausa_lunga = 2000; //ms
     int n_bot;
     int n_bot_sconfitti = 0;
+    String nome_giocatore;
     InputStream in;
     PrintStream out;
     PrintStream err;
@@ -50,28 +55,32 @@ public class PartitaOffline extends Observable {
      * @param fiches_iniziali numero di fiches iniziali per ogni giocatore
      * @param difficolta_bot difficoltá di tutti i bot della partita
      */
-    public PartitaOffline(int numero_bot, int fiches_iniziali, DifficoltaBot difficolta_bot, InputStream in, PrintStream out, PrintStream err){
-        this.in = in;
-        this.out = out;
-        this.err = err;
+    public PartitaOfflineModel(int numero_bot, DifficoltaBot difficolta_bot, int fiches_iniziali){
         this.n_bot = numero_bot;
-        this.setChanged();
-        this.notifyObservers(n_bot);
         
         try {
             inizializza_partita(numero_bot, fiches_iniziali, difficolta_bot);
+            
+            this.setChanged();
+            this.notifyObservers(new PartitaInizializzata());
+            
             inizializza_audio();
             audio.riproduci_in_loop("soundTrack");
         }catch (NumeroBotException ex) {
-            this.err.println("Errore: Il numero di bot dev'essere un valore compreso tra 1 ed 11.");
+            this.setChanged();
+            this.notifyObservers(new Error("Errore: Il numero di bot dev'essere un valore compreso tra 1 ed 11."));
         }catch (FichesInizialiException ex) {
-            this.err.println("Errore: Il numero di fiches iniziali dev'essere maggiore di 0.");
+            this.setChanged();
+            this.notifyObservers(new Error("Errore: Il numero di fiches iniziali dev'essere maggiore di 0."));
         }catch (DifficoltaBotException ex) {
-            this.err.println("Errore: Le difficolta disponibili sono: Facile. //Work in Progress\\");
+            this.setChanged();
+            this.notifyObservers(new Error("Errore: Le difficolta disponibili sono: Facile, Medio, Difficile."));
         } catch (CaricamentoCanzoneException ex) {
-            this.err.println("Errore: Impossibile caricare la canzone " + ex.getCanzone());
+            this.setChanged();
+            this.notifyObservers(new Error("Errore: Impossibile caricare la canzone " + ex.getCanzone()));
         } catch (CanzoneNonTrovataException ex) {
-            this.err.println("Errore: " +ex.getCanzone() + " non caricata/o");
+            this.setChanged();
+            this.notifyObservers(new Error("Errore: " +ex.getCanzone() + " non caricata/o"));
         }
     }
     
@@ -82,7 +91,9 @@ public class PartitaOffline extends Observable {
     public void gioca() throws InterruptedException{
         Thread.sleep(pausa_breve);
         
-        out.println("Estrazione del mazziere:\n");
+        this.setChanged();
+        this.notifyObservers(new Messaggio("Estrazione del mazziere"));
+        
         Thread.sleep(pausa_breve);
         
         estrai_mazziere();
@@ -154,18 +165,14 @@ public class PartitaOffline extends Observable {
     }
     
     private void inizializza_giocatore(int fiches_iniziali){
-        out.println("Come ti chiami?");
-        String nome = richiedi_nome_giocatore();
-        giocatori.add(new GiocatoreUmano(nome,fiches_iniziali,in,out,err));
-        out.print("\n");
+        this.setChanged();
+        this.notifyObservers(new RichiediNome());
+        
+        giocatori.add(new GiocatoreUmano(nome_giocatore,fiches_iniziali));
     }
     
-    private String richiedi_nome_giocatore(){
-        String nome;
-        Scanner scan = new Scanner(System.in);
-        
-        nome = scan.next();
-        return nome;
+    public void setNomeGiocatore(String nome_giocatore){
+        this.nome_giocatore = nome_giocatore;
     }
 
     private void estrai_mazziere() throws InterruptedException {
@@ -269,7 +276,7 @@ public class PartitaOffline extends Observable {
         }
         if(mazziere instanceof GiocatoreUmano){
                 GiocatoreUmano giocatore = (GiocatoreUmano) mazziere;
-                giocatore.stampaCartaCoperta();
+//                giocatore.stampaCartaCoperta();
             }
     }
     

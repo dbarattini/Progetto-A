@@ -8,6 +8,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import menuPrepartita.events.SetInfo;
 import menuPrepartita.events.SetInfoListener;
 import menuPrepartita.model.MenuPrePartitaModel;
+import modules.PartitaOfflineConsole;
 
 
 public class MenuPrePartitaConsoleView implements Observer, MenuPrePartitaView {
@@ -30,6 +31,7 @@ public class MenuPrePartitaConsoleView implements Observer, MenuPrePartitaView {
         richiediDifficoltaBot();
         richiediFichesIniziali();
         fireSetInfoEvent();
+        new PartitaOfflineConsole(model.getNumeroBot(), model.getDifficoltaBot(), model.getFichesIniziali());
     }
 
     @Override
