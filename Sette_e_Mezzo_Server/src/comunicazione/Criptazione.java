@@ -19,15 +19,10 @@ import javax.crypto.spec.IvParameterSpec;
 public class Criptazione {
 
    private  Logger log = Logger.getLogger(Criptazione.class.getName());
-  public final String accountSeperator = ":";
+  private final String accountSeperator = ":";
 
   private static String key = "SambaPis";
 
-    public void setKey(String key) {
-        Criptazione.key = key;
-    }
-  
-  
 
   private String decrypt(String message) throws Exception {
     byte[] bytesrc = convertHexString(message);
@@ -73,9 +68,9 @@ public class Criptazione {
     return hexString.toString();
   }
 
-  public  String[] decodeAccount(String cookieValue) {
+  public  String[] decodificaAccount(String userEpw) {
     try {
-      String origi = decrypt(cookieValue);
+      String origi = decrypt(userEpw);
       String[] parts = origi.split(accountSeperator);
       if (parts.length == 2 && !parts[0].equals("") && !parts[1].equals("")) {
         return parts;
@@ -87,7 +82,7 @@ public class Criptazione {
     return null;
   }
 
-  public String encodeAccount(String username, String password) {
+  public String codificaAccount(String username, String password) {
     String encryptString = null;
     try {
       encryptString =encrypt(username + accountSeperator + password);
@@ -97,7 +92,7 @@ public class Criptazione {
     return encryptString;
   }
   
-  public String encodeMsg(String msg){
+  public String codificaMessaggio(String msg){
       String encryptString = null;
     try {
       encryptString = encrypt(msg);
@@ -107,9 +102,9 @@ public class Criptazione {
     return encryptString;
   }
   
-  public String decodeMsg(String cookieValue) {
+  public String decodificaMessaggio(String msg) {
     try {
-      String decript = decrypt(cookieValue);      
+      String decript = decrypt(msg);      
         return decript;
       
     } catch (Exception e) {
@@ -118,5 +113,8 @@ public class Criptazione {
     }
     return null;
   }
-
+  
+    public void setKey(String key) {
+        Criptazione.key = key;
+    }
 }
