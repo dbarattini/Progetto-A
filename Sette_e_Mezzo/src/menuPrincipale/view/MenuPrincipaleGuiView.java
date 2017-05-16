@@ -1,7 +1,7 @@
 package menuPrincipale.view;
 
-import GUI.Sfondo;
-import classi_dati.OpzioniMenu;
+import dominio.gui.Sfondo;
+import dominio.classi_dati.OpzioniMenu;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

@@ -1,6 +1,6 @@
 package partitaOffline.controller;
 
-import classi_dati.DifficoltaBot;
+import dominio.classi_dati.DifficoltaBot;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import partitaOffline.events.PartitaOfflineViewEvent;

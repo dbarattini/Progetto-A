@@ -1,6 +1,6 @@
 package partitaOffline.view;
 
-import GUI.Sfondo;
+import dominio.gui.Sfondo;
 import partitaOffline.model.PartitaOfflineModel;
 import java.awt.Dimension;
 import java.net.URL;

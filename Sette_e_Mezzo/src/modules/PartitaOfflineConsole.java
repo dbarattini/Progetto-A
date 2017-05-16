@@ -1,6 +1,6 @@
 package modules;
 
-import classi_dati.DifficoltaBot;
+import dominio.classi_dati.DifficoltaBot;
 import partitaOffline.controller.PartitaOfflineController;
 import partitaOffline.model.PartitaOfflineModel;
 import partitaOffline.view.PartitaOfflineConsoleView;

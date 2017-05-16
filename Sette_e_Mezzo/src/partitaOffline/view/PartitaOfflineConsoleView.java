@@ -1,6 +1,6 @@
 package partitaOffline.view;
 
-import giocatori.Giocatore;
+import dominio.giocatori.Giocatore;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.Scanner;

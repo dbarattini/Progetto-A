@@ -1,6 +1,6 @@
 package menuPrepartita.model;
 
-import classi_dati.DifficoltaBot;
+import dominio.classi_dati.DifficoltaBot;
 
 import java.util.Observable;
 

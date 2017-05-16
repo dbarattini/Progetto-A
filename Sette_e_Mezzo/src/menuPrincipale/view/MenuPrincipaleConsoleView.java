@@ -1,7 +1,7 @@
 package menuPrincipale.view;
 
 import menuPrincipale.view.MenuPrincipaleView;
-import classi_dati.OpzioniMenu;
+import dominio.classi_dati.OpzioniMenu;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.Scanner;

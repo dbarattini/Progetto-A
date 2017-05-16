@@ -1,16 +1,16 @@
 package junit_tests;
 
-import classi_dati.Giocata;
-import eccezioni.FineMazzoException;
-import eccezioni.PuntataNegativaException;
-import eccezioni.PuntataNullaException;
-import eccezioni.PuntataTroppoAltaException;
-import eccezioni.SballatoException;
-import eccezioni.SetteeMezzoException;
-import eccezioni.SetteeMezzoRealeException;
-import elementi_di_gioco.Carta;
-import giocatori.Giocatore;
-import elementi_di_gioco.Mazzo;
+import dominio.classi_dati.Giocata;
+import dominio.eccezioni.FineMazzoException;
+import dominio.eccezioni.PuntataNegativaException;
+import dominio.eccezioni.PuntataNullaException;
+import dominio.eccezioni.PuntataTroppoAltaException;
+import dominio.eccezioni.SballatoException;
+import dominio.eccezioni.SetteeMezzoException;
+import dominio.eccezioni.SetteeMezzoRealeException;
+import dominio.elementi_di_gioco.Carta;
+import dominio.giocatori.Giocatore;
+import dominio.elementi_di_gioco.Mazzo;
 import org.junit.Test;
 import static org.junit.Assert.*;
 

@@ -1,13 +1,13 @@
 package partitaOffline.model;
 
 
-import eccezioni.PuntataNonValidaException;
-import classi_dati.Giocata;
-import eccezioni.GiocataNonValidaException;
-import eccezioni.PuntataNegativaException;
-import eccezioni.PuntataNullaException;
-import eccezioni.PuntataTroppoAltaException;
-import giocatori.Giocatore;
+import dominio.eccezioni.PuntataNonValidaException;
+import dominio.classi_dati.Giocata;
+import dominio.eccezioni.GiocataNonValidaException;
+import dominio.eccezioni.PuntataNegativaException;
+import dominio.eccezioni.PuntataNullaException;
+import dominio.eccezioni.PuntataTroppoAltaException;
+import dominio.giocatori.Giocatore;
 import java.util.concurrent.CopyOnWriteArrayList;
 import partitaOffline.events.GiocatoreLocaleEvent;
 import partitaOffline.events.GiocatoreLocaleEventListener;

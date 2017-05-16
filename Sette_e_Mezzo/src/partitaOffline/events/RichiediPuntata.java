@@ -1,6 +1,6 @@
 package partitaOffline.events;
 
-import elementi_di_gioco.Carta;
+import dominio.elementi_di_gioco.Carta;
 
 
 public class RichiediPuntata {

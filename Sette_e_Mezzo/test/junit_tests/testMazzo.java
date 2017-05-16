@@ -1,9 +1,9 @@
 package junit_tests;
 
 
-import eccezioni.FineMazzoException;
-import elementi_di_gioco.Carta;
-import elementi_di_gioco.Mazzo;
+import dominio.eccezioni.FineMazzoException;
+import dominio.elementi_di_gioco.Carta;
+import dominio.elementi_di_gioco.Mazzo;
 import org.junit.Test;
 import static org.junit.Assert.*;
 

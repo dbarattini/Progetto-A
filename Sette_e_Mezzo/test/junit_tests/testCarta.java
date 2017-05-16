@@ -1,9 +1,9 @@
 package junit_tests;
 
-import eccezioni.MattaException;
+import dominio.eccezioni.MattaException;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import elementi_di_gioco.Carta;
+import dominio.elementi_di_gioco.Carta;
 
 public class testCarta {
     
