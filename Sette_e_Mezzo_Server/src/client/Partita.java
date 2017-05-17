@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import sette_e_mezzo_server.Giocatore;
+import giocatore.Giocatore;
 
 
 public class Partita implements Runnable {
@@ -30,9 +30,12 @@ public class Partita implements Runnable {
 
     @Override
     public void run() {
-//        while(true){
-//            this.gioca();
-//        }
+        try {
+            this.gioca();
+            run();
+        } catch (IOException ex) {
+            Logger.getLogger(Partita.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     private void gioca() throws IOException{

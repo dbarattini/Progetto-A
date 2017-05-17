@@ -1,4 +1,4 @@
-package sette_e_mezzo_server;
+package giocatore;
 
 import eccezioni.GiocatoreDisconnessoException;
 import java.io.BufferedReader;

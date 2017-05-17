@@ -1,6 +1,7 @@
 package sette_e_mezzo_server;
 
 
+import giocatore.Giocatore;
 import client.Partita;
 import java.io.BufferedReader;
 import java.io.IOException;
