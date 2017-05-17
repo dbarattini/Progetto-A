@@ -17,70 +17,73 @@ import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import DB.SQL;
+import client.Partita;
+import eccezioni.GiocatoreDisconnessoException;
 import eccezioni.GiocatoreNonTrovato;
 import giocatore.Giocatore;
 
 
 public class Login extends Thread{
-    private PrintWriter out;
-    private BufferedReader in;
     private SQL sql= new SQL();
     private Socket clientSocket;
     private InetAddress clientAddress;
     private int codice;
     private String mail, password, username;
     private Giocatore giocatore;
+    private Partita partita;
     private int fiches=1000;
 
-    public Login(Giocatore giocatore) throws IOException {
+    public Login(Giocatore giocatore, Partita partita) throws IOException {
             this.giocatore=giocatore;
-            this.out =  new PrintWriter(giocatore.getSocket().getOutputStream(), true);
-            this.in = new BufferedReader( new InputStreamReader(giocatore.getSocket().getInputStream()));      
+            this.partita=partita;
     }
       
     private int random(){
         return (int) Math.round(Math.random()*10000);
     }
     
+    @Override
     public void run(){
         try {
-            String messaggio=in.readLine();
-            String dati[]= messaggio.split(" ");
-            if(dati[0].equals("registrazione")){
-                convalida(dati);
-            }
-            else if(dati[0].equals("login")){
-                String user, pw;
-                if(dati[1].contains("@"))
-                    user=sql.getUser(dati[1]);
+            String messaggio=giocatore.Leggi();
+            if(!messaggio.equals(null)){
+                String dati[]= messaggio.split(" ");
+                if(dati[0].equals("registrazione")){
+                    convalida(dati);
+                }
+                else if(dati[0].equals("login")){
+                    String user, pw;
+                    if(dati[1].contains("@"))
+                        user=sql.getUser(dati[1]);
+                    else
+                        user=dati[1];
+                    pw=dati[2];
+                    if(sql.controllaPassword(user,pw)){
+                         giocatore.Scrivi("login effetuato");
+                        sleep(20);
+                        iniziaPartita();
+                    }
+                    else{
+                        giocatore.Scrivi("login non effetuato");
+                        run();
+                    }
+
+                }
+                else if(dati[0].equals("convalida")){
+                    if(Integer.valueOf(dati[1])==codice){
+                        registra();
+                    }
+                    else{
+                        giocatore.Scrivi("convalida errata");  
+                        run();
+                    }
+                }
+                else if(dati[0].equals("recupero")){
+                    recuperoPw(dati);
+                }
                 else
-                    user=dati[1];
-                pw=dati[2];
-                if(sql.controllaPassword(user,pw)){
-                     giocatore.Scrivi("login effetuato");
-                    sleep(20);
-                    iniziaPartita();
-                }
-                else{
-                    giocatore.Scrivi("login non effetuato");
                     run();
-                }
-                    
             }
-            else if(dati[0].equals("convalida")){
-                if(Integer.valueOf(dati[1])==codice){
-                    registra();
-                }
-                else{
-                    giocatore.Scrivi("convalida errata");  
-                    run();
-                }
-            }
-            else if(dati[0].equals("recupero")){
-                recuperoPw(dati);
-            }
-            else
-                run();
         } catch (IOException ex) {
             Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
         } catch (InterruptedException ex) {
@@ -88,6 +91,9 @@ public class Login extends Thread{
         } catch (GiocatoreNonTrovato ex) {
             giocatore.Scrivi("login non effetuato");
             run();
+        } catch (GiocatoreDisconnessoException ex) {
+            System.out.println("Giocatore "+giocatore.getUsername()+" disconnesso");
+            Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
@@ -128,6 +134,8 @@ public class Login extends Thread{
     }
 
     private void iniziaPartita() {
+        System.out.println("La partita inizia adesso");
+         //partita.aggiungiGiocatore();
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     

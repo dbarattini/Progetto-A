@@ -9,13 +9,12 @@ import java.net.SocketTimeoutException;
 
 
 public class Giocatore {
-    private final String nome;
+    private String username;
     private final PrintWriter aGiocatore;
     private final BufferedReader daGiocatore; 
     private final Socket socket;
     
-    public Giocatore(String nome, Socket socket, BufferedReader daGiocatore, PrintWriter aGiocatore){
-        this.nome = nome;
+    public Giocatore(Socket socket, BufferedReader daGiocatore, PrintWriter aGiocatore){
         this.daGiocatore = daGiocatore;
         this.aGiocatore = aGiocatore;
         this.socket = socket;       
@@ -39,8 +38,8 @@ public class Giocatore {
         return letto;
     }
     
-    public String getNome(){
-        return nome;
+    public String getUsername(){
+        return username;
     }
     
     public Socket getSocket(){

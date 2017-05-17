@@ -31,7 +31,7 @@ public class Partita implements Runnable {
     @Override
     public void run() {
         try {
-            this.gioca();
+            gioca();
             run();
         } catch (IOException ex) {
             Logger.getLogger(Partita.class.getName()).log(Level.SEVERE, null, ex);
@@ -48,17 +48,17 @@ public class Partita implements Runnable {
             try {
                 msg = giocatore.Leggi();
             } catch (GiocatoreDisconnessoException ex) {
-                System.out.println(giocatore.getNome() + " disconnesso");
+                System.out.println(giocatore.getUsername() + " disconnesso");
                 this.giocatori_disconnessi.add(giocatore);
             }        
         }
-        
-        giocatori.removeAll(giocatori_disconnessi);
+        if(!giocatori_disconnessi.isEmpty())
+            giocatori.removeAll(giocatori_disconnessi);
 
         if(! giocatori_disconnessi.isEmpty()){
             for(Giocatore giocatore_disconnesso : giocatori_disconnessi){
                 for(Giocatore giocatore : giocatori){
-                    giocatore.Scrivi(giocatore_disconnesso.getNome() + " diconnesso");
+                    giocatore.Scrivi(giocatore_disconnesso.getUsername() + " diconnesso");
                 }
             }
             giocatori_disconnessi.clear();

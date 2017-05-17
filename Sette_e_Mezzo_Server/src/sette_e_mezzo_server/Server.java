@@ -13,6 +13,7 @@ import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import login.Login;
 
 
 public class Server {
@@ -21,8 +22,8 @@ public class Server {
             int port = 8080;
             ServerSocket serverSocket = new ServerSocket(port);
             Partita partita = new Partita();
-            Thread t = new Thread(partita);
-            t.start();
+//            Thread t = new Thread(partita);
+//            t.start();
             System.out.println("Server in ascolto sulla porta: " + port);
             cercaConnessione(serverSocket, partita);
             
@@ -47,6 +48,8 @@ public class Server {
         BufferedReader fromClient = new BufferedReader(
                 new InputStreamReader(clientSocket.getInputStream()));        
         clientSocket.setSoTimeout(100); //timeout utilizzato nella lettura
-        partita.aggiungiGiocatore(new Giocatore("nome", clientSocket, fromClient, toClient));
+        Login login= new Login(new Giocatore( clientSocket, fromClient, toClient), partita);
+        Thread t = new Thread(login);
+         t.start();
     }
 }
