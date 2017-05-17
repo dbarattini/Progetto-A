@@ -44,16 +44,22 @@ public class SQL {
         }    
   }
 
-    
-    
-    public  void aggiungiGiocatore(String email, String pw, String user, int fiches  ) throws GiocatoreGiaPresente
+    /**
+     *Aggiunge un nuovo giocatore al database
+     * @param email
+     * @param password
+     * @param username
+     * @param fiches
+     * @throws GiocatoreGiaPresente
+     */
+    public  void aggiungiGiocatore(String email, String password, String username, int fiches  ) throws GiocatoreGiaPresente
   {
        try {
       Class.forName("org.sqlite.JDBC");
       c = DriverManager.getConnection("jdbc:sqlite:setteEmezzo.db");
       c.setAutoCommit(false);
       System.out.println("Opened database successfully");
-      String dati="VALUES ('"+email+"', '"+pw+"', '"+user+"', "+fiches+");";
+      String dati="VALUES ('"+email+"', '"+password+"', '"+username+"', "+fiches+");";
 
       stmt = c.createStatement();
       String sql = "INSERT INTO GIOCATORI (EMAIL,PASSWORD,USERNAME, FICHES) " +
@@ -70,7 +76,11 @@ public class SQL {
     
   }
     
-    
+    /**
+     *Consente di modificare le fiches di un giocatore
+     * @param user
+     * @param fiches
+     */
     public void setFiches(String user, int fiches)
   {
     
@@ -92,7 +102,12 @@ public class SQL {
    
   }
     
-   public int getFiches( String user )
+    /**
+     *Torna le fiches di un giocatore
+     * @param user
+     * @return fiches del giocatore
+     */
+    public int getFiches( String user )
   {
         try {
             Class.forName("org.sqlite.JDBC");
@@ -118,6 +133,81 @@ public class SQL {
             return 0;
     }
    
+    /**
+     *Permette di controllare la password di un giocatore
+     * @param user
+     * @param pw
+     * @return ritorna true se la password è giusta
+     */
+    public boolean controllaPassword( String user, String pw )
+  {
+        try {
+            Class.forName("org.sqlite.JDBC");
+            c = DriverManager.getConnection("jdbc:sqlite:setteEmezzo.db");
+            c.setAutoCommit(false);   
+            stmt = c.createStatement();
+            ResultSet rs = stmt.executeQuery( "SELECT * FROM GIOCATORI;" );
+            while ( rs.next() ) {
+                String  username = rs.getString("USERNAME");
+                String password  =rs.getString("PASSWORD");
+                if(username.equals(user)){
+                    if(pw.equals(password)){
+                         rs.close();
+                        chiudiDatabase();
+                        return true;
+                    }
+                    else{
+                        rs.close();
+                        chiudiDatabase();
+                        return false;
+                    }
+                   
+                }
+            }
+            rs.close();
+            chiudiDatabase();
+            } catch ( Exception e ) {
+                  System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+                  chiudiDatabase();
+            }
+            return false;
+    }
+   
+    /**
+     *Permette di avere l'username del giocatore partendo dall'email
+     * @param email
+     * @return username
+     */
+    public String getUser( String email )
+  {
+        try {
+            Class.forName("org.sqlite.JDBC");
+            c = DriverManager.getConnection("jdbc:sqlite:setteEmezzo.db");
+            c.setAutoCommit(false);   
+            stmt = c.createStatement();
+            ResultSet rs = stmt.executeQuery( "SELECT * FROM GIOCATORI;" );
+            while ( rs.next() ) {
+                String  username = rs.getString("USERNAME");
+                String  mail = rs.getString("EMAIL");
+                if(mail.equals(email)){
+                    rs.close();
+                    chiudiDatabase();
+                    return username;
+                }
+            }
+            rs.close();
+            chiudiDatabase();
+            } catch ( Exception e ) {
+                  System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+                  chiudiDatabase();
+            }
+            return null;
+    }
+   
+    /**
+     *Aggiunge una vittoria al giocatore
+     * @param user
+     */
     public void aggiungiVittoria( String user ){
             int vittorie=0;    
             try {
@@ -146,6 +236,11 @@ public class SQL {
     
   }
     
+    /**
+     *Ritorna le vittorie del giocatore
+     * @param user
+     * @return vittorie
+     */
     public int getVittorie( String user )
   {
         try {
@@ -171,6 +266,8 @@ public class SQL {
             }
             return 0;
     }
+    
+    
     
     private void chiudiDatabase() {
         try {
