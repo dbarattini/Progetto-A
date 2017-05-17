@@ -5,6 +5,8 @@ import java.util.Observable;
 import java.util.Observer;
 import java.util.Scanner;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import menuPrepartita.events.SetInfo;
 import menuPrepartita.events.SetInfoListener;
 import menuPrepartita.model.MenuPrePartitaModel;
@@ -27,6 +29,9 @@ public class MenuPrePartitaConsoleView implements Observer, MenuPrePartitaView {
     }
     
     public void run(){
+        System.out.println("  -----------------------------  ");
+        System.out.println("<      IMPOSTAZIONI PARTITA     >");
+        System.out.println("  -----------------------------  ");
         richiediNumeroBot();
         richiediDifficoltaBot();
         richiediFichesIniziali();
@@ -37,7 +42,11 @@ public class MenuPrePartitaConsoleView implements Observer, MenuPrePartitaView {
     @Override
     public void update(Observable o, Object arg) {
         if(arg instanceof Error){
-            System.err.println(((Error) arg).getMessage());
+            System.err.println(((Error) arg).getMessage() + "\n");
+            try {
+                Thread.sleep(1);
+            } catch (InterruptedException ex) {
+            }
             run();
         }
     }
@@ -61,17 +70,26 @@ public class MenuPrePartitaConsoleView implements Observer, MenuPrePartitaView {
     }
 
     private void richiediNumeroBot() {
-        System.out.println("Inserisci il numero di Bot che vuoi sfidare (min = 1 ; max = 12)");
+        System.out.println("Inserisci il numero di Bot che vuoi sfidare");
+        System.out.println("       (min = 1 ; max = 12)                ");
+        System.out.print("                  ");
         nbot = scanner.next();
+        System.out.print("\n");
     }
 
     private void richiediDifficoltaBot() {
-        System.out.println("Inserisci la difficoltá dei Bot (Facile, Medio, Difficile)");
+        System.out.println("    Inserisci la difficoltá dei Bot   ");
+        System.out.println("      (Facile, Medio, Difficile)      ");
+        System.out.print("              ");
         difficolta_bot = scanner.next();
+        System.out.print("\n");
     }
 
     private void richiediFichesIniziali() {
-        System.out.println("Inserisci il numero di fiches iniziali (min = 1 ; max = 100000000)");
+        System.out.println("Inserisci il numero di fiches iniziali"); 
+        System.out.println("      (min = 1 ; max = 100000000)     ");
+        System.out.print("              ");
         fiches_iniziali = scanner.next();
+        System.out.print("\n");
     }
 }

@@ -1,14 +1,10 @@
 package menuPrincipale.events;
 
-import java.util.EventObject;
+public class OpzioneScelta{
+    private String opzione;
 
-
-public class OpzioneScelta extends EventObject{
-    private final String opzione;
-
-    public OpzioneScelta(Object source, String msg) {
-        super(source);
-        this.opzione = msg;
+    public OpzioneScelta(String opzione) {
+        this.opzione = opzione;
     }
     
     public String getOpzione(){

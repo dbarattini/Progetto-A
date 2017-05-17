@@ -1,11 +1,11 @@
 package menuPrincipale.view;
 
-import menuPrincipale.events.OpzioneSceltaListener;
+import menuPrincipale.events.ViewEventListener;
 
 public interface MenuPrincipaleView {
     
-    public void addOpzioneSceltaListener(OpzioneSceltaListener l);
+    public void addViewEventListener(ViewEventListener l);
 
-    public void removeOpzioneSceltaListener(OpzioneSceltaListener l);
+    public void removeViewEventListener(ViewEventListener l);
     
 }
