@@ -31,8 +31,8 @@ public class SQL {
             stmt = c.createStatement();
             String sql = "CREATE TABLE GIOCATORI " +
                           "(EMAIL TEXT PRIMARY KEY     NOT NULL,"+
-                          "PASSWORD TEXT     NOT NULL"+
-                          "USERNAME TEXT PRIMARY KEY     NOT NULL,"+
+                          "PASSWORD TEXT     NOT NULL,"+
+                          "USERNAME TEXT    NOT NULL,"+
                          " FICHES             INT , " + 
                          "VITTORIE INT)" ;
             stmt.executeUpdate(sql);
@@ -40,6 +40,7 @@ public class SQL {
             System.out.println("Tabella creata!");
         } catch ( Exception e ) {
              chiudiDatabase();
+             System.out.println(e.toString());
         }    
   }
 
