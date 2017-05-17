@@ -12,6 +12,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JSlider;
 import javax.swing.JTextField;
 import menuPrepartita.events.SetInfo;
@@ -161,7 +162,7 @@ public class MenuPrePartitaGuiView extends JFrame implements Observer, MenuPrePa
     @Override
     public void update(Observable o, Object arg) {
         if(arg instanceof Error){
-            System.err.println(((Error) arg).getMessage());
+            JOptionPane.showMessageDialog(null, (((Error) arg).getMessage()), "Errore", JOptionPane.ERROR_MESSAGE);
         }
     }
 
