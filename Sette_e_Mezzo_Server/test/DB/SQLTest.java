@@ -24,7 +24,7 @@ public class SQLTest {
         sql= new SQL();
     }
 
-    /**
+  /**
      * Test of aggiungiGiocatore method, of class SQL.
      */
     @Test
@@ -37,7 +37,7 @@ public class SQLTest {
         sql.aggiungiGiocatore(email, password, username, fiches);
         assertTrue(true);
     }
-
+    
     /**
      * Test of setFiches method, of class SQL.
      */
@@ -50,6 +50,7 @@ public class SQLTest {
         assertTrue(true);
     }
 
+  
     /**
      * Test of getFiches method, of class SQL.
      */
