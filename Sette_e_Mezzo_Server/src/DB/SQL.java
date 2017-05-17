@@ -32,8 +32,8 @@ public class SQL {
             stmt = c.createStatement();
             String sql = "CREATE TABLE GIOCATORI " +
                           "(EMAIL TEXT PRIMARY KEY     NOT NULL,"+
-                          "PASSWORD TEXT"+
-                          "USERNAME TEXT,"+
+                          "PASSWORD TEXT     NOT NULL"+
+                          "USERNAME TEXT PRIMARY KEY     NOT NULL,"+
                          " FICHES             INT , " + 
                          "VITTORIE INT)" ;
             stmt.executeUpdate(sql);
@@ -61,7 +61,7 @@ public class SQL {
       stmt.executeUpdate(sql);      
       c.commit();
       chiudiDatabase();
-      System.out.println("Dato aggiunto correttamente");
+      System.out.println("Giocatore aggiunto correttamente");
     } catch ( Exception e ) {
            System.out.println("dato già presente");
            chiudiDatabase();
