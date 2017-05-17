@@ -5,6 +5,7 @@
  */
 package DB;
 
+import eccezioni.GiocatoreNonTrovato;
 import eccezioni.GiocatoreGiaPresente;
 import java.sql.*;
 import java.util.logging.Level;
@@ -254,8 +255,9 @@ public class SQL {
      *Permette di avere l'username del giocatore partendo dall'email
      * @param email email del giocatore
      * @return username nel giocatore
+     * @throws eccezioni.GiocatoreNonTrovato se la mail non è nel database
      */
-    public String getUser( String email )
+    public String getUser( String email ) throws GiocatoreNonTrovato
   {
         try {
             Class.forName("org.sqlite.JDBC");
@@ -278,7 +280,7 @@ public class SQL {
                   System.err.println( e.getClass().getName() + ": " + e.getMessage() );
                   chiudiDatabase();
             }
-            return null;
+            throw new GiocatoreNonTrovato();
     }
     
     /**
@@ -297,6 +299,35 @@ public class SQL {
       while ( rs.next() ) {
          String mail = rs.getString("EMAIL");
          if((mail.toLowerCase()).equals(email.toLowerCase())){
+               return true;
+         }
+             
+      }
+      rs.close();      
+      chiudiDatabase();
+    } catch ( Exception e ) {
+      System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+      chiudiDatabase();
+    }
+    return false;
+  }
+    
+    /**
+     *Consente di controllare l'esistenza di un username nel database
+     * @param username username da controllare
+     * @return true se esiste, false altrimenti
+     */
+    public boolean esisteUsername( String username )
+  {
+    try {
+      Class.forName("org.sqlite.JDBC");
+      c = DriverManager.getConnection("jdbc:sqlite:setteEmezzo.db");
+      c.setAutoCommit(false);
+      stmt = c.createStatement();
+      ResultSet rs = stmt.executeQuery( "SELECT * FROM GIOCATORI;" );
+      while ( rs.next() ) {
+         String user = rs.getString("USERNAME");
+         if((user.toLowerCase()).equals(username.toLowerCase())){
                return true;
          }
              
