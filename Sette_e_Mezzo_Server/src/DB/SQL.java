@@ -40,7 +40,6 @@ public class SQL {
             System.out.println("Tabella creata!");
         } catch ( Exception e ) {
              chiudiDatabase();
-             System.out.println(e.toString());
         }    
   }
 

@@ -60,28 +60,38 @@ public class SQLTest {
         String user = "ciaone";
         int expResult = 10;
         int result = sql.getFiches(user);
-        assertEquals(expResult, result);
-        
+        assertEquals(expResult, result);        
     }
     
+        /**
+     * Test of getFiches method, of class SQL.
+     */
+    @Test
+    public void testGeteSetFiches() {
+        String user = "ciaone";
+        int fiches = (int) Math.round(Math.random()*1000);
+         sql.setFiches(user, fiches);
+        int result = sql.getFiches(user);
+        assertEquals(fiches, result);        
+    }
 
-//
-//    /**
-//     * Test of controllaPassword method, of class SQL.
-//     */
-//    @Test
-//    public void testControllaPassword() {
-//        System.out.println("controllaPassword");
-//        String user = "";
-//        String pw = "";
-//        SQL instance = new SQL();
-//        boolean expResult = false;
-//        boolean result = instance.controllaPassword(user, pw);
-//        assertEquals(expResult, result);
-//        // TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
-//    }
-//
+
+    /**
+     * Test of controllaPassword method, of class SQL.
+     */
+    @Test
+    public void testControllaPassword() {
+        System.out.println("controllaPassword");
+        String user = "";
+        String pw = "";
+        SQL instance = new SQL();
+        boolean expResult = false;
+        boolean result = instance.controllaPassword(user, pw);
+        assertEquals(expResult, result);
+        // TODO review the generated test code and remove the default call to fail.
+        fail("The test case is a prototype.");
+    }
+
 //    /**
 //     * Test of cambiaPassword method, of class SQL.
 //     */
