@@ -45,8 +45,10 @@ public class Login extends Thread{
     @Override
     public void run(){
         try {
-            String messaggio=giocatore.Leggi();
-            if(!messaggio.equals(null)){
+            
+            String messaggio;
+            messaggio = giocatore.Leggi();
+            if(!messaggio.equals("")){
                 String dati[]= messaggio.split(" ");
                 if(dati[0].equals("registrazione")){
                     convalida(dati);
@@ -84,6 +86,8 @@ public class Login extends Thread{
                 else
                     run();
             }
+            else
+                run();
         } catch (IOException ex) {
             Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
         } catch (InterruptedException ex) {
