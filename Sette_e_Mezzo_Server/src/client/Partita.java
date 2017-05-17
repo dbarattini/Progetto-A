@@ -1,10 +1,11 @@
-package sette_e_mezzo_server;
+package client;
 
 import eccezioni.GiocatoreDisconnessoException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import sette_e_mezzo_server.Giocatore;
 
 
 public class Partita implements Runnable {
