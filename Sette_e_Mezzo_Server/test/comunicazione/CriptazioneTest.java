@@ -5,6 +5,9 @@
  */
 package comunicazione;
 
+import eccezioni.ChiaveNonValida;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -91,14 +94,33 @@ public class CriptazioneTest {
      */
     @Test
     public void testSetKey() {
-        System.out.println("setKey");
-        String key = "SambaPis";
-        cript.setKey(key);
-        String msg1 = cript.codificaMessaggio("#La su io & te 4ever!");
-        key = "Catrame1";
-        cript.setKey(key);
-        String msg2 = cript.codificaMessaggio("#La su io & te 4ever!");
-        assertNotEquals(msg1, msg2);
+        try {
+            System.out.println("setKey");
+            String key = "SambaPis";
+            cript.setKey(key);
+            String msg1 = cript.codificaMessaggio("#La su io & te 4ever!");
+            key = "Catrame1";
+            cript.setKey(key);
+            String msg2 = cript.codificaMessaggio("#La su io & te 4ever!");
+            assertNotEquals(msg1, msg2);
+        } catch (ChiaveNonValida ex) {
+            fail();
+        }
+    }
+    
+    /**
+     * Test of setKey method, of class Criptazione.
+     */
+    @Test
+    public void testSetKeySbagliata() {
+        try {
+            System.out.println("setKey");
+            String key = "SambaPisogeno";
+            cript.setKey(key);
+             fail();
+        } catch (ChiaveNonValida ex) {
+            assertTrue(true);
+        }
     }
     
 }

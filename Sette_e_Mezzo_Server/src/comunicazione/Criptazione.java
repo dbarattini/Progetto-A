@@ -22,7 +22,7 @@ public class Criptazione {
     private static Logger log = Logger.getLogger(Criptazione.class.getName());
     private final static String accountSeperator = ":";
 
-  private static String key = "SambaPis";
+  private static String key = "PisoTino";
 
 
   private String decrypt(String message) throws Exception {
