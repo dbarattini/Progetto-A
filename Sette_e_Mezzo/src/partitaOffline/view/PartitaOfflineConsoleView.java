@@ -9,9 +9,13 @@ import java.util.Scanner;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import partitaOffline.events.AggiornamentoMazziere;
 import partitaOffline.events.EstrattoMazziere;
 import partitaOffline.events.FineManoAvversario;
+import partitaOffline.events.FineRound;
+import partitaOffline.events.GameOver;
 import partitaOffline.events.GiocatoreLocaleEvent;
+import partitaOffline.events.MazzierePerde;
 import partitaOffline.events.MazzoRimescolato;
 import partitaOffline.events.Messaggio;
 import partitaOffline.events.PartitaOfflineViewEvent;
@@ -21,6 +25,7 @@ import partitaOffline.events.RichiediNome;
 import partitaOffline.events.RichiediPuntata;
 import partitaOffline.events.RisultatoManoParticolare;
 import partitaOffline.events.SetNome;
+import partitaOffline.events.Vittoria;
 import partitaOffline.model.PartitaOfflineModel;
 
 public class PartitaOfflineConsoleView implements PartitaOfflineView, Observer{
@@ -103,6 +108,17 @@ public class PartitaOfflineConsoleView implements PartitaOfflineView, Observer{
         } else if(arg instanceof FineManoAvversario){
             FineManoAvversario avversario = (FineManoAvversario) arg;
             System.out.println(avversario.getNome() + " " + avversario.getCarteScoperte() + " " + avversario.getStato() + " " + avversario.getPuntata());
+        } else if(arg instanceof FineRound){
+            Giocatore giocatore = ((FineRound) arg).getGiocatore();
+            System.out.println(giocatore.haPerso() + " " + giocatore.isMazziere() + " " + giocatore.getNome() + " " + giocatore.getTutteLeCarte() + " " + giocatore.getValoreMano() + " "+ giocatore.getStato() + " " + giocatore.getFiches());
+        } else if(arg instanceof MazzierePerde){
+            System.out.println("Il mazziere ha perso");
+        } else if(arg instanceof AggiornamentoMazziere){
+            System.out.println("il nuovo mazziere é: " + model.getMazziere().getNome() + "\n");
+        } else if(arg instanceof GameOver){
+            System.out.println("Game Over");
+        } else if(arg instanceof Vittoria){
+            System.out.println("Complimenti! Hai sconfitto tutti i bot");
         }
     }
 

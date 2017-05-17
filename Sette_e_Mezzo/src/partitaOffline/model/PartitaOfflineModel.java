@@ -1,5 +1,10 @@
 package partitaOffline.model;
 
+import partitaOffline.events.Vittoria;
+import partitaOffline.events.AggiornamentoMazziere;
+import partitaOffline.events.GameOver;
+import partitaOffline.events.MazzierePerde;
+import partitaOffline.events.FineRound;
 import partitaOffline.events.FineManoAvversario;
 import partitaOffline.events.RisultatoManoParticolare;
 import dominio.eccezioni.DifficoltaBotException;
@@ -118,7 +123,8 @@ public class PartitaOfflineModel extends Observable {
             fine_round();
             mazzo.aggiorna_fine_round();
             if(n_bot_sconfitti == n_bot){
-                stampa_schermata_vittoria();
+                this.setChanged();
+                this.notifyObservers(new Vittoria());
                 vittoria();
             }
         }
@@ -377,7 +383,10 @@ public class PartitaOfflineModel extends Observable {
     private void fine_round() throws InterruptedException{
         boolean game_over = false;
         for(Giocatore giocatore : giocatori){
-            stampa_schermata_risultato_round(giocatore);
+            
+            this.setChanged();
+            this.notifyObservers(new FineRound(giocatore));
+            
             Thread.sleep(pausa_breve);
             if(giocatore.getFiches() == 0 && ! giocatore.haPerso()){
                 if(giocatore instanceof GiocatoreUmano){
@@ -387,26 +396,25 @@ public class PartitaOfflineModel extends Observable {
                     giocatore.perde();
                     n_bot_sconfitti += 1;
                     if(giocatore.isMazziere()){
-                        out.println("\nIl mazziere ha perso\n");
+                        this.setChanged();
+                        this.notifyObservers(new MazzierePerde());
+                        
                         mazziere_successivo();
                     }
                 }
             }
         }
-        out.print("\n");
         if(game_over){
-            stampa_schermata_game_over();
+            this.setChanged();
+            this.notifyObservers(new GameOver());
             game_over();
         }
         if(next_mazziere != null){
             aggiorna_mazziere();
-            stampa_schermata_aggiorna_mazziere();
+            this.setChanged();
+            this.notifyObservers(new AggiornamentoMazziere());
         }
         Thread.sleep(pausa_lunga);
-    }
-    
-    private void stampa_schermata_risultato_round(Giocatore giocatore){
-        out.println(giocatore.haPerso() + " " + giocatore.isMazziere() + " " + giocatore.getNome() + " " + giocatore.getTutteLeCarte() + " " + giocatore.getValoreMano() + " "+ giocatore.getStato() + " " + giocatore.getFiches());
     }
     
     private void aggiorna_mazziere(){
@@ -414,25 +422,13 @@ public class PartitaOfflineModel extends Observable {
         next_mazziere.setMazziere(true);
         mazziere = next_mazziere;
     }
-    
-    private void stampa_schermata_aggiorna_mazziere(){
-        out.println("il nuovo mazziere é: " + mazziere.getNome() + "\n");
-    }
 
     private void game_over(){
         System.exit(0);
     }
-    
-    private void stampa_schermata_game_over(){
-        out.println("Game Over");
-    }
 
     private void vittoria(){
         System.exit(0);
-    }
-    
-    private void stampa_schermata_vittoria(){
-        out.println("Complimenti! Hai Sconfitto tutti i bot.");
     }
 
     public int getN_bot() {
