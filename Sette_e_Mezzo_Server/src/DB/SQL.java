@@ -46,11 +46,11 @@ public class SQL {
 
     /**
      *Aggiunge un nuovo giocatore al database
-     * @param email
-     * @param password
-     * @param username
-     * @param fiches
-     * @throws GiocatoreGiaPresente
+     * @param email email del giocatore
+     * @param password password del giocatore
+     * @param username usernsme che userà il giocatore
+     * @param fiches fiches iniziali
+     * @throws GiocatoreGiaPresente se username o email sono già state inserite nel database
      */
     public  void aggiungiGiocatore(String email, String password, String username, int fiches  ) throws GiocatoreGiaPresente
   {
@@ -78,8 +78,8 @@ public class SQL {
     
     /**
      *Consente di modificare le fiches di un giocatore
-     * @param user
-     * @param fiches
+     * @param user username del giocatore
+     * @param fiches nuovo numero di fiches per quel giocatore
      */
     public void setFiches(String user, int fiches)
   {
@@ -104,7 +104,7 @@ public class SQL {
     
     /**
      *Torna le fiches di un giocatore
-     * @param user
+     * @param user username del giocatore
      * @return fiches del giocatore
      */
     public int getFiches( String user )
@@ -135,8 +135,8 @@ public class SQL {
    
     /**
      *Permette di controllare la password di un giocatore
-     * @param user
-     * @param pw
+     * @param user username del giocatore
+     * @param pw password del giocatore
      * @return ritorna true se la password è giusta
      */
     public boolean controllaPassword( String user, String pw )
@@ -175,8 +175,8 @@ public class SQL {
    
     /**
      *Permette di avere l'username del giocatore partendo dall'email
-     * @param email
-     * @return username
+     * @param email email del giocatore
+     * @return username nel giocatore
      */
     public String getUser( String email )
   {
@@ -206,7 +206,7 @@ public class SQL {
    
     /**
      *Aggiunge una vittoria al giocatore
-     * @param user
+     * @param user username del giocatore
      */
     public void aggiungiVittoria( String user ){
             int vittorie=0;    
@@ -238,8 +238,8 @@ public class SQL {
     
     /**
      *Ritorna le vittorie del giocatore
-     * @param user
-     * @return vittorie
+     * @param user username del giocatore
+     * @return vittorie del giocatore
      */
     public int getVittorie( String user )
   {

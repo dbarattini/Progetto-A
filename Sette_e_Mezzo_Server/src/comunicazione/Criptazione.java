@@ -71,7 +71,7 @@ public class Criptazione {
 
     /**
      *Inserire username e passwor criptati per decriptarli
-     * @param userEpw
+     * @param userEpw username e password criptati
      * @return ritorna in posizione 0 username e in posizione 1 la password
      */
     public  String[] decodificaAccount(String userEpw) {
@@ -90,9 +90,9 @@ public class Criptazione {
 
     /**
      *Inserire i dati per criptarli 
-     * @param username
-     * @param password
-     * @return
+     * @param username username del giocatore
+     * @param password password del giocatore
+     * @return ritorna username e password in messaggio criptato
      */
     public String codificaAccount(String username, String password) {
     String encryptString = null;
@@ -105,8 +105,8 @@ public class Criptazione {
   }
   
     /**
-     *Inserire messaggio da codificare
-     * @param msg
+     *Inserire messaggio per codificarlo
+     * @param msg messaggio da codificare
      * @return messaggio codificato
      */
     public String codificaMessaggio(String msg){
@@ -121,7 +121,7 @@ public class Criptazione {
   
     /**
      *Decodifica un messaggio 
-     * @param msg
+     * @param msg messaggio codificato
      * @return messaggio decodificato
      */
     public String decodificaMessaggio(String msg) {
@@ -138,7 +138,7 @@ public class Criptazione {
   
     /**
      *Cambia la chiave di cifratura dei messaggi, deve essere composta da 8 caratteri
-     * @param key
+     * @param key nuova chiave
      * @throws eccezioni.ChiaveNonValida
      */
     public void setKey(String key) throws ChiaveNonValida {
