@@ -10,6 +10,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import partitaOffline.events.EstrattoMazziere;
+import partitaOffline.events.FineManoAvversario;
 import partitaOffline.events.GiocatoreLocaleEvent;
 import partitaOffline.events.MazzoRimescolato;
 import partitaOffline.events.Messaggio;
@@ -18,6 +19,7 @@ import partitaOffline.events.PartitaOfflineViewEventListener;
 import partitaOffline.events.RichiediGiocata;
 import partitaOffline.events.RichiediNome;
 import partitaOffline.events.RichiediPuntata;
+import partitaOffline.events.RisultatoManoParticolare;
 import partitaOffline.events.SetNome;
 import partitaOffline.model.PartitaOfflineModel;
 
@@ -93,6 +95,14 @@ public class PartitaOfflineConsoleView implements PartitaOfflineView, Observer{
             }
         } else if(arg instanceof MazzoRimescolato){
             System.out.println("\nRimescolo mazzo\n");
+        } else if(arg instanceof RisultatoManoParticolare){
+            System.out.println(model.getGiocatoreLocale().getUltimaCartaOttenuta());
+            System.out.println(model.getGiocatoreLocale().getValoreMano());
+            System.out.println(model.getGiocatoreLocale().getStato());
+            System.out.println("\n");
+        } else if(arg instanceof FineManoAvversario){
+            FineManoAvversario avversario = (FineManoAvversario) arg;
+            System.out.println(avversario.getNome() + " " + avversario.getCarteScoperte() + " " + avversario.getStato() + " " + avversario.getPuntata());
         }
     }
 

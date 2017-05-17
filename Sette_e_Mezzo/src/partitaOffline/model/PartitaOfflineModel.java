@@ -1,5 +1,7 @@
 package partitaOffline.model;
 
+import partitaOffline.events.FineManoAvversario;
+import partitaOffline.events.RisultatoManoParticolare;
 import dominio.eccezioni.DifficoltaBotException;
 import dominio.eccezioni.FichesInizialiException;
 import dominio.eccezioni.NumeroBotException;
@@ -202,14 +204,6 @@ public class PartitaOfflineModel extends Observable {
         }
         mazziere.setMazziere(true);
     }
-    
-    private void mostra_carta_coperta_e_valore_mano(Giocatore giocatore){
-        out.println(giocatore.getNome() + " [" + giocatore.getCartaCoperta() + "] " + giocatore.getValoreMano());
-    }
-    
-    private void stampa_messaggio_mazziere(){
-        out.println("\nIl Mazziere é: " + mazziere.getNome() + "\n");
-    }
 
     private void gioca_round() throws InterruptedException, MazzierePerdeException {
         int pos_mazziere = giocatori.indexOf(mazziere);
@@ -227,17 +221,20 @@ public class PartitaOfflineModel extends Observable {
             if(! giocatore.haPerso()){  
                 esegui_mano(giocatore);
                 if(giocatore instanceof GiocatoreUmano && giocatore.getStato() != Stato.OK){
-//                    stampa_se_stato_non_ok(giocatore);
+                    
+                    this.setChanged();
+                    this.notifyObservers(new RisultatoManoParticolare());
+                    
                     Thread.sleep(pausa_lunga);
                 }
             }
             if(! (giocatore instanceof GiocatoreUmano)){
-//                stampa_giocata_bot(giocatore);
+                this.setChanged();
+                this.notifyObservers(new FineManoAvversario(giocatore.getNome(), giocatore.getCarteScoperte(),giocatore.getStato(), giocatore.getPuntata()));
                 Thread.sleep(pausa_breve);
             }
             pos_next_giocatore += 1;
         }
-        out.print("\n");
     }
     
     private void inizializza_round(){
@@ -260,7 +257,10 @@ public class PartitaOfflineModel extends Observable {
                     break;
                 } catch (FineMazzoException ex) {
                     mazzo.rimescola();
-                    stampa_messaggio_rimescola_mazzo();
+                    
+                    this.setChanged();
+                    this.notifyObservers(new MazzoRimescolato());
+                    
                     this.mazziere_successivo();
                 }
             }
@@ -279,10 +279,6 @@ public class PartitaOfflineModel extends Observable {
             }
     }
     
-    private void stampa_messaggio_rimescola_mazzo(){
-        out.println("Rimescolo il mazzo.");
-    }
-    
     private Giocatore getProssimoGiocatore(int posizione){
         return giocatori.get(posizione);
     }
@@ -298,7 +294,10 @@ public class PartitaOfflineModel extends Observable {
                     carta_estratta = mazzo.estrai_carta();
                 } catch (FineMazzoException ex) {
                     mazzo.rimescola();
-                    stampa_messaggio_rimescola_mazzo();
+                    
+                    this.setChanged();
+                    this.notifyObservers(new MazzoRimescolato());
+                    
                     mazziere_successivo();
                     try {
                         carta_estratta = mazzo.estrai_carta();
@@ -323,17 +322,6 @@ public class PartitaOfflineModel extends Observable {
                 }
             }
         }
-    }
-    
-    private void stampa_se_stato_non_ok(Giocatore giocatore){
-        out.println("Carta Ottenuta: " + giocatore.getUltimaCartaOttenuta());
-        out.println("Valore Mano: " + giocatore.getValoreMano() + "\n");
-        out.println(giocatore.getStato());
-        out.print("\n");
-    }
-    
-    private void stampa_giocata_bot(Giocatore giocatore){
-        out.println(giocatore.getNome() + " " + giocatore.getCarteScoperte() + " " + giocatore.getStato() + " " + giocatore.getPuntata());
     }
     
     private void calcola_risultato() throws MazzierePerdeException{ 
