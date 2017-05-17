@@ -6,7 +6,6 @@
 package DB;
 
 import eccezioni.GiocatoreNonTrovato;
-import eccezioni.GiocatoreGiaPresente;
 import java.sql.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -52,7 +51,7 @@ public class SQL {
      * @param fiches fiches iniziali
      * @throws GiocatoreGiaPresente se username o email sono già state inserite nel database
      */
-    public  void aggiungiGiocatore(String email, String password, String username, int fiches  ) throws GiocatoreGiaPresente
+    public  void aggiungiGiocatore(String email, String password, String username, int fiches  )
   {
        try {
       Class.forName("org.sqlite.JDBC");
@@ -70,8 +69,7 @@ public class SQL {
       System.out.println("Giocatore aggiunto correttamente");
     } catch ( Exception e ) {
            System.out.println("dato già presente");
-           chiudiDatabase();
-           throw new GiocatoreGiaPresente(e.getMessage());           
+           chiudiDatabase();     
     }
     
   }

@@ -7,6 +7,7 @@
  */
 package login;
 
+import comunicazione.Email;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -15,9 +16,8 @@ import java.net.InetAddress;
 import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import login.Email;
 import DB.SQL;
-import eccezioni.GiocatoreGiaPresente;
+import eccezioni.GiocatoreNonTrovato;
 import giocatore.Giocatore;
 
 
@@ -28,8 +28,9 @@ public class Login extends Thread{
     private Socket clientSocket;
     private InetAddress clientAddress;
     private int codice;
-    private String mail, pw;
+    private String mail, password, username;
     private Giocatore giocatore;
+    private int fiches=1000;
 
     public Login(Giocatore giocatore) throws IOException {
             this.giocatore=giocatore;
@@ -49,10 +50,16 @@ public class Login extends Thread{
                 convalida(dati);
             }
             else if(dati[0].equals("login")){
-                if(sql.controllaPassword(dati[1], dati[2])){
+                String user, pw;
+                if(dati[1].contains("@"))
+                    user=sql.getUser(dati[1]);
+                else
+                    user=dati[1];
+                pw=dati[2];
+                if(sql.controllaPassword(user,pw)){
                      giocatore.Scrivi("login effetuato");
                     sleep(20);
-                    inizioLogin();//inizia partita
+                    iniziaPartita();
                 }
                 else{
                     giocatore.Scrivi("login non effetuato");
@@ -78,6 +85,9 @@ public class Login extends Thread{
             Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
         } catch (InterruptedException ex) {
             Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (GiocatoreNonTrovato ex) {
+            giocatore.Scrivi("login non effetuato");
+            run();
         }
     }
     
@@ -89,31 +99,36 @@ public class Login extends Thread{
             Email email=new Email();
             String password=sql.getPassword(mail);
             email.inviaPassword(mail, password );
-            System.out.println("email inviata");
             giocatore.Scrivi("recupero inviato");
         }
         run();
     }
 
-    private void registra() {
-        sql.aggiungiGiocatore(mail, pw, username, fiches);
-        giocatore.Scrivi("registrazione effetuata");
-        run();
-    }
+    private void registra() {        
+            sql.aggiungiGiocatore(mail, password, username, fiches);
+            giocatore.Scrivi("registrazione effetuata");
+            run();
+      }
 
     private void convalida(String[] dati)  {
         codice=random();
         mail=dati[1];
-        pw=dati[2];
+        username=dati[2];
+        password=dati[3];
         if(sql.esisteEmail(mail))
-            giocatore.Scrivi("registrazione non effetuata");  
+            giocatore.Scrivi("registrazione email gia esistente");  
+        else if(sql.esisteUsername(username))
+            giocatore.Scrivi("registrazione username gia esistente");
         else{
             Email email=new Email();
             email.inviaCodice(mail, codice);
-            System.out.println("email inviata");
             giocatore.Scrivi("convalida inviata");
         }
         run();
+    }
+
+    private void iniziaPartita() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
     

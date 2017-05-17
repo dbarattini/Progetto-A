@@ -5,7 +5,7 @@
  * Dept of Electrical, Computer and Biomedical Engineering,
  * University of Pavia.
  */
-package login;
+package comunicazione;
 // File Name SendEmail.java
 
 import com.sun.mail.smtp.SMTPTransport;
