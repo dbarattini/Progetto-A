@@ -5,6 +5,7 @@
  */
 package comunicazione;
 
+import eccezioni.ChiaveNonValida;
 import java.util.logging.Logger;
 
 import javax.crypto.Cipher;
@@ -68,7 +69,12 @@ public class Criptazione {
     return hexString.toString();
   }
 
-  public  String[] decodificaAccount(String userEpw) {
+    /**
+     *Inserire username e passwor criptati per decriptarli
+     * @param userEpw
+     * @return ritorna in posizione 0 username e in posizione 1 la password
+     */
+    public  String[] decodificaAccount(String userEpw) {
     try {
       String origi = decrypt(userEpw);
       String[] parts = origi.split(Criptazione.accountSeperator);
@@ -82,7 +88,13 @@ public class Criptazione {
     return null;
   }
 
-  public String codificaAccount(String username, String password) {
+    /**
+     *Inserire i dati per criptarli 
+     * @param username
+     * @param password
+     * @return
+     */
+    public String codificaAccount(String username, String password) {
     String encryptString = null;
     try {
       encryptString =encrypt(username + Criptazione.accountSeperator + password);
@@ -92,7 +104,12 @@ public class Criptazione {
     return encryptString;
   }
   
-  public String codificaMessaggio(String msg){
+    /**
+     *Inserire messaggio da codificare
+     * @param msg
+     * @return messaggio codificato
+     */
+    public String codificaMessaggio(String msg){
       String encryptString = null;
     try {
       encryptString = encrypt(msg);
@@ -102,7 +119,12 @@ public class Criptazione {
     return encryptString;
   }
   
-  public String decodificaMessaggio(String msg) {
+    /**
+     *Decodifica un messaggio 
+     * @param msg
+     * @return messaggio decodificato
+     */
+    public String decodificaMessaggio(String msg) {
     try {
       String decript = decrypt(msg);      
         return decript;
@@ -114,7 +136,15 @@ public class Criptazione {
     return null;
   }
   
-    public void setKey(String key) {
-        Criptazione.key = key;
+    /**
+     *Cambia la chiave di cifratura dei messaggi, deve essere composta da 8 caratteri
+     * @param key
+     * @throws eccezioni.ChiaveNonValida
+     */
+    public void setKey(String key) throws ChiaveNonValida {
+        if(key.length()==8)
+            Criptazione.key = key;
+        else
+            throw new ChiaveNonValida();
     }
 }
