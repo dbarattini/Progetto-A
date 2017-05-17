@@ -191,9 +191,10 @@ public class SQL {
                 String password  =rs.getString("PASSWORD");
                 if(username.equals(user)){
                     if(vecchiaPassword.equals(password)){
-                        String dato= "UPDATE GIOCATORI set PASSWORD ="+nuovaPassword+" where USERNAME= '"+user+"';";
+                        String dato= "UPDATE GIOCATORI set PASSWORD ='"+nuovaPassword+"' where USERNAME= '"+user+"';";
                         String sql = dato;
                         stmt.executeUpdate(sql);
+                        c.commit();
                          rs.close();
                         chiudiDatabase();
                         return true;

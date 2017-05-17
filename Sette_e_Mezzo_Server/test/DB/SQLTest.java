@@ -102,37 +102,50 @@ public class SQLTest {
         assertEquals(expResult, result);
       }
 
-//    /**
-//     * Test of cambiaPassword method, of class SQL.
-//     */
-//    @Test
-//    public void testCambiaPassword() {
-//        System.out.println("cambiaPassword");
-//        String user = "";
-//        String vecchiaPassword = "";
-//        String nuovaPassword = "";
-//        SQL instance = new SQL();
-//        boolean expResult = false;
-//        boolean result = instance.cambiaPassword(user, vecchiaPassword, nuovaPassword);
-//        assertEquals(expResult, result);
-//        // TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
-//    }
-//
-//    /**
-//     * Test of getPassword method, of class SQL.
-//     */
-//    @Test
-//    public void testGetPassword() {
-//        System.out.println("getPassword");
-//        String user = "";
-//        SQL instance = new SQL();
-//        String expResult = "";
-//        String result = instance.getPassword(user);
-//        assertEquals(expResult, result);
-//        // TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
-//    }
+    /**
+     * Test of cambiaPassword method, of class SQL.
+     */
+    @Test
+    public void testCambiaPasswordEsatta() {
+        System.out.println("cambiaPassword");
+        String user = "ciaone";
+        String vecchiaPassword = "passera";
+        String nuovaPassword = "prova";
+        boolean expResult = true;
+        boolean result = sql.cambiaPassword(user, vecchiaPassword, nuovaPassword);
+        assertEquals(expResult, result);
+    }
+    
+    /**
+    *
+     * Test of cambiaPassword method, of class SQL.
+     */
+    @Test
+    public void testCambiaPasswordSbagliata() {
+        System.out.println("cambiaPassword");
+        String user = "ciaone";
+        String vecchiaPassword = "prva";
+        String nuovaPassword = "passera";
+        boolean expResult = false;
+        boolean result = sql.cambiaPassword(user, vecchiaPassword, nuovaPassword);
+        assertEquals(expResult, result);
+    }
+
+    /**
+     * Test of getPassword method, of class SQL.
+     */
+    @Test
+    public void testGetPassword() {
+        System.out.println("getPassword");
+        String user = "ciaone";
+        String password = "prova";
+        String nuovaPassword = "passera";
+        boolean expResult = true;
+        boolean cambia = sql.cambiaPassword(user, password, nuovaPassword);
+        String result = sql.getPassword(user);
+        assertEquals(nuovaPassword, result);
+        
+    }
 //
 //    /**
 //     * Test of getUser method, of class SQL.
