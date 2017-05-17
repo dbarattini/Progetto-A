@@ -80,17 +80,27 @@ public class SQLTest {
      * Test of controllaPassword method, of class SQL.
      */
     @Test
-    public void testControllaPassword() {
+    public void testControllaPasswordEsatta() {
         System.out.println("controllaPassword");
-        String user = "";
-        String pw = "";
-        SQL instance = new SQL();
-        boolean expResult = false;
-        boolean result = instance.controllaPassword(user, pw);
+        String user = "ciaone";
+        String pw = "prova";
+        boolean expResult = true;
+        boolean result = sql.controllaPassword(user, pw);
         assertEquals(expResult, result);
-        // TODO review the generated test code and remove the default call to fail.
-        fail("The test case is a prototype.");
-    }
+      }
+    
+        /**
+     * Test of controllaPassword method, of class SQL.
+     */
+    @Test
+    public void testControllaPasswordSbagliata() {
+        System.out.println("controllaPassword");
+        String user = "ciaone";
+        String pw = "proa";
+        boolean expResult = false;
+        boolean result = sql.controllaPassword(user, pw);
+        assertEquals(expResult, result);
+      }
 
 //    /**
 //     * Test of cambiaPassword method, of class SQL.
