@@ -36,11 +36,7 @@ public class Login extends Thread{
             this.out =  new PrintWriter(giocatore.getSocket().getOutputStream(), true);
             this.in = new BufferedReader( new InputStreamReader(giocatore.getSocket().getInputStream()));      
     }
-    
-    private void inizioLogin(){
-        
-    }
-    
+      
     private int random(){
         return (int) Math.round(Math.random()*10000);
     }
@@ -56,7 +52,7 @@ public class Login extends Thread{
                 if(sql.controllaPassword(dati[1], dati[2])){
                      giocatore.Scrivi("login effetuato");
                     sleep(20);
-                    inizioLogin();
+                    inizioLogin();//inizia partita
                 }
                 else{
                     giocatore.Scrivi("login non effetuato");
@@ -87,35 +83,35 @@ public class Login extends Thread{
     
     private void recuperoPw(String[] dati){
         mail=dati[1];
-        if(!DB.esisteEmail(mail))
-            mandaMessaggio("recupero errato");  
+        if(!sql.esisteEmail(mail))
+            giocatore.Scrivi("recupero errato");  
         else{
             Email email=new Email();
-            String password=sql.trovaPassword(mail);
+            String password=sql.getPassword(mail);
             email.inviaPassword(mail, password );
             System.out.println("email inviata");
-            mandaMessaggio("recupero inviato");
+            giocatore.Scrivi("recupero inviato");
         }
         run();
     }
 
-    private void registra() throws datoGiaPresente {
-        sql.aggiungiDato(mail, pw);
-        mandaMessaggio("registrazione effetuata");
+    private void registra() {
+        sql.aggiungiGiocatore(mail, pw, username, fiches);
+        giocatore.Scrivi("registrazione effetuata");
         run();
     }
 
-    private void convalida(String[] dati) throws datoGiaPresente {
+    private void convalida(String[] dati)  {
         codice=random();
         mail=dati[1];
         pw=dati[2];
         if(sql.esisteEmail(mail))
-            mandaMessaggio("registrazione non effetuata");  
+            giocatore.Scrivi("registrazione non effetuata");  
         else{
             Email email=new Email();
             email.inviaCodice(mail, codice);
             System.out.println("email inviata");
-            mandaMessaggio("convalida inviata");
+            giocatore.Scrivi("convalida inviata");
         }
         run();
     }

@@ -373,9 +373,7 @@ public class SQL {
             return 0;
     }
     
-    
-    
-    
+   
     
     private void chiudiDatabase() {
         try {
