@@ -7,7 +7,6 @@ package DB;
 
 import eccezioni.GiocatoreGiaPresente;
 import java.sql.*;
-import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -172,6 +171,84 @@ public class SQL {
             }
             return false;
     }
+    
+    /**
+     *Cambia la password di un giocatore
+     * @param user username del giocatore
+     * @param vecchiaPassword vecchia password del giocatore
+     * @param nuovaPassword nuova password del giocatore
+     * @return true se l'ha cambiata false se la vecchia è errata
+     */
+    public boolean cambiaPassword( String user, String vecchiaPassword, String nuovaPassword )
+  {
+        try {
+            Class.forName("org.sqlite.JDBC");
+            c = DriverManager.getConnection("jdbc:sqlite:setteEmezzo.db");
+            c.setAutoCommit(false);   
+            stmt = c.createStatement();
+            ResultSet rs = stmt.executeQuery( "SELECT * FROM GIOCATORI;" );
+            while ( rs.next() ) {
+                String  username = rs.getString("USERNAME");
+                String password  =rs.getString("PASSWORD");
+                if(username.equals(user)){
+                    if(vecchiaPassword.equals(password)){
+                        String dato= "UPDATE GIOCATORI set PASSWORD ="+nuovaPassword+" where USERNAME= '"+user+"';";
+                        String sql = dato;
+                        stmt.executeUpdate(sql);
+                         rs.close();
+                        chiudiDatabase();
+                        return true;
+                    }
+                    else{
+                        rs.close();
+                        chiudiDatabase();
+                        return false;
+                    }
+                   
+                }
+            }
+            rs.close();
+            chiudiDatabase();
+            } catch ( Exception e ) {
+                  System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+                  chiudiDatabase();
+            }
+            return false;
+    }
+    
+    /**
+     *Recupera la password di un utente
+     * @param user username giocatore
+     * @return password del Giocatore
+     */
+    public String getPassword( String user )
+  {
+        try {
+            Class.forName("org.sqlite.JDBC");
+            c = DriverManager.getConnection("jdbc:sqlite:setteEmezzo.db");
+            c.setAutoCommit(false);   
+            stmt = c.createStatement();
+            ResultSet rs = stmt.executeQuery( "SELECT * FROM GIOCATORI;" );
+            while ( rs.next() ) {
+                String  username = rs.getString("USERNAME");
+                String  password = rs.getString("PASSWORD");
+                if(username.equals(user)){
+                    rs.close();
+                    chiudiDatabase();
+                    return password;
+                }
+            }
+            rs.close();
+            chiudiDatabase();
+            } catch ( Exception e ) {
+                  System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+                  chiudiDatabase();
+            }
+            return null;
+            
+    }
+    
+    
    
     /**
      *Permette di avere l'username del giocatore partendo dall'email
@@ -266,6 +343,8 @@ public class SQL {
             }
             return 0;
     }
+    
+    
     
     
     
