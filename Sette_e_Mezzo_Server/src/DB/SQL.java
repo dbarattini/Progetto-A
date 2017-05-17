@@ -280,6 +280,35 @@ public class SQL {
             }
             return null;
     }
+    
+    /**
+     *Consente di controllare l'esistenza di una email nel database
+     * @param email email da controllare
+     * @return true se esiste, false altrimenti
+     */
+    public boolean esisteEmail( String email )
+  {
+    try {
+      Class.forName("org.sqlite.JDBC");
+      c = DriverManager.getConnection("jdbc:sqlite:setteEmezzo.db");
+      c.setAutoCommit(false);
+      stmt = c.createStatement();
+      ResultSet rs = stmt.executeQuery( "SELECT * FROM GIOCATORI;" );
+      while ( rs.next() ) {
+         String mail = rs.getString("EMAIL");
+         if((mail.toLowerCase()).equals(email.toLowerCase())){
+               return true;
+         }
+             
+      }
+      rs.close();      
+      chiudiDatabase();
+    } catch ( Exception e ) {
+      System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+      chiudiDatabase();
+    }
+    return false;
+  }
    
     /**
      *Aggiunge una vittoria al giocatore

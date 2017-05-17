@@ -28,29 +28,41 @@ public class Email {
     public Email() {
      }
     
+    /**
+     *Inviare codice per registrare la mail
+     * @param destinatario email del destinatario
+     * @param codice codice da mandare
+     */
     public void inviaCodice(String destinatario, int codice){
         String msg="Buongiornissimo,\n"
                 + "Per convalidare il tuo indirizzo email inserire "+codice+" nell'aplicazione.\n"
                 + "Grazie\n"
                 + "Il team.\n\n\n"
                 + "P.S. Venderemo il tuo indirizzo email a un hacker russo per una bottiglia di vodka :D";
+        String oggetto ="Verifica mail Sette e mezzo";
         try {
-            Send(nome, password, destinatario, "Verifica mail Hangman", msg);
+            Send(nome, password, destinatario, oggetto, msg);
         } catch (MessagingException ex) {
             Logger.getLogger(Email.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
-     public void inviaPassword(String destinatario, String pw){
+    /**
+     *Invia la password al giocatore 
+     * @param destinatario email del giocatore
+     * @param pw password del giocatore
+     */
+    public void inviaPassword(String destinatario, String pw){
         String msg="Buongiornissimo,\n"
-                + "Visto che sei una mezzasega e ti dobbiamo ricordare tutto ecco i tuoi codici di ingresso per hangman:\n"
+                + "Visto che sei una mezzasega e ti dobbiamo ricordare tutto ecco i tuoi codici di ingresso per Sette e mezzo:\n"
                 + "Username: "+destinatario+"\n"
                 + "Password: "+pw+"\n"
                 + "Vedi di non dimenticarteli più!\n"
                 + "Il team.\n\n\n"
                 + "P.S. Venderemo il tuo indirizzo email a un hacker russo per una bottiglia di vodka :D";
+        String oggetto="Recupero password Sette e mezzo";
         try {
-            Send(nome, password, destinatario, "Recupero password hangman", msg);
+            Send(nome, password, destinatario, oggetto, msg);
         } catch (MessagingException ex) {
             Logger.getLogger(Email.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -58,18 +70,8 @@ public class Email {
     
      
 
-    /**
-     * Send email using GMail SMTP server.
-     *
-     * @param username GMail username
-     * @param password GMail password
-     * @param recipientEmail TO recipient
-     * @param title title of the message
-     * @param message message to be sent
-     * @throws AddressException if the email address parse failed
-     * @throws MessagingException if the connection is dead or not in the connected state or if the message is not a MimeMessage
-     */
-    public static void Send(final String username, final String password, String recipientEmail, String title, String message) throws AddressException, MessagingException {
+    
+    private static void Send(final String username, final String password, String recipientEmail, String title, String message) throws AddressException, MessagingException {
         Email.Send(username, password, recipientEmail, "", title, message);
     }
 
@@ -85,7 +87,7 @@ public class Email {
      * @throws AddressException if the email address parse failed
      * @throws MessagingException if the connection is dead or not in the connected state or if the message is not a MimeMessage
      */
-    public static void Send(final String username, final String password, String recipientEmail, String ccEmail, String title, String message) throws AddressException, MessagingException {
+    private static void Send(final String username, final String password, String recipientEmail, String ccEmail, String title, String message) throws AddressException, MessagingException {
         Security.addProvider(new com.sun.net.ssl.internal.ssl.Provider());
         final String SSL_FACTORY = "javax.net.ssl.SSLSocketFactory";
 

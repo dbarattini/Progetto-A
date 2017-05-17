@@ -16,13 +16,12 @@ import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import login.Email;
-import net.HangmanThread;
-import net.RemotePlayer;
 import DB.SQL;
-import sql.datoGiaPresente;
+import eccezioni.GiocatoreGiaPresente;
+import giocatore.Giocatore;
 
 
-public class LoginServer extends Thread{
+public class Login extends Thread{
     private PrintWriter out;
     private BufferedReader in;
     private SQL sql= new SQL();
@@ -30,23 +29,16 @@ public class LoginServer extends Thread{
     private InetAddress clientAddress;
     private int codice;
     private String mail, pw;
+    private Giocatore giocatore;
 
-    public LoginServer(Socket clientSocket,  InetAddress clientAddress) throws IOException {
-            this.out =  new PrintWriter(clientSocket.getOutputStream(), true);
-            this.in = new BufferedReader( new InputStreamReader(clientSocket.getInputStream()));        
-       
+    public Login(Giocatore giocatore) throws IOException {
+            this.giocatore=giocatore;
+            this.out =  new PrintWriter(giocatore.getSocket().getOutputStream(), true);
+            this.in = new BufferedReader( new InputStreamReader(giocatore.getSocket().getInputStream()));      
     }
     
-    private void inizioPartita(){
-        RemotePlayer player = new RemotePlayer(out,in, clientSocket);
-        HangmanThread game = new HangmanThread(player, out, in, clientAddress);
-            
-        Thread t = new Thread(game);
-        t.start();
-    }
-    
-    private void mandaMessaggio(String msg){
-    out.println(msg);  
+    private void inizioLogin(){
+        
     }
     
     private int random(){
@@ -62,12 +54,12 @@ public class LoginServer extends Thread{
             }
             else if(dati[0].equals("login")){
                 if(sql.controllaPassword(dati[1], dati[2])){
-                     mandaMessaggio("login effetuato");
+                     giocatore.Scrivi("login effetuato");
                     sleep(20);
-                    inizioPartita();
+                    inizioLogin();
                 }
                 else{
-                    mandaMessaggio("login non effetuato");
+                    giocatore.Scrivi("login non effetuato");
                     run();
                 }
                     
@@ -77,7 +69,7 @@ public class LoginServer extends Thread{
                     registra();
                 }
                 else{
-                    mandaMessaggio("convalida errata");  
+                    giocatore.Scrivi("convalida errata");  
                     run();
                 }
             }
@@ -87,19 +79,15 @@ public class LoginServer extends Thread{
             else
                 run();
         } catch (IOException ex) {
-            Logger.getLogger(LoginServer.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
         } catch (InterruptedException ex) {
-            Logger.getLogger(LoginServer.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (datoGiaPresente ex) {
-            mandaMessaggio("registrazione non effetuata");   
-            System.out.println("contatto già presente");
-            run();
+            Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
     private void recuperoPw(String[] dati){
         mail=dati[1];
-        if(!sql.esisteEmail(mail))
+        if(!DB.esisteEmail(mail))
             mandaMessaggio("recupero errato");  
         else{
             Email email=new Email();
