@@ -14,11 +14,11 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import menuPrincipale.events.OpzioneScelta;
-import menuPrincipale.events.ViewEvent;
+import dominio.view.ViewEvent;
 import menuPrincipale.model.MenuPrincipaleModel;
 import modules.MenuPrePartitaGui;
 import modules.RegoleGui;
-import menuPrincipale.events.ViewEventListener;
+import dominio.view.ViewEventListener;
 
 public class MenuPrincipaleGuiView extends JFrame implements MenuPrincipaleView, Observer{
     private String opzione;

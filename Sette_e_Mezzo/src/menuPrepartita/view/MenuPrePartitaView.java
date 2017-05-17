@@ -1,11 +1,11 @@
 package menuPrepartita.view;
 
-import menuPrepartita.events.SetInfoListener;
+import dominio.view.ViewEventListener;
 
 
 public interface MenuPrePartitaView {
     
-    public void addSetInfoListener(SetInfoListener l);
-    
-    public void removeSetInfoListener(SetInfoListener l);
+    public void addViewEventListener(ViewEventListener l);
+
+    public void removeViewEventListener(ViewEventListener l);
 }

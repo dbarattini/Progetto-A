@@ -1,19 +1,13 @@
 package menuPrepartita.model;
 
 import dominio.classi_dati.DifficoltaBot;
-
 import java.util.Observable;
-
 
 
 public class MenuPrePartitaModel extends Observable{
     private int nbot;
     private int fiches_iniziali;
     private DifficoltaBot difficolta_bot;
-    
-    public MenuPrePartitaModel(){
-        
-    }
     
     public void SetSetting(String nbot, String difficolta_bot, String fiches_iniziali){
         this.setNumeroBot(nbot);

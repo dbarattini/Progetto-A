@@ -6,11 +6,11 @@ import java.util.Observer;
 import java.util.Scanner;
 import java.util.concurrent.CopyOnWriteArrayList;
 import menuPrincipale.events.OpzioneScelta;
-import menuPrincipale.events.ViewEvent;
+import dominio.view.ViewEvent;
 import menuPrincipale.model.MenuPrincipaleModel;
 import modules.MenuPrePartitaConsole;
 import modules.RegoleConsole;
-import menuPrincipale.events.ViewEventListener;
+import dominio.view.ViewEventListener;
 
 
 public class MenuPrincipaleConsoleView implements MenuPrincipaleView, Observer{

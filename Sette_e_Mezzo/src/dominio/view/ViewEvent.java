@@ -1,4 +1,4 @@
-package menuPrincipale.events;
+package dominio.view;
 
 import java.util.EventObject;
 

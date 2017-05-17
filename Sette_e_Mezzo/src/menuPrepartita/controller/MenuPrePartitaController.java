@@ -1,23 +1,27 @@
 package menuPrepartita.controller;
 
+import dominio.view.ViewEvent;
+import dominio.view.ViewEventListener;
 import menuPrepartita.events.SetInfo;
-import menuPrepartita.events.SetInfoListener;
 import menuPrepartita.model.MenuPrePartitaModel;
 import menuPrepartita.view.MenuPrePartitaView;
 
-public class MenuPrePartitaController implements SetInfoListener {
+public class MenuPrePartitaController implements ViewEventListener{
     private final MenuPrePartitaModel model;
     private final MenuPrePartitaView view;
 
     public MenuPrePartitaController(MenuPrePartitaModel model, MenuPrePartitaView view) {
         this.model = model;
         this.view = view;
-        view.addSetInfoListener(this);    
+        view.addViewEventListener(this);    
     }
 
     @Override
-    public void SetInfoEventReceived(SetInfo evt) {
-        model.SetSetting(evt.getNbot(), evt.getDifficoltaBot(), evt.getFichesIniziali());
+    public void ViewEventReceived(ViewEvent evt) {
+        if(evt.getArg() instanceof SetInfo){
+            SetInfo info = (SetInfo) evt.getArg();
+            model.SetSetting(info.getNbot(), info.getDifficoltaBot(), info.getFichesIniziali());
+        }
     }
     
     

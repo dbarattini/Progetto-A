@@ -1,6 +1,6 @@
 package menuPrincipale.view;
 
-import menuPrincipale.events.ViewEventListener;
+import dominio.view.ViewEventListener;
 
 public interface MenuPrincipaleView {
     

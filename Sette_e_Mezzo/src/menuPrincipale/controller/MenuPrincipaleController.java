@@ -1,10 +1,10 @@
 package menuPrincipale.controller;
 
 import menuPrincipale.events.OpzioneScelta;
-import menuPrincipale.events.ViewEvent;
+import dominio.view.ViewEvent;
 import menuPrincipale.view.MenuPrincipaleView;
 import menuPrincipale.model.MenuPrincipaleModel;
-import menuPrincipale.events.ViewEventListener;
+import dominio.view.ViewEventListener;
 
 
 public class MenuPrincipaleController implements ViewEventListener {

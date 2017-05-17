@@ -1,6 +1,8 @@
 package menuPrepartita.view;
 
 import dominio.gui.Sfondo;
+import dominio.view.ViewEvent;
+import dominio.view.ViewEventListener;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -16,11 +18,11 @@ import javax.swing.JOptionPane;
 import javax.swing.JSlider;
 import javax.swing.JTextField;
 import menuPrepartita.events.SetInfo;
-import menuPrepartita.events.SetInfoListener;
 import menuPrepartita.model.MenuPrePartitaModel;
+import menuPrincipale.events.OpzioneScelta;
 
 public class MenuPrePartitaGuiView extends JFrame implements Observer, MenuPrePartitaView {
-    private final CopyOnWriteArrayList<SetInfoListener> listeners;
+    private final CopyOnWriteArrayList<ViewEventListener> listeners;
     private Sfondo sfondo;
     private JSlider nBot;
     private JButton diffFacile, diffMedia, diffDifficile, indietro, gioca;
@@ -135,7 +137,7 @@ public class MenuPrePartitaGuiView extends JFrame implements Observer, MenuPrePa
             public void actionPerformed(ActionEvent e) {
                 nbot = String.valueOf(nBot.getValue());
                 fiches_iniziali = fiches.getText();
-                fireSetInfoEvent();
+                fireViewEvent();
             };
         });
         
@@ -167,20 +169,20 @@ public class MenuPrePartitaGuiView extends JFrame implements Observer, MenuPrePa
     }
 
     @Override
-    public void addSetInfoListener(SetInfoListener l) {
+    public void addViewEventListener(ViewEventListener l) {
         listeners.add(l);
     }
 
     @Override
-    public void removeSetInfoListener(SetInfoListener l) {
+    public void removeViewEventListener(ViewEventListener l) {
         listeners.remove(l);
     }
     
-    protected void fireSetInfoEvent() {
-        SetInfo evt = new SetInfo(this, nbot, difficolta_bot, fiches_iniziali);
+    protected void fireViewEvent() {
+        ViewEvent evt = new ViewEvent(this, new SetInfo(nbot, difficolta_bot, fiches_iniziali));
 
-        for (SetInfoListener l : listeners) {
-            l.SetInfoEventReceived(evt);
+        for (ViewEventListener l : listeners) {
+            l.ViewEventReceived(evt);
         }
     }
 

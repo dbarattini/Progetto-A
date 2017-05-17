@@ -1,20 +1,19 @@
 package menuPrepartita.view;
 
 
+import dominio.view.ViewEvent;
+import dominio.view.ViewEventListener;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.Scanner;
 import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import menuPrepartita.events.SetInfo;
-import menuPrepartita.events.SetInfoListener;
 import menuPrepartita.model.MenuPrePartitaModel;
 import modules.PartitaOfflineConsole;
 
 
 public class MenuPrePartitaConsoleView implements Observer, MenuPrePartitaView {
-    private final CopyOnWriteArrayList<SetInfoListener> listeners;
+    private final CopyOnWriteArrayList<ViewEventListener> listeners;
     private String nbot;
     private String difficolta_bot;
     private String fiches_iniziali;
@@ -35,7 +34,7 @@ public class MenuPrePartitaConsoleView implements Observer, MenuPrePartitaView {
         richiediNumeroBot();
         richiediDifficoltaBot();
         richiediFichesIniziali();
-        fireSetInfoEvent();
+        fireViewEvent();
         new PartitaOfflineConsole(model.getNumeroBot(), model.getDifficoltaBot(), model.getFichesIniziali());
     }
 
@@ -52,20 +51,20 @@ public class MenuPrePartitaConsoleView implements Observer, MenuPrePartitaView {
     }
 
     @Override
-    public void addSetInfoListener(SetInfoListener l) {
+    public void addViewEventListener(ViewEventListener l) {
         listeners.add(l);
     }
 
     @Override
-    public void removeSetInfoListener(SetInfoListener l) {
+    public void removeViewEventListener(ViewEventListener l) {
         listeners.remove(l);
     }
     
-    protected void fireSetInfoEvent() {
-        SetInfo evt = new SetInfo(this, nbot, difficolta_bot, fiches_iniziali);
+    protected void fireViewEvent() {
+        ViewEvent evt = new ViewEvent(this, new SetInfo(nbot, difficolta_bot, fiches_iniziali));
 
-        for (SetInfoListener l : listeners) {
-            l.SetInfoEventReceived(evt);
+        for (ViewEventListener l : listeners) {
+            l.ViewEventReceived(evt);
         }
     }
 
