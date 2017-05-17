@@ -1,0 +1,17 @@
+Server può mandare:
+Login
+  login effetuato
+  login non effetuato
+Registrazione
+  registrazione email gia esistente
+Convalida
+  convalida inviata
+  
+Client può mandare:
+Convalida
+  convalida [numero di convalida]
+Registrazione
+  registrazione [email] [username] [password]
+Login
+  login [username] [password]
+  login [email] [password]
