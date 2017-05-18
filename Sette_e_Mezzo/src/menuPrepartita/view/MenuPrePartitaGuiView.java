@@ -62,13 +62,13 @@ public class MenuPrePartitaGuiView extends JFrame implements Observer, MenuPrePa
         difficile2 = caricaImmagine("dominio/immagini/difficile2.png");
         
         dado1 = caricaImmagine("dominio/immagini/dado1.png");
-        dado1x = caricaImmagine("dominio/immagini/dado1x.png");
+        dado1x = caricaImmagine("dominio/immagini/dado1X.png");
         dado2 = caricaImmagine("dominio/immagini/dado2.png");
-        dado2x = caricaImmagine("dominio/immagini/dado2x.png");
+        dado2x = caricaImmagine("dominio/immagini/dado2X.png");
         dado3 = caricaImmagine("dominio/immagini/dado3.png");
-        dado3x = caricaImmagine("dominio/immagini/dado3x.png");
+        dado3x = caricaImmagine("dominio/immagini/dado3X.png");
         dado4 = caricaImmagine("dominio/immagini/dado4.png");
-        dado4x = caricaImmagine("dominio/immagini/dado4x.png");
+        dado4x = caricaImmagine("dominio/immagini/dado4X.png");
         
         bot1 = new JButton(dado1);
         bot2 = new JButton(dado2);
