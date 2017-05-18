@@ -53,7 +53,7 @@ public class SQL {
      * @param fiches fiches iniziali
      * @throws GiocatoreGiaPresente se username o email sono già state inserite nel database
      */
-    public  void aggiungiGiocatore(String email, String password, String username, int fiches  )
+    public  void aggiungiGiocatore(String email, String password, String username, int fiches  ) throws SqlOccupato
   {
        try {
       Class.forName("org.sqlite.JDBC");
@@ -70,8 +70,10 @@ public class SQL {
       chiudiDatabase();
       System.out.println("Giocatore aggiunto correttamente");
     } catch ( Exception e ) {
-           System.out.println("dato già presente");
-           chiudiDatabase();     
+        chiudiDatabase();   
+        if(e.getMessage().equals("[SQLITE_BUSY]  The database file is locked (database is locked)"))
+                    throw new SqlOccupato();
+         System.out.println("dato già presente");             
     }
     
   }
@@ -81,7 +83,7 @@ public class SQL {
      * @param user username del giocatore
      * @param fiches nuovo numero di fiches per quel giocatore
      */
-    public void setFiches(String user, int fiches)
+    public void setFiches(String user, int fiches) throws SqlOccupato
   {
     
         try {
@@ -96,8 +98,10 @@ public class SQL {
             chiudiDatabase();
             System.out.println("fiches aggiornate con successo");
         } catch ( Exception e ) {
-            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
             chiudiDatabase();
+            if(e.getMessage().equals("[SQLITE_BUSY]  The database file is locked (database is locked)"))
+                    throw new SqlOccupato();
+            System.err.println( e.getClass().getName() + ": " + e.getMessage() );            
         }
    
   }
@@ -129,10 +133,10 @@ public class SQL {
             chiudiDatabase();
             }
             catch ( Exception e ) {
+                chiudiDatabase();
                 if(e.getMessage().equals("[SQLITE_BUSY]  The database file is locked (database is locked)"))
                     throw new SqlOccupato();
-                  System.err.println( e.getClass().getName() + ": " + e.getMessage() );
-                  chiudiDatabase();
+                  System.err.println( e.getClass().getName() + ": " + e.getMessage() );                  
             }
             return 0;
     }
@@ -143,7 +147,7 @@ public class SQL {
      * @param pw password del giocatore
      * @return ritorna true se la password è giusta
      */
-    public boolean controllaPassword( String user, String pw )
+    public boolean controllaPassword( String user, String pw ) throws SqlOccupato
   {
         try {
             Class.forName("org.sqlite.JDBC");
@@ -171,8 +175,10 @@ public class SQL {
             rs.close();
             chiudiDatabase();
             } catch ( Exception e ) {
-                  System.err.println( e.getClass().getName() + ": " + e.getMessage() );
-                  chiudiDatabase();
+                chiudiDatabase();
+                if(e.getMessage().equals("[SQLITE_BUSY]  The database file is locked (database is locked)"))
+                    throw new SqlOccupato();
+                  System.err.println( e.getClass().getName() + ": " + e.getMessage() );                  
             }
             return false;
     }
@@ -184,7 +190,7 @@ public class SQL {
      * @param nuovaPassword nuova password del giocatore
      * @return true se l'ha cambiata false se la vecchia è errata
      */
-    public boolean cambiaPassword( String user, String vecchiaPassword, String nuovaPassword )
+    public boolean cambiaPassword( String user, String vecchiaPassword, String nuovaPassword ) throws SqlOccupato
   {
         try {
             Class.forName("org.sqlite.JDBC");
@@ -216,8 +222,10 @@ public class SQL {
             rs.close();
             chiudiDatabase();
             } catch ( Exception e ) {
-                  System.err.println( e.getClass().getName() + ": " + e.getMessage() );
-                  chiudiDatabase();
+                chiudiDatabase();
+                if(e.getMessage().equals("[SQLITE_BUSY]  The database file is locked (database is locked)"))
+                    throw new SqlOccupato();
+                  System.err.println( e.getClass().getName() + ": " + e.getMessage() );                  
             }
             return false;
     }
@@ -227,7 +235,7 @@ public class SQL {
      * @param user username giocatore
      * @return password del Giocatore
      */
-    public String getPassword( String user )
+    public String getPassword( String user ) throws SqlOccupato
   {
         try {
             Class.forName("org.sqlite.JDBC");
@@ -247,8 +255,10 @@ public class SQL {
             rs.close();
             chiudiDatabase();
             } catch ( Exception e ) {
-                  System.err.println( e.getClass().getName() + ": " + e.getMessage() );
-                  chiudiDatabase();
+                chiudiDatabase();
+                if(e.getMessage().equals("[SQLITE_BUSY]  The database file is locked (database is locked)"))
+                    throw new SqlOccupato();
+                 System.err.println( e.getClass().getName() + ": " + e.getMessage() );                  
             }
             return null;
             
@@ -262,7 +272,7 @@ public class SQL {
      * @return username nel giocatore
      * @throws eccezioni.GiocatoreNonTrovato se la mail non è nel database
      */
-    public String getUser( String email ) throws GiocatoreNonTrovato
+    public String getUser( String email ) throws GiocatoreNonTrovato, SqlOccupato
   {
         try {
             Class.forName("org.sqlite.JDBC");
@@ -282,8 +292,10 @@ public class SQL {
             rs.close();
             chiudiDatabase();
             } catch ( Exception e ) {
-                  System.err.println( e.getClass().getName() + ": " + e.getMessage() );
-                  chiudiDatabase();
+                chiudiDatabase();
+                if(e.getMessage().equals("[SQLITE_BUSY]  The database file is locked (database is locked)"))
+                    throw new SqlOccupato();
+                 System.err.println( e.getClass().getName() + ": " + e.getMessage() );                  
             }
             throw new GiocatoreNonTrovato();
     }
@@ -293,7 +305,7 @@ public class SQL {
      * @param email email da controllare
      * @return true se esiste, false altrimenti
      */
-    public boolean esisteEmail( String email )
+    public boolean esisteEmail( String email ) throws SqlOccupato
   {
     try {
       Class.forName("org.sqlite.JDBC");
@@ -311,8 +323,10 @@ public class SQL {
       rs.close();      
       chiudiDatabase();
     } catch ( Exception e ) {
-      System.err.println( e.getClass().getName() + ": " + e.getMessage() );
-      chiudiDatabase();
+        chiudiDatabase();
+        if(e.getMessage().equals("[SQLITE_BUSY]  The database file is locked (database is locked)"))
+                    throw new SqlOccupato();
+        System.err.println( e.getClass().getName() + ": " + e.getMessage() );      
     }
     return false;
   }
@@ -322,7 +336,7 @@ public class SQL {
      * @param username username da controllare
      * @return true se esiste, false altrimenti
      */
-    public boolean esisteUsername( String username )
+    public boolean esisteUsername( String username ) throws SqlOccupato
   {
     try {
       Class.forName("org.sqlite.JDBC");
@@ -341,8 +355,11 @@ public class SQL {
       rs.close();      
       chiudiDatabase();
     } catch ( Exception e ) {
-      System.err.println( e.getClass().getName() + ": " + e.getMessage() );
-      chiudiDatabase();
+        chiudiDatabase();
+        if(e.getMessage().equals("[SQLITE_BUSY]  The database file is locked (database is locked)"))
+                    throw new SqlOccupato();
+        System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+      
     }
     return false;
   }
@@ -351,7 +368,7 @@ public class SQL {
      *Aggiunge una vittoria al giocatore
      * @param user username del giocatore
      */
-    public void aggiungiVittoria( String user ) throws GiocatoreNonTrovato{
+    public void aggiungiVittoria( String user ) throws GiocatoreNonTrovato, SqlOccupato{
             int vittorie=0; 
             boolean trovato=false;
             try {
@@ -376,8 +393,11 @@ public class SQL {
             chiudiDatabase();
             System.out.println("aggiunta vittoria");
     } catch ( Exception e ) {
-            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
-            chiudiDatabase();
+        chiudiDatabase();
+        if(e.getMessage().equals("[SQLITE_BUSY]  The database file is locked (database is locked)"))
+                    throw new SqlOccupato();
+         System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+            
     }
      if(!trovato)
         throw new GiocatoreNonTrovato();   
@@ -388,7 +408,7 @@ public class SQL {
      * @param user username del giocatore
      * @return vittorie del giocatore
      */
-    public int getVittorie( String user )
+    public int getVittorie( String user ) throws SqlOccupato
   {
         try {
             Class.forName("org.sqlite.JDBC");
@@ -408,8 +428,11 @@ public class SQL {
             rs.close();
             chiudiDatabase();
             } catch ( Exception e ) {
+                chiudiDatabase();
+                if(e.getMessage().equals("[SQLITE_BUSY]  The database file is locked (database is locked)"))
+                    throw new SqlOccupato();
                   System.err.println( e.getClass().getName() + ": " + e.getMessage() );
-                  chiudiDatabase();
+                  
             }
             return 0;
     }
