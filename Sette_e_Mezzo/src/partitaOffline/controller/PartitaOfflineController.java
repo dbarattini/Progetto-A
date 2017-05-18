@@ -1,9 +1,9 @@
 package partitaOffline.controller;
 
+import dominio.view.ViewEvent;
+import dominio.view.ViewEventListener;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import partitaOffline.events.PartitaOfflineViewEvent;
-import partitaOffline.events.PartitaOfflineViewEventListener;
 import partitaOffline.events.SetGiocata;
 import partitaOffline.events.SetNome;
 import partitaOffline.events.SetPuntata;
@@ -11,7 +11,7 @@ import partitaOffline.model.PartitaOfflineModel;
 import partitaOffline.view.PartitaOfflineView;
 
 
-public class PartitaOfflineController implements PartitaOfflineViewEventListener{
+public class PartitaOfflineController implements ViewEventListener{
     private PartitaOfflineModel model;
     private PartitaOfflineView view;
 
@@ -32,7 +32,7 @@ public class PartitaOfflineController implements PartitaOfflineViewEventListener
     }
 
     @Override
-    public void PartitaOfflineViewEventReceived(PartitaOfflineViewEvent evt) {
+    public void ViewEventReceived(ViewEvent evt) {
         if(evt.getArg() instanceof SetNome){
             model.setNomeGiocatore(((SetNome)evt.getArg()).getNome());
         } else if(evt.getArg() instanceof SetPuntata){
@@ -40,8 +40,6 @@ public class PartitaOfflineController implements PartitaOfflineViewEventListener
         } else if(evt.getArg() instanceof SetGiocata){
             model.getGiocatoreLocale().GiocataInserita(((SetGiocata)evt.getArg()).getGiocata());
         }
-    }
-    
-    
+    }   
     
 }

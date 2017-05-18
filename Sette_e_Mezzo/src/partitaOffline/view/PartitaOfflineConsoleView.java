@@ -3,6 +3,8 @@ package partitaOffline.view;
 import partitaOffline.events.SetGiocata;
 import partitaOffline.events.SetPuntata;
 import dominio.giocatori.Giocatore;
+import dominio.view.ViewEvent;
+import dominio.view.ViewEventListener;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.Scanner;
@@ -18,8 +20,6 @@ import partitaOffline.events.GiocatoreLocaleEvent;
 import partitaOffline.events.MazzierePerde;
 import partitaOffline.events.MazzoRimescolato;
 import partitaOffline.events.Messaggio;
-import partitaOffline.events.PartitaOfflineViewEvent;
-import partitaOffline.events.PartitaOfflineViewEventListener;
 import partitaOffline.events.RichiediGiocata;
 import partitaOffline.events.RichiediNome;
 import partitaOffline.events.RichiediPuntata;
@@ -29,7 +29,7 @@ import partitaOffline.events.Vittoria;
 import partitaOffline.model.PartitaOfflineModel;
 
 public class PartitaOfflineConsoleView implements PartitaOfflineView, Observer{
-    private final CopyOnWriteArrayList<PartitaOfflineViewEventListener> listeners;
+    private final CopyOnWriteArrayList<ViewEventListener> listeners;
     private PartitaOfflineModel model;
     private Scanner scanner;
     int pausa_breve = 1000; //ms
@@ -43,20 +43,20 @@ public class PartitaOfflineConsoleView implements PartitaOfflineView, Observer{
     }
 
     @Override
-    public void addPartitaOfflineViewEventListener(PartitaOfflineViewEventListener l) {
+    public void addPartitaOfflineViewEventListener(ViewEventListener l) {
         listeners.add(l);
     }
 
     @Override
-    public void removePartitaOfflineViewEventListener(PartitaOfflineViewEventListener l) {
+    public void removePartitaOfflineViewEventListener(ViewEventListener l) {
         listeners.remove(l);
     }
 
-    protected void firePartitaOfflineViewEvent(Object arg) {
-        PartitaOfflineViewEvent evt = new PartitaOfflineViewEvent(this, arg);
+    protected void fireViewEvent(Object arg) {
+        ViewEvent evt = new ViewEvent(this, arg);
 
-        for (PartitaOfflineViewEventListener l : listeners) {
-            l.PartitaOfflineViewEventReceived(evt);
+        for (ViewEventListener l : listeners) {
+            l.ViewEventReceived(evt);
         }
     }
     
@@ -64,7 +64,7 @@ public class PartitaOfflineConsoleView implements PartitaOfflineView, Observer{
         String nome;
         System.out.println("\nCome ti chiami?\n");
         nome = scanner.next();        
-        firePartitaOfflineViewEvent(new SetNome(nome));  
+        fireViewEvent(new SetNome(nome));  
     }
     
     private void stampaSchermataEstrazioneMazziere() throws InterruptedException{
@@ -139,7 +139,7 @@ public class PartitaOfflineConsoleView implements PartitaOfflineView, Observer{
         System.out.println("Fiches: " + ((RichiediPuntata) evt.getArg()).getFiches());
         System.out.println("Quante fiches vuoi puntare?");
         String puntata = scanner.next();
-        firePartitaOfflineViewEvent(new SetPuntata(puntata));
+        fireViewEvent(new SetPuntata(puntata));
     }
     
     private void richiediGiocata(GiocatoreLocaleEvent evt){
@@ -148,7 +148,7 @@ public class PartitaOfflineConsoleView implements PartitaOfflineView, Observer{
         System.out.println("Carte scoperte: " + ((RichiediGiocata) evt.getArg()).getCarteScoperte());
         System.out.println("Carta o Stai?");
         String giocata = scanner.next();
-        firePartitaOfflineViewEvent(new SetGiocata(giocata));
+        fireViewEvent(new SetGiocata(giocata));
     }
     
 }
