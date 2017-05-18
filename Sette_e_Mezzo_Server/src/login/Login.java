@@ -39,7 +39,10 @@ public class Login extends Thread{
     }
       
     private int random(){
-        return (int) Math.round(Math.random()*10000);
+        int max=9999, min=1000;
+        int range=max-min;
+        int rand=((int) Math.round(Math.random()*range))+min;        
+        return rand;
     }
     
     @Override
