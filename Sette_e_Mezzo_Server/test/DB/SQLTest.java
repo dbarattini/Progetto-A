@@ -5,6 +5,9 @@
  */
 package DB;
 
+import eccezioni.GiocatoreNonTrovato;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -140,84 +143,129 @@ public class SQLTest {
         String user = "ciaone";
         String password = "prova";
         String nuovaPassword = "passera";
-        boolean expResult = true;
-        boolean cambia = sql.cambiaPassword(user, password, nuovaPassword);
+       boolean cambia = sql.cambiaPassword(user, password, nuovaPassword);
         String result = sql.getPassword(user);
         assertEquals(nuovaPassword, result);
         
     }
-//
-//    /**
-//     * Test of getUser method, of class SQL.
-//     */
-//    @Test
-//    public void testGetUser() throws Exception {
-//        System.out.println("getUser");
-//        String email = "";
-//        SQL instance = new SQL();
-//        String expResult = "";
-//        String result = instance.getUser(email);
-//        assertEquals(expResult, result);
-//        // TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
-//    }
-//
-//    /**
-//     * Test of esisteEmail method, of class SQL.
-//     */
-//    @Test
-//    public void testEsisteEmail() {
-//        System.out.println("esisteEmail");
-//        String email = "";
-//        SQL instance = new SQL();
-//        boolean expResult = false;
-//        boolean result = instance.esisteEmail(email);
-//        assertEquals(expResult, result);
-//        // TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
-//    }
-//
-//    /**
-//     * Test of esisteUsername method, of class SQL.
-//     */
-//    @Test
-//    public void testEsisteUsername() {
-//        System.out.println("esisteUsername");
-//        String username = "";
-//        SQL instance = new SQL();
-//        boolean expResult = false;
-//        boolean result = instance.esisteUsername(username);
-//        assertEquals(expResult, result);
-//        // TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
-//    }
-//
-//    /**
-//     * Test of aggiungiVittoria method, of class SQL.
-//     */
-//    @Test
-//    public void testAggiungiVittoria() {
-//        System.out.println("aggiungiVittoria");
-//        String user = "";
-//        SQL instance = new SQL();
-//        instance.aggiungiVittoria(user);
-//        // TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
-//    }
-//
-//    /**
-//     * Test of getVittorie method, of class SQL.
-//     */
-//    @Test
-//    public void testGetVittorie() {
-//        System.out.println("getVittorie");
-//        String user = "";
-//        SQL instance = new SQL();
-//        int expResult = 0;
-//        int result = instance.getVittorie(user);
-//        assertEquals(expResult, result);
-//        // TODO review the generated test code and remove the default call to fail.
-//        fail("The test case is a prototype.");
-//    }
-//    
+
+    /**
+     * Test of getUser method, of class SQL.
+     */
+    @Test
+    public void testGetUser() throws Exception {
+        System.out.println("getUser");
+        String email = "test@test.prova";
+        String expResult = "ciaone";
+        String result = sql.getUser(email);
+        assertEquals(expResult, result);
+    }
+
+    
+    /**
+     * Test of getUser method, of class SQL.
+     */
+    @Test
+    public void testGetUserSbagliato()  {
+        try {
+            System.out.println("getUser");
+            String email = "test@est.prova";
+            String expResult = "ciaone";
+            String result = sql.getUser(email);
+            fail();
+        } catch (GiocatoreNonTrovato ex) {
+             assertTrue(true);
+        }
+    }
+    
+    
+    /**
+     * Test of esisteEmail method, of class SQL.
+     */
+    @Test
+    public void testEsisteEmail() {
+        System.out.println("esisteEmail");
+        String email = "test@test.prova";
+        boolean expResult = true;
+        boolean result = sql.esisteEmail(email);
+        assertEquals(expResult, result);
+    }
+
+      /**
+     * Test of esisteEmail method, of class SQL.
+     */
+    @Test
+    public void testEsisteEmailSbagliata() {
+        System.out.println("esisteEmail");
+        String email = "test@tes.prova";
+        boolean expResult = false;
+        boolean result = sql.esisteEmail(email);
+        assertEquals(expResult, result);
+    }
+    
+    /**
+     * Test of esisteUsername method, of class SQL.
+     */
+    @Test
+    public void testEsisteUsername() {
+        System.out.println("esisteUsername");
+        String username = "ciaone";
+        boolean expResult = true;
+        boolean result =sql.esisteUsername(username);
+        assertEquals(expResult, result);
+    }
+
+     /**
+     * Test of esisteUsername method, of class SQL.
+     */
+    @Test
+    public void testEsisteUsernameSbagliato() {
+        System.out.println("esisteUsername");
+        String username = "ciaoe";
+        boolean expResult = false;
+        boolean result =sql.esisteUsername(username);
+        assertEquals(expResult, result);
+    }
+    
+    /**
+     * Test of aggiungiVittoria method, of class SQL.
+     */
+    @Test
+    public void testAggiungiVittoria() throws GiocatoreNonTrovato {
+        System.out.println("aggiungiVittoria");
+        String user = "ciaone";
+        sql.aggiungiVittoria(user);
+         assertTrue(true);
+    }
+    
+        /**
+     * Test of aggiungiVittoria method, of class SQL.
+     */
+    @Test
+    public void testAggiungiVittoriaSbagliata() {
+        try {
+            System.out.println("aggiungiVittoria");
+            String user = "ciane";
+            sql.aggiungiVittoria(user);
+            fail();
+        } catch (GiocatoreNonTrovato ex) {
+            assertTrue(true);
+        }
+    }
+
+    /**
+     * Test of getVittorie method, of class SQL.
+     */
+    @Test
+    public void testGetVittorie() {
+        System.out.println("getVittorie");
+        String user = "ciaone";
+        int expResult = 1;
+        int result = sql.getVittorie(user);
+        if(result>expResult)
+            assertTrue(true);
+        else
+            fail("The test case is a prototype.");
+    }
+    
 }

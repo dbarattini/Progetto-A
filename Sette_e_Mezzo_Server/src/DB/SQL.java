@@ -327,6 +327,7 @@ public class SQL {
       while ( rs.next() ) {
          String user = rs.getString("USERNAME");
          if((user.toLowerCase()).equals(username.toLowerCase())){
+             chiudiDatabase();
                return true;
          }
              
@@ -344,8 +345,9 @@ public class SQL {
      *Aggiunge una vittoria al giocatore
      * @param user username del giocatore
      */
-    public void aggiungiVittoria( String user ){
-            int vittorie=0;    
+    public void aggiungiVittoria( String user ) throws GiocatoreNonTrovato{
+            int vittorie=0; 
+            boolean trovato=false;
             try {
                     Class.forName("org.sqlite.JDBC");
                     c = DriverManager.getConnection("jdbc:sqlite:setteEmezzo.db");
@@ -356,8 +358,10 @@ public class SQL {
                         String  username = rs.getString("USERNAME");
                         int vit  = rs.getInt("VITTORIE");
                         vit++;
-                        if(username.equals(user))
+                        if(username.equals(user)){
                             vittorie=vit;
+                            trovato=true;
+                        }
                     }
             String dato= "UPDATE GIOCATORI set VITTORIE ="+vittorie+" where USERNAME='"+user+"';";
             String sql = dato;
@@ -369,7 +373,8 @@ public class SQL {
             System.err.println( e.getClass().getName() + ": " + e.getMessage() );
             chiudiDatabase();
     }
-    
+     if(!trovato)
+        throw new GiocatoreNonTrovato();   
   }
     
     /**
