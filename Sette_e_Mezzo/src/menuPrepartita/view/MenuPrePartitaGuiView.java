@@ -15,19 +15,18 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
-import javax.swing.JSlider;
 import javax.swing.JTextField;
 import menuPrepartita.events.SetInfo;
 import menuPrepartita.model.MenuPrePartitaModel;
-import menuPrincipale.events.OpzioneScelta;
 
 public class MenuPrePartitaGuiView extends JFrame implements Observer, MenuPrePartitaView {
     private final CopyOnWriteArrayList<ViewEventListener> listeners;
     private Sfondo sfondo;
-    private JSlider nBot;
-    private JButton diffFacile, diffMedia, diffDifficile, indietro, gioca;
-    private JTextField fiches;
+    private JButton bot1, bot2, bot3, bot4;
+    private ImageIcon dado1, dado1x, dado2, dado2x, dado3, dado3x, dado4, dado4x;
+    private JButton diffFacile, diffMedia, diffDifficile, indietro, gioca;    
     private ImageIcon facile1, facile2, medio1, medio2, difficile1, difficile2;
+    private JTextField fiches;
     private final MenuPrePartitaModel model;
     private String nbot, difficolta_bot, fiches_iniziali;
     
@@ -62,7 +61,19 @@ public class MenuPrePartitaGuiView extends JFrame implements Observer, MenuPrePa
         difficile1 = caricaImmagine("dominio/immagini/difficile.png");
         difficile2 = caricaImmagine("dominio/immagini/difficile2.png");
         
-        nBot = new JSlider(1, 4, 2);
+        dado1 = caricaImmagine("dominio/immagini/dado1.png");
+        dado1x = caricaImmagine("dominio/immagini/dado1x.png");
+        dado2 = caricaImmagine("dominio/immagini/dado2.png");
+        dado2x = caricaImmagine("dominio/immagini/dado2x.png");
+        dado3 = caricaImmagine("dominio/immagini/dado3.png");
+        dado3x = caricaImmagine("dominio/immagini/dado3x.png");
+        dado4 = caricaImmagine("dominio/immagini/dado4.png");
+        dado4x = caricaImmagine("dominio/immagini/dado4x.png");
+        
+        bot1 = new JButton(dado1);
+        bot2 = new JButton(dado2);
+        bot3 = new JButton(dado3);
+        bot4 = new JButton(dado4);
         diffFacile = new JButton(facile1);
         diffMedia = new JButton(medio1);
         diffDifficile = new JButton(difficile1);
@@ -70,8 +81,10 @@ public class MenuPrePartitaGuiView extends JFrame implements Observer, MenuPrePa
         gioca = new JButton(caricaImmagine("dominio/immagini/gioca!.png"));
         fiches = new JTextField();
         
-        
-        nBot.setBounds(325, 200, 300, 80);
+        bot1.setBounds(250, 215, 54, 54);
+        bot2.setBounds(400, 215, 54, 54);
+        bot3.setBounds(550, 215, 54, 54);
+        bot4.setBounds(700, 215, 54, 54);
         diffFacile.setBounds(250, 350, 200, 80);
         diffMedia.setBounds(500, 350, 200, 80);
         diffDifficile.setBounds(750, 350, 200, 80);
@@ -80,10 +93,78 @@ public class MenuPrePartitaGuiView extends JFrame implements Observer, MenuPrePa
         fiches.setBounds(375, 500, 200, 80);
         
         fiches.setFont(new Font("fiches", 1, 35));
-        nBot.setOpaque(false);
-        nBot.setMajorTickSpacing(1);
-        nBot.setPaintTicks(true);
-        nBot.setPaintLabels(true);
+        bot1.setOpaque(false);
+        bot1.setContentAreaFilled(false);
+        bot1.setBorderPainted(false);
+        bot2.setOpaque(false);
+        bot2.setContentAreaFilled(false);
+        bot2.setBorderPainted(false);
+        bot3.setOpaque(false);
+        bot3.setContentAreaFilled(false);
+        bot3.setBorderPainted(false);
+        bot4.setOpaque(false);
+        bot4.setContentAreaFilled(false);
+        bot4.setBorderPainted(false);
+        
+        bot1.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                bot1.setIcon(dado1x);
+                bot2.setIcon(dado2);
+                bot3.setIcon(dado3);
+                bot4.setIcon(dado4);
+                bot1.repaint();
+                bot2.repaint();
+                bot3.repaint();
+                bot4.repaint();
+                nbot = "1";
+            };
+        });
+        
+        bot2.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                bot1.setIcon(dado1);
+                bot2.setIcon(dado2x);
+                bot3.setIcon(dado3);
+                bot4.setIcon(dado4);
+                bot1.repaint();
+                bot2.repaint();
+                bot3.repaint();
+                bot4.repaint();
+                nbot = "2";
+            };
+        });
+        
+        bot3.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                bot1.setIcon(dado1);
+                bot2.setIcon(dado2);
+                bot3.setIcon(dado3x);
+                bot4.setIcon(dado4);
+                bot1.repaint();
+                bot2.repaint();
+                bot3.repaint();
+                bot4.repaint();
+                nbot = "3";
+            };
+        });
+        
+        bot4.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                bot1.setIcon(dado1);
+                bot2.setIcon(dado2);
+                bot3.setIcon(dado3);
+                bot4.setIcon(dado4x);
+                bot1.repaint();
+                bot2.repaint();
+                bot3.repaint();
+                bot4.repaint();
+                nbot = "4";
+            };
+        });
         
         diffFacile.addActionListener(new ActionListener(){
             @Override
@@ -135,13 +216,15 @@ public class MenuPrePartitaGuiView extends JFrame implements Observer, MenuPrePa
         gioca.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e) {
-                nbot = String.valueOf(nBot.getValue());
                 fiches_iniziali = fiches.getText();
                 fireViewEvent();
             };
         });
         
-        sfondo.add(nBot);
+        sfondo.add(bot1);
+        sfondo.add(bot2);
+        sfondo.add(bot3);
+        sfondo.add(bot4);
         sfondo.add(diffFacile);
         sfondo.add(diffMedia);
         sfondo.add(diffDifficile);
