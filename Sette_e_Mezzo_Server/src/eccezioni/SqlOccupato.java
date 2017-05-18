@@ -12,6 +12,7 @@ package eccezioni;
 public class SqlOccupato extends Exception {
 
     public SqlOccupato() {
+
     }
-    
+
 }

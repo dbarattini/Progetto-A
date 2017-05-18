@@ -20,6 +20,7 @@ import DB.SQL;
 import client.Partita;
 import eccezioni.GiocatoreDisconnessoException;
 import eccezioni.GiocatoreNonTrovato;
+import eccezioni.SqlOccupato;
 import giocatore.Giocatore;
 
 
@@ -52,43 +53,7 @@ public class Login extends Thread{
             String messaggio;
             messaggio = giocatore.Leggi();
             if(messaggio!=null && !messaggio.equals("")){
-                String dati[]= messaggio.split(" ");
-                if(dati[0].equals("registrazione")){
-                    convalida(dati);
-                }
-                else if(dati[0].equals("login")){
-                    if(dati[1].contains("@"))
-                        username=sql.getUser(dati[1]);
-                    else
-                        username=dati[1];
-                    password=dati[2];
-                    if(sql.controllaPassword(username,password)){
-                         giocatore.Scrivi("login effetuato");
-                        sleep(20);
-                        iniziaPartita();
-                    }
-                    else{
-                        giocatore.Scrivi("login non effetuato");
-                        run();
-                    }
-
-                }
-                else if(dati[0].equals("convalida")){
-                    if(Integer.valueOf(dati[1])==codice){
-                        registra();
-                    }
-                    else{
-                        giocatore.Scrivi("convalida errata");  
-                        run();
-                    }
-                }
-                else if(dati[0].equals("recupero")){
-                    recuperoPw(dati);
-                }
-                else{
-                    sleep(75);
-                    run();
-                }
+                gestisciMessaggio(messaggio);
             }
             else
                 run();
@@ -101,11 +66,67 @@ public class Login extends Thread{
             run();
         } catch (GiocatoreDisconnessoException ex) {
             System.out.println("Giocatore "+giocatore.getUsername()+" disconnesso");
-            Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+           
+        } 
+    }
+
+    private void gestisciMessaggio(String messaggio) throws NumberFormatException, GiocatoreNonTrovato, InterruptedException{
+        try {   
+            String dati[]= messaggio.split(" ");
+            if(dati[0].equals("registrazione")){
+                convalida(dati);
+            }
+            else if(dati[0].equals("login")){
+                    gestisciLogin(dati);
+            }
+            else if(dati[0].equals("convalida")){
+                gestisciConvalida(dati);
+            }
+            else if(dati[0].equals("recupero")){
+                gestisciRecupero(dati);
+            }
+            else{
+                sleep(75);
+                run();
+            }
+        } catch (SqlOccupato ex) {
+                sleep(75);
+                gestisciMessaggio(messaggio);
+            }
+    }
+
+    private void gestisciRecupero(String[] dati) throws SqlOccupato {
+        recuperoPw(dati);
+    }
+
+    private void gestisciConvalida(String[] dati) throws NumberFormatException, SqlOccupato {
+        if(Integer.valueOf(dati[1])==codice){
+            registra();
+        }
+        else{
+            giocatore.Scrivi("convalida errata");
+            run();
+        }
+    }
+
+    private void gestisciLogin(String[] dati) throws InterruptedException, SqlOccupato, GiocatoreNonTrovato {
+        if(dati[1].contains("@"))
+            username=sql.getUser(dati[1]);
+        else
+            username=dati[1];
+        password=dati[2];
+        if(sql.controllaPassword(username,password)){
+            giocatore.Scrivi("login effetuato");
+            sleep(20);
+            iniziaPartita();
+        }
+        else{
+            giocatore.Scrivi("login non effetuato");
+            run();
         }
     }
     
-    private void recuperoPw(String[] dati){
+    private void recuperoPw(String[] dati) throws SqlOccupato{
         mail=dati[1];
         if(!sql.esisteEmail(mail))
             giocatore.Scrivi("recupero errato");  
@@ -118,13 +139,13 @@ public class Login extends Thread{
         run();
     }
 
-    private void registra() {        
+    private void registra() throws SqlOccupato {        
             sql.aggiungiGiocatore(mail, password, username, fiches);
             giocatore.Scrivi("registrazione effetuata");
             run();
       }
 
-    private void convalida(String[] dati)  {
+    private void convalida(String[] dati) throws SqlOccupato  {
         codice=random();
         mail=dati[1];
         username=dati[2];

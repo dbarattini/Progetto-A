@@ -7,7 +7,6 @@ package DB;
 
 import eccezioni.SqlOccupato;
 import eccezioni.GiocatoreNonTrovato;
-import static java.lang.Thread.sleep;
 import java.sql.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
