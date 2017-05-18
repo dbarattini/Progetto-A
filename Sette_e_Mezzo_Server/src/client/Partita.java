@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import giocatore.Giocatore;
+import static java.lang.Thread.sleep;
 
 
 public class Partita implements Runnable {
@@ -32,8 +33,11 @@ public class Partita implements Runnable {
     public void run() {
         try {
             gioca();
+            sleep(20);
             run();
         } catch (IOException ex) {
+            Logger.getLogger(Partita.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (InterruptedException ex) {
             Logger.getLogger(Partita.class.getName()).log(Level.SEVERE, null, ex);
         }
     }

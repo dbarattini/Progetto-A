@@ -37,12 +37,11 @@ public class Login extends Thread{
             this.giocatore=giocatore;
             this.partita=partita;
     }
-      
-    private int random(){
-        int max=9999, min=1000;
-        int range=max-min;
-        int rand=((int) Math.round(Math.random()*range))+min;        
-        return rand;
+     
+    private void iniziaPartita() {
+        System.out.println("La partita inizia adesso");
+         //partita.aggiungiGiocatore();
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
     @Override
@@ -51,7 +50,7 @@ public class Login extends Thread{
             
             String messaggio;
             messaggio = giocatore.Leggi();
-            if(messaggio!=null){
+            if(messaggio!=null && !messaggio.equals("")){
                 String dati[]= messaggio.split(" ");
                 if(dati[0].equals("registrazione")){
                     convalida(dati);
@@ -142,10 +141,12 @@ public class Login extends Thread{
         run();
     }
 
-    private void iniziaPartita() {
-        System.out.println("La partita inizia adesso");
-         //partita.aggiungiGiocatore();
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        
+     private int random(){
+        int max=9999, min=1000;
+        int range=max-min;
+        int rand=((int) Math.round(Math.random()*range))+min;        
+        return rand;
     }
     
     
