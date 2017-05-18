@@ -19,7 +19,6 @@ import partitaOffline.events.GameOver;
 import partitaOffline.events.GiocatoreLocaleEvent;
 import partitaOffline.events.MazzierePerde;
 import partitaOffline.events.MazzoRimescolato;
-import partitaOffline.events.Messaggio;
 import partitaOffline.events.RichiediGiocata;
 import partitaOffline.events.RichiediNome;
 import partitaOffline.events.RichiediPuntata;
@@ -62,18 +61,35 @@ public class PartitaOfflineConsoleView implements PartitaOfflineView, Observer{
     
     private void richiediNome(){
         String nome;
-        System.out.println("\nCome ti chiami?\n");
-        nome = scanner.next();        
+        System.out.println("---------------------------------");
+        System.out.println("         Come ti chiami?         \n");
+        System.out.print("            ");
+        nome = scanner.next();
+        System.out.println("---------------------------------");        
         fireViewEvent(new SetNome(nome));  
     }
     
-    private void stampaSchermataEstrazioneMazziere() throws InterruptedException{
+    private void stampaSchermataEstrazioneMazziere(){
+        System.out.println("  -----------------------------  ");
+        System.out.println("<      ESTRAZIONE MAZZIERE      >");
+        System.out.println("  -----------------------------  ");
+        try {
+            Thread.sleep(pausa_breve);
+        } catch (InterruptedException ex) {
+        }
         for(Giocatore giocatore : model.getGiocatori()){
             mostra_carta_coperta_e_valore_mano(giocatore);
-            Thread.sleep(pausa_breve);
+            try {
+                Thread.sleep(pausa_breve);
+            } catch (InterruptedException ex) {
+            }
         }
         stampa_messaggio_mazziere();
-        Thread.sleep(pausa_lunga);
+        System.out.println("---------------------------------"); 
+        try {
+            Thread.sleep(pausa_lunga);
+        } catch (InterruptedException ex) {
+        }
     }
     
     private void mostra_carta_coperta_e_valore_mano(Giocatore giocatore){
@@ -90,15 +106,10 @@ public class PartitaOfflineConsoleView implements PartitaOfflineView, Observer{
             richiediNome();
         }else if(arg instanceof Error){
             System.err.println(((Error) arg).getMessage());
-        }else if(arg instanceof Messaggio){
-            System.out.println(((Messaggio) arg).getMessaggio());
         } else if(arg instanceof EstrattoMazziere){
-            try {
-                stampaSchermataEstrazioneMazziere();
-            } catch (InterruptedException ex) {
-                Logger.getLogger(PartitaOfflineConsoleView.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            stampaSchermataEstrazioneMazziere();
         } else if(arg instanceof MazzoRimescolato){
+            stampaSchermataRimescolaMazzo();
             System.out.println("\nRimescolo mazzo\n");
         } else if(arg instanceof RisultatoManoParticolare){
             System.out.println(model.getGiocatoreLocale().getUltimaCartaOttenuta());
@@ -149,6 +160,12 @@ public class PartitaOfflineConsoleView implements PartitaOfflineView, Observer{
         System.out.println("Carta o Stai?");
         String giocata = scanner.next();
         fireViewEvent(new SetGiocata(giocata));
+    }
+
+    private void stampaSchermataRimescolaMazzo() {
+        System.out.println("  ----------------------------- ");
+        System.out.println("<      RIMESCOLO IL MAZZO      >");
+        System.out.println("  ----------------------------- ");
     }
     
 }

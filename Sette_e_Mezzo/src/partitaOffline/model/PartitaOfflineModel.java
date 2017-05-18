@@ -35,7 +35,6 @@ import dominio.musica.AudioPlayer;
 import partitaOffline.events.EstrattoMazziere;
 import partitaOffline.events.GiocatoreLocaleEventListener;
 import partitaOffline.events.MazzoRimescolato;
-import partitaOffline.events.Messaggio;
 import partitaOffline.events.RichiediNome;
 
 
@@ -49,16 +48,13 @@ public class PartitaOfflineModel extends Observable {
     private Giocatore next_mazziere = null;
     public static StatoGioco stato_gioco = StatoGioco.menu;
     public static int LARGHEZZA = 1280, ALTEZZA = 720;
-    int pausa_breve = 1000; //ms
-    int pausa_lunga = 2000; //ms
-    int n_bot;
-    int n_bot_sconfitti = 0;
-    DifficoltaBot difficolta_bot;
-    int fiches_iniziali;
-    String nome_giocatore;
-    InputStream in;
-    PrintStream out;
-    PrintStream err;
+    private int pausa_breve = 1000; //ms
+    private int pausa_lunga = 2000; //ms
+    private int n_bot;
+    private int n_bot_sconfitti = 0;
+    private DifficoltaBot difficolta_bot;
+    private int fiches_iniziali;
+    private String nome_giocatore;
     
     /**
      *
@@ -90,9 +86,6 @@ public class PartitaOfflineModel extends Observable {
     public void gioca() throws InterruptedException{
         Thread.sleep(pausa_breve);
         
-        this.setChanged();
-        this.notifyObservers(new Messaggio("Estrazione del mazziere"));
-        
         Thread.sleep(pausa_breve);
         
         estrai_mazziere();
@@ -111,7 +104,8 @@ public class PartitaOfflineModel extends Observable {
                 gioca_round();
                 calcola_risultato();
             } catch (MazzierePerdeException ex) {
-                out.println("Il mazziere ha perso\n");
+                this.setChanged();
+                this.notifyObservers(new MazzierePerde());
                 mazziere.azzera_fiches();
                 mazziere_successivo();
                 for(Giocatore giocatore : giocatori){
