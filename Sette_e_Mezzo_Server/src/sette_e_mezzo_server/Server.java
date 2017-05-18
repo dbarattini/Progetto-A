@@ -22,8 +22,8 @@ public class Server {
             int port = 8080;
             ServerSocket serverSocket = new ServerSocket(port);
             Partita partita = new Partita();
-//            Thread t = new Thread(partita);
-//            t.start();
+            Thread t = new Thread(partita);
+            t.start();
             System.out.println("Server in ascolto sulla porta: " + port);
             cercaConnessione(serverSocket, partita);
             

@@ -48,7 +48,7 @@ public class Login extends Thread{
             
             String messaggio;
             messaggio = giocatore.Leggi();
-            if(!messaggio.equals("")){
+            if(messaggio!=null){
                 String dati[]= messaggio.split(" ");
                 if(dati[0].equals("registrazione")){
                     convalida(dati);
@@ -83,8 +83,10 @@ public class Login extends Thread{
                 else if(dati[0].equals("recupero")){
                     recuperoPw(dati);
                 }
-                else
+                else{
+                    sleep(75);
                     run();
+                }
             }
             else
                 run();

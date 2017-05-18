@@ -33,7 +33,7 @@ public class Giocatore {
                 throw new GiocatoreDisconnessoException();
             }
         } catch (SocketTimeoutException e){
-            return "";
+            return null;
         }
         return letto;
     }
