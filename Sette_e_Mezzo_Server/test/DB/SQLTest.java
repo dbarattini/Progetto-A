@@ -6,8 +6,6 @@
 package DB;
 
 import eccezioni.GiocatoreNonTrovato;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -265,7 +263,7 @@ public class SQLTest {
         if(result>expResult)
             assertTrue(true);
         else
-            fail("The test case is a prototype.");
+            fail();
     }
     
 }
