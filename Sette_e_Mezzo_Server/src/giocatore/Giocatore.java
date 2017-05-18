@@ -42,7 +42,11 @@ public class Giocatore {
     public String getUsername(){
         return username;
     }
-    
+
+    public void setUsername(String username) {
+        this.username = username;
+    }   
+        
     public Socket getSocket(){
         return socket;
     }

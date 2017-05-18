@@ -40,8 +40,9 @@ public class Login extends Thread{
      
     private void iniziaPartita() {
         System.out.println("La partita inizia adesso");
-         //partita.aggiungiGiocatore();
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        giocatore.setUsername(username);
+        partita.aggiungiGiocatore(giocatore);
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
     @Override
@@ -56,13 +57,12 @@ public class Login extends Thread{
                     convalida(dati);
                 }
                 else if(dati[0].equals("login")){
-                    String user, pw;
                     if(dati[1].contains("@"))
-                        user=sql.getUser(dati[1]);
+                        username=sql.getUser(dati[1]);
                     else
-                        user=dati[1];
-                    pw=dati[2];
-                    if(sql.controllaPassword(user,pw)){
+                        username=dati[1];
+                    password=dati[2];
+                    if(sql.controllaPassword(username,password)){
                          giocatore.Scrivi("login effetuato");
                         sleep(20);
                         iniziaPartita();
