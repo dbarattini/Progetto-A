@@ -43,12 +43,8 @@ public class Server {
     }
 
     private static void nuovoGiocatore(Socket clientSocket, Partita partita) throws SocketException, IOException {
-        PrintWriter toClient =
-                new PrintWriter(clientSocket.getOutputStream(), true);
-        BufferedReader fromClient = new BufferedReader(
-                new InputStreamReader(clientSocket.getInputStream()));        
         clientSocket.setSoTimeout(100); //timeout utilizzato nella lettura
-        Login login= new Login(new Giocatore( clientSocket, fromClient, toClient), partita);
+        Login login= new Login(new Giocatore( clientSocket), partita);
         Thread t = new Thread(login);
          t.start();
     }
