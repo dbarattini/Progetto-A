@@ -5,7 +5,9 @@
  */
 package DB;
 
+import eccezioni.SqlOccupato;
 import eccezioni.GiocatoreNonTrovato;
+import static java.lang.Thread.sleep;
 import java.sql.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -104,8 +106,9 @@ public class SQL {
      *Torna le fiches di un giocatore
      * @param user username del giocatore
      * @return fiches del giocatore
+     * @throws org.sqlite.SQLiteException se il database è occupato 
      */
-    public int getFiches( String user )
+    public int getFiches( String user ) throws SqlOccupato 
   {
         try {
             Class.forName("org.sqlite.JDBC");
@@ -124,7 +127,10 @@ public class SQL {
             }
             rs.close();
             chiudiDatabase();
-            } catch ( Exception e ) {
+            }
+            catch ( Exception e ) {
+                if(e.getMessage().equals("[SQLITE_BUSY]  The database file is locked (database is locked)"))
+                    throw new SqlOccupato();
                   System.err.println( e.getClass().getName() + ": " + e.getMessage() );
                   chiudiDatabase();
             }

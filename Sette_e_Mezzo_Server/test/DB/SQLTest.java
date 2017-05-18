@@ -6,6 +6,9 @@
 package DB;
 
 import eccezioni.GiocatoreNonTrovato;
+import eccezioni.SqlOccupato;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.junit.Before;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -57,11 +60,15 @@ public class SQLTest {
      */
     @Test
     public void testGetFiches() {
-        System.out.println("getFiches");
-        String user = "ciaone";
-        int expResult = 10;
-        int result = sql.getFiches(user);
-        assertEquals(expResult, result);        
+        try {
+            System.out.println("getFiches");
+            String user = "ciaone";
+            int expResult = 10;
+            int result = sql.getFiches(user);        
+            assertEquals(expResult, result);
+        } catch (SqlOccupato ex) {
+            Logger.getLogger(SQLTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
         /**
@@ -69,11 +76,15 @@ public class SQLTest {
      */
     @Test
     public void testGeteSetFiches() {
-        String user = "ciaone";
-        int fiches = (int) Math.round(Math.random()*1000);
-         sql.setFiches(user, fiches);
-        int result = sql.getFiches(user);
-        assertEquals(fiches, result);        
+        try {
+            String user = "ciaone";
+            int fiches = (int) Math.round(Math.random()*1000);
+            sql.setFiches(user, fiches);
+            int result = sql.getFiches(user);        
+            assertEquals(fiches, result);
+        } catch (SqlOccupato ex) {
+            Logger.getLogger(SQLTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
 
