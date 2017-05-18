@@ -22,7 +22,7 @@ public class BotFacile extends Bot{
             puntata = (int) (valore*10);
         }
         if(puntata == 0) {
-            puntata = 10;   //questo if mi serve perchè puntata può essere, per esempio, 0.06 e castato darebbe 0.
+            puntata = 1;
         }
         return puntata;
     }
