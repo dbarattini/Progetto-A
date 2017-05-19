@@ -20,13 +20,13 @@ public class Sfondo extends JPanel {
         setVisible(true);
     }
     
-    // disegna l'immagine sull'interfaccia con le giuste proporzioni (deve essere in inglese il nome del metodo)
+    // disegna l'immagine sull'interfaccia con le giuste proporzioni
     public void paint(Graphics g) {
         g.drawImage(image, 0, 0, larghezza, altezza, this);
 	super.paint(g);
     }
     
-    // carica l'immagine dello sfondo dal package "immagini"
+    // carica l'immagine dello sfondo dal package "dominio.immagini"
     public void caricaSfondo(String nome) {
         try {
             image = ImageIO.read(getClass().getClassLoader().getResource(nome));

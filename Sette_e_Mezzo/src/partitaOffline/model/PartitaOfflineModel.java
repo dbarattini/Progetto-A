@@ -27,8 +27,6 @@ import dominio.giocatori.BotDifficile;
 import dominio.giocatori.BotMedio;
 import dominio.gioco.RegoleDiGioco;
 import dominio.gioco.StatoGioco;
-import java.io.InputStream;
-import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Observable;
 import dominio.musica.AudioPlayer;
