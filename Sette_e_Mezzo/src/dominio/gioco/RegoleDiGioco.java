@@ -235,10 +235,6 @@ public class RegoleDiGioco {
                         guadagno-=giocatore.getPuntata()*2;
                         break;
                     }
-                    case Sballato:{
-                        guadagno+=giocatore.getPuntata();
-                        break;
-                    }
                 } break;
             }
             case OK: {
@@ -259,10 +255,6 @@ public class RegoleDiGioco {
                         guadagno-=giocatore.getPuntata()*2;
                         break;
                     }
-                    case Sballato:{
-                        guadagno+=giocatore.getPuntata();
-                        break;
-                    }
                 } break;
             }
             case SetteeMezzo: {
@@ -279,10 +271,6 @@ public class RegoleDiGioco {
                         guadagno-=giocatore.getPuntata()*2;
                         break;
                     }
-                    case Sballato:{
-                        guadagno+=giocatore.getPuntata();
-                        break;
-                    }
                 } break;
             }
             case SetteeMezzoReale: {
@@ -296,10 +284,6 @@ public class RegoleDiGioco {
                         break;
                     }
                     case SetteeMezzoReale:{
-                        guadagno+=giocatore.getPuntata();
-                        break;
-                    }
-                    case Sballato:{
                         guadagno+=giocatore.getPuntata();
                         break;
                     }

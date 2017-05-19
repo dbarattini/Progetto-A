@@ -108,11 +108,7 @@ public class PartitaOfflineModel extends Observable {
                 mazziere.azzera_fiches();
                 this.notifyObservers(new MazzierePerde());
                 mazziere_successivo();
-                for(Giocatore giocatore : giocatori){
-                    if(! giocatore.isMazziere()){
-                        giocatore.riscuoti(0);
-                    }
-                }
+                
             }
             fine_round();
             mazzo.aggiorna_fine_round();
