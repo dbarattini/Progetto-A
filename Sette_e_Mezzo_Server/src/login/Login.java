@@ -82,7 +82,7 @@ public class Login extends Thread{
                 run();
             }
         } catch (SqlOccupato ex) {
-                sleep(75);
+                sleep(random(50, 100));
                 scomponiMessaggio(messaggio);
             }
     }
@@ -138,7 +138,7 @@ public class Login extends Thread{
       }
 
     private void convalida(String[] dati) throws SqlOccupato  {
-        codice=random();
+        codice=random(9999, 1000);
         mail=dati[1];
         username=dati[2];
         password=dati[3];
@@ -155,8 +155,7 @@ public class Login extends Thread{
     }
 
         
-     private int random(){
-        int max=9999, min=1000;
+     private int random(int max, int min){        
         int range=max-min;
         int rand=((int) Math.round(Math.random()*range))+min;        
         return rand;
