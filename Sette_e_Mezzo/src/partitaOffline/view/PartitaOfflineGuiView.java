@@ -31,6 +31,7 @@ import partitaOffline.events.RichiediGiocata;
 import partitaOffline.events.RichiediNome;
 import partitaOffline.events.RichiediPuntata;
 import partitaOffline.events.RisultatoManoParticolare;
+import partitaOffline.events.SetNome;
 import partitaOffline.events.Vittoria;
 
 public class PartitaOfflineGuiView extends JFrame implements PartitaOfflineView, Observer{
@@ -131,7 +132,10 @@ public class PartitaOfflineGuiView extends JFrame implements PartitaOfflineView,
             
             sfondo.remove(askNome);
             sfondo.remove(askNomeButton);
-            sfondo.remove(askNomeLabel);            
+            sfondo.remove(askNomeLabel); 
+            
+            this.fireViewEvent(new SetNome(nome)); //notifica al controller che é stato inserito il nome
+            
         } else if(arg instanceof Error){
             //todo mostra l'errore a video
         } else if(arg instanceof EstrattoMazziere){
