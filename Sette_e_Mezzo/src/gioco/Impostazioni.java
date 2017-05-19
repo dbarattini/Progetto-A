@@ -23,6 +23,14 @@ public class Impostazioni {
     public Impostazioni() {
     }
     
+    /**
+     * Stampa le impostazioni da scegliere, inizializza a null il valore di impostazioni (enum) e poi lo setta in base al valore inserito da terminale
+     * 
+     * @throws InterruptedException
+     * @throws CanzoneNonTrovataException
+     * @throws CaricamentoCanzoneException 
+     */
+    
     public void selezionaImpostazione() throws InterruptedException, CanzoneNonTrovataException, CaricamentoCanzoneException {
         while(true) {
             printImpostazioni();
