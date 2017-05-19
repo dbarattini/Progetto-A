@@ -107,11 +107,7 @@ public class PartitaOfflineModel extends Observable {
                 mazziere.azzera_fiches();
                 mazziere.perde();
                 mazziere_successivo();
-                for(Giocatore giocatore : giocatori){
-                    if(! giocatore.isMazziere()){
-                        giocatore.riscuoti(0);
-                    }
-                }
+                
             }
             fine_round();
             mazzo.aggiorna_fine_round();
@@ -334,7 +330,7 @@ public class PartitaOfflineModel extends Observable {
         }
         else {
             double fichesAttualiMazziere=(double)mazziere.getFiches();
-            double percentuale=(double)(fichesAttualiMazziere/(fichesAttualiMazziere-fichesMazziere));
+            double percentuale=(double)(fichesAttualiMazziere/(fichesAttualiMazziere-fichesMazziere));            
             for(Giocatore giocatore : giocatori){
                 if(! giocatore.isMazziere()){              
                     next_mazziere = regole_di_gioco.risultato_mano_percentuale(mazziere, giocatore, next_mazziere, percentuale);

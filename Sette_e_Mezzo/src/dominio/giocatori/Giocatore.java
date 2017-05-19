@@ -183,11 +183,13 @@ public abstract class Giocatore {
     public void pagaPercentuale(Giocatore avversario, double percentuale){
         int puntata;
         if(this.isMazziere()){
-            puntata = (int) (avversario.getPuntata()*percentuale);
+            double punt=(double)avversario.getPuntata();
+            puntata = (int) (punt*percentuale);
             this.paga_giocatore(puntata);
             avversario.riscuoti(puntata);
         } else{
-            puntata = (int) (this.puntata*percentuale);
+            double punt=(double)this.puntata;
+            puntata = (int) (punt*percentuale);
             avversario.riscuoti(puntata);
         }
     }
@@ -216,11 +218,13 @@ public abstract class Giocatore {
     public void paga_reale_percentuale(Giocatore avversario, double percentuale) {
         int puntata;
         if(this.isMazziere()){
-            puntata = (int) (avversario.getPuntata() * 2*percentuale);
+            double punt=(double)avversario.getPuntata();
+            puntata = (int) (punt * 2*percentuale);
             this.paga_giocatore(puntata);
             avversario.riscuoti(puntata);
         } else {
-            puntata = (int) (this.paga_reale_mazziere()*percentuale);
+            double punt=(double)this.paga_reale_mazziere();
+            puntata = (int) (punt*percentuale);
             avversario.riscuoti(puntata);
         }
     }

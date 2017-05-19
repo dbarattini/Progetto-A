@@ -10,3 +10,9 @@
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
+/Sette_e_Mezzo_Server/nbproject/private/
+/Sette_e_Mezzo/nbproject/private/
+/Sette_e_Mezzo_Server/build/
+/Sette_e_Mezzo_Server/dist/
+/Sette_e_Mezzo/build/
+/Sette_e_Mezzo/dist/
