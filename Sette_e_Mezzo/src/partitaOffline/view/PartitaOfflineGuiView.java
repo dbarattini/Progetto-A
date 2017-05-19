@@ -134,7 +134,6 @@ public class PartitaOfflineGuiView extends JFrame implements PartitaOfflineView,
             sfondo.remove(askNomeButton);
             sfondo.remove(askNomeLabel); 
             
-            this.fireViewEvent(new SetNome(nome)); //notifica al controller che é stato inserito il nome
             
         } else if(arg instanceof Error){
             //todo mostra l'errore a video
