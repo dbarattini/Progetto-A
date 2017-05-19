@@ -18,7 +18,6 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
-import modules.PartitaOfflineGui;
 import partitaOffline.events.AggiornamentoMazziere;
 import partitaOffline.events.EstrattoMazziere;
 import partitaOffline.events.FineManoAvversario;
@@ -31,7 +30,6 @@ import partitaOffline.events.RichiediGiocata;
 import partitaOffline.events.RichiediNome;
 import partitaOffline.events.RichiediPuntata;
 import partitaOffline.events.RisultatoManoParticolare;
-import partitaOffline.events.SetGiocata;
 import partitaOffline.events.SetNome;
 import partitaOffline.events.Vittoria;
 
@@ -104,19 +102,13 @@ public class PartitaOfflineGuiView extends JFrame implements PartitaOfflineView,
             nome = null;
             askNome = new JTextField();
             askNomeButton = new JButton(caricaImmagine("dominio/immagini/fatto.png"));
-            askNomeLabel = new JLabel() {
-                @Override
-                public void paint(Graphics g) {
-                    g.drawString("Inserisci il tuo nome:", 0, 0);
-                }
-            };
+            askNomeLabel = new JLabel(caricaImmagine("dominio/immagini/richiediNome.png"));
             
             askNome.setFont(new Font("nome", 1, 40));
-            askNomeLabel.setFont(new Font("nome2", 1, 30));
             
-            askNome.setBounds(this.getWidth()/2 - 125, this.getHeight() - 125, 250, 125);
-            askNomeButton.setBounds(this.getWidth()/2 - 100, this.getHeight() + 25, 200, 80);
-            askNomeLabel.setBounds(this.getWidth()/2 - 100, this.getHeight() - 250, 400, 80);
+            askNome.setBounds(this.getWidth()/2 - 125, 300, 250, 80);
+            askNomeButton.setBounds(this.getWidth()/2 - 100, 400, 200, 80);
+            askNomeLabel.setBounds(this.getWidth()/2 - 200, 100, 400, 80);
             
             askNomeButton.addActionListener(new ActionListener(){
                 @Override
@@ -129,14 +121,16 @@ public class PartitaOfflineGuiView extends JFrame implements PartitaOfflineView,
             sfondo.add(askNomeButton);
             sfondo.add(askNomeLabel);
             
-            this.repaint();
+            sfondo.repaint();
             
-            while(nome == null) {}  // resta in attesa finchè non viene inserito il nome
+            while(nome == null) {
+                System.out.println("In attesa del nome");
+            } // da risolvere: while vuoto non funziona, con qualsiasi azione funziona
             
             sfondo.remove(askNome);
             sfondo.remove(askNomeButton);
             sfondo.remove(askNomeLabel); 
-            this.repaint();
+            sfondo.repaint();
             
             fireViewEvent(new SetNome(nome));  
             
