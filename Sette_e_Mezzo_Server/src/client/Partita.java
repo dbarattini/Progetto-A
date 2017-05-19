@@ -48,13 +48,15 @@ public class Partita implements Runnable {
             giocatori_in_attesa.clear();
         }
         String msg = null;
-        for(Giocatore giocatore : giocatori){
-            try {
-                msg = giocatore.Leggi();
-            } catch (GiocatoreDisconnessoException ex) {
-                System.out.println(giocatore.getUsername() + " disconnesso");
-                this.giocatori_disconnessi.add(giocatore);
-            }        
+        if(!giocatori.isEmpty()){
+            for(Giocatore giocatore : giocatori){
+                try {
+                    msg = giocatore.Leggi();
+                } catch (GiocatoreDisconnessoException ex) {
+                    System.out.println(giocatore.getUsername() + " disconnesso");
+                    this.giocatori_disconnessi.add(giocatore);
+                }        
+            }
         }
         if(!giocatori_disconnessi.isEmpty())
             giocatori.removeAll(giocatori_disconnessi);

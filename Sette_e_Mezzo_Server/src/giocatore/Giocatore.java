@@ -10,7 +10,7 @@ import java.net.SocketTimeoutException;
 
 
 public class Giocatore {
-    private String username;
+    private String username="giocatore non registrato";
     private final PrintWriter aGiocatore;
     private final BufferedReader daGiocatore; 
     private final Socket socket;
