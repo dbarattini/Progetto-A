@@ -26,6 +26,13 @@ public class Musica {
        this.audio = new AudioPlayer();
     }
     
+    /**
+     *  Stampa le scelte disponibili, inizializza la scelta a null poi la setta con il valore dell'enum in base all'opzione scelta da terminale
+     * @throws InterruptedException
+     * @throws CanzoneNonTrovataException
+     * @throws CaricamentoCanzoneException 
+     */
+    
     public void selezionaImpostazione() throws InterruptedException, CanzoneNonTrovataException, CaricamentoCanzoneException {
         while(true) {
             printOpzioniMusica();
@@ -67,7 +74,7 @@ public class Musica {
         }
     }
     
-    public void printOpzioniMusica() {
+    private void printOpzioniMusica() {
         out.println("\n");
         out.println("SELEZIONA UN'IMPOSTAZIONE DELLA MUSICA");
         out.println("1. PLAY");
@@ -112,6 +119,6 @@ public class Musica {
 //                    System.out.println("IMPOSTAZIONE NON VALIDA");
         return impostazioni_prov;
     }
-    }
+}
     
 
