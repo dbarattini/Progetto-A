@@ -8,12 +8,7 @@
 package login;
 
 import comunicazione.Email;
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.PrintWriter;
-import java.net.InetAddress;
-import java.net.Socket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import DB.SQL;
@@ -26,8 +21,6 @@ import giocatore.Giocatore;
 
 public class Login extends Thread{
     private SQL sql= new SQL();
-    private Socket clientSocket;
-    private InetAddress clientAddress;
     private int codice;
     private String mail, password, username;
     private Giocatore giocatore;
@@ -48,12 +41,11 @@ public class Login extends Thread{
     
     @Override
     public void run(){
-        try {
-            
+        try {            
             String messaggio;
             messaggio = giocatore.Leggi();
             if(messaggio!=null && !messaggio.equals("")){
-                gestisciMessaggio(messaggio);
+                scomponiMessaggio(messaggio);
             }
             else
                 run();
@@ -70,7 +62,7 @@ public class Login extends Thread{
         } 
     }
 
-    private void gestisciMessaggio(String messaggio) throws NumberFormatException, GiocatoreNonTrovato, InterruptedException{
+    private void scomponiMessaggio(String messaggio) throws NumberFormatException, GiocatoreNonTrovato, InterruptedException{
         try {   
             String dati[]= messaggio.split(" ");
             if(dati[0].equals("registrazione")){
@@ -91,7 +83,7 @@ public class Login extends Thread{
             }
         } catch (SqlOccupato ex) {
                 sleep(75);
-                gestisciMessaggio(messaggio);
+                scomponiMessaggio(messaggio);
             }
     }
 

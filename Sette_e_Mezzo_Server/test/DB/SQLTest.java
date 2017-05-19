@@ -32,7 +32,7 @@ public class SQLTest {
      * Test of aggiungiGiocatore method, of class SQL.
      */
     @Test
-    public void testAggiungiGiocatore() {
+    public void testAggiungiGiocatore() throws SqlOccupato {
         System.out.println("aggiungi Giocatore");
         String email = "test@test.prova";
         String password = "prova";
@@ -46,7 +46,7 @@ public class SQLTest {
      * Test of setFiches method, of class SQL.
      */
     @Test
-    public void testSetFiches() {
+    public void testSetFiches() throws SqlOccupato {
         System.out.println("setFiches");
         String user = "ciaone";
         int fiches = 10;
@@ -92,7 +92,7 @@ public class SQLTest {
      * Test of controllaPassword method, of class SQL.
      */
     @Test
-    public void testControllaPasswordEsatta() {
+    public void testControllaPasswordEsatta() throws SqlOccupato {
         System.out.println("controllaPassword");
         String user = "ciaone";
         String pw = "prova";
@@ -105,7 +105,7 @@ public class SQLTest {
      * Test of controllaPassword method, of class SQL.
      */
     @Test
-    public void testControllaPasswordSbagliata() {
+    public void testControllaPasswordSbagliata() throws SqlOccupato {
         System.out.println("controllaPassword");
         String user = "ciaone";
         String pw = "proa";
@@ -118,7 +118,7 @@ public class SQLTest {
      * Test of cambiaPassword method, of class SQL.
      */
     @Test
-    public void testCambiaPasswordEsatta() {
+    public void testCambiaPasswordEsatta() throws SqlOccupato {
         System.out.println("cambiaPassword");
         String user = "ciaone";
         String vecchiaPassword = "passera";
@@ -133,7 +133,7 @@ public class SQLTest {
      * Test of cambiaPassword method, of class SQL.
      */
     @Test
-    public void testCambiaPasswordSbagliata() {
+    public void testCambiaPasswordSbagliata() throws SqlOccupato {
         System.out.println("cambiaPassword");
         String user = "ciaone";
         String vecchiaPassword = "prva";
@@ -147,7 +147,7 @@ public class SQLTest {
      * Test of getPassword method, of class SQL.
      */
     @Test
-    public void testGetPassword() {
+    public void testGetPassword() throws SqlOccupato {
         System.out.println("getPassword");
         String user = "ciaone";
         String password = "prova";
@@ -175,7 +175,7 @@ public class SQLTest {
      * Test of getUser method, of class SQL.
      */
     @Test
-    public void testGetUserSbagliato()  {
+    public void testGetUserSbagliato() throws SqlOccupato  {
         try {
             System.out.println("getUser");
             String email = "test@est.prova";
@@ -192,7 +192,7 @@ public class SQLTest {
      * Test of esisteEmail method, of class SQL.
      */
     @Test
-    public void testEsisteEmail() {
+    public void testEsisteEmail() throws SqlOccupato {
         System.out.println("esisteEmail");
         String email = "test@test.prova";
         boolean expResult = true;
@@ -204,7 +204,7 @@ public class SQLTest {
      * Test of esisteEmail method, of class SQL.
      */
     @Test
-    public void testEsisteEmailSbagliata() {
+    public void testEsisteEmailSbagliata() throws SqlOccupato {
         System.out.println("esisteEmail");
         String email = "test@tes.prova";
         boolean expResult = false;
@@ -216,7 +216,7 @@ public class SQLTest {
      * Test of esisteUsername method, of class SQL.
      */
     @Test
-    public void testEsisteUsername() {
+    public void testEsisteUsername() throws SqlOccupato {
         System.out.println("esisteUsername");
         String username = "ciaone";
         boolean expResult = true;
@@ -228,7 +228,7 @@ public class SQLTest {
      * Test of esisteUsername method, of class SQL.
      */
     @Test
-    public void testEsisteUsernameSbagliato() {
+    public void testEsisteUsernameSbagliato() throws SqlOccupato {
         System.out.println("esisteUsername");
         String username = "ciaoe";
         boolean expResult = false;
@@ -240,7 +240,7 @@ public class SQLTest {
      * Test of aggiungiVittoria method, of class SQL.
      */
     @Test
-    public void testAggiungiVittoria() throws GiocatoreNonTrovato {
+    public void testAggiungiVittoria() throws GiocatoreNonTrovato, SqlOccupato {
         System.out.println("aggiungiVittoria");
         String user = "ciaone";
         sql.aggiungiVittoria(user);
@@ -251,7 +251,7 @@ public class SQLTest {
      * Test of aggiungiVittoria method, of class SQL.
      */
     @Test
-    public void testAggiungiVittoriaSbagliata() {
+    public void testAggiungiVittoriaSbagliata() throws SqlOccupato {
         try {
             System.out.println("aggiungiVittoria");
             String user = "ciane";
@@ -266,7 +266,7 @@ public class SQLTest {
      * Test of getVittorie method, of class SQL.
      */
     @Test
-    public void testGetVittorie() {
+    public void testGetVittorie() throws SqlOccupato {
         System.out.println("getVittorie");
         String user = "ciaone";
         int expResult = 1;

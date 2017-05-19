@@ -50,7 +50,7 @@ public class SQL {
      * @param password password del giocatore
      * @param username usernsme che userà il giocatore
      * @param fiches fiches iniziali
-     * @throws GiocatoreGiaPresente se username o email sono già state inserite nel database
+     * @throws eccezioni.SqlOccupato
      */
     public  void aggiungiGiocatore(String email, String password, String username, int fiches  ) throws SqlOccupato
   {
@@ -58,7 +58,6 @@ public class SQL {
       Class.forName("org.sqlite.JDBC");
       c = DriverManager.getConnection("jdbc:sqlite:setteEmezzo.db");
       c.setAutoCommit(false);
-      System.out.println("Opened database successfully");
       String dati="VALUES ('"+email+"', '"+password+"', '"+username+"', "+fiches+");";
 
       stmt = c.createStatement();
