@@ -31,6 +31,7 @@ import partitaOffline.events.RichiediGiocata;
 import partitaOffline.events.RichiediNome;
 import partitaOffline.events.RichiediPuntata;
 import partitaOffline.events.RisultatoManoParticolare;
+import partitaOffline.events.SetGiocata;
 import partitaOffline.events.SetNome;
 import partitaOffline.events.Vittoria;
 
@@ -128,11 +129,16 @@ public class PartitaOfflineGuiView extends JFrame implements PartitaOfflineView,
             sfondo.add(askNomeButton);
             sfondo.add(askNomeLabel);
             
+            this.repaint();
+            
             while(nome == null) {}  // resta in attesa finchè non viene inserito il nome
             
             sfondo.remove(askNome);
             sfondo.remove(askNomeButton);
             sfondo.remove(askNomeLabel); 
+            this.repaint();
+            
+            fireViewEvent(new SetNome(nome));  
             
             
         } else if(arg instanceof Error){
