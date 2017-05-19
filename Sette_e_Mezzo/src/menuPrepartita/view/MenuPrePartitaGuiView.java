@@ -18,6 +18,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import menuPrepartita.events.SetInfo;
 import menuPrepartita.model.MenuPrePartitaModel;
+import modules.PartitaOfflineGui;
 
 public class MenuPrePartitaGuiView extends JFrame implements Observer, MenuPrePartitaView {
     private final CopyOnWriteArrayList<ViewEventListener> listeners;
@@ -218,6 +219,7 @@ public class MenuPrePartitaGuiView extends JFrame implements Observer, MenuPrePa
             public void actionPerformed(ActionEvent e) {
                 fiches_iniziali = fiches.getText();
                 fireViewEvent();
+                new PartitaOfflineGui(model.getNumeroBot(), model.getDifficoltaBot(), model.getFichesIniziali());
             };
         });
         

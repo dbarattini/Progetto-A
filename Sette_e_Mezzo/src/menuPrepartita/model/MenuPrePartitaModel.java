@@ -32,7 +32,7 @@ public class MenuPrePartitaModel extends Observable{
     public void setDifficoltaBot(String difficolta){
             try{
                 this.difficolta_bot= DifficoltaBot.valueOf(difficolta);
-            } catch (IllegalArgumentException e){
+            } catch (IllegalArgumentException | NullPointerException e){
                 this.setChanged();
                 this.notifyObservers(new Error("Errore: le difficolta disponibili sono Facile, Medio, Difficile."));
             } 

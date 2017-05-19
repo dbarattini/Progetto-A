@@ -27,8 +27,6 @@ import dominio.giocatori.BotDifficile;
 import dominio.giocatori.BotMedio;
 import dominio.gioco.RegoleDiGioco;
 import dominio.gioco.StatoGioco;
-import java.io.InputStream;
-import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.Observable;
 import dominio.musica.AudioPlayer;
@@ -105,8 +103,9 @@ public class PartitaOfflineModel extends Observable {
                 calcola_risultato();
             } catch (MazzierePerdeException ex) {
                 this.setChanged();
-                mazziere.azzera_fiches();
                 this.notifyObservers(new MazzierePerde());
+                mazziere.azzera_fiches();
+                mazziere.perde();
                 mazziere_successivo();
                 
             }
