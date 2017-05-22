@@ -25,6 +25,8 @@ public class Giocatore {
         aGiocatore.println(msg);
     }
     
+    
+    
     public String Leggi() throws IOException, GiocatoreDisconnessoException{
         String letto;
         
