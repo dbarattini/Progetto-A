@@ -20,13 +20,14 @@ public class BotDifficile extends Bot{
        double percentuale = calcola_percentuale_sballo();
         double valore = ((double)(this.getFiches())/100);
         int puntata = 0;
+        
         if(percentuale < 40) {
             puntata = (int) (valore*30);
         }else{
             puntata = (int) (valore*10);
         }
-        if(puntata == 0) { //questo if mi serve perchè puntata può essere, per esempio, 0.06 e castato darebbe 0.
-            puntata = 1;
+        if(puntata == 0) { //questo if mi serve perchè puntata può essere, per esempio, 0.06 e castato darebbe 0. (questo accade solo quando il bot ha meno di 10 fiches, allora lo faccio andare in all in)
+            puntata = this.getFiches();
         }
         return puntata;
     }
