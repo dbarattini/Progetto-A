@@ -9,6 +9,12 @@ public abstract class Bot extends Giocatore {
     
     private Mazzo mazzo;
     
+    /**
+     * 
+     * @param nome nome del bot
+     * @param fiches quantità fiches iniziali
+     * @param mazzo questa variabile è il mazzo della partita, necessario per far decidere la giocata e la puntata al bot
+     */
     public Bot (String nome, int fiches, Mazzo mazzo) {
         super(nome, fiches);
         this.mazzo = mazzo;
