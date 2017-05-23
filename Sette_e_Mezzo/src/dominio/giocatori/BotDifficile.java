@@ -26,7 +26,7 @@ public class BotDifficile extends Bot{
         }else{
             puntata = (int) (valore*10);
         }
-        if(puntata == 0) { //questo if mi serve perchè puntata può essere, per esempio, 0.06 e castato darebbe 0. (questo accade solo quando il bot ha meno di 10 fiches, allora lo faccio andare in all in)
+        if(puntata == 0) { //questo if mi serve perchè puntata può essere, per esempio, 0.06 e castato darebbe 0.
             puntata = this.getFiches();
         }
         return puntata;
