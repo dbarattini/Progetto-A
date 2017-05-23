@@ -30,6 +30,7 @@ public class MenuPrePartitaGuiView extends JFrame implements Observer, MenuPrePa
     private JTextField fiches;
     private final MenuPrePartitaModel model;
     private String nbot, difficolta_bot, fiches_iniziali;
+    private boolean error;
     
     public MenuPrePartitaGuiView(MenuPrePartitaModel model) {
         this.model = model;
@@ -217,9 +218,13 @@ public class MenuPrePartitaGuiView extends JFrame implements Observer, MenuPrePa
         gioca.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e) {
+                error = false;
                 fiches_iniziali = fiches.getText();
                 fireViewEvent();
-                new PartitaOfflineGui(model.getNumeroBot(), model.getDifficoltaBot(), model.getFichesIniziali());
+                if(! error){
+                    dispose();
+                    new PartitaOfflineGui(model.getNumeroBot(), model.getDifficoltaBot(), model.getFichesIniziali());
+                }
             };
         });
         
@@ -250,6 +255,7 @@ public class MenuPrePartitaGuiView extends JFrame implements Observer, MenuPrePa
     public void update(Observable o, Object arg) {
         if(arg instanceof Error){
             JOptionPane.showMessageDialog(null, (((Error) arg).getMessage()), "Errore", JOptionPane.ERROR_MESSAGE);
+            error = true;
         }
     }
 
