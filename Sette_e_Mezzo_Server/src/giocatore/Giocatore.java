@@ -61,6 +61,13 @@ public class Giocatore {
         return letto;
     }
     
+    public void scriviOggetto(Object pacco){
+        try {
+            paccoDaGiocatore.writeObject(pacco);
+        } catch (IOException ex) {
+            Logger.getLogger(Giocatore.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
     public String getUsername(){
         return username;
     }
