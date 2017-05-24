@@ -1,13 +1,14 @@
 package partitaOnline.events;
 
 import dominio.elementi_di_gioco.Carta;
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  *
  * @author xXEgoOneXx
  */
-public class RichiediGiocata {
+public class RichiediGiocata implements Serializable{
     Carta carta_coperta; 
     ArrayList<Carta> carte_scoperte; 
     double valore_mano;

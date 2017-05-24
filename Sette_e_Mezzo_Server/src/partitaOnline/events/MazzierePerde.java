@@ -1,7 +1,9 @@
 package partitaOnline.events;
 
+import java.io.Serializable;
 
-public class MazzierePerde {
+
+public class MazzierePerde implements Serializable{
 
     public MazzierePerde() {
     }

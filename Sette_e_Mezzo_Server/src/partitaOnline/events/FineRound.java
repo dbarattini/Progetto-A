@@ -1,12 +1,13 @@
 package partitaOnline.events;
 
 import dominio.giocatori.Giocatore;
+import java.io.Serializable;
 
 /**
  *
  * @author xXEgoOneXx
  */
-public class FineRound {
+public class FineRound implements Serializable{
     private Giocatore giocatore;
 
     public FineRound(Giocatore giocatore) {

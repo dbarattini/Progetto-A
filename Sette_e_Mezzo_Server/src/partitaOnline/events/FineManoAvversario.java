@@ -3,13 +3,14 @@ package partitaOnline.events;
 import dominio.classi_dati.Stato;
 import dominio.elementi_di_gioco.Carta;
 import dominio.giocatori.Giocatore;
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  *
  * @author xXEgoOneXx
  */
-public class FineManoAvversario {
+public class FineManoAvversario implements Serializable{
     
     private String nome;
     private ArrayList<Carta> carteScoperte;

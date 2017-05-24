@@ -43,7 +43,7 @@ public class Login extends Thread{
     public void run(){
         try {            
             String messaggio;
-            messaggio = giocatore.Leggi();
+            messaggio = giocatore.leggi();
             if(messaggio!=null && !messaggio.equals("")){
                 scomponiMessaggio(messaggio);
             }
@@ -54,7 +54,7 @@ public class Login extends Thread{
         } catch (InterruptedException ex) {
             Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
         } catch (GiocatoreNonTrovato ex) {
-            giocatore.Scrivi("login non effetuato");
+            giocatore.scrivi("login non effetuato");
             run();
         } catch (GiocatoreDisconnessoException ex) {
             System.out.println("Giocatore "+giocatore.getUsername()+" disconnesso");
@@ -96,7 +96,7 @@ public class Login extends Thread{
             registra();
         }
         else{
-            giocatore.Scrivi("convalida errata");
+            giocatore.scrivi("convalida errata");
             run();
         }
     }
@@ -108,12 +108,12 @@ public class Login extends Thread{
             username=dati[1];
         password=dati[2];
         if(sql.controllaPassword(username,password)){
-            giocatore.Scrivi("login effetuato");
+            giocatore.scrivi("login effetuato");
             sleep(20);
             iniziaPartita();
         }
         else{
-            giocatore.Scrivi("login non effetuato");
+            giocatore.scrivi("login non effetuato");
             run();
         }
     }
@@ -121,19 +121,19 @@ public class Login extends Thread{
     private void recuperoPw(String[] dati) throws SqlOccupato{
         mail=dati[1];
         if(!sql.esisteEmail(mail))
-            giocatore.Scrivi("recupero errato");  
+            giocatore.scrivi("recupero errato");  
         else{
             Email email=new Email();
             String password=sql.getPassword(mail);
             email.inviaPassword(mail, password );
-            giocatore.Scrivi("recupero inviato");
+            giocatore.scrivi("recupero inviato");
         }
         run();
     }
 
     private void registra() throws SqlOccupato {        
             sql.aggiungiGiocatore(mail, password, username, fiches);
-            giocatore.Scrivi("registrazione effetuata");
+            giocatore.scrivi("registrazione effetuata");
             run();
       }
 
@@ -143,13 +143,13 @@ public class Login extends Thread{
         username=dati[2];
         password=dati[3];
         if(sql.esisteEmail(mail))
-            giocatore.Scrivi("registrazione email gia esistente");  
+            giocatore.scrivi("registrazione email gia esistente");  
         else if(sql.esisteUsername(username))
-            giocatore.Scrivi("registrazione username gia esistente");
+            giocatore.scrivi("registrazione username gia esistente");
         else{
             Email email=new Email();
             email.inviaCodice(mail, codice);
-            giocatore.Scrivi("convalida inviata");
+            giocatore.scrivi("convalida inviata");
         }
         run();
     }

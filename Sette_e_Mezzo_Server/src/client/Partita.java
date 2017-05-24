@@ -51,7 +51,7 @@ public class Partita implements Runnable {
         if(!giocatori.isEmpty()){
             for(Giocatore giocatore : giocatori){
                 try {
-                    msg = giocatore.Leggi();
+                    msg = giocatore.leggi();
                 } catch (GiocatoreDisconnessoException ex) {
                     System.out.println(giocatore.getUsername() + " disconnesso");
                     this.giocatori_disconnessi.add(giocatore);
@@ -64,7 +64,7 @@ public class Partita implements Runnable {
         if(! giocatori_disconnessi.isEmpty()){
             for(Giocatore giocatore_disconnesso : giocatori_disconnessi){
                 for(Giocatore giocatore : giocatori){
-                    giocatore.Scrivi(giocatore_disconnesso.getUsername() + " diconnesso");
+                    giocatore.scrivi(giocatore_disconnesso.getUsername() + " diconnesso");
                 }
             }
             giocatori_disconnessi.clear();

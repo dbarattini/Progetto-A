@@ -1,5 +1,7 @@
 package partitaOnline.events;
 
-public class RichiediNome {
+import java.io.Serializable;
+
+public class RichiediNome implements Serializable{
     
 }

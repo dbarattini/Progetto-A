@@ -1,7 +1,9 @@
 package partitaOnline.events;
 
+import java.io.Serializable;
 
-public class SetNome {
+
+public class SetNome implements Serializable{
     String nome;
 
     public SetNome(String nome) {

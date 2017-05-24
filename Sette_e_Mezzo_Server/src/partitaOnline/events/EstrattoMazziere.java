@@ -1,5 +1,7 @@
 package partitaOnline.events;
 
-public class EstrattoMazziere {
+import java.io.Serializable;
+
+public class EstrattoMazziere implements Serializable{
     
 }

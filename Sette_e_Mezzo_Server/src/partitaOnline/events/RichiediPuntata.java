@@ -1,9 +1,10 @@
 package partitaOnline.events;
 
 import dominio.elementi_di_gioco.Carta;
+import java.io.Serializable;
 
 
-public class RichiediPuntata {
+public class RichiediPuntata implements Serializable{
     Carta carta_coperta;
     double valore_mano;
     int fiches;
