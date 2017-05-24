@@ -49,9 +49,8 @@ public class Giocatore {
     }
     
     public Object leggiOggetto(){
-        Object letto;        
+        Object letto=null;        
         try {
-
             letto=paccoPerGiocatore.readObject();
             return letto;
         } catch (IOException ex) {
@@ -59,7 +58,9 @@ public class Giocatore {
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(Giocatore.class.getName()).log(Level.SEVERE, null, ex);
         }
+        return letto;
     }
+    
     public String getUsername(){
         return username;
     }
