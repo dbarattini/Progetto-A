@@ -30,7 +30,7 @@ import partitaOnline.events.RichiediNome;
 public class PartitaOfflineModel extends Observable {
     private RegoleDiGioco regole_di_gioco = new RegoleDiGioco();
     private ArrayList<Giocatore> giocatori=new ArrayList<>();
-    private GiocatoreUmano giocatore_locale;
+    private Giocatore giocatore_locale;
     private final Mazzo mazzo = new Mazzo();
     private Giocatore mazziere = null;
     private Giocatore next_mazziere = null;
@@ -117,7 +117,7 @@ public class PartitaOfflineModel extends Observable {
     private void inizializza_giocatore(int fiches_iniziali){
         this.setChanged();
         this.notifyObservers(new RichiediNome());
-        giocatore_locale = new GiocatoreUmano(nome_giocatore,fiches_iniziali);
+        giocatore_locale = new Giocatore(nome_giocatore,fiches_iniziali);
         giocatori.add(giocatore_locale);
     }
     
@@ -160,7 +160,7 @@ public class PartitaOfflineModel extends Observable {
             giocatore = getProssimoGiocatore(pos_next_giocatore);
             if(! giocatore.haPerso()){  
                 esegui_mano(giocatore);
-                if(giocatore instanceof GiocatoreUmano && giocatore.getStato() != Stato.OK){
+                if(giocatore instanceof Giocatore && giocatore.getStato() != Stato.OK){
                     
                     this.setChanged();
                     this.notifyObservers(new RisultatoManoParticolare());
@@ -168,7 +168,7 @@ public class PartitaOfflineModel extends Observable {
                     Thread.sleep(pausa_lunga);
                 }
             }
-            if(! (giocatore instanceof GiocatoreUmano)){
+            if(! (giocatore instanceof Giocatore)){
                 this.setChanged();
                 this.notifyObservers(new FineManoAvversario(giocatore.getNome(), giocatore.getCarteScoperte(),giocatore.getStato(), giocatore.getPuntata()));
                 Thread.sleep(pausa_breve);
@@ -213,8 +213,8 @@ public class PartitaOfflineModel extends Observable {
                 giocatore.effettua_puntata();
             }
         }
-        if(mazziere instanceof GiocatoreUmano){
-                GiocatoreUmano giocatore = (GiocatoreUmano) mazziere;
+        if(mazziere instanceof Giocatore){
+                Giocatore giocatore = (Giocatore) mazziere;
 //                giocatore.stampaCartaCoperta();
             }
     }
@@ -323,7 +323,7 @@ public class PartitaOfflineModel extends Observable {
             
             Thread.sleep(pausa_breve);
             if(giocatore.getFiches() == 0 && ! giocatore.haPerso()){
-                if(giocatore instanceof GiocatoreUmano){
+                if(giocatore instanceof Giocatore){
                     giocatore.perde();
                     game_over = true;
                 } else {
@@ -391,7 +391,7 @@ public class PartitaOfflineModel extends Observable {
         return mazziere;
     }
 
-    public GiocatoreUmano getGiocatoreLocale() {
+    public Giocatore getGiocatoreLocale() {
         return giocatore_locale;
     }
 }
