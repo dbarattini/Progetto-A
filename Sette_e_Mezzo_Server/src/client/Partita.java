@@ -7,12 +7,14 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import giocatore.Giocatore;
 import static java.lang.Thread.sleep;
+import partitaOnline.model.PartitaOfflineModel;
 
 
 public class Partita implements Runnable {
     private ArrayList<Giocatore> giocatori;
     private ArrayList<Giocatore> giocatori_in_attesa;
     private ArrayList<Giocatore> giocatori_disconnessi;
+    private PartitaOfflineModel model;
     
     public Partita(){
         this.giocatori = new ArrayList<>(); 

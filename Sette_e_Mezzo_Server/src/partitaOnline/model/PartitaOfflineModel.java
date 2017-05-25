@@ -10,7 +10,6 @@ import partitaOnline.events.RisultatoManoParticolare;
 import dominio.eccezioni.FichesInizialiException;
 import dominio.elementi_di_gioco.Mazzo;
 import dominio.giocatori.Giocatore;
-import dominio.classi_dati.DifficoltaBot;
 import dominio.classi_dati.Stato;
 import dominio.eccezioni.FineMazzoException;
 import dominio.eccezioni.MazzierePerdeException;
@@ -39,21 +38,15 @@ public class PartitaOfflineModel extends Observable {
     public static int LARGHEZZA = 1280, ALTEZZA = 720;
     private int pausa_breve = 1000; //ms
     private int pausa_lunga = 2000; //ms
-    private int n_bot;
-    private int n_bot_sconfitti = 0;
-    private DifficoltaBot difficolta_bot;
+    private int n_bot_sconfitti = 0, n_giocatori;
     private int fiches_iniziali;
     private String nome_giocatore;
     
     /**
      *
-     * @param numero_bot numero di bot iniziali
-     * @param fiches_iniziali numero di fiches iniziali per ogni giocatore
-     * @param difficolta_bot difficoltá di tutti i bot della partita
+     * @param fiches_iniziali da cambiare
      */
-    public PartitaOfflineModel(int numero_bot, DifficoltaBot difficolta_bot, int fiches_iniziali){
-        this.n_bot = numero_bot;
-        this.difficolta_bot = difficolta_bot;
+    public PartitaOfflineModel( int fiches_iniziali){
         this.fiches_iniziali = fiches_iniziali;
         
         
@@ -93,7 +86,7 @@ public class PartitaOfflineModel extends Observable {
             }
             fine_round();
             mazzo.aggiorna_fine_round();
-            if(n_bot_sconfitti == n_bot){
+            if(n_bot_sconfitti == n_giocatori){
                 this.setChanged();
                 this.notifyObservers(new Vittoria());
                 vittoria();
@@ -102,7 +95,7 @@ public class PartitaOfflineModel extends Observable {
     }
    
     
-    public void inizializza_partita(int numero_bot, DifficoltaBot difficolta_bot, int fiches_iniziali){
+    public void inizializza_partita(int numero_bot, int fiches_iniziali){
         try {
             inizzializza_fiches(fiches_iniziali);
             inizializza_giocatore(fiches_iniziali);
@@ -370,13 +363,11 @@ public class PartitaOfflineModel extends Observable {
         System.exit(0);
     }
 
-    public int getN_bot() {
-        return n_bot;
+    public int getN_giocatori() {
+        return n_giocatori;
     }
 
-    public DifficoltaBot getDifficolta_bot() {
-        return difficolta_bot;
-    }
+    
 
     public int getFiches_iniziali() {
         return fiches_iniziali;

@@ -36,7 +36,6 @@ public class Login extends Thread{
         System.out.println("La partita inizia adesso");
         giocatore.setUsername(username);
         partita.aggiungiGiocatore(giocatore);
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
     @Override
