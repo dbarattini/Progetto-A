@@ -34,7 +34,8 @@ public class Partita implements Runnable {
     @Override
     public void run() {
         try {
-            gioca();
+            controllaConnessione();
+            controllaNumeroGiocatore();
             sleep(20);
             run();
         } catch (IOException ex) {
@@ -44,7 +45,16 @@ public class Partita implements Runnable {
         }
     }
     
-    private void gioca() throws IOException{
+    private void giocaTurno(){
+        
+    }
+    
+    private void controllaNumeroGiocatore(){
+        if(giocatori.size()>1)
+            giocaTurno();
+    }
+    
+    private void controllaConnessione() throws IOException{
         if(! giocatori_in_attesa.isEmpty()){
             giocatori.addAll(giocatori_in_attesa);
             giocatori_in_attesa.clear();
@@ -60,10 +70,9 @@ public class Partita implements Runnable {
                 }        
             }
         }
-        if(!giocatori_disconnessi.isEmpty())
-            giocatori.removeAll(giocatori_disconnessi);
 
         if(! giocatori_disconnessi.isEmpty()){
+            giocatori.removeAll(giocatori_disconnessi);
             for(Giocatore giocatore_disconnesso : giocatori_disconnessi){
                 for(Giocatore giocatore : giocatori){
                     giocatore.scrivi(giocatore_disconnesso.getUsername() + " diconnesso");
