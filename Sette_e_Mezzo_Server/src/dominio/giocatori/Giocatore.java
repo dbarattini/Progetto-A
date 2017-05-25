@@ -8,12 +8,21 @@ import dominio.eccezioni.SballatoException;
 import dominio.classi_dati.Giocata;
 import dominio.classi_dati.Stato;
 import dominio.eccezioni.FineMazzoException;
+import dominio.eccezioni.GiocataNonValidaException;
 import dominio.eccezioni.MattaException;
+import dominio.eccezioni.PuntataNegativaException;
+import dominio.eccezioni.PuntataNullaException;
+import dominio.eccezioni.PuntataTroppoAltaException;
 import dominio.elementi_di_gioco.Carta;
 import java.util.ArrayList;
+import java.util.concurrent.CopyOnWriteArrayList;
+import partitaOnline.events.GiocatoreLocaleEvent;
+import partitaOnline.events.GiocatoreLocaleEventListener;
+import partitaOnline.events.RichiediGiocata;
+import partitaOnline.events.RichiediPuntata;
 
 
-public abstract class Giocatore {
+public class Giocatore {
     private final String nome;    
     private int fiches;
     private boolean mazziere;
@@ -23,6 +32,9 @@ public abstract class Giocatore {
     protected double valore_mano = 0;
     private Stato stato;
     private boolean perso = false;
+    private final CopyOnWriteArrayList<GiocatoreLocaleEventListener> listeners;
+    private int puntata_effettuata;
+    private String giocata_effettuata;
     
     /**
      *
@@ -32,6 +44,7 @@ public abstract class Giocatore {
     public Giocatore(String nome, int fiches){
         this.nome = nome;
         this.fiches = fiches;
+        listeners = new CopyOnWriteArrayList<>();
     }
     
     /**
@@ -76,7 +89,47 @@ public abstract class Giocatore {
      * 
      * @return il valore della puntata scelta
      */
-    protected abstract int decidi_puntata();
+    public int decidi_puntata() {
+        while(true){
+                fireGiocatoreLocaleEvent(new RichiediPuntata(this.carta_coperta, this.valore_mano, this.getFiches()));
+                if(puntata_effettuata != 0){
+                    return puntata_effettuata;
+                }
+        }
+    }
+    
+    public void PuntataInserita(String puntata_effettuata){
+        try{
+            this.puntata_effettuata = Integer.valueOf(puntata_effettuata);
+            controlla_puntata(this.puntata_effettuata);
+        } catch(NumberFormatException e){
+            if(puntata_effettuata.toLowerCase().equals("allin") || puntata_effettuata.toLowerCase().equals("all-in") || puntata_effettuata.toLowerCase().equals("all")){
+                this.puntata_effettuata= this.getFiches();
+            } else{
+                this.puntata_effettuata = 0;
+                this.fireGiocatoreLocaleEvent(new Error("Puntata non valida."));
+            }
+        } catch (PuntataTroppoAltaException ex) {
+            this.puntata_effettuata = 0;
+            this.fireGiocatoreLocaleEvent(new Error("Errore: il valore inserito é troppo alto. Il massimo valore che puoi puntare é: " + this.getFiches() +"."));
+        } catch (PuntataNegativaException ex) {
+            this.puntata_effettuata = 0;
+            this.fireGiocatoreLocaleEvent(new Error("Errore: il valore inserito non puó essere negativo."));
+        } catch (PuntataNullaException ex) {
+            this.puntata_effettuata = 0;
+            this.fireGiocatoreLocaleEvent(new Error("Errore: il valore inserito non puó essere nullo."));
+        }
+    }
+    
+    private void controlla_puntata(int puntata) throws PuntataTroppoAltaException, PuntataNegativaException, PuntataNullaException{
+        if(this.getFiches() - puntata < 0){
+            throw new PuntataTroppoAltaException();
+        }else if(puntata < 0){
+            throw new PuntataNegativaException();
+        }else if(puntata == 0){
+            throw new PuntataNullaException();
+        }
+    }
     
     private void punta(int puntata){
         fiches = fiches - puntata;
@@ -97,7 +150,32 @@ public abstract class Giocatore {
      * 
      * @return la giocata scelta
      */
-    protected abstract Giocata decidi_giocata();
+    protected Giocata decidi_giocata() {
+        while(true){
+            try {
+                this.fireGiocatoreLocaleEvent(new RichiediGiocata(this.getCartaCoperta(), this.getCarteScoperte(), this.getValoreMano()));
+                return seleziona_giocata(giocata_effettuata);
+            } catch (GiocataNonValidaException ex) {
+                this.fireGiocatoreLocaleEvent(new Error("Errore: La giocata non é stata riconosciuta.I valori possibili sono: carta o sto."));
+            }
+        }
+    }
+    
+    private Giocata seleziona_giocata(String giocata) throws GiocataNonValidaException{
+        if(giocata.toLowerCase().equals("carta") || giocata.equals("c")){
+            return Giocata.Carta;
+        } 
+        else if(giocata.toLowerCase().equals("sto") || giocata.equals("s")){
+        return Giocata.Sto;
+        }
+        else{
+            throw new GiocataNonValidaException();
+        }   
+    } 
+    
+    public void GiocataInserita(String giocata_effettuata){
+        this.giocata_effettuata = giocata_effettuata;
+    }
     
     private boolean gioca(Giocata giocata){
         switch(giocata){                
@@ -105,6 +183,14 @@ public abstract class Giocatore {
             case Sto: return false;
             default : return true; //impossibile ma senza da errore
         }
+    }
+    
+    public void addGiocatoreLocaleEventListener(GiocatoreLocaleEventListener l) {
+        this.listeners.add(l);
+    }
+
+    public void removeGiocatoreLocaleEventListener(GiocatoreLocaleEventListener l) {
+        this.listeners.remove(l);
     }
     
     /**
@@ -253,11 +339,13 @@ public abstract class Giocatore {
         fiches = fiches + puntata + vincita;
     }
     
-    /**
-     * Azzera il numero di fiches del giocatore.
-     */
-    public void azzera_fiches(){
-        fiches = 0;
+        
+    protected void fireGiocatoreLocaleEvent(Object arg) {
+        GiocatoreLocaleEvent evt = new GiocatoreLocaleEvent(this, arg);
+
+        for (GiocatoreLocaleEventListener l : listeners) {
+            l.GiocatoreLocaleEventReceived(evt);
+        }
     }
     
     /**
