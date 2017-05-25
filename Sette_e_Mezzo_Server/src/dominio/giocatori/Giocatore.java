@@ -245,6 +245,8 @@ public class Giocatore {
         }
     }
     
+    
+    
     /**
      * Consente i pagamenti normali ad un avversario.
      * @param avversario
@@ -346,6 +348,10 @@ public class Giocatore {
         for (GiocatoreLocaleEventListener l : listeners) {
             l.GiocatoreLocaleEventReceived(evt);
         }
+    }
+    
+    public void azzera_fiches(){
+        fiches = 0;
     }
     
     /**
