@@ -1,4 +1,4 @@
-package giocatore;
+package comunicazione;
 
 import eccezioni.GiocatoreDisconnessoException;
 import java.io.BufferedReader;
@@ -13,7 +13,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 
 
-public class Giocatore {
+public class Client {
     private String username="giocatore non registrato";
     private final PrintWriter aGiocatore;
     private final BufferedReader daGiocatore; 
@@ -21,7 +21,7 @@ public class Giocatore {
     private final ObjectOutputStream paccoDaGiocatore;
     private ObjectInputStream paccoPerGiocatore;
     
-    public Giocatore(Socket socket) throws IOException{
+    public Client(Socket socket) throws IOException{
         this.daGiocatore = new BufferedReader(  new InputStreamReader(socket.getInputStream()));
         this.aGiocatore =  new PrintWriter(socket.getOutputStream(), true);
         this.paccoDaGiocatore= new ObjectOutputStream(socket.getOutputStream());
@@ -48,36 +48,19 @@ public class Giocatore {
         return letto;
     }
     
-    public Object leggiOggetto(){
+    public Object leggiOggetto() throws IOException{
         Object letto=null;        
         try {
             letto=paccoPerGiocatore.readObject();
             return letto;
-        } catch (IOException ex) {
-            Logger.getLogger(Giocatore.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ClassNotFoundException ex) {
-            Logger.getLogger(Giocatore.class.getName()).log(Level.SEVERE, null, ex);
+        }  catch (ClassNotFoundException ex) {
+            Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
         }
         return letto;
     }
     
-    public void scriviOggetto(Object pacco){
-        try {
-            paccoDaGiocatore.writeObject(pacco);
-        } catch (IOException ex) {
-            Logger.getLogger(Giocatore.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-    public String getUsername(){
-        return username;
+    public void scriviOggetto(Object pacco) throws IOException{
+        paccoDaGiocatore.writeObject(pacco);        
     }
     
-
-    public void setUsername(String username) {
-        this.username = username;
-    }   
-        
-    public Socket getSocket(){
-        return socket;
-    }
 }

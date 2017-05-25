@@ -14,6 +14,9 @@ import dominio.eccezioni.PuntataNegativaException;
 import dominio.eccezioni.PuntataNullaException;
 import dominio.eccezioni.PuntataTroppoAltaException;
 import dominio.elementi_di_gioco.Carta;
+import eccezioni.GiocatoreDisconnessoException;
+import java.io.IOException;
+import java.net.Socket;
 import java.util.ArrayList;
 import java.util.concurrent.CopyOnWriteArrayList;
 import partitaOnline.events.GiocatoreLocaleEvent;
@@ -23,7 +26,7 @@ import partitaOnline.events.RichiediPuntata;
 
 
 public class Giocatore {
-    private final String nome;    
+    private String nome;    
     private int fiches;
     private boolean mazziere;
     protected Carta carta_coperta;    
@@ -35,15 +38,17 @@ public class Giocatore {
     private final CopyOnWriteArrayList<GiocatoreLocaleEventListener> listeners;
     private int puntata_effettuata;
     private String giocata_effettuata;
+    private final Socket socket;
+    private Giocatore client;
     
     /**
      *
      * @param nome nome del giocatore.
      * @param fiches numero di fiches iniziali del giocatore.
      */
-    public Giocatore(String nome, int fiches){
-        this.nome = nome;
-        this.fiches = fiches;
+    public Giocatore(Socket socket) throws IOException{
+        this.socket = socket;
+        client=new Giocatore(socket);
         listeners = new CopyOnWriteArrayList<>();
     }
     
@@ -73,6 +78,22 @@ public class Giocatore {
     public void prendi_carta_iniziale(Carta carta) throws FineMazzoException{
         carta_coperta = carta;
         aggiorna_valore_mano();
+    }
+    
+    public void scrivi(String msg){
+        client.scrivi(msg);
+    }
+    
+    public String leggi() throws IOException, GiocatoreDisconnessoException{
+        return client.leggi();
+    }
+    
+    public Object leggiOggetto() throws IOException{
+        return client.leggiOggetto();
+    }
+    
+    public void scriviOggetto(Object pacco) throws IOException{
+        client.scriviOggetto(pacco);
     }
 
     /**
@@ -130,6 +151,7 @@ public class Giocatore {
             throw new PuntataNullaException();
         }
     }
+    
     
     private void punta(int puntata){
         fiches = fiches - puntata;
@@ -367,6 +389,19 @@ public class Giocatore {
     
     public boolean isMazziere(){
         return mazziere;
+    }
+    
+    public String getUsername(){
+        return nome;
+    }
+    
+
+    public void setUsername(String username) {
+        this.nome = username;
+    }   
+        
+    public Socket getSocket(){
+        return socket;
     }
     
     public void setMazziere(boolean mazziere){

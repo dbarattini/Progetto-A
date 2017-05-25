@@ -12,11 +12,12 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import DB.SQL;
-import client.Partita;
+import partita.Partita;
+import dominio.giocatori.Giocatore;
 import eccezioni.GiocatoreDisconnessoException;
 import eccezioni.GiocatoreNonTrovato;
 import eccezioni.SqlOccupato;
-import giocatore.Giocatore;
+
 
 
 public class Login extends Thread{

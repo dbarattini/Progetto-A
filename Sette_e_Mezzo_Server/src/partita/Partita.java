@@ -1,13 +1,13 @@
-package client;
+package partita;
 
 import eccezioni.GiocatoreDisconnessoException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import giocatore.Giocatore;
 import static java.lang.Thread.sleep;
 import partitaOnline.model.PartitaOfflineModel;
+import dominio.giocatori.Giocatore;
 
 
 public class Partita implements Runnable {
