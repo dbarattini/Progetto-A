@@ -15,6 +15,7 @@ public class Partita implements Runnable {
     private ArrayList<Giocatore> giocatori_in_attesa;
     private ArrayList<Giocatore> giocatori_disconnessi;
     private PartitaOfflineModel model;
+    private boolean iniziata=false;
     
     public Partita(){
         this.giocatori = new ArrayList<>(); 
@@ -49,9 +50,17 @@ public class Partita implements Runnable {
         
     }
     
+    private void iniziaPartita(){
+        
+    }
+    
     private void controllaNumeroGiocatore(){
-        if(giocatori.size()>1)
-            giocaTurno();
+        if(giocatori.size()>1){
+            if(iniziata)
+                giocaTurno();
+            else
+                iniziaPartita();            
+        }
     }
     
     private void controllaConnessione() throws IOException{
