@@ -41,6 +41,7 @@ public class PartitaOfflineModel extends Observable {
     private int n_bot_sconfitti = 0, n_giocatori;
     private int fiches_iniziali;
     private String nome_giocatore;
+
     
     /**
      *
@@ -95,9 +96,10 @@ public class PartitaOfflineModel extends Observable {
     }
    
     
-    public void inizializza_partita(int numero_bot, int fiches_iniziali){
+    public void inizializza_partita(ArrayList giocatori){
+        this.giocatori=giocatori;
         try {
-            inizzializza_fiches(fiches_iniziali);
+            inizzializza_fiches();
             inizializza_giocatore(fiches_iniziali);
         }catch (FichesInizialiException ex) {
             this.setChanged();
@@ -105,9 +107,9 @@ public class PartitaOfflineModel extends Observable {
         }
     }
 
-    private void inizzializza_fiches(int fiches_iniziali) throws FichesInizialiException {
-        if(fiches_iniziali <= 0){
-            throw new FichesInizialiException();
+    private void inizzializza_fiches() throws FichesInizialiException {
+        for(Giocatore giocatore: giocatori){
+            
         }
     }
     

@@ -51,7 +51,7 @@ public class Partita implements Runnable {
     }
     
     private void iniziaPartita(){
-        
+        this.model.inizializza_partita(giocatori);
     }
     
     private void controllaNumeroGiocatore(){
