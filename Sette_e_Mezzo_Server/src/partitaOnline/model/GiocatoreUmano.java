@@ -1,7 +1,7 @@
 package partitaOnline.model;
 
 
-import partitaOffline.events.RichiediGiocata;
+import partitaOnline.events.RichiediGiocata;
 import dominio.eccezioni.PuntataNonValidaException;
 import dominio.classi_dati.Giocata;
 import dominio.eccezioni.GiocataNonValidaException;
@@ -12,9 +12,9 @@ import dominio.giocatori.Giocatore;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import partitaOffline.events.GiocatoreLocaleEvent;
-import partitaOffline.events.GiocatoreLocaleEventListener;
-import partitaOffline.events.RichiediPuntata;
+import partitaOnline.events.GiocatoreLocaleEvent;
+import partitaOnline.events.GiocatoreLocaleEventListener;
+import partitaOnline.events.RichiediPuntata;
 
 
 public class GiocatoreUmano extends Giocatore{

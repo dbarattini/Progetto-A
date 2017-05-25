@@ -7,15 +7,11 @@ import partitaOnline.events.MazzierePerde;
 import partitaOnline.events.FineRound;
 import partitaOnline.events.FineManoAvversario;
 import partitaOnline.events.RisultatoManoParticolare;
-import dominio.eccezioni.DifficoltaBotException;
 import dominio.eccezioni.FichesInizialiException;
-import dominio.eccezioni.NumeroBotException;
 import dominio.elementi_di_gioco.Mazzo;
 import dominio.giocatori.Giocatore;
 import dominio.classi_dati.DifficoltaBot;
 import dominio.classi_dati.Stato;
-import dominio.eccezioni.CanzoneNonTrovataException;
-import dominio.eccezioni.CaricamentoCanzoneException;
 import dominio.eccezioni.FineMazzoException;
 import dominio.eccezioni.MazzierePerdeException;
 import dominio.eccezioni.SballatoException;
@@ -26,7 +22,6 @@ import dominio.gioco.RegoleDiGioco;
 import dominio.gioco.StatoGioco;
 import java.util.ArrayList;
 import java.util.Observable;
-import dominio.musica.AudioPlayer;
 import partitaOnline.events.EstrattoMazziere;
 import partitaOnline.events.GiocatoreLocaleEventListener;
 import partitaOnline.events.MazzoRimescolato;
@@ -35,7 +30,6 @@ import partitaOnline.events.RichiediNome;
 
 public class PartitaOfflineModel extends Observable {
     private RegoleDiGioco regole_di_gioco = new RegoleDiGioco();
-    private AudioPlayer audio = new AudioPlayer();
     private ArrayList<Giocatore> giocatori=new ArrayList<>();
     private GiocatoreUmano giocatore_locale;
     private final Mazzo mazzo = new Mazzo();
@@ -62,16 +56,7 @@ public class PartitaOfflineModel extends Observable {
         this.difficolta_bot = difficolta_bot;
         this.fiches_iniziali = fiches_iniziali;
         
-        try {
-            inizializza_audio();
-            audio.riproduci_in_loop("soundTrack");
-        } catch (CaricamentoCanzoneException ex) {
-            this.setChanged();
-            this.notifyObservers(new Error("Errore: Impossibile caricare la canzone " + ex.getCanzone()));
-        } catch (CanzoneNonTrovataException ex) {
-            this.setChanged();
-            this.notifyObservers(new Error("Errore: " +ex.getCanzone() + " non caricata/o"));
-        }
+        
     }
     
     /**
@@ -115,26 +100,16 @@ public class PartitaOfflineModel extends Observable {
             }
         }
     }
-    
-    private void inizializza_audio() throws CaricamentoCanzoneException{
-        audio.carica("LoungeBeat.wav", "soundTrack");
-    }
+   
     
     public void inizializza_partita(int numero_bot, DifficoltaBot difficolta_bot, int fiches_iniziali){
         try {
             inizzializza_fiches(fiches_iniziali);
-            inizializza_bots(numero_bot, fiches_iniziali, difficolta_bot); 
             inizializza_giocatore(fiches_iniziali);
-        }catch (NumeroBotException ex) {
-            this.setChanged();
-            this.notifyObservers(new Error("Errore: Il numero di bot dev'essere un valore compreso tra 1 ed 11."));
         }catch (FichesInizialiException ex) {
             this.setChanged();
             this.notifyObservers(new Error("Errore: Il numero di fiches iniziali dev'essere maggiore di 0."));
-        }catch (DifficoltaBotException ex) {
-            this.setChanged();
-            this.notifyObservers(new Error("Errore: Le difficolta disponibili sono: Facile, Medio, Difficile."));
-        } 
+        }
     }
 
     private void inizzializza_fiches(int fiches_iniziali) throws FichesInizialiException {
@@ -143,29 +118,7 @@ public class PartitaOfflineModel extends Observable {
         }
     }
     
-    private void inizializza_bots(int numero_bot, int fiches_iniziali, DifficoltaBot difficolta_bot) throws NumeroBotException, DifficoltaBotException{
-        if(numero_bot <= 0 || numero_bot >= 12){
-            throw new NumeroBotException();
-        }
-        for(int i = 0; i < numero_bot; i++){
-            switch(difficolta_bot){
-                case Facile : {
-                    giocatori.add(new BotFacile("bot"+i, fiches_iniziali, mazzo)); //nomi bot: bot0, bot1, ...
-                    break;
-                }
-                case Medio : {
-                    giocatori.add(new BotMedio("bot"+i, fiches_iniziali, mazzo));
-                    break;
-                }
-                case Difficile : {
-                    giocatori.add(new BotDifficile("bot"+i, fiches_iniziali, mazzo));
-                    break;
-                }
-                default: throw new DifficoltaBotException();       
-            }
-        }
-    }
-    
+        
     private void inizializza_giocatore(int fiches_iniziali){
         this.setChanged();
         this.notifyObservers(new RichiediNome());
