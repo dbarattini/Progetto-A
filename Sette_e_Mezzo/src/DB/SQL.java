@@ -68,6 +68,41 @@ public class SQL {
     
   }
     
+    /**
+     *Permette di sapere il numero di fiches e vittorie di un utente
+     * @param user nome utente
+     * @return in posizione 0 il numero di fiches, in posizione 1 il numero di vitorie
+     */
+    public int[] getDati(String user){
+        int dati[]=new int[2];
+        try {
+            Class.forName("org.sqlite.JDBC");
+            c = DriverManager.getConnection("jdbc:sqlite:setteEmezzo.db");
+            c.setAutoCommit(false);   
+            stmt = c.createStatement();
+            ResultSet rs = stmt.executeQuery( "SELECT * FROM PROFILO;" );
+            while ( rs.next() ) {
+                String  username = rs.getString("USERNAME");
+                int fiches  = rs.getInt("FICHES");
+                int vittorie  = rs.getInt("VITTORIE");
+                if(username.equals(user)){
+                    rs.close();
+                    chiudiDatabase();
+                    dati[0]=fiches;
+                    dati[1]=vittorie;
+                    return dati;
+                }
+            }
+            rs.close();
+            chiudiDatabase();
+        } catch ( Exception e ) {
+            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+            chiudiDatabase();
+        }
+        dati[0]=-1;
+        dati[1]=-1;
+        return dati;
+    }
     
     public void setFiches(String user, int fiches)
   {
@@ -163,11 +198,40 @@ public class SQL {
             }
             rs.close();
             chiudiDatabase();
-            } catch ( Exception e ) {
-                  System.err.println( e.getClass().getName() + ": " + e.getMessage() );
-                  chiudiDatabase();
+        } catch ( Exception e ) {
+            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+            chiudiDatabase();
+        }
+        return 0;
+    }
+    
+    /**
+     *Permette di sapere se un nome è già stato inserito nel database
+     * @param user nme utente
+     * @return true se già esite false se non esiste
+     */
+    public boolean esisteNome(String user){
+        try {
+            Class.forName("org.sqlite.JDBC");
+            c = DriverManager.getConnection("jdbc:sqlite:setteEmezzo.db");
+            c.setAutoCommit(false);   
+            stmt = c.createStatement();
+            ResultSet rs = stmt.executeQuery( "SELECT * FROM PROFILO;" );
+            while ( rs.next() ) {
+                String  username = rs.getString("USERNAME");
+                if(username.equals(user)){
+                    rs.close();
+                    chiudiDatabase();
+                    return true;
+                }
             }
-            return 0;
+            rs.close();
+            chiudiDatabase();
+        } catch ( Exception e ) {
+            System.err.println( e.getClass().getName() + ": " + e.getMessage() );
+            chiudiDatabase();
+        }
+        return false;
     }
     
     private void chiudiDatabase() {
