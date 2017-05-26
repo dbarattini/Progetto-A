@@ -238,14 +238,7 @@ public class Giocatore {
         }
     }
     
-    public void addGiocatoreLocaleEventListener(GiocatoreLocaleEventListener l) {
-        this.listeners.add(l);
-    }
 
-    public void removeGiocatoreLocaleEventListener(GiocatoreLocaleEventListener l) {
-        this.listeners.remove(l);
-    }
-    
     /**
      * Prende la carta passata e la usa come carta scoperta.
      * Aggiorna e controlla il valore della mano.
