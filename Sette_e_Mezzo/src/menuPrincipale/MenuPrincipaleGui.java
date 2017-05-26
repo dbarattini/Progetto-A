@@ -16,15 +16,17 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import menuPrePartita.MenuPrePartitaGui;
 
-public class MenuPrincipaleGui extends JFrame{
+public class MenuPrincipaleGui extends JFrame implements ActionListener{
+    MenuPrePartitaGui menu_pre_partita;
     private JButton partita_off, partita_on, regole, opzioni;
     private Sfondo sfondo;
     
     public MenuPrincipaleGui() { 
+        this.menu_pre_partita = new MenuPrePartitaGui();
+        menu_pre_partita.addIndietroActionListener(this);
         inizializza_GUI();       
         setVisible(true);
-    }
-    
+    }  
     
     private void inizializza_GUI() {
         setTitle("Menu");
@@ -90,9 +92,9 @@ public class MenuPrincipaleGui extends JFrame{
     }
     
     private void runOpzione(OpzioniMenu opzione){
-        this.dispose();
+        this.setVisible(false);
         switch(opzione){
-            case GiocaOffline: new MenuPrePartitaGui();
+            case GiocaOffline:  menu_pre_partita.setVisible(true);
                                 break;
             case GiocaOnline : System.out.println("on");
                                 break;
@@ -101,5 +103,11 @@ public class MenuPrincipaleGui extends JFrame{
             case RegoleDiGioco: System.out.println("regole");
                                 break;
         }
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+       menu_pre_partita.setVisible(false);
+       this.setVisible(true);
     }
 }

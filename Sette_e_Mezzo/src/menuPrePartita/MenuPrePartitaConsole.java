@@ -7,6 +7,7 @@ package menuPrePartita;
 
 import dominio.classi_dati.DifficoltaBot;
 import java.util.Scanner;
+import modules.PartitaOfflineConsole;
 
 
 public class MenuPrePartitaConsole{
@@ -29,7 +30,7 @@ public class MenuPrePartitaConsole{
         richiediDifficoltaBot();
         richiediFichesIniziali();
         System.out.println(numero_bot + " " + difficolta_bot + " " + fiches_iniziali);
-//        new PartitaOfflineConsole(numero_bot,difficolta_bot, fiches_iniziali);
+        new PartitaOfflineConsole(numero_bot,difficolta_bot, fiches_iniziali);
     }
 
     private void richiediNumeroBot() {

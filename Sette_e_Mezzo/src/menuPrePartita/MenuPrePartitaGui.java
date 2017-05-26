@@ -19,6 +19,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
+import modules.PartitaOfflineGui;
 
 
 
@@ -26,7 +27,8 @@ public class MenuPrePartitaGui extends JFrame{
     private Sfondo sfondo;
     private JButton bot1, bot2, bot3, bot4;
     private ImageIcon dado1, dado1x, dado2, dado2x, dado3, dado3x, dado4, dado4x;
-    private JButton diffFacile, diffMedia, diffDifficile, indietro, gioca;    
+    private JButton diffFacile, diffMedia, diffDifficile, gioca;    
+    private JButton indietro;
     private ImageIcon facile1, facile2, medio1, medio2, difficile1, difficile2;
     private JTextField fiches;
     private String fiches_iniziali_inserite;
@@ -44,8 +46,6 @@ public class MenuPrePartitaGui extends JFrame{
         getContentPane().setLayout(null);
         
         inizializzaGUI();
-        
-        setVisible(true);
     }
     
     private void inizializzaGUI() {
@@ -222,7 +222,7 @@ public class MenuPrePartitaGui extends JFrame{
                     checkDifficoltaBot();
                     dispose();
                     System.out.println(numero_bot + " " + difficolta_bot + " " + fiches_iniziali);
-//                    new PartitaOfflineGui(model.getNumeroBot(), model.getDifficoltaBot(), model.getFichesIniziali());
+                    new PartitaOfflineGui(numero_bot, difficolta_bot, fiches_iniziali);
                 } catch (FichesInizialiException ex) {
                     JOptionPane.showMessageDialog(null, "Errore: Il numero di fiches iniziali dev'essere un numero compreso tra 1 e 100000000.", "Errore", JOptionPane.ERROR_MESSAGE);
                 } catch (NumeroBotException ex) {
@@ -275,7 +275,7 @@ public class MenuPrePartitaGui extends JFrame{
         }
     }
     
-    private void chiudi() {
-        dispose();
+    public void addIndietroActionListener(ActionListener l){
+        indietro.addActionListener(l);
     }
 }
