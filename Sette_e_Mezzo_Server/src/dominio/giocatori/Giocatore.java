@@ -26,8 +26,6 @@ import java.util.ArrayList;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import partitaOnline.events.GiocatoreLocaleEvent;
-import partitaOnline.events.GiocatoreLocaleEventListener;
 import partitaOnline.events.RichiediGiocata;
 import partitaOnline.events.RichiediPuntata;
 
@@ -405,10 +403,7 @@ public class Giocatore {
         return mazziere;
     }
     
-    public String getUsername(){
-        return nome;
-    }
-    
+  
 
     public void setUsername(String username) {
         this.nome = username;
