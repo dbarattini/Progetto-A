@@ -19,8 +19,11 @@ import dominio.eccezioni.SetteeMezzoRealeException;
 import dominio.elementi_di_gioco.Carta;
 import dominio.gioco.RegoleDiGioco;
 import dominio.gioco.StatoGioco;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Observable;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import partitaOnline.events.EstrattoMazziere;
 import partitaOnline.events.GiocatoreLocaleEventListener;
 import partitaOnline.events.MazzoRimescolato;
@@ -342,6 +345,16 @@ public class PartitaOfflineModel extends Observable {
         mazziere.setMazziere(false);
         next_mazziere.setMazziere(true);
         mazziere = next_mazziere;
+    }
+    
+    private void eventoPerTutti(Object evento){
+        for(Giocatore giocatore: giocatori){
+            try {
+                giocatore.scriviOggetto(evento);
+            } catch (IOException ex) {
+                Logger.getLogger(PartitaOfflineModel.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }
 
     private void game_over(){
