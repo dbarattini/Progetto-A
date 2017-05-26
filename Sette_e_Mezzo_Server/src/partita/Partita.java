@@ -52,8 +52,10 @@ public class Partita implements Runnable {
             if(iniziata){
                 giocaTurno();
             }
-            else
-                iniziaPartita();            
+            else{
+                iniziaPartita();
+                iniziata=true;
+            }
         }
     }
     
@@ -112,7 +114,7 @@ public class Partita implements Runnable {
                 try {
                     msg = giocatore.leggi();
                 } catch (GiocatoreDisconnessoException ex) {
-                    System.out.println(giocatore.getUsername() + " disconnesso");
+                    System.out.println(giocatore.getNome() + " disconnesso");
                     this.giocatori_disconnessi.add(giocatore);
                 }        
             }
@@ -122,7 +124,7 @@ public class Partita implements Runnable {
             giocatori.removeAll(giocatori_disconnessi);
             for(Giocatore giocatore_disconnesso : giocatori_disconnessi){
                 for(Giocatore giocatore : giocatori){
-                    giocatore.scrivi(giocatore_disconnesso.getUsername() + " diconnesso");
+                    giocatore.scrivi(giocatore_disconnesso.getNome() + " diconnesso");
                 }
             }
         }
