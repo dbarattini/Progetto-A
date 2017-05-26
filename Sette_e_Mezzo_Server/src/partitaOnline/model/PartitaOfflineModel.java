@@ -96,6 +96,14 @@ public class PartitaOfflineModel extends Observable {
         this.eventoPerTutti(new MazzoRimescolato());
         
     }
+    
+    public void aggiungiGiocatori(ArrayList giocatori){
+        this.giocatori.addAll(giocatori);
+    }
+    
+    public void rimuoviGiocatori(ArrayList giocatori){
+        this.giocatori.removeAll(giocatori);
+    }
 
     private void inizzializza_fiches() throws FichesInizialiException {
         for(Giocatore giocatore: giocatori){
