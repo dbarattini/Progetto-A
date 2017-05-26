@@ -313,8 +313,7 @@ public class PartitaOfflineModel extends Observable {
         boolean game_over = false;
         for(Giocatore giocatore : giocatori){
             
-            this.setChanged();
-            this.notifyObservers(new FineRound(giocatore));
+            this.eventoPerTutti(new FineRound(giocatore));
             
             Thread.sleep(pausa_breve);
             if(giocatore.getFiches() == 0 && ! giocatore.haPerso()){
@@ -324,8 +323,7 @@ public class PartitaOfflineModel extends Observable {
                 } else {
                     giocatore.perde();
                     if(giocatore.isMazziere()){
-                        this.setChanged();
-                        this.notifyObservers(new MazzierePerde());
+                        this.eventoPerTutti(new MazzierePerde());
                         
                         mazziere_successivo();
                     }
@@ -339,8 +337,7 @@ public class PartitaOfflineModel extends Observable {
         }
         if(next_mazziere != null){
             aggiorna_mazziere();
-            this.setChanged();
-            this.notifyObservers(new AggiornamentoMazziere());
+            this.eventoPerTutti(new AggiornamentoMazziere());
         }
         Thread.sleep(pausa_lunga);
     }
