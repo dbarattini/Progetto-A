@@ -119,8 +119,12 @@ public class Giocatore {
         return client.leggiOggetto();
     }
     
-    public void scriviOggetto(Object pacco) throws IOException{
-        client.scriviOggetto(pacco);
+    public void scriviOggetto(Object pacco) {
+        try {
+            client.scriviOggetto(pacco);
+        } catch (IOException ex) {
+            Logger.getLogger(Giocatore.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -139,7 +143,7 @@ public class Giocatore {
      */
     public int decidi_puntata() {
         while(true){
-                fireGiocatoreLocaleEvent(new RichiediPuntata(this.carta_coperta, this.valore_mano, this.getFiches()));
+                this.scriviOggetto(new RichiediPuntata(this.carta_coperta, this.valore_mano, this.getFiches()));
                 if(puntata_effettuata != 0){
                     return puntata_effettuata;
                 }
@@ -199,13 +203,13 @@ public class Giocatore {
      * 
      * @return la giocata scelta
      */
-    protected Giocata decidi_giocata() {
+    protected Giocata decidi_giocata(){
         while(true){
             try {
-                this.fireGiocatoreLocaleEvent(new RichiediGiocata(this.getCartaCoperta(), this.getCarteScoperte(), this.getValoreMano()));
+                this.scriviOggetto(new RichiediGiocata(this.getCartaCoperta(), this.getCarteScoperte(), this.getValoreMano()));
                 return seleziona_giocata(giocata_effettuata);
             } catch (GiocataNonValidaException ex) {
-                this.fireGiocatoreLocaleEvent(new Error("Errore: La giocata non é stata riconosciuta.I valori possibili sono: carta o sto."));
+                this.scriviOggetto(new Error("Errore: La giocata non é stata riconosciuta.I valori possibili sono: carta o sto."));
             }
         }
     }
