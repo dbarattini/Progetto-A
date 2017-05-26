@@ -161,15 +161,13 @@ public class PartitaOfflineModel extends Observable {
                 esegui_mano(giocatore);
                 if(giocatore instanceof Giocatore && giocatore.getStato() != Stato.OK){
                     
-                    this.setChanged();
-                    this.notifyObservers(new RisultatoManoParticolare());
+                    this.eventoPerTutti(new RisultatoManoParticolare());
                     
                     Thread.sleep(pausa_lunga);
                 }
             }
             if(! (giocatore instanceof Giocatore)){
-                this.setChanged();
-                this.notifyObservers(new FineManoAvversario(giocatore.getNome(), giocatore.getCarteScoperte(),giocatore.getStato(), giocatore.getPuntata()));
+                this.eventoPerTutti(new FineManoAvversario(giocatore.getNome(), giocatore.getCarteScoperte(),giocatore.getStato(), giocatore.getPuntata()));
                 Thread.sleep(pausa_breve);
             }
             pos_next_giocatore += 1;
