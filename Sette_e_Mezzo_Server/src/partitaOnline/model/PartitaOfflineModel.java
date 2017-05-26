@@ -59,20 +59,6 @@ public class PartitaOfflineModel extends Observable {
      * @throws InterruptedException
      */
     public void gioca() throws InterruptedException{
-        Thread.sleep(pausa_breve);
-        
-        Thread.sleep(pausa_breve);
-        
-        estrai_mazziere();
-        
-        this.setChanged();
-        this.notifyObservers(new EstrattoMazziere());
-        
-        mazzo.aggiorna_fine_round();
-        mazzo.rimescola();
-        
-        this.setChanged();
-        this.notifyObservers(new MazzoRimescolato());
         
         while(true){
             try {
@@ -97,7 +83,7 @@ public class PartitaOfflineModel extends Observable {
     }
    
     
-    public void inizializza_partita(ArrayList giocatori){
+    public void inizializza_partita(ArrayList giocatori) throws InterruptedException{
         this.giocatori=giocatori;
         try {
             inizzializza_fiches();
@@ -105,6 +91,19 @@ public class PartitaOfflineModel extends Observable {
             this.setChanged();
             this.notifyObservers(new Error("Errore: Il numero di fiches iniziali dev'essere maggiore di 0."));
         }
+        Thread.sleep(pausa_breve);
+        
+        Thread.sleep(pausa_breve);
+        
+        estrai_mazziere();
+        
+        this.eventoPerTutti(new EstrattoMazziere());
+        
+        mazzo.aggiorna_fine_round();
+        mazzo.rimescola();
+        
+        this.eventoPerTutti(new MazzoRimescolato());
+        
     }
 
     private void inizzializza_fiches() throws FichesInizialiException {
