@@ -78,10 +78,11 @@ public class Giocatore {
     /**
      *Prende le fiches dal databse e le carica nel giocatore
      */
-    public void inizializzaFiches(){
+    public int inizializzaFiches(){
         SQL sql= new SQL();
         try {
             this.fiches=sql.getFiches(nome);
+            return fiches;
         } catch (SqlOccupato ex) {
             try {
                 sleep(20);
@@ -90,6 +91,7 @@ public class Giocatore {
             }
             inizializzaFiches();
         }
+        return 0;
     }
     
     /**
