@@ -101,7 +101,19 @@ public class PartitaOfflineModel extends Observable {
         this.giocatori.addAll(giocatori);
     }
     
-    public void rimuoviGiocatori(ArrayList giocatori){
+    public void rimuoviGiocatori(ArrayList giocatori) throws InterruptedException {
+        for (Object giocatore : giocatori) {
+            if (((Giocatore) giocatore).isMazziere()) {
+                estrai_mazziere();
+
+                this.eventoPerTutti(new EstrattoMazziere());
+
+                mazzo.aggiorna_fine_round();
+                mazzo.rimescola();
+
+                this.eventoPerTutti(new MazzoRimescolato());
+            }
+        }
         this.giocatori.removeAll(giocatori);
     }
 
