@@ -5,8 +5,8 @@
  */
 package DB;
 
-import eccezioni.SqlOccupato;
-import eccezioni.GiocatoreNonTrovato;
+import dominio.eccezioni.SqlOccupato;
+import dominio.eccezioni.GiocatoreNonTrovato;
 import java.sql.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -51,7 +51,7 @@ public class SQL {
      * @param password password del giocatore
      * @param username usernsme che userà il giocatore
      * @param fiches fiches iniziali
-     * @throws eccezioni.SqlOccupato
+     * @throws dominio.eccezioni.SqlOccupato
      */
     public void aggiungiGiocatore(String email, String password, String username, int fiches) throws SqlOccupato {
         try {
@@ -270,7 +270,7 @@ public class SQL {
      *
      * @param email email del giocatore
      * @return username nel giocatore
-     * @throws eccezioni.GiocatoreNonTrovato se la mail non è nel database
+     * @throws dominio.eccezioni.GiocatoreNonTrovato se la mail non è nel database
      */
     public String getUser(String email) throws GiocatoreNonTrovato, SqlOccupato {
         try {

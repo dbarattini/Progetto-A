@@ -1,6 +1,6 @@
 package comunicazione;
 
-import eccezioni.GiocatoreDisconnessoException;
+import dominio.eccezioni.GiocatoreDisconnessoException;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;

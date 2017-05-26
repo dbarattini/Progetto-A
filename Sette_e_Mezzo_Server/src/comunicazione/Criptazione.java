@@ -5,7 +5,7 @@
  */
 package comunicazione;
 
-import eccezioni.ChiaveNonValida;
+import dominio.eccezioni.ChiaveNonValida;
 import java.util.logging.Logger;
 
 import javax.crypto.Cipher;
@@ -139,7 +139,7 @@ public class Criptazione {
     /**
      *Cambia la chiave di cifratura dei messaggi, deve essere composta da 8 caratteri
      * @param key nuova chiave
-     * @throws eccezioni.ChiaveNonValida
+     * @throws dominio.eccezioni.ChiaveNonValida
      */
     public void setKey(String key) throws ChiaveNonValida {
         if(key.length()==8)

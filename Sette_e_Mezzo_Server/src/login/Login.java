@@ -14,9 +14,9 @@ import java.util.logging.Logger;
 import DB.SQL;
 import partita.Partita;
 import dominio.giocatori.Giocatore;
-import eccezioni.GiocatoreDisconnessoException;
-import eccezioni.GiocatoreNonTrovato;
-import eccezioni.SqlOccupato;
+import dominio.eccezioni.GiocatoreDisconnessoException;
+import dominio.eccezioni.GiocatoreNonTrovato;
+import dominio.eccezioni.SqlOccupato;
 
 
 

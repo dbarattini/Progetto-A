@@ -5,7 +5,7 @@
  */
 package comunicazione;
 
-import eccezioni.ChiaveNonValida;
+import dominio.eccezioni.ChiaveNonValida;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.junit.Before;

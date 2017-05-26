@@ -3,15 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package eccezioni;
+package dominio.eccezioni;
 
 /**
  *
  * @author marco
  */
-public class ChiaveNonValida extends Exception {
+public class GiocatoreNonTrovato extends Exception {
 
-    public ChiaveNonValida() {
+    public GiocatoreNonTrovato() {
     }
     
 }

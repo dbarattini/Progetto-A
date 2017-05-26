@@ -1,6 +1,6 @@
 package partita;
 
-import eccezioni.GiocatoreDisconnessoException;
+import dominio.eccezioni.GiocatoreDisconnessoException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.logging.Level;

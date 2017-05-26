@@ -5,8 +5,8 @@
  */
 package DB;
 
-import eccezioni.GiocatoreNonTrovato;
-import eccezioni.SqlOccupato;
+import dominio.eccezioni.GiocatoreNonTrovato;
+import dominio.eccezioni.SqlOccupato;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.junit.Before;
