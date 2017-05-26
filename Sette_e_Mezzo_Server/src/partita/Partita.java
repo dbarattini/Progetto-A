@@ -21,6 +21,7 @@ public class Partita implements Runnable {
         this.giocatori = new ArrayList<>(); 
         this.giocatori_in_attesa = new ArrayList<>();
         this.giocatori_disconnessi = new ArrayList<>();
+        this.model= new PartitaOfflineModel();
     }
      
     public void aggiungiGiocatore(Giocatore giocatore){
