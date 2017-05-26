@@ -1,6 +1,5 @@
 package dominio.gui;
 
-import menuPrincipale.view.MenuPrincipaleGuiView;
 
 public class ProvaGUI {
     
