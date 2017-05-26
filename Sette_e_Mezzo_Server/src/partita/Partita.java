@@ -36,13 +36,23 @@ public class Partita implements Runnable {
     public void run() {
         try {
             setGiocatori();
-            controllaNumeroGiocatore();
+            giocaPartita();
             sleep(20);
             run();
         } catch (IOException ex) {
             Logger.getLogger(Partita.class.getName()).log(Level.SEVERE, null, ex);
         } catch (InterruptedException ex) {
             Logger.getLogger(Partita.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+      
+    private void giocaPartita(){
+        if(giocatori.size()>1){
+            if(iniziata){
+                giocaTurno();
+            }
+            else
+                iniziaPartita();            
         }
     }
     
@@ -61,18 +71,9 @@ public class Partita implements Runnable {
             Logger.getLogger(Partita.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+  
     
-    private void controllaNumeroGiocatore(){
-        if(giocatori.size()>1){
-            if(iniziata){
-                giocaTurno();
-            }
-            else
-                iniziaPartita();            
-        }
-    }
-    
-    private void setGiocatori() throws IOException{
+    private void setGiocatori() throws IOException, InterruptedException{
         if(iniziata){
             aggiungiGiocatori();
             rimuoviGiocatori();
@@ -87,7 +88,7 @@ public class Partita implements Runnable {
         }
     }
 
-    private void rimuoviGiocatori() throws IOException {
+    private void rimuoviGiocatori() throws IOException, InterruptedException {
         controllaConnessione();
         if(!giocatori_disconnessi.isEmpty()){
             this.model.rimuoviGiocatori(giocatori_disconnessi);
