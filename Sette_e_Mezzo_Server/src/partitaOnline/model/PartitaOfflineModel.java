@@ -308,7 +308,6 @@ public class PartitaOfflineModel extends Observable {
                     game_over = true;
                 } else {
                     giocatore.perde();
-                    n_bot_sconfitti += 1;
                     if(giocatore.isMazziere()){
                         this.setChanged();
                         this.notifyObservers(new MazzierePerde());
