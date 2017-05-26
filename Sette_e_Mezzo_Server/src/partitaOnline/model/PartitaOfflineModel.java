@@ -79,8 +79,7 @@ public class PartitaOfflineModel extends Observable {
         try {
             inizzializza_fiches();
         }catch (FichesInizialiException ex) {
-            this.setChanged();
-            this.notifyObservers(new Error("Errore: Il numero di fiches iniziali dev'essere maggiore di 0."));
+            this.eventoPerTutti(new Error("Errore: Il numero di fiches iniziali dev'essere maggiore di 0."));
         }
         Thread.sleep(pausa_breve);
         
@@ -198,8 +197,7 @@ public class PartitaOfflineModel extends Observable {
                 } catch (FineMazzoException ex) {
                     mazzo.rimescola();
                     
-                    this.setChanged();
-                    this.notifyObservers(new MazzoRimescolato());
+                    this.eventoPerTutti(new MazzoRimescolato());
                     
                     this.mazziere_successivo();
                 }
@@ -358,11 +356,7 @@ public class PartitaOfflineModel extends Observable {
     
     private void eventoPerTutti(Object evento){
         for(Giocatore giocatore: giocatori){
-            try {
-                giocatore.scriviOggetto(evento);
-            } catch (IOException ex) {
-                Logger.getLogger(PartitaOfflineModel.class.getName()).log(Level.SEVERE, null, ex);
-            }
+            giocatore.scriviOggetto(evento);
         }
     }
 
