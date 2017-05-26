@@ -25,7 +25,6 @@ import java.util.Observable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import partitaOnline.events.EstrattoMazziere;
-import partitaOnline.events.GiocatoreLocaleEventListener;
 import partitaOnline.events.MazzoRimescolato;
 import partitaOnline.events.RichiediNome;
 

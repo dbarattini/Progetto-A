@@ -8,14 +8,14 @@ import java.io.Serializable;
  * @author xXEgoOneXx
  */
 public class FineRound implements Serializable{
-    private Giocatore giocatore;
+    private String username;
 
     public FineRound(Giocatore giocatore) {
-        this.giocatore = giocatore;
+        this.username= giocatore.getNome();
     }
 
-    public Giocatore getGiocatore() {
-        return giocatore;
+    public String getGiocatore() {
+        return username;
     }
     
 }

@@ -57,7 +57,7 @@ public class Login extends Thread{
             giocatore.scrivi("login non effetuato");
             run();
         } catch (GiocatoreDisconnessoException ex) {
-            System.out.println("Giocatore "+giocatore.getUsername()+" disconnesso");
+            System.out.println("Giocatore "+giocatore.getNome()+" disconnesso");
            
         } 
     }

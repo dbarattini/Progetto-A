@@ -2,9 +2,10 @@ package dominio.elementi_di_gioco;
 
 
 import dominio.eccezioni.MattaException;
+import java.io.Serializable;
 
 
-public class Carta {
+public class Carta implements Serializable{
     private final String valore;
     private final String seme;
     
