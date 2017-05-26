@@ -1,6 +1,8 @@
 package dominio.giocatori;
 
 
+import DB.SQL;
+import comunicazione.Client;
 import dominio.eccezioni.MazzierePerdeException;
 import dominio.eccezioni.SetteeMezzoException;
 import dominio.eccezioni.SetteeMezzoRealeException;
@@ -15,10 +17,14 @@ import dominio.eccezioni.PuntataNullaException;
 import dominio.eccezioni.PuntataTroppoAltaException;
 import dominio.elementi_di_gioco.Carta;
 import eccezioni.GiocatoreDisconnessoException;
+import eccezioni.SqlOccupato;
 import java.io.IOException;
+import static java.lang.Thread.sleep;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import partitaOnline.events.GiocatoreLocaleEvent;
 import partitaOnline.events.GiocatoreLocaleEventListener;
 import partitaOnline.events.RichiediGiocata;
@@ -39,7 +45,7 @@ public class Giocatore {
     private int puntata_effettuata;
     private String giocata_effettuata;
     private final Socket socket;
-    private Giocatore client;
+    private Client client;
     
     /**
      *
@@ -48,7 +54,7 @@ public class Giocatore {
      */
     public Giocatore(Socket socket) throws IOException{
         this.socket = socket;
-        client=new Giocatore(socket);
+        client=new Client(socket);
         listeners = new CopyOnWriteArrayList<>();
     }
     
@@ -67,6 +73,23 @@ public class Giocatore {
         carte_scoperte.clear();
         valore_mano = 0;
         stato = Stato.OK;
+    }
+    
+    /**
+     *Prende le fiches dal databse e le carica nel giocatore
+     */
+    public void inizializzaFiches(){
+        SQL sql= new SQL();
+        try {
+            this.fiches=sql.getFiches(nome);
+        } catch (SqlOccupato ex) {
+            try {
+                sleep(20);
+            } catch (InterruptedException ex1) {
+                Logger.getLogger(Giocatore.class.getName()).log(Level.SEVERE, null, ex1);
+            }
+            inizializzaFiches();
+        }
     }
     
     /**
