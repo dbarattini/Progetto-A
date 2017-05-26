@@ -42,7 +42,6 @@ public class Giocatore {
     protected double valore_mano = 0;
     private Stato stato;
     private boolean perso = false;
-    private final CopyOnWriteArrayList<GiocatoreLocaleEventListener> listeners;
     private int puntata_effettuata;
     private String giocata_effettuata;
     private final Socket socket;
@@ -56,7 +55,6 @@ public class Giocatore {
     public Giocatore(Socket socket) throws IOException{
         this.socket = socket;
         client=new Client(socket);
-        listeners = new CopyOnWriteArrayList<>();
     }
     
     /**
@@ -159,17 +157,17 @@ public class Giocatore {
                 this.puntata_effettuata= this.getFiches();
             } else{
                 this.puntata_effettuata = 0;
-                this.fireGiocatoreLocaleEvent(new Error("Puntata non valida."));
+                this.scriviOggetto(new Error("Puntata non valida."));
             }
         } catch (PuntataTroppoAltaException ex) {
             this.puntata_effettuata = 0;
-            this.fireGiocatoreLocaleEvent(new Error("Errore: il valore inserito é troppo alto. Il massimo valore che puoi puntare é: " + this.getFiches() +"."));
+            this.scriviOggetto(new Error("Errore: il valore inserito é troppo alto. Il massimo valore che puoi puntare é: " + this.getFiches() +"."));
         } catch (PuntataNegativaException ex) {
             this.puntata_effettuata = 0;
-            this.fireGiocatoreLocaleEvent(new Error("Errore: il valore inserito non puó essere negativo."));
+            this.scriviOggetto(new Error("Errore: il valore inserito non puó essere negativo."));
         } catch (PuntataNullaException ex) {
             this.puntata_effettuata = 0;
-            this.fireGiocatoreLocaleEvent(new Error("Errore: il valore inserito non puó essere nullo."));
+            this.scriviOggetto(new Error("Errore: il valore inserito non puó essere nullo."));
         }
     }
     
@@ -387,15 +385,7 @@ public class Giocatore {
         fiches = fiches + puntata + vincita;
     }
     
-        
-    protected void fireGiocatoreLocaleEvent(Object arg) {
-        GiocatoreLocaleEvent evt = new GiocatoreLocaleEvent(this, arg);
 
-        for (GiocatoreLocaleEventListener l : listeners) {
-            l.GiocatoreLocaleEventReceived(evt);
-        }
-    }
-    
     public void azzera_fiches(){
         fiches = 0;
     }
