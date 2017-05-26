@@ -233,8 +233,7 @@ public class PartitaOfflineModel extends Observable {
                 } catch (FineMazzoException ex) {
                     mazzo.rimescola();
                     
-                    this.setChanged();
-                    this.notifyObservers(new MazzoRimescolato());
+                    this.eventoPerTutti(new MazzoRimescolato());
                     
                     mazziere_successivo();
                     try {
