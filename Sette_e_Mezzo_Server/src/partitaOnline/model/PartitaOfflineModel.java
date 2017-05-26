@@ -30,7 +30,6 @@ import partitaOnline.events.RichiediNome;
 public class PartitaOfflineModel extends Observable {
     private RegoleDiGioco regole_di_gioco = new RegoleDiGioco();
     private ArrayList<Giocatore> giocatori=new ArrayList<>();
-    private Giocatore giocatore_locale;
     private final Mazzo mazzo = new Mazzo();
     private Giocatore mazziere = null;
     private Giocatore next_mazziere = null;
@@ -39,7 +38,6 @@ public class PartitaOfflineModel extends Observable {
     private int pausa_breve = 1000; //ms
     private int pausa_lunga = 2000; //ms
     private int n_bot_sconfitti = 0, n_giocatori;
-    private int fiches_iniziali;
     private String nome_giocatore;
 
     
@@ -47,8 +45,8 @@ public class PartitaOfflineModel extends Observable {
      *
      * @param fiches_iniziali da cambiare
      */
-    public PartitaOfflineModel( int fiches_iniziali){
-        this.fiches_iniziali = fiches_iniziali;
+    public PartitaOfflineModel( ){
+
         
         
     }
@@ -100,7 +98,6 @@ public class PartitaOfflineModel extends Observable {
         this.giocatori=giocatori;
         try {
             inizzializza_fiches();
-            inizializza_giocatore(fiches_iniziali);
         }catch (FichesInizialiException ex) {
             this.setChanged();
             this.notifyObservers(new Error("Errore: Il numero di fiches iniziali dev'essere maggiore di 0."));
@@ -109,21 +106,11 @@ public class PartitaOfflineModel extends Observable {
 
     private void inizzializza_fiches() throws FichesInizialiException {
         for(Giocatore giocatore: giocatori){
-            
+            giocatore.inizializzaFiches();
         }
     }
     
-        
-    private void inizializza_giocatore(int fiches_iniziali){
-        this.setChanged();
-        this.notifyObservers(new RichiediNome());
-        giocatore_locale = new Giocatore(nome_giocatore,fiches_iniziali);
-        giocatori.add(giocatore_locale);
-    }
-    
-    public void setNomeGiocatore(String nome_giocatore){
-        this.nome_giocatore = nome_giocatore;
-    }
+  
 
     private void estrai_mazziere() throws InterruptedException {
         Carta carta_estratta;
@@ -369,19 +356,6 @@ public class PartitaOfflineModel extends Observable {
         return n_giocatori;
     }
 
-    
-
-    public int getFiches_iniziali() {
-        return fiches_iniziali;
-    }
-    
-    public void addGiocatoreLocaleEventListener(GiocatoreLocaleEventListener l){
-        giocatore_locale.addGiocatoreLocaleEventListener(l);
-    }
-    
-    public void removeGiocatoreLocaleEventListener(GiocatoreLocaleEventListener l){
-        giocatore_locale.removeGiocatoreLocaleEventListener(l);
-    }
 
     public ArrayList<Giocatore> getGiocatori() {
         return giocatori;
@@ -391,7 +365,5 @@ public class PartitaOfflineModel extends Observable {
         return mazziere;
     }
 
-    public Giocatore getGiocatoreLocale() {
-        return giocatore_locale;
-    }
+
 }
