@@ -40,8 +40,7 @@ public class PartitaOfflineModel extends Observable {
     public static int LARGHEZZA = 1280, ALTEZZA = 720;
     private int pausa_breve = 1000; //ms
     private int pausa_lunga = 2000; //ms
-    private int n_bot_sconfitti = 0, n_giocatori;
-    private String nome_giocatore;
+    private int n_giocatori;
 
     
     /**
@@ -59,27 +58,19 @@ public class PartitaOfflineModel extends Observable {
      * @throws InterruptedException
      */
     public void gioca() throws InterruptedException{
-        
-        while(true){
-            try {
-                gioca_round();
-                calcola_risultato();
-            } catch (MazzierePerdeException ex) {
-                this.setChanged();
-                this.notifyObservers(new MazzierePerde());
-                mazziere.azzera_fiches();
-                mazziere.perde();
-                mazziere_successivo();
-                
-            }
-            fine_round();
-            mazzo.aggiorna_fine_round();
-            if(n_bot_sconfitti == n_giocatori){
-                this.setChanged();
-                this.notifyObservers(new Vittoria());
-                vittoria();
-            }
+        try {
+            gioca_round();
+            calcola_risultato();
+        } catch (MazzierePerdeException ex) {
+            this.eventoPerTutti(new MazzierePerde());
+            mazziere.azzera_fiches();
+            mazziere.perde();
+            mazziere_successivo();
+
         }
+        fine_round();
+        mazzo.aggiorna_fine_round();
+
     }
    
     
