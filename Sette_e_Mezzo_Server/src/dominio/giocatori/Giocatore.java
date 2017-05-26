@@ -9,6 +9,7 @@ import dominio.eccezioni.SetteeMezzoRealeException;
 import dominio.eccezioni.SballatoException;
 import dominio.classi_dati.Giocata;
 import dominio.classi_dati.Stato;
+import dominio.eccezioni.FichesInizialiException;
 import dominio.eccezioni.FineMazzoException;
 import dominio.eccezioni.GiocataNonValidaException;
 import dominio.eccezioni.MattaException;
@@ -78,11 +79,12 @@ public class Giocatore {
     /**
      *Prende le fiches dal databse e le carica nel giocatore
      */
-    public int inizializzaFiches(){
+    public void inizializzaFiches()throws FichesInizialiException{
         SQL sql= new SQL();
         try {
             this.fiches=sql.getFiches(nome);
-            return fiches;
+            if(fiches<=0)
+                throw new FichesInizialiException(this);
         } catch (SqlOccupato ex) {
             try {
                 sleep(20);
@@ -91,7 +93,7 @@ public class Giocatore {
             }
             inizializzaFiches();
         }
-        return 0;
+
     }
     
     /**
