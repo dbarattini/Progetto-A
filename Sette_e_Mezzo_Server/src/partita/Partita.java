@@ -35,7 +35,7 @@ public class Partita implements Runnable {
     @Override
     public void run() {
         try {
-            controllaConnessione();
+            setGiocatori();
             controllaNumeroGiocatore();
             sleep(20);
             run();
@@ -47,27 +47,63 @@ public class Partita implements Runnable {
     }
     
     private void giocaTurno(){
-        
+        try {
+            this.model.gioca();
+        } catch (InterruptedException ex) {
+            Logger.getLogger(Partita.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     private void iniziaPartita(){
-        this.model.inizializza_partita(giocatori);
+        try {
+            this.model.inizializza_partita(giocatori);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(Partita.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     private void controllaNumeroGiocatore(){
         if(giocatori.size()>1){
-            if(iniziata)
+            if(iniziata){
                 giocaTurno();
+            }
             else
                 iniziaPartita();            
         }
     }
     
-    private void controllaConnessione() throws IOException{
+    private void setGiocatori() throws IOException{
+        if(iniziata){
+            aggiungiGiocatori();
+            rimuoviGiocatori();
+        }
+        else{
+            if(! giocatori_in_attesa.isEmpty()){
+                giocatori.addAll(giocatori_in_attesa);
+                giocatori_in_attesa.clear();
+            }
+            controllaConnessione();
+            giocatori_disconnessi.clear();       
+        }
+    }
+
+    private void rimuoviGiocatori() throws IOException {
+        controllaConnessione();
+        if(!giocatori_disconnessi.isEmpty()){
+            this.model.rimuoviGiocatori(giocatori_disconnessi);
+            giocatori_disconnessi.clear();
+        }
+    }
+
+    private void aggiungiGiocatori() {
         if(! giocatori_in_attesa.isEmpty()){
             giocatori.addAll(giocatori_in_attesa);
+            this.model.aggiungiGiocatori(giocatori_in_attesa);
             giocatori_in_attesa.clear();
         }
+    }
+    
+    private void controllaConnessione() throws IOException{
         String msg = null;
         if(!giocatori.isEmpty()){
             for(Giocatore giocatore : giocatori){
@@ -87,7 +123,6 @@ public class Partita implements Runnable {
                     giocatore.scrivi(giocatore_disconnesso.getUsername() + " diconnesso");
                 }
             }
-            giocatori_disconnessi.clear();
         }
     }
     
