@@ -48,18 +48,18 @@ public class Client extends Observable implements Observer {
     
     
     
-//    public String leggi() throws IOException, GiocatoreDisconnessoException{
-//        String letto;        
-//        try{
-//            letto = daGiocatore.readLine();
-//            if(letto == null){
-//                throw new GiocatoreDisconnessoException();
-//            }
-//        } catch (SocketTimeoutException e){
-//            return null;
-//        }
-//        return letto;
-//    }
+    public String leggi() throws IOException, GiocatoreDisconnessoException{
+        String letto;        
+        try{
+            letto = daGiocatore.readLine();
+            if(letto == null){
+                throw new GiocatoreDisconnessoException();
+            }
+        } catch (SocketTimeoutException e){
+            return null;
+        }
+        return letto;
+    }
 //    
 //    public Object leggiOggetto() throws IOException{
 //        Object letto=null;        
@@ -71,7 +71,7 @@ public class Client extends Observable implements Observer {
 //        }
 //        return letto;
 //    }
-//    
+    
     public void scriviOggetto(Object pacco) throws IOException{
         paccoPerGiocatore.writeObject(pacco);        
     }
