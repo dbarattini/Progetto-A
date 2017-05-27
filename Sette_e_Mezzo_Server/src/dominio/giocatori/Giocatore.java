@@ -23,6 +23,8 @@ import java.io.IOException;
 import static java.lang.Thread.sleep;
 import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Observable;
+import java.util.Observer;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -30,7 +32,7 @@ import partitaOnline.events.RichiediGiocata;
 import partitaOnline.events.RichiediPuntata;
 
 
-public class Giocatore {
+public class Giocatore implements Observer{
     private String nome;    
     private int fiches;
     private boolean mazziere;
@@ -53,6 +55,12 @@ public class Giocatore {
     public Giocatore(Socket socket) throws IOException{
         this.socket = socket;
         client=new Client(socket);
+        client.addObserver(this);
+    }
+    
+    @Override
+    public void update(Observable o, Object arg) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
     /**
@@ -470,6 +478,8 @@ public class Giocatore {
     public ArrayList<Carta> getCarteScoperte() {
         return carte_scoperte;
     }
+
+    
 
     
 }
