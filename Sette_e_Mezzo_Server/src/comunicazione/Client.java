@@ -11,8 +11,7 @@ import java.net.Socket;
 import java.net.SocketTimeoutException;
 import java.util.Observable;
 import java.util.Observer;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
 
 public class Client extends Observable implements Observer {
 

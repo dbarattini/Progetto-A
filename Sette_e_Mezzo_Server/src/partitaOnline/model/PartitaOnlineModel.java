@@ -1,6 +1,5 @@
 package partitaOnline.model;
 
-import partitaOnline.events.Vittoria;
 import partitaOnline.events.AggiornamentoMazziere;
 import partitaOnline.events.GameOver;
 import partitaOnline.events.MazzierePerde;
@@ -19,14 +18,11 @@ import dominio.eccezioni.SetteeMezzoRealeException;
 import dominio.elementi_di_gioco.Carta;
 import dominio.gioco.RegoleDiGioco;
 import dominio.gioco.StatoGioco;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Observable;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import partitaOnline.events.EstrattoMazziere;
 import partitaOnline.events.MazzoRimescolato;
-import partitaOnline.events.RichiediNome;
+
 
 public class PartitaOnlineModel extends Observable {
 

@@ -7,7 +7,6 @@ package comunicazione;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.io.PrintStream;
 import java.io.StreamCorruptedException;
 import java.net.SocketTimeoutException;
 import java.util.Observable;
