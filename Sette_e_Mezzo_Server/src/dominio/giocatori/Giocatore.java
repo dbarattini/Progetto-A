@@ -34,7 +34,7 @@ import partitaOnline.events.SetGiocata;
 import partitaOnline.events.SetPuntata;
 
 
-public class Giocatore extends Observable implements Observer{
+public class Giocatore implements Observer{
     private String nome;    
     private int fiches;
     private boolean mazziere;
@@ -61,9 +61,12 @@ public class Giocatore extends Observable implements Observer{
     }
     
     @Override
-    public void update(Observable o, Object arg) {
-        this.setChanged();
-        this.notifyObservers(arg);
+    public void update(Observable o, Object evt) {
+        if(evt instanceof SetPuntata){
+            PuntataInserita(((SetPuntata)evt).getPuntata());
+        } else if(evt instanceof SetGiocata){
+            GiocataInserita(((SetGiocata)evt).getGiocata());
+        }
     }
     
     /**
