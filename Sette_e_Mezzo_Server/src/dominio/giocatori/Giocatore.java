@@ -86,6 +86,10 @@ public class Giocatore implements Observer{
         stato = Stato.OK;
     }
     
+    public void iniziaLetturaOggetti(){
+        client.iniziaLetturaOggetto();
+    }
+    
     /**
      *Prende le fiches dal databse e le carica nel giocatore
      */

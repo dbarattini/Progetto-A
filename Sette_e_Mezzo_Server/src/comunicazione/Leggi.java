@@ -8,6 +8,7 @@ package comunicazione;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintStream;
+import java.net.SocketTimeoutException;
 import java.util.Observable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -16,33 +17,39 @@ import java.util.logging.Logger;
  *
  * @author root
  */
-public class Leggi extends Observable implements Runnable{
-private BufferedReader reader;
+public class Leggi extends Observable implements Runnable {
+
+    private BufferedReader reader;
     private String message;
     private boolean running = true;
     PrintStream out;
-        
+
     public Leggi(BufferedReader in) {
         reader = in;
 
     }
-    
+
     public void run() {
-        while(running) {
-            try {
-                message = reader.readLine();
-                printMessage();
-            } catch (IOException ex) {
-                Logger.getLogger(Leggi.class.getName()).log(Level.SEVERE, null, ex);
-            }
+
+        try {
+            message = reader.readLine();
+            printMessage();
+//            if(letto == null){
+//                throw new GiocatoreDisconnessoException();
+//            }
+        } catch (SocketTimeoutException e) {
+            run();
+        } catch (IOException ex) {
+            Logger.getLogger(Leggi.class.getName()).log(Level.SEVERE, null, ex);
         }
+        run();
     }
-    
+
     public void printMessage() {
-        if(message != null){
+        if (message != null) {
             this.setChanged();
             this.notifyObservers(message);
         }
     }
-    
+
 }

@@ -36,6 +36,7 @@ public class Login extends Thread{
     private void iniziaPartita() {
         System.out.println("La partita inizia adesso");
         giocatore.setUsername(username);
+        giocatore.iniziaLetturaOggetti();
         partita.aggiungiGiocatore(giocatore);
     }
     

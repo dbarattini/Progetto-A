@@ -14,48 +14,48 @@ import java.util.Observer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-
 public class Client extends Observable implements Observer {
-    private String username="giocatore non registrato";
+
+    private String username = "giocatore non registrato";
     private final PrintWriter aGiocatore;
-    private final BufferedReader daGiocatore; 
+    private final BufferedReader daGiocatore;
     private final Socket socket;
     private final ObjectOutputStream paccoPerGiocatore;
     private ObjectInputStream paccoDaGiocatore;
     private Leggi leggi;
     private LeggiOggetto leggiOggetto;
-    
-    public Client(Socket socket) throws IOException{
-        this.daGiocatore = new BufferedReader(  new InputStreamReader(socket.getInputStream()));
-        this.aGiocatore =  new PrintWriter(socket.getOutputStream(), true);
-        this.paccoPerGiocatore= new ObjectOutputStream(socket.getOutputStream());
-        this.paccoDaGiocatore= new ObjectInputStream(socket.getInputStream());
-        this.socket = socket;  
-        this.leggi=new Leggi(daGiocatore);
-        this.leggiOggetto=new LeggiOggetto(paccoDaGiocatore);
-        leggi.addObserver(this);
-        leggiOggetto.addObserver(this);
-        Thread t = new Thread(leggi);
-        t.start();
-        Thread m = new Thread(leggiOggetto);
-        m.start();
-        
+
+    public Client(Socket socket) throws IOException {
+        this.daGiocatore = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+        this.aGiocatore = new PrintWriter(socket.getOutputStream(), true);
+        this.paccoPerGiocatore = new ObjectOutputStream(socket.getOutputStream());
+        this.paccoDaGiocatore = new ObjectInputStream(socket.getInputStream());
+        this.socket = socket;
+//        this.leggi=new Leggi(daGiocatore);
+//        leggi.addObserver(this);
+//        Thread t = new Thread(leggi);
+//        t.start();
     }
-    
-    public void scrivi(String msg){
+
+    public void scrivi(String msg) {
         aGiocatore.println(msg);
     }
-    
-    
-    
-    public String leggi() throws IOException, GiocatoreDisconnessoException{
-        String letto;        
-        try{
+
+    public void iniziaLetturaOggetto() {
+        this.leggiOggetto = new LeggiOggetto(paccoDaGiocatore);
+        leggiOggetto.addObserver(this);
+        Thread m = new Thread(leggiOggetto);
+        m.start();
+    }
+
+    public String leggi() throws IOException, GiocatoreDisconnessoException {
+        String letto;
+        try {
             letto = daGiocatore.readLine();
-            if(letto == null){
+            if (letto == null) {
                 throw new GiocatoreDisconnessoException();
             }
-        } catch (SocketTimeoutException e){
+        } catch (SocketTimeoutException e) {
             return null;
         }
         return letto;
@@ -71,15 +71,15 @@ public class Client extends Observable implements Observer {
 //        }
 //        return letto;
 //    }
-    
-    public void scriviOggetto(Object pacco) throws IOException{
-        paccoPerGiocatore.writeObject(pacco);        
+
+    public void scriviOggetto(Object pacco) throws IOException {
+        paccoPerGiocatore.writeObject(pacco);
     }
-    
+
     @Override
     public void update(Observable o, Object arg) {
         this.setChanged();
         this.notifyObservers(arg);
     }
-    
+
 }
