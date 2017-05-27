@@ -30,9 +30,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import partitaOnline.events.RichiediGiocata;
 import partitaOnline.events.RichiediPuntata;
+import partitaOnline.events.SetGiocata;
+import partitaOnline.events.SetPuntata;
 
 
-public class Giocatore implements Observer{
+public class Giocatore extends Observable implements Observer{
     private String nome;    
     private int fiches;
     private boolean mazziere;
@@ -60,7 +62,8 @@ public class Giocatore implements Observer{
     
     @Override
     public void update(Observable o, Object arg) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        this.setChanged();
+        this.notifyObservers(arg);
     }
     
     /**
