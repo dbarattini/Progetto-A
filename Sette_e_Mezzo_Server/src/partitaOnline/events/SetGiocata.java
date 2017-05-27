@@ -16,5 +16,15 @@ public class SetGiocata implements Serializable{
         return giocata;
     }
     
+    /**
+     *
+     * @return "evento SetGiocata "+giocata;
+     */
+    @Override
+    public String toString() {
+        return "evento SetGiocata "+giocata;
+    }
+    
+    
     
 }

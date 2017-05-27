@@ -10,5 +10,16 @@ public class GameOver implements Serializable{
 
     public GameOver() {
     }
+
+    /**
+     *
+     * @return "evento GameOver"
+     */
+    @Override
+    public String toString() {
+        return "evento GameOver";
+    }
+    
+    
     
 }

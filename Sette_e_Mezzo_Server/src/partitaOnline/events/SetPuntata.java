@@ -16,4 +16,13 @@ public class SetPuntata implements Serializable{
         return puntata;
     }
     
+    /**
+     *
+     * @return "evento SetPuntata "+puntata;
+     */
+    @Override
+    public String toString() {
+        return "evento SetPuntata "+puntata;
+    }
+    
 }

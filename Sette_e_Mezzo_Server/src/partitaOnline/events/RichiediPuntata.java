@@ -26,6 +26,17 @@ public class RichiediPuntata implements Serializable{
     public double getValore_mano() {
         return valore_mano;
     }
+
+    /**
+     *
+     * @return "evento RichiediPuntata " + carta_coperta.toString() + " " + valore_mano + " " + fiches ;
+     */
+    @Override
+    public String toString() {
+        return "evento RichiediPuntata " + carta_coperta.toString() + " " + valore_mano + " " + fiches ;
+    }
+    
+    
     
     
     

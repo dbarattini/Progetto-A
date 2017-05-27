@@ -11,4 +11,12 @@ public class RisultatoManoParticolare implements Serializable{
     public RisultatoManoParticolare() {
     }
     
+    /**
+     *
+     * @return "evento RisultatoManoParticolare";
+     */
+    @Override
+    public String toString() {
+        return "evento RisultatoManoParticolare";
+    }
 }

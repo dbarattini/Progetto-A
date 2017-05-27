@@ -18,4 +18,15 @@ public class FineRound implements Serializable{
         return username;
     }
     
+    /**
+     *
+     * @return "evento FineRound " + username;
+     */
+    @Override
+    public String toString() {
+        return "evento FineRound " + username;
+    }
+    
+    
+    
 }

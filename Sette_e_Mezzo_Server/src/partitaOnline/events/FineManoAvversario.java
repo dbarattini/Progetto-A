@@ -39,5 +39,21 @@ public class FineManoAvversario implements Serializable{
     public int getPuntata() {
         return puntata;
     }
+
+    /**
+     *
+     * @return "evento FineManoAvversario " + nome + " "+tutteLeCarteSeparateDaSpazio+" "+"fineCarte " + stato + " " + puntata;
+     */
+    @Override
+    public String toString() {
+        String ritorno="evento FineManoAvversario " + nome + " ";
+        for(Carta carta : carteScoperte){
+            ritorno+=carta.toString()+" ";
+        }
+        ritorno+="fineCarte " + stato + " " + puntata;
+        return ritorno;
+    }
+    
+    
     
 }
