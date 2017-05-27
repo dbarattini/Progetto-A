@@ -22,9 +22,9 @@ private BufferedReader reader;
     private boolean running = true;
     PrintStream out;
         
-    public Leggi(BufferedReader in, PrintStream out) {
+    public Leggi(BufferedReader in) {
         reader = in;
-        this.out = out;
+
     }
     
     public void run() {
@@ -40,7 +40,6 @@ private BufferedReader reader;
     
     public void printMessage() {
         if(message != null){
-            out.println(message);
             this.setChanged();
             this.notifyObservers(message);
         }
