@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import static java.lang.Thread.sleep;
-import partitaOnline.model.PartitaOfflineModel;
+import partitaOnline.model.PartitaOnlineModel;
 import dominio.giocatori.Giocatore;
 
 
@@ -14,14 +14,14 @@ public class Partita implements Runnable {
     private ArrayList<Giocatore> giocatori;
     private ArrayList<Giocatore> giocatori_in_attesa;
     private ArrayList<Giocatore> giocatori_disconnessi;
-    private PartitaOfflineModel model;
+    private PartitaOnlineModel model;
     private boolean iniziata=false;
     
     public Partita(){
         this.giocatori = new ArrayList<>(); 
         this.giocatori_in_attesa = new ArrayList<>();
         this.giocatori_disconnessi = new ArrayList<>();
-        this.model= new PartitaOfflineModel();
+        this.model= new PartitaOnlineModel();
     }
      
     public void aggiungiGiocatore(Giocatore giocatore){
