@@ -125,10 +125,6 @@ public class Giocatore {
         return client.leggi();
     }
     
-    public Object leggiOggetto() throws IOException{
-        return client.leggiOggetto();
-    }
-    
     public void scriviOggetto(Object pacco) {
         try {
             client.scriviOggetto(pacco);
