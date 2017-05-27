@@ -92,6 +92,20 @@ public class Giocatore {
 
     }
     
+    public void memorizzaFiches(){
+        SQL sql= new SQL();
+        try {
+            sql.setFiches(nome, fiches);
+        } catch (SqlOccupato ex) {
+            try {
+                sleep(20);
+            } catch (InterruptedException ex1) {
+                Logger.getLogger(Giocatore.class.getName()).log(Level.SEVERE, null, ex1);
+            }
+            memorizzaFiches();
+        }
+    }
+    
     /**
      * Prende la prima carta della mano e la usa come carta_coperta.
      * 
