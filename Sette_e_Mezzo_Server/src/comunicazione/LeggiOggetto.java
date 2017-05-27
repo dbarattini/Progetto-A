@@ -22,11 +22,9 @@ public class LeggiOggetto extends Observable implements Runnable{
     private ObjectInputStream reader;
     private Object message;
     private boolean running = true;
-    PrintStream out;
         
-    public LeggiOggetto(ObjectInputStream in, PrintStream out) {
+    public LeggiOggetto(ObjectInputStream in) {
         reader = in;
-        this.out = out;
     }
     
     public void run() {
@@ -50,7 +48,6 @@ public class LeggiOggetto extends Observable implements Runnable{
     
     public void printMessage() {
         if(message != null){
-            out.println(message.toString());
             this.setChanged();
             this.notifyObservers(message);
         }
