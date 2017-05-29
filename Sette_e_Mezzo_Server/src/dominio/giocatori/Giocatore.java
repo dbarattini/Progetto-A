@@ -59,11 +59,13 @@ public class Giocatore implements Observer{
     }
     
     @Override
-    public void update(Observable o, Object evt) {
-        if(evt instanceof SetPuntata){
-            PuntataInserita(((SetPuntata)evt).getPuntata());
-        } else if(evt instanceof SetGiocata){
-            GiocataInserita(((SetGiocata)evt).getGiocata());
+    public void update(Observable o, Object arg) {
+        String messaggio=String.valueOf(arg);
+        String dati[]=messaggio.split(" ");
+        if(dati[1].equals("SetPuntata")){
+            PuntataInserita(dati[2]);
+        } else if(dati[1].equals("SetGiocata")){
+            GiocataInserita(dati[2]);
         }
     }
     
