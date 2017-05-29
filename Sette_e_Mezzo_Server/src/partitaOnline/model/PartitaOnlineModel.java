@@ -21,6 +21,7 @@ import dominio.gioco.StatoGioco;
 import java.util.ArrayList;
 import java.util.Observable;
 import partitaOnline.events.EstrattoMazziere;
+import partitaOnline.events.FineGiocata;
 import partitaOnline.events.MazzoRimescolato;
 
 
@@ -255,6 +256,7 @@ public class PartitaOnlineModel extends Observable {
                 }
             }
         }
+        this.eventoPerTutti(new FineGiocata(giocatore));
     }
 
     private void calcola_risultato() throws MazzierePerdeException {
