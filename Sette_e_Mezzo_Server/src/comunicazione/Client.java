@@ -19,16 +19,16 @@ public class Client extends Observable implements Observer {
     private final PrintWriter aGiocatore;
     private final BufferedReader daGiocatore;
     private final Socket socket;
-    private final ObjectOutputStream paccoPerGiocatore;
-    private ObjectInputStream paccoDaGiocatore;
+//    private final ObjectOutputStream paccoPerGiocatore;
+//    private ObjectInputStream paccoDaGiocatore;
     private Leggi leggi;
     private LeggiOggetto leggiOggetto;
 
     public Client(Socket socket) throws IOException {
         this.daGiocatore = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         this.aGiocatore = new PrintWriter(socket.getOutputStream(), true);
-        this.paccoPerGiocatore = new ObjectOutputStream(socket.getOutputStream());
-        this.paccoDaGiocatore = new ObjectInputStream(socket.getInputStream());
+//        this.paccoPerGiocatore = new ObjectOutputStream(socket.getOutputStream());
+//        this.paccoDaGiocatore = new ObjectInputStream(socket.getInputStream());
         this.socket = socket;
 
     }
