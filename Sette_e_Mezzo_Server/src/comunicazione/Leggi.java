@@ -5,6 +5,7 @@
  */
 package comunicazione;
 
+import dominio.eccezioni.GiocatoreDisconnessoException;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintStream;
@@ -20,8 +21,8 @@ import java.util.logging.Logger;
 public class Leggi extends Observable implements Runnable {
 
     private BufferedReader reader;
-    private String message;
-    private boolean running = true;
+    private String message="";
+    private boolean disconnesso = false;
     PrintStream out;
 
     public Leggi(BufferedReader in) {
@@ -34,21 +35,25 @@ public class Leggi extends Observable implements Runnable {
         try {
             message = reader.readLine();
             printMessage();
-//            if(letto == null){
-//                throw new GiocatoreDisconnessoException();
-//            }
+
         } catch (SocketTimeoutException e) {
-            run();
+                run();
+
         } catch (IOException ex) {
             Logger.getLogger(Leggi.class.getName()).log(Level.SEVERE, null, ex);
         }
-        run();
+        if(message!=null)
+            run();
     }
 
     public void printMessage() {
         if (message != null) {
             this.setChanged();
             this.notifyObservers(message);
+        } else if (message == null) {
+            disconnesso=true;
+            this.setChanged();
+            this.notifyObservers(new GiocatoreDisconnessoException());
         }
     }
 

@@ -8,9 +8,10 @@ import java.util.logging.Logger;
 import static java.lang.Thread.sleep;
 import partitaOnline.model.PartitaOnlineModel;
 import dominio.giocatori.Giocatore;
+import javax.swing.SwingUtilities;
 
 
-public class Partita implements Runnable {
+public class Partita extends Thread {
     private ArrayList<Giocatore> giocatori;
     private ArrayList<Giocatore> giocatori_in_attesa;
     private ArrayList<Giocatore> giocatori_disconnessi;
@@ -36,15 +37,27 @@ public class Partita implements Runnable {
     @Override
     public void run() {
         try {
+ 
+            sleep(10);
             setGiocatori();
+            sleep(10);
             giocaPartita();
-            sleep(20);
-            run();
+            SwingUtilities.invokeLater(new Runnable() {
+                public void run() {
+                    gira();
+                }
+                });
+//            sleep(20);
+//            run();
         } catch (IOException ex) {
             Logger.getLogger(Partita.class.getName()).log(Level.SEVERE, null, ex);
         } catch (InterruptedException ex) {
             Logger.getLogger(Partita.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+    
+    private void gira(){
+        run();
     }
       
     private void giocaPartita(){
@@ -53,6 +66,7 @@ public class Partita implements Runnable {
                 giocaTurno();
             }
             else{
+                System.out.println("Partita iniziata");
                 iniziaPartita();
                 iniziata=true;
             }
@@ -86,8 +100,6 @@ public class Partita implements Runnable {
                 giocatori.addAll(giocatori_in_attesa);
                 giocatori_in_attesa.clear();
             }
-            controllaConnessione();
-            giocatori_disconnessi.clear();       
         }
     }
 
@@ -111,9 +123,7 @@ public class Partita implements Runnable {
         String msg = null;
         if(!giocatori.isEmpty()){
             for(Giocatore giocatore : giocatori){
-                try {
-                    msg = giocatore.leggi();
-                } catch (GiocatoreDisconnessoException ex) {
+                if(giocatore.isDisconnesso()){
                     System.out.println(giocatore.getNome() + " disconnesso");
                     this.giocatori_disconnessi.add(giocatore);
                 }        

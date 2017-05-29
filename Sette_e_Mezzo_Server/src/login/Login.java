@@ -17,39 +17,40 @@ import dominio.giocatori.Giocatore;
 import dominio.eccezioni.GiocatoreDisconnessoException;
 import dominio.eccezioni.GiocatoreNonTrovato;
 import dominio.eccezioni.SqlOccupato;
+import javax.swing.SwingUtilities;
 
+public class Login extends Thread {
 
-
-public class Login extends Thread{
-    private SQL sql= new SQL();
+    private SQL sql = new SQL();
     private int codice;
     private String mail, password, username;
     private Giocatore giocatore;
     private Partita partita;
-    private int fiches=1000;
+    private int fiches = 1000;
 
     public Login(Giocatore giocatore, Partita partita) throws IOException {
-            this.giocatore=giocatore;
-            this.partita=partita;
+        this.giocatore = giocatore;
+        this.partita = partita;
     }
-     
+
     private void iniziaPartita() {
         System.out.println("La partita inizia adesso");
         giocatore.setUsername(username);
         giocatore.iniziaLetturaOggetti();
         partita.aggiungiGiocatore(giocatore);
+
     }
-    
+
     @Override
-    public void run(){
-        try {            
+    public void run() {
+        try {
             String messaggio;
             messaggio = giocatore.leggi();
-            if(messaggio!=null && !messaggio.equals("")){
+            if (messaggio != null && !messaggio.equals("")) {
                 scomponiMessaggio(messaggio);
-            }
-            else
+            } else {
                 run();
+            }
         } catch (IOException ex) {
             Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
         } catch (InterruptedException ex) {
@@ -58,34 +59,30 @@ public class Login extends Thread{
             giocatore.scrivi("login non effetuato");
             run();
         } catch (GiocatoreDisconnessoException ex) {
-            System.out.println("Giocatore "+giocatore.getNome()+" disconnesso");
-           
-        } 
+            System.out.println("Giocatore " + giocatore.getNome() + " disconnesso");
+
+        }
     }
 
-    private void scomponiMessaggio(String messaggio) throws NumberFormatException, GiocatoreNonTrovato, InterruptedException{
-        try {   
-            String dati[]= messaggio.split(" ");
-            if(dati[0].equals("registrazione")){
+    private void scomponiMessaggio(String messaggio) throws NumberFormatException, GiocatoreNonTrovato, InterruptedException {
+        try {
+            String dati[] = messaggio.split(" ");
+            if (dati[0].equals("registrazione")) {
                 convalida(dati);
-            }
-            else if(dati[0].equals("login")){
-                    gestisciLogin(dati);
-            }
-            else if(dati[0].equals("convalida")){
+            } else if (dati[0].equals("login")) {
+                gestisciLogin(dati);
+            } else if (dati[0].equals("convalida")) {
                 gestisciConvalida(dati);
-            }
-            else if(dati[0].equals("recupero")){
+            } else if (dati[0].equals("recupero")) {
                 gestisciRecupero(dati);
-            }
-            else{
+            } else {
                 sleep(75);
                 run();
             }
         } catch (SqlOccupato ex) {
-                sleep(random(50, 100));
-                scomponiMessaggio(messaggio);
-            }
+            sleep(random(50, 100));
+            scomponiMessaggio(messaggio);
+        }
     }
 
     private void gestisciRecupero(String[] dati) throws SqlOccupato {
@@ -93,74 +90,71 @@ public class Login extends Thread{
     }
 
     private void gestisciConvalida(String[] dati) throws NumberFormatException, SqlOccupato {
-        if(Integer.valueOf(dati[1])==codice){
+        if (Integer.valueOf(dati[1]) == codice) {
             registra();
-        }
-        else{
+        } else {
             giocatore.scrivi("convalida errata");
             run();
         }
     }
 
     private void gestisciLogin(String[] dati) throws InterruptedException, SqlOccupato, GiocatoreNonTrovato {
-        if(dati[1].contains("@"))
-            username=sql.getUser(dati[1]);
-        else
-            username=dati[1];
-        password=dati[2];
-        if(sql.controllaPassword(username,password)){
+        if (dati[1].contains("@")) {
+            username = sql.getUser(dati[1]);
+        } else {
+            username = dati[1];
+        }
+        password = dati[2];
+        if (sql.controllaPassword(username, password)) {
             giocatore.scrivi("login effetuato");
             sleep(20);
             iniziaPartita();
-        }
-        else{
+        } else {
             giocatore.scrivi("login non effetuato");
             run();
         }
     }
-    
-    private void recuperoPw(String[] dati) throws SqlOccupato{
-        mail=dati[1];
-        if(!sql.esisteEmail(mail))
-            giocatore.scrivi("recupero errato");  
-        else{
-            Email email=new Email();
-            String password=sql.getPassword(mail);
-            email.inviaPassword(mail, password );
+
+    private void recuperoPw(String[] dati) throws SqlOccupato {
+        mail = dati[1];
+        if (!sql.esisteEmail(mail)) {
+            giocatore.scrivi("recupero errato");
+        } else {
+            Email email = new Email();
+            String password = sql.getPassword(mail);
+            email.inviaPassword(mail, password);
             giocatore.scrivi("recupero inviato");
         }
         run();
     }
 
-    private void registra() throws SqlOccupato {        
-            sql.aggiungiGiocatore(mail, password, username, fiches);
-            giocatore.scrivi("registrazione effetuata");
-            run();
-      }
+    private void registra() throws SqlOccupato {
+        sql.aggiungiGiocatore(mail, password, username, fiches);
+        giocatore.scrivi("registrazione effetuata");
+        run();
+    }
 
-    private void convalida(String[] dati) throws SqlOccupato  {
-        codice=random(9999, 1000);
-        mail=dati[1];
-        username=dati[2];
-        password=dati[3];
-        if(sql.esisteEmail(mail))
-            giocatore.scrivi("registrazione email gia esistente");  
-        else if(sql.esisteUsername(username))
+    private void convalida(String[] dati) throws SqlOccupato {
+        codice = random(9999, 1000);
+        mail = dati[1];
+        username = dati[2];
+        password = dati[3];
+        if (sql.esisteEmail(mail)) {
+            giocatore.scrivi("registrazione email gia esistente");
+        } else if (sql.esisteUsername(username)) {
             giocatore.scrivi("registrazione username gia esistente");
-        else{
-            Email email=new Email();
+        } else {
+            Email email = new Email();
             email.inviaCodice(mail, codice);
             giocatore.scrivi("convalida inviata");
         }
         run();
     }
 
-        
-     private int random(int max, int min){        
-        int range=max-min;
-        int rand=((int) Math.round(Math.random()*range))+min;        
+    private int random(int max, int min) {
+        int range = max - min;
+        int rand = ((int) Math.round(Math.random() * range)) + min;
         return rand;
     }
-    
-    
+
 }

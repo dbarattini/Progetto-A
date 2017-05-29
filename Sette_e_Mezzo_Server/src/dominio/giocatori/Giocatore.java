@@ -45,6 +45,7 @@ public class Giocatore implements Observer {
     private String giocata_effettuata;
     private final Socket socket;
     private Client client;
+    private boolean disconnesso=false;
 
     /**
      *
@@ -59,12 +60,18 @@ public class Giocatore implements Observer {
 
     @Override
     public void update(Observable o, Object arg) {
-        String messaggio = String.valueOf(arg);
-        String dati[] = messaggio.split(" ");
-        if (dati[1].equals("SetPuntata")) {
-            PuntataInserita(dati[2]);
-        } else if (dati[1].equals("SetGiocata")) {
-            GiocataInserita(dati[2]);
+        if(arg instanceof GiocatoreDisconnessoException){
+            System.out.println("disconnesso");
+            disconnesso=true;
+        }
+        else{
+            String messaggio = String.valueOf(arg);
+            String dati[] = messaggio.split(" ");
+            if (dati[1].equals("SetPuntata")) {
+                PuntataInserita(dati[2]);
+            } else if (dati[1].equals("SetGiocata")) {
+                GiocataInserita(dati[2]);
+            }
         }
     }
 
@@ -496,6 +503,10 @@ public class Giocatore implements Observer {
 
     public ArrayList<Carta> getCarteScoperte() {
         return carte_scoperte;
+    }
+    
+    public boolean isDisconnesso(){
+        return!disconnesso;
     }
 
 }
