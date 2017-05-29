@@ -28,7 +28,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import partitaOnline.events.RichiediGiocata;
 import partitaOnline.events.RichiediPuntata;
-import partitaOnline.events.SetGiocata;
+import partitaOnline.events.Error;
 import partitaOnline.events.SetPuntata;
 
 
@@ -166,8 +166,8 @@ public class Giocatore implements Observer{
      * @return il valore della puntata scelta
      */
     public int decidi_puntata() {
+        this.scriviOggetto(new RichiediPuntata(this.carta_coperta, this.valore_mano, this.getFiches()));
         while(true){
-                this.scriviOggetto(new RichiediPuntata(this.carta_coperta, this.valore_mano, this.getFiches()));
                 if(puntata_effettuata != 0){
                     return puntata_effettuata;
                 }
