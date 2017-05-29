@@ -30,10 +30,7 @@ public class Client extends Observable implements Observer {
         this.paccoPerGiocatore = new ObjectOutputStream(socket.getOutputStream());
         this.paccoDaGiocatore = new ObjectInputStream(socket.getInputStream());
         this.socket = socket;
-//        this.leggi=new Leggi(daGiocatore);
-//        leggi.addObserver(this);
-//        Thread t = new Thread(leggi);
-//        t.start();
+
     }
 
     public void scrivi(String msg) {
@@ -41,10 +38,14 @@ public class Client extends Observable implements Observer {
     }
 
     public void iniziaLetturaOggetto() {
-        this.leggiOggetto = new LeggiOggetto(paccoDaGiocatore);
-        leggiOggetto.addObserver(this);
-        Thread m = new Thread(leggiOggetto);
-        m.start();
+//        this.leggiOggetto = new LeggiOggetto(paccoDaGiocatore);
+//        leggiOggetto.addObserver(this);
+//        Thread m = new Thread(leggiOggetto);
+//        m.start();
+        this.leggi=new Leggi(daGiocatore);
+        leggi.addObserver(this);
+        Thread t = new Thread(leggi);
+        t.start();
     }
 
     public String leggi() throws IOException, GiocatoreDisconnessoException {
@@ -72,7 +73,8 @@ public class Client extends Observable implements Observer {
 //    }
 
     public void scriviOggetto(Object pacco) throws IOException {
-        paccoPerGiocatore.writeObject(pacco);
+        //paccoPerGiocatore.writeObject(pacco);
+        aGiocatore.println(pacco.toString());
     }
 
     @Override
