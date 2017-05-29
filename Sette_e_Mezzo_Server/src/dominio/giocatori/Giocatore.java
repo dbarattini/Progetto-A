@@ -165,11 +165,12 @@ public class Giocatore implements Observer {
      * @return il valore della puntata scelta
      */
     public int decidi_puntata() {
+        puntata_effettuata=-42;
         this.scriviOggetto(new RichiediPuntata(this.carta_coperta, this.valore_mano, this.getFiches()));
         while (true) {
             try {
                 sleep(20);
-                if (puntata_effettuata != 0) {
+                if (puntata_effettuata != -42) {
                     return puntata_effettuata;
                 }
             } catch (InterruptedException ex) {

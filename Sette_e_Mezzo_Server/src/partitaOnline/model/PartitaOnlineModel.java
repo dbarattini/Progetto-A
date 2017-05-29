@@ -309,10 +309,10 @@ public class PartitaOnlineModel extends Observable {
     private void fine_round() throws InterruptedException {
         boolean game_over = false;
         for (Giocatore giocatore : giocatori) {
-
-            this.eventoPerTutti(new FineRound(giocatore));
-
+            
             Thread.sleep(pausa_breve);
+            this.eventoPerTutti(new FineRound(giocatore));
+            
             if (giocatore.getFiches() == 0 && !giocatore.haPerso()) {
                 if (giocatore instanceof Giocatore) {
                     giocatore.perde();

@@ -1,5 +1,6 @@
 package partitaOnline.events;
 
+import dominio.elementi_di_gioco.Carta;
 import dominio.giocatori.Giocatore;
 import java.io.Serializable;
 
@@ -8,23 +9,28 @@ import java.io.Serializable;
  * @author xXEgoOneXx
  */
 public class FineRound implements Serializable{
-    private String username;
+    private Giocatore giocatore;
 
     public FineRound(Giocatore giocatore) {
-        this.username= giocatore.getNome();
+        this.giocatore= giocatore;
     }
 
-    public String getGiocatore() {
-        return username;
+    public Giocatore getGiocatore() {
+        return giocatore;
     }
     
     /**
      *
-     * @return "evento FineRound " + username;
+     * @return "evento FineRound " + username + " " + leCarteScoperteSeparateDaSpazi + " fineCarte " + "puntata" + " " + "fiches";
      */
     @Override
     public String toString() {
-        return "evento FineRound " + username;
+        String ritorno="evento FineRound " + giocatore.getNome() + " ";
+        for(Carta carta :giocatore.getCarteScoperte()){
+            ritorno+=carta.toString()+" ";
+        }
+        ritorno+="fineCarte "+ giocatore.getPuntata()+ " " + giocatore.getFiches();
+        return ritorno;
     }
     
     
