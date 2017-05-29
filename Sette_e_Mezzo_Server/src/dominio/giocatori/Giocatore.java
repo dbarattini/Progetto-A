@@ -506,7 +506,7 @@ public class Giocatore implements Observer {
     }
     
     public boolean isDisconnesso(){
-        return!disconnesso;
+        return disconnesso;
     }
 
 }

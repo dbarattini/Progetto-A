@@ -42,13 +42,13 @@ public class Partita extends Thread {
             setGiocatori();
             sleep(10);
             giocaPartita();
-            SwingUtilities.invokeLater(new Runnable() {
-                public void run() {
-                    gira();
-                }
-                });
+//            SwingUtilities.invokeLater(new Runnable() {
+//                public void run() {
+//                    gira();
+//                }
+//                });
 //            sleep(20);
-//            run();
+            run();
         } catch (IOException ex) {
             Logger.getLogger(Partita.class.getName()).log(Level.SEVERE, null, ex);
         } catch (InterruptedException ex) {
@@ -120,7 +120,6 @@ public class Partita extends Thread {
     }
     
     private void controllaConnessione() throws IOException{
-        String msg = null;
         if(!giocatori.isEmpty()){
             for(Giocatore giocatore : giocatori){
                 if(giocatore.isDisconnesso()){
