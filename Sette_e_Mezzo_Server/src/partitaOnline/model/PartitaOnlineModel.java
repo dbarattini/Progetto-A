@@ -68,6 +68,7 @@ public class PartitaOnlineModel extends Observable {
 
     public void inizializza_partita(ArrayList giocatori) throws InterruptedException {
         this.giocatori = giocatori;
+        inizzializza_fiches(this.giocatori);
         Thread.sleep(pausa_breve);
 
         Thread.sleep(pausa_breve);
