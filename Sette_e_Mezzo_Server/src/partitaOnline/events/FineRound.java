@@ -8,31 +8,32 @@ import java.io.Serializable;
  *
  * @author xXEgoOneXx
  */
-public class FineRound implements Serializable{
+public class FineRound implements Serializable {
+
     private Giocatore giocatore;
 
     public FineRound(Giocatore giocatore) {
-        this.giocatore= giocatore;
+        this.giocatore = giocatore;
     }
 
     public Giocatore getGiocatore() {
         return giocatore;
     }
-    
+
     /**
      *
-     * @return "evento FineRound " + username + " " + leCarteScoperteSeparateDaSpazi + " fineCarte " + "puntata" + " " + "fiches";
+     * @return "evento FineRound " + username + " " +
+     * leCarteScoperteSeparateDaSpazi + " fineCarte " + "puntata" + " " +
+     * "fiches";
      */
     @Override
     public String toString() {
-        String ritorno="evento FineRound " + giocatore.getNome() + " ";
-        for(Carta carta :giocatore.getCarteScoperte()){
-            ritorno+=carta.toString()+" ";
+        String ritorno = "evento FineRound " + giocatore.getNome() + " ";
+        for (Carta carta : giocatore.getCarteScoperte()) {
+            ritorno += carta.toString() + " ";
         }
-        ritorno+="fineCarte "+ giocatore.getPuntata()+ " " + giocatore.getFiches();
+        ritorno += "fineCarte " + giocatore.getPuntata() + " " + giocatore.getFiches();
         return ritorno;
     }
-    
-    
-    
+
 }
