@@ -1,7 +1,6 @@
 package partitaOnline.model;
 
 import partitaOnline.events.AggiornamentoMazziere;
-import partitaOnline.events.GameOver;
 import partitaOnline.events.MazzierePerde;
 import partitaOnline.events.FineRound;
 import partitaOnline.events.FineManoAvversario;
