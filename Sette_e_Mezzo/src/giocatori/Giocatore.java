@@ -23,6 +23,8 @@ public abstract class Giocatore {
     protected double valore_mano = 0;
     private Stato stato;
     private boolean perso = false;
+//    private boolean vinto = false;
+    
     
     /**
      *
@@ -319,5 +321,10 @@ public abstract class Giocatore {
         return carte_scoperte;
     }
 
+//    public boolean haVinto() {
+//        return vinto;
+//    }
+
+    
     
 }
