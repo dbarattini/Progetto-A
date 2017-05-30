@@ -132,6 +132,8 @@ public class Login {
         String codice = tastiera.nextLine();
         
         try {
+            
+            //verifica sul messaggio digitato
             if (codice.contains(" ") || codice == null) {
                 System.err.println("codice inserito non valido");
             }
@@ -148,6 +150,29 @@ public class Login {
     }
 
     private void recupero() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        System.out.println("[4] - inserire l'email per il recupero della psw:");
+        tastiera = new Scanner(System.in);
+        String email = tastiera.nextLine();
+        
+        try {
+            
+            //controllo sul messaggio digitato
+            if (email.contains("@")) {
+                //do nothing
+            } else {
+                System.err.println("email inserita non valida");
+            }
+            if (email.contains(" ")) {
+                System.err.println("email inserita non valida");
+            }
+            
+            String messaggio_da_inviare = "recupero " +email;
+            out.writeBytes(messaggio_da_inviare);
+            String risposta = in.readLine();
+            System.out.println("[5] - " +risposta);
+            
+        } catch (IOException ex) {
+            Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }
