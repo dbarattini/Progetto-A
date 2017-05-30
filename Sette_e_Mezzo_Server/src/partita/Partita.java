@@ -42,12 +42,6 @@ public class Partita extends Thread {
             setGiocatori();
             sleep(10);
             giocaPartita();
-//            SwingUtilities.invokeLater(new Runnable() {
-//                public void run() {
-//                    gira();
-//                }
-//                });
-//            sleep(20);
             run();
         } catch (IOException ex) {
             Logger.getLogger(Partita.class.getName()).log(Level.SEVERE, null, ex);
