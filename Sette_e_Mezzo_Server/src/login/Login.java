@@ -17,7 +17,6 @@ import dominio.giocatori.Giocatore;
 import dominio.eccezioni.GiocatoreDisconnessoException;
 import dominio.eccezioni.GiocatoreNonTrovato;
 import dominio.eccezioni.SqlOccupato;
-import javax.swing.SwingUtilities;
 
 public class Login extends Thread {
 

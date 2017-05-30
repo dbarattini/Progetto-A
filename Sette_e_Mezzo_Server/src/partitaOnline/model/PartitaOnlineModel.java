@@ -1,7 +1,6 @@
 package partitaOnline.model;
 
 import partitaOnline.events.AggiornamentoMazziere;
-import partitaOnline.events.GameOver;
 import partitaOnline.events.MazzierePerde;
 import partitaOnline.events.FineRound;
 import partitaOnline.events.FineManoAvversario;
@@ -21,9 +20,7 @@ import dominio.gioco.StatoGioco;
 import java.util.ArrayList;
 import java.util.Observable;
 import partitaOnline.events.EstrattoMazziere;
-import partitaOnline.events.FineGiocata;
 import partitaOnline.events.MazzoRimescolato;
-
 
 public class PartitaOnlineModel extends Observable {
 
@@ -87,7 +84,7 @@ public class PartitaOnlineModel extends Observable {
 
     public void aggiungiGiocatori(ArrayList giocatori) {
         inizzializza_fiches(giocatori);
-    //    this.giocatori.addAll(giocatori); //non capisco perchè ma lo inserisce già da un altra parte
+        //    this.giocatori.addAll(giocatori); //non capisco perchè ma lo inserisce già da un altra parte
     }
 
     public void rimuoviGiocatori(ArrayList giocatori) throws InterruptedException {
@@ -152,11 +149,12 @@ public class PartitaOnlineModel extends Observable {
         distribuisci_carta_coperta();
         effettua_puntate();
         for (int i = 0; i < giocatori.size(); i++) {
+
             if (pos_next_giocatore == giocatori.size()) {
                 pos_next_giocatore = 0;
             }
             giocatore = getProssimoGiocatore(pos_next_giocatore);
-            if (!giocatore.haPerso()) {
+            if (!giocatore.haPerso() && !giocatore.isDisconnesso()) {
                 esegui_mano(giocatore);
                 if (giocatore instanceof Giocatore && giocatore.getStato() != Stato.OK) {
 
@@ -165,10 +163,8 @@ public class PartitaOnlineModel extends Observable {
                     Thread.sleep(pausa_lunga);
                 }
             }
-            if (!(giocatore instanceof Giocatore)) {
-                this.eventoPerTutti(new FineManoAvversario(giocatore.getNome(), giocatore.getCarteScoperte(), giocatore.getStato(), giocatore.getPuntata()));
-                Thread.sleep(pausa_breve);
-            }
+            this.eventoPerTutti(new FineManoAvversario(giocatore.getNome(), giocatore.getCarteScoperte(), giocatore.getStato(), giocatore.getPuntata()));
+            Thread.sleep(pausa_breve);
             pos_next_giocatore += 1;
         }
     }
@@ -186,7 +182,7 @@ public class PartitaOnlineModel extends Observable {
         for (Giocatore giocatore : giocatori) {
             while (true) {
                 try {
-                    if (!giocatore.haPerso()) {
+                    if (!giocatore.haPerso() && !giocatore.isDisconnesso()) {
                         carta_estratta = mazzo.estrai_carta();
                         giocatore.prendi_carta_iniziale(carta_estratta);
                     }
@@ -204,7 +200,7 @@ public class PartitaOnlineModel extends Observable {
 
     private void effettua_puntate() {
         for (Giocatore giocatore : giocatori) {
-            if (!giocatore.equals(mazziere)) {
+            if (!giocatore.equals(mazziere) && !giocatore.isDisconnesso()) {
                 giocatore.effettua_puntata();
             }
         }
@@ -256,7 +252,6 @@ public class PartitaOnlineModel extends Observable {
                 }
             }
         }
-        this.eventoPerTutti(new FineGiocata(giocatore));
     }
 
     private void calcola_risultato() throws MazzierePerdeException {
@@ -309,30 +304,18 @@ public class PartitaOnlineModel extends Observable {
     }
 
     private void fine_round() throws InterruptedException {
-        boolean game_over = false;
         for (Giocatore giocatore : giocatori) {
-            
+
             Thread.sleep(pausa_breve);
             this.eventoPerTutti(new FineRound(giocatore));
-            
-            if (giocatore.getFiches() == 0 && !giocatore.haPerso()) {
-                if (giocatore instanceof Giocatore) {
-                    giocatore.perde();
-                    game_over = true;
-                } else {
-                    giocatore.perde();
-                    if (giocatore.isMazziere()) {
-                        this.eventoPerTutti(new MazzierePerde());
 
-                        mazziere_successivo();
-                    }
+            if (giocatore.getFiches() == 0 && !giocatore.haPerso() && !giocatore.isDisconnesso()) {
+                giocatore.perde();
+                if (giocatore.isMazziere()) {
+                    this.eventoPerTutti(new MazzierePerde());
+                    mazziere_successivo();
                 }
             }
-        }
-        if (game_over) {
-            this.setChanged();
-            this.notifyObservers(new GameOver());
-            game_over();
         }
         if (next_mazziere != null) {
             aggiorna_mazziere();
@@ -351,14 +334,6 @@ public class PartitaOnlineModel extends Observable {
         for (Giocatore giocatore : giocatori) {
             giocatore.scriviOggetto(evento);
         }
-    }
-
-    private void game_over() {
-        System.exit(0);
-    }
-
-    private void vittoria() {
-        System.exit(0);
     }
 
     public int getN_giocatori() {
