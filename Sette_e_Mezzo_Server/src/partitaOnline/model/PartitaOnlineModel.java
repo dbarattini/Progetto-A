@@ -204,7 +204,7 @@ public class PartitaOnlineModel extends Observable {
 
     private void effettua_puntate() {
         for (Giocatore giocatore : giocatori) {
-            if (!giocatore.equals(mazziere)) {
+            if (!giocatore.equals(mazziere) && !giocatore.isDisconnesso()) {
                 giocatore.effettua_puntata();
             }
         }
