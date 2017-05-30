@@ -20,7 +20,6 @@ import dominio.gioco.StatoGioco;
 import java.util.ArrayList;
 import java.util.Observable;
 import partitaOnline.events.EstrattoMazziere;
-import partitaOnline.events.FineGiocata;
 import partitaOnline.events.MazzoRimescolato;
 
 public class PartitaOnlineModel extends Observable {
@@ -164,10 +163,8 @@ public class PartitaOnlineModel extends Observable {
                     Thread.sleep(pausa_lunga);
                 }
             }
-            if (!(giocatore instanceof Giocatore)) {
-                this.eventoPerTutti(new FineManoAvversario(giocatore.getNome(), giocatore.getCarteScoperte(), giocatore.getStato(), giocatore.getPuntata()));
-                Thread.sleep(pausa_breve);
-            }
+            this.eventoPerTutti(new FineManoAvversario(giocatore.getNome(), giocatore.getCarteScoperte(), giocatore.getStato(), giocatore.getPuntata()));
+            Thread.sleep(pausa_breve);
             pos_next_giocatore += 1;
         }
     }
@@ -255,7 +252,6 @@ public class PartitaOnlineModel extends Observable {
                 }
             }
         }
-        this.eventoPerTutti(new FineGiocata(giocatore));
     }
 
     private void calcola_risultato() throws MazzierePerdeException {
