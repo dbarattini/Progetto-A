@@ -68,17 +68,24 @@ public class Login {
         System.out.println("[4] - inserire email, user e psw separate da uno spazio:");
         tastiera = new Scanner(System.in);
         String messaggio = tastiera.nextLine();
-        String[] stringa = new String[3];
-        String risposta = null;
+        String[] stringa_per_verifica = new String[3];        
         try {
-            stringa = messaggio.split(" ");
-            for(String p : stringa) {
-                if (p != null) {
-                    out.writeBytes(messaggio);
-                    risposta = in.readLine();
-                    System.out.println(risposta);
+            
+            //effettuo una verifica sul messaggio digitato: controllo che il messaggio sia di tre parole e che non sia vuoto
+            stringa_per_verifica = messaggio.split(" ");
+            for (String s : stringa_per_verifica) {
+                if (s != null) {
+                    continue;
+                }else{
+                    System.err.println("messaggio inserito non valido");
                 }
             }
+            
+            String messaggio_da_inviare = "risposta " +messaggio;
+            out.writeBytes(messaggio_da_inviare);
+            String risposta = in.readLine();
+            System.out.println("[5] - " +risposta);
+            
         } catch (ArrayIndexOutOfBoundsException ex) {
                 System.err.println("messaggio inserito non valido");
         } catch (IOException ex) {
@@ -86,8 +93,36 @@ public class Login {
         }
     }
 
+    
     private void login() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        /*
+        System.out.println("[4] - inserire username (o email) e psw separate da uno spazio: ");
+        tastiera = new Scanner(System.in);
+        String credenziali = tastiera.nextLine();
+        String[] stringa_per_verifica = new String[2];
+        
+        try {
+            
+            //effettuo un controllo sul messaggio digitato
+            stringa_per_verifica = credenziali.split(" ");
+            for (String s : stringa_per_verifica) {
+                if (s != null) {
+                    continue;
+                }else{
+                    System.err.println("messaggio inserito non valido");
+                }
+            }
+            
+            String messaggio_da_inviare = "login " +credenziali;
+            out.writeBytes(messaggio_da_inviare);
+            String risposta = in.readLine();
+            
+        } catch (IOException ex) {
+            Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ArrayIndexOutOfBoundsException ex) {
+            System.err.println("messaggio inserito non valido");            
+        }
+        */
     }
 
     private void convalida() {
