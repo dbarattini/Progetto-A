@@ -1,5 +1,6 @@
 package gioco;
 
+import DB.SQL;
 import eccezioni.DifficoltaBotException;
 import eccezioni.FichesInizialiException;
 import eccezioni.NumeroBotException;
@@ -16,6 +17,7 @@ import eccezioni.MazzierePerdeException;
 import eccezioni.SballatoException;
 import eccezioni.SetteeMezzoException;
 import eccezioni.SetteeMezzoRealeException;
+import eccezioni.datoGiaPresente;
 import elementi_di_gioco.Carta;
 import giocatori.BotDifficile;
 import giocatori.BotMedio;
@@ -42,6 +44,7 @@ public class PartitaOffline {
     InputStream in;
     PrintStream out;
     PrintStream err;
+    private SQL db;
     
     /**
      *
@@ -53,11 +56,13 @@ public class PartitaOffline {
      * @param err PrintStream (es. System.err)
      * @throws InterruptedException lanciata dai Thread.pause
      */
-    public PartitaOffline(int numero_bot, int fiches_iniziali, DifficoltaBot difficolta_bot, InputStream in, PrintStream out, PrintStream err) throws InterruptedException{
+    public PartitaOffline(int numero_bot, int fiches_iniziali, DifficoltaBot difficolta_bot, InputStream in, PrintStream out, PrintStream err) throws InterruptedException, datoGiaPresente{
         this.in = in;
         this.out = out;
         this.err = err;
         this.n_bot = numero_bot;
+        this.db = new SQL();
+        
         
         try {
             inizializza_partita(numero_bot, fiches_iniziali, difficolta_bot);
@@ -80,7 +85,7 @@ public class PartitaOffline {
      * Consente di giocare una partita di sette e mezzo.
      * @throws InterruptedException
      */
-    public void gioca() throws InterruptedException{
+    public void gioca() throws InterruptedException, datoGiaPresente{
         Thread.sleep(pausa_breve);
         
         out.println("Estrazione del mazziere:\n");
@@ -109,8 +114,13 @@ public class PartitaOffline {
             fine_round();
             mazzo.aggiorna_fine_round();
             if(n_bot_sconfitti == n_bot){
-                stampa_schermata_vittoria();
-                vittoria();
+                for (Giocatore g : giocatori) {
+                    if (g instanceof GiocatoreUmano) {
+                        ((GiocatoreUmano) g).setVinto();
+                        stampa_schermata_vittoria();
+                        vittoria(g);
+                    }
+                }    
             }
         }
     }
@@ -119,7 +129,7 @@ public class PartitaOffline {
         audio.carica("LoungeBeat.wav", "soundTrack");
     }
     
-    private void inizializza_partita(int numero_bot, int fiches_iniziali, DifficoltaBot difficolta_bot) throws NumeroBotException, FichesInizialiException, DifficoltaBotException{
+    private void inizializza_partita(int numero_bot, int fiches_iniziali, DifficoltaBot difficolta_bot) throws NumeroBotException, FichesInizialiException, DifficoltaBotException, datoGiaPresente{
         inizzializza_fiches(fiches_iniziali);
         inizializza_bots(numero_bot, fiches_iniziali, difficolta_bot);
         inizializza_giocatore(fiches_iniziali); 
@@ -154,17 +164,29 @@ public class PartitaOffline {
         }
     }
     
-    private void inizializza_giocatore(int fiches_iniziali){
+    private void inizializza_giocatore(int fiches_iniziali) throws datoGiaPresente{
         out.println("Come ti chiami?");
         String nome = richiedi_nome_giocatore();
-        giocatori.add(new GiocatoreUmano(nome,fiches_iniziali,in,out,err));
+        
+        GiocatoreUmano g = new GiocatoreUmano(nome,fiches_iniziali,in,out,err);
+        giocatori.add(g);
+        
+        if(!db.esisteNome(nome))
+            db.aggiungiDato(nome, fiches_iniziali, 0);
+        else {
+            if(db.getFiches(nome) < fiches_iniziali) {
+                db.setFiches(nome, fiches_iniziali);
+            } else {
+               int fiches = db.getFiches(nome) - fiches_iniziali;
+                db.setFiches(nome, fiches);
+            }
+        }
         out.print("\n");
     }
     
     private String richiedi_nome_giocatore(){
         String nome;
         Scanner scan = new Scanner(System.in);
-        
         nome = scan.next();
         return nome;
     }
@@ -363,7 +385,7 @@ public class PartitaOffline {
         return guadagno;
     }
     
-   private void mazziere_successivo(){
+    private void mazziere_successivo(){
        int pos_next_mazziere = giocatori.indexOf(mazziere) + 1;
        if(pos_next_mazziere == giocatori.size()){
            pos_next_mazziere = 0;
@@ -434,7 +456,10 @@ public class PartitaOffline {
         out.println("Game Over");
     }
 
-    private void vittoria(){
+    private void vittoria(Giocatore g) throws datoGiaPresente{
+            db.aggiungiVittoria(g.getNome());
+            int fiches = g.getFiches()+db.getFiches(g.getNome());
+            db.setFiches(g.getNome(), fiches); 
         System.exit(0);
     }
     
