@@ -5,6 +5,9 @@
  */
 package gioco;
 
+import eccezioni.CanzoneNonTrovataException;
+import eccezioni.CaricamentoCanzoneException;
+
 /**
  *
  * @author Max & family1
@@ -12,7 +15,7 @@ package gioco;
  */
 public class TesterImpostazioni {
     
-    public static void main (String[] args) throws InterruptedException {
+    public static void main (String[] args) throws InterruptedException, CanzoneNonTrovataException, CaricamentoCanzoneException {
         
         Impostazioni impostazioni = new Impostazioni();
         impostazioni.selezionaImpostazione();
