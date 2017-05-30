@@ -21,7 +21,7 @@ public class FineGiocata {
 
     /**
      *
-     * @return "evento FineGiocata " + username + " " + leCarteSeparateDaSpazio + " " + "fineCarte " + puntata;
+     * @return "evento FineGiocata " + username + " " + leCarteSeparateDaSpazio + " " + "fineCarte " + puntata(NonSeMazziere);
      */
     @Override
     public String toString() {
@@ -29,7 +29,8 @@ public class FineGiocata {
         for(Carta carta : giocatore.getCarteScoperte()){
             ritorno+=carta.toString()+ " ";
         }
-        ritorno+="fineCarte " + giocatore.getPuntata();
+        ritorno+="fineCarte ";
+        if(!giocatore.isMazziere())ritorno+= giocatore.getPuntata();
         return ritorno;
     }
     
