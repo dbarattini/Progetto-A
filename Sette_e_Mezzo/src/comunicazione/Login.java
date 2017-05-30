@@ -116,6 +116,7 @@ public class Login {
             String messaggio_da_inviare = "login " +credenziali;
             out.writeBytes(messaggio_da_inviare);
             String risposta = in.readLine();
+            System.out.println("[5] - " +risposta);
             
         } catch (IOException ex) {
             Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
@@ -126,7 +127,24 @@ public class Login {
     }
 
     private void convalida() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        System.out.println("[4] - inserire il codice di convalida:");
+        tastiera = new Scanner(System.in);
+        String codice = tastiera.nextLine();
+        
+        try {
+            if (codice.contains(" ") || codice == null) {
+                System.err.println("codice inserito non valido");
+            }
+             
+            String messaggio_da_inviare = "convalida " +codice;
+            out.writeBytes(messaggio_da_inviare);
+            String risposta = in.readLine();
+            System.out.println("[5] - " +risposta);
+            
+        } catch (IOException ex) {
+            Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
     }
 
     private void recupero() {
