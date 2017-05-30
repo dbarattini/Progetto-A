@@ -1,5 +1,6 @@
 package gioco;
 
+import DB.Database;
 import DB.SQL;
 import eccezioni.DifficoltaBotException;
 import eccezioni.FichesInizialiException;
@@ -44,7 +45,8 @@ public class PartitaOffline {
     InputStream in;
     PrintStream out;
     PrintStream err;
-    private SQL db;
+    //private SQL db;
+    private Database database;
     
     /**
      *
@@ -61,7 +63,8 @@ public class PartitaOffline {
         this.out = out;
         this.err = err;
         this.n_bot = numero_bot;
-        this.db = new SQL();
+        //this.db = new SQL();
+        this.database = new Database();
         
         
         try {
@@ -116,9 +119,10 @@ public class PartitaOffline {
             if(n_bot_sconfitti == n_bot){
                 for (Giocatore g : giocatori) {
                     if (g instanceof GiocatoreUmano) {
-                        ((GiocatoreUmano) g).setVinto();
-                        stampa_schermata_vittoria();
-                        vittoria(g);
+                          vittoria(g);
+//                        ((GiocatoreUmano) g).setVinto();
+//                        stampa_schermata_vittoria();
+//                        vittoria(g);
                     }
                 }    
             }
@@ -171,16 +175,19 @@ public class PartitaOffline {
         GiocatoreUmano g = new GiocatoreUmano(nome,fiches_iniziali,in,out,err);
         giocatori.add(g);
         
-        if(!db.esisteNome(nome))
-            db.aggiungiDato(nome, fiches_iniziali, 0);
-        else {
-            if(db.getFiches(nome) < fiches_iniziali) {
-                db.setFiches(nome, fiches_iniziali);
-            } else {
-               int fiches = db.getFiches(nome) - fiches_iniziali;
-                db.setFiches(nome, fiches);
-            }
-        }
+        database.inserisciProfilo(nome, fiches_iniziali);
+        
+        
+//        if(!db.esisteNome(nome))
+//            db.aggiungiDato(nome, fiches_iniziali, 0);
+//        else {
+//            if(db.getFiches(nome) < fiches_iniziali) {
+//                db.setFiches(nome, fiches_iniziali);
+//            } else {
+//               int fiches = db.getFiches(nome) - fiches_iniziali;
+//                db.setFiches(nome, fiches);
+//            }
+//        }
         out.print("\n");
     }
     
@@ -457,9 +464,7 @@ public class PartitaOffline {
     }
 
     private void vittoria(Giocatore g) throws datoGiaPresente{
-            db.aggiungiVittoria(g.getNome());
-            int fiches = g.getFiches()+db.getFiches(g.getNome());
-            db.setFiches(g.getNome(), fiches); 
+        database.vittoria(g);
         System.exit(0);
     }
     

@@ -17,7 +17,7 @@ public class GiocatoreUmano extends Giocatore {
     private final InputStream in;
     private final PrintStream out;
     private final PrintStream err;
-    private boolean vinto = false;
+//    private boolean vinto = false;
     
     /**
      *
@@ -141,13 +141,13 @@ public class GiocatoreUmano extends Giocatore {
         return err;
     }
 
-    public boolean haVinto() {
-        return vinto;
-    }
+//    public boolean haVinto() {
+//        return vinto;
+//    }
 
-    public void setVinto() {
-        this.vinto = true;
-    }
+//    public void setVinto() {
+//        this.vinto = true;
+//    }
     
     
 }
