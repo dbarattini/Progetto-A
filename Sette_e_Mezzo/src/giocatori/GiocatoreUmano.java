@@ -17,6 +17,7 @@ public class GiocatoreUmano extends Giocatore {
     private final InputStream in;
     private final PrintStream out;
     private final PrintStream err;
+    private boolean vinto = false;
     
     /**
      *
@@ -126,5 +127,27 @@ public class GiocatoreUmano extends Giocatore {
         else{
             throw new GiocataNonValidaException();
         }   
-    } 
+    }
+
+    public InputStream getIn() {
+        return in;
+    }
+
+    public PrintStream getOut() {
+        return out;
+    }
+
+    public PrintStream getErr() {
+        return err;
+    }
+
+    public boolean haVinto() {
+        return vinto;
+    }
+
+    public void setVinto() {
+        this.vinto = true;
+    }
+    
+    
 }
