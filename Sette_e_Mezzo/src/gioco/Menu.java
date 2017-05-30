@@ -50,7 +50,7 @@ public class Menu {
                   System.out.println("OPZIONE NON VALIDA");   
                   richiediOpzione();
                }
-         return opzione;
+        return opzione;
         }
     
     private int richiediNbot() {
