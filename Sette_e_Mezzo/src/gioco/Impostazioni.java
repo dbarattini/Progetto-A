@@ -46,7 +46,8 @@ public class Impostazioni {
                         music.selezionaImpostazione();
                         break;
                     case Profilo:
-                        System.out.println("da implementare");
+                        Profilo profilo = new Profilo();
+                        profilo.selezionaProfilo();
                         break;
                     case Riconoscimenti:
                         Riconoscimenti riconoscimenti = new Riconoscimenti();
