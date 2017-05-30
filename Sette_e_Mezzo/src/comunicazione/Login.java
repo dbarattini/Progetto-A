@@ -27,6 +27,7 @@ public class Login {
         try {
             in = new DataInputStream(socketClient.getInputStream());
             out = new DataOutputStream(socketClient.getOutputStream());
+            tastiera = new Scanner(System.in);
             
             System.out.println("[0] - provo a connettermi al server...");
             int port = 8080;
@@ -38,10 +39,11 @@ public class Login {
             System.err.println("Impossibile connnettersi al server");
         }
     }
-    
+    /**
+     * 
+     */
     public void comunica() {
         System.out.println("[3] - cosa vuoi fare? \n\t registrazione \n\t login \n\t convalida \n\t recupero");
-        tastiera = new Scanner(System.in);
         String messaggio = tastiera.nextLine();
         try {
             if (messaggio == "registrazione") {
@@ -66,7 +68,6 @@ public class Login {
 
     private void registrazione() {
         System.out.println("[4] - inserire email, user e psw separate da uno spazio:");
-        tastiera = new Scanner(System.in);
         String messaggio = tastiera.nextLine();
         String[] stringa_per_verifica = new String[3];        
         try {
@@ -97,7 +98,6 @@ public class Login {
     private void login() {
         
         System.out.println("[4] - inserire username (o email) e psw separate da uno spazio: ");
-        tastiera = new Scanner(System.in);
         String credenziali = tastiera.nextLine();
         String[] stringa_per_verifica = new String[2];
         
@@ -128,7 +128,6 @@ public class Login {
 
     private void convalida() {
         System.out.println("[4] - inserire il codice di convalida:");
-        tastiera = new Scanner(System.in);
         String codice = tastiera.nextLine();
         
         try {
@@ -151,7 +150,6 @@ public class Login {
 
     private void recupero() {
         System.out.println("[4] - inserire l'email per il recupero della psw:");
-        tastiera = new Scanner(System.in);
         String email = tastiera.nextLine();
         
         try {
