@@ -95,7 +95,7 @@ public class Login {
 
     
     private void login() {
-        /*
+        
         System.out.println("[4] - inserire username (o email) e psw separate da uno spazio: ");
         tastiera = new Scanner(System.in);
         String credenziali = tastiera.nextLine();
@@ -122,7 +122,7 @@ public class Login {
         } catch (ArrayIndexOutOfBoundsException ex) {
             System.err.println("messaggio inserito non valido");            
         }
-        */
+        
     }
 
     private void convalida() {
