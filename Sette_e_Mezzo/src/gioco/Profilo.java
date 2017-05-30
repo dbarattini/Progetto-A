@@ -18,7 +18,6 @@ import java.util.Scanner;
  */
 public class Profilo {
     
-    private GiocatoreUmano giocatore;
     private SQL db;
     
 
