@@ -1,7 +1,6 @@
 package gioco;
 
 import DB.Database;
-import DB.SQL;
 import eccezioni.DifficoltaBotException;
 import eccezioni.FichesInizialiException;
 import eccezioni.NumeroBotException;

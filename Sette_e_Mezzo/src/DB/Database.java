@@ -20,6 +20,16 @@ public class Database {
         this.db = new SQL();
     }
     
+    /**
+     * 
+     * @param nome
+     * @param fiches
+     * @throws datoGiaPresente 
+     * 
+     * Aggiunge il profilo al DB se non esiste, altrimenti toglie la quota di ingresso al profilo già esistente. 
+     * Se la quota di ingresso è maggiore delle fiches di quel profilo, resetta le fiches di quel profilo a 0
+     */
+    
     public void inserisciProfilo(String nome, int fiches) throws datoGiaPresente {
         if(!db.esisteNome(nome))
             db.aggiungiDato(nome, 0, 0);
@@ -44,6 +54,13 @@ public class Database {
 //            db.setFiches(nome, newfiches);
 //        }       
 //    }   
+    
+    /**
+     * 
+     * @param g giocatore che vince la partita
+     * 
+     * Aggiunge la vittoria al profilo del vincitore e aggiorna le fiches di quel profilo
+     */
     
     public void vittoria(Giocatore g) {
         db.aggiungiVittoria(g.getNome());

@@ -6,8 +6,6 @@
 package gioco;
 
 import DB.SQL;
-import eccezioni.NameNotFoundException;
-import giocatori.GiocatoreUmano;
 import static java.lang.System.in;
 import static java.lang.System.out;
 import java.util.Scanner;
@@ -26,7 +24,6 @@ public class Profilo {
     }
 
     public void selezionaProfilo() {
-        
         while(true) {
             printOpzioniProfilo();
             scegliProfilo();
