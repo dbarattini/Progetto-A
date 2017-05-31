@@ -1,5 +1,6 @@
 package partitaOnline.model;
 
+import dominio.eccezioni.MazziereDisconnesso;
 import partitaOnline.events.AggiornamentoMazziere;
 import partitaOnline.events.MazzierePerde;
 import partitaOnline.events.FineRound;
@@ -141,31 +142,38 @@ public class PartitaOnlineModel extends Observable {
     }
 
     private void gioca_round() throws InterruptedException, MazzierePerdeException {
-        int pos_mazziere = giocatori.indexOf(mazziere);
-        int pos_next_giocatore = pos_mazziere + 1;
-        Giocatore giocatore;
+        try {
+            int pos_mazziere = giocatori.indexOf(mazziere);
+            int pos_next_giocatore = pos_mazziere + 1;
+            Giocatore giocatore;
 
-        inizializza_round();
-        distribuisci_carta_coperta();
-        effettua_puntate();
-        for (int i = 0; i < giocatori.size(); i++) {
+            inizializza_round();
+            distribuisci_carta_coperta();
+            effettua_puntate();
+            for (int i = 0; i < giocatori.size(); i++) {
 
-            if (pos_next_giocatore == giocatori.size()) {
-                pos_next_giocatore = 0;
-            }
-            giocatore = getProssimoGiocatore(pos_next_giocatore);
-            if (!giocatore.haPerso() && !giocatore.isDisconnesso()) {
-                esegui_mano(giocatore);
-                if (giocatore instanceof Giocatore && giocatore.getStato() != Stato.OK) {
-
-                    this.eventoPerTutti(new RisultatoManoParticolare());
-
-                    Thread.sleep(pausa_lunga);
+                if (pos_next_giocatore == giocatori.size()) {
+                    pos_next_giocatore = 0;
                 }
+                giocatore = getProssimoGiocatore(pos_next_giocatore);
+                if (mazziere.isDisconnesso()) {
+                    throw new MazziereDisconnesso();
+                }
+                if (!giocatore.haPerso() && !giocatore.isDisconnesso()) {
+                    esegui_mano(giocatore);
+                    if (giocatore instanceof Giocatore && giocatore.getStato() != Stato.OK) {
+
+                        this.eventoPerTutti(new RisultatoManoParticolare());
+
+                        Thread.sleep(pausa_lunga);
+                    }
+                }
+                this.eventoPerTutti(new FineManoAvversario(giocatore.getNome(), giocatore.getCarteScoperte(), giocatore.getStato(), giocatore.getPuntata()));
+                Thread.sleep(pausa_breve);
+                pos_next_giocatore += 1;
             }
-            this.eventoPerTutti(new FineManoAvversario(giocatore.getNome(), giocatore.getCarteScoperte(), giocatore.getStato(), giocatore.getPuntata()));
-            Thread.sleep(pausa_breve);
-            pos_next_giocatore += 1;
+        } catch (MazziereDisconnesso e) {
+            
         }
     }
 
