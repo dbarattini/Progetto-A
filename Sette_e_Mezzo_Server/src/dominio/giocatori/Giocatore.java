@@ -67,10 +67,12 @@ public class Giocatore implements Observer {
         else{
             String messaggio = String.valueOf(arg);
             String dati[] = messaggio.split(" ");
-            if (dati[1].equals("SetPuntata")) {
-                PuntataInserita(dati[2]);
-            } else if (dati[1].equals("SetGiocata")) {
-                GiocataInserita(dati[2]);
+            if(dati[0].equals("evento")){
+                if (dati[1].equals("SetPuntata")) {
+                    PuntataInserita(dati[2]);
+                } else if (dati[1].equals("SetGiocata")) {
+                    GiocataInserita(dati[2]);
+                }
             }
         }
     }
