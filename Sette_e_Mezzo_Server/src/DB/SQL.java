@@ -238,6 +238,8 @@ public class SQL {
      */
     public String getPassword(String user) throws SqlOccupato {
         try {
+            if(user.contains("@"))
+                user=getUser(user);
             Class.forName("org.sqlite.JDBC");
             c = DriverManager.getConnection("jdbc:sqlite:setteEmezzo.db");
             c.setAutoCommit(false);
