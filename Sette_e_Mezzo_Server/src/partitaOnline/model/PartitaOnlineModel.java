@@ -1,6 +1,5 @@
 package partitaOnline.model;
 
-import dominio.eccezioni.MazziereDisconnesso;
 import partitaOnline.events.AggiornamentoMazziere;
 import partitaOnline.events.MazzierePerde;
 import partitaOnline.events.FineRound;
@@ -142,39 +141,44 @@ public class PartitaOnlineModel extends Observable {
     }
 
     private void gioca_round() throws InterruptedException, MazzierePerdeException {
-        try {
-            int pos_mazziere = giocatori.indexOf(mazziere);
-            int pos_next_giocatore = pos_mazziere + 1;
-            Giocatore giocatore;
 
-            inizializza_round();
-            distribuisci_carta_coperta();
-            effettua_puntate();
-            for (int i = 0; i < giocatori.size(); i++) {
+        int pos_mazziere = giocatori.indexOf(mazziere);
+        int pos_next_giocatore = pos_mazziere + 1;
+        Giocatore giocatore;
 
-                if (pos_next_giocatore == giocatori.size()) {
-                    pos_next_giocatore = 0;
-                }
-                giocatore = getProssimoGiocatore(pos_next_giocatore);
-                if (mazziere.isDisconnesso()) {
-                    throw new MazziereDisconnesso();
-                }
-                if (!giocatore.haPerso() && !giocatore.isDisconnesso()) {
-                    esegui_mano(giocatore);
-                    if (giocatore instanceof Giocatore && giocatore.getStato() != Stato.OK) {
+        inizializza_round();
+        distribuisci_carta_coperta();
+        effettua_puntate();
+        for (int i = 0; i < giocatori.size(); i++) {
 
-                        this.eventoPerTutti(new RisultatoManoParticolare());
-
-                        Thread.sleep(pausa_lunga);
-                    }
-                }
-                this.eventoPerTutti(new FineManoAvversario(giocatore.getNome(), giocatore.getCarteScoperte(), giocatore.getStato(), giocatore.getPuntata()));
-                Thread.sleep(pausa_breve);
-                pos_next_giocatore += 1;
+            if (pos_next_giocatore == giocatori.size()) {
+                pos_next_giocatore = 0;
             }
-        } catch (MazziereDisconnesso e) {
-            
+            giocatore = getProssimoGiocatore(pos_next_giocatore);
+            if (!giocatore.haPerso() && !giocatore.isDisconnesso()) {
+                esegui_mano(giocatore);
+                if (giocatore.getStato() != Stato.OK) {
+
+                    this.eventoPerTutti(new RisultatoManoParticolare());
+
+                    Thread.sleep(pausa_lunga);
+                }
+            } else if (giocatore.isDisconnesso() && giocatore.isMazziere()) {
+                gestisciDisconnessioneMazziere(giocatore);
+            }
+            this.eventoPerTutti(new FineManoAvversario(giocatore.getNome(), giocatore.getCarteScoperte(), giocatore.getStato(), giocatore.getPuntata()));
+            Thread.sleep(pausa_breve);
+            pos_next_giocatore += 1;
         }
+
+    }
+
+    private void gestisciDisconnessioneMazziere(Giocatore giocatore) throws InterruptedException {
+        this.eventoPerTutti(new Error("mazziere disconnesso"));
+        giocatore.setStato(Stato.Sballato);
+        this.eventoPerTutti(new RisultatoManoParticolare());
+
+        Thread.sleep(pausa_lunga);
     }
 
     private void inizializza_round() {
