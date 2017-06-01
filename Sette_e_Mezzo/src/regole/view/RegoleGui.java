@@ -1,13 +1,14 @@
 package regole.view;
 
 import java.awt.BorderLayout;
-import java.awt.TextArea;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
-public class RegoleGui extends JFrame {
+public class RegoleGui extends JFrame{
     
     public RegoleGui(){
         
@@ -18,7 +19,7 @@ public class RegoleGui extends JFrame {
         setLayout(new BorderLayout());
         
         JPanel pannello = new JPanel();
-        TextArea regole  = new TextArea("REGOLE DI GIOCO:\n"
+        JTextArea regole  = new JTextArea("REGOLE DI GIOCO:\n"
                         + "\n"
                         + "All'inizio del gioco ogni giocatore riceve una carta, non visibile agli altri giocatori.\n"
                         + "Successivamente si sceglie la puntata del round, che va da un minimo di 1 a un massimo di tutto ciò che si possiede.\n"
@@ -32,19 +33,19 @@ public class RegoleGui extends JFrame {
                         + "mentre in caso di sette e mezzo reale, si verrà pagati il doppio della posta e, al turno successivo,\n"
                         + "si diverrà mazzieri.\n"
                         + "Buon sette e mezzo!");    
-        
         regole.setEditable(false);
         add(regole, BorderLayout.CENTER);
         
-                        
         JButton indietro = new JButton("INDIETRO");
-        add(indietro, BorderLayout.PAGE_END);
+        indietro.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                dispose();
+            }
+            
+        });
+        add(indietro, BorderLayout.SOUTH);
         
-        
-     
         setVisible(true);
     }
-
-   
-
 }
