@@ -46,8 +46,6 @@ public class PartitaOfflineModel extends Observable {
     private Giocatore next_mazziere = null;
     public static StatoGioco stato_gioco = StatoGioco.menu;
     public static int LARGHEZZA = 1280, ALTEZZA = 720;
-    private int pausa_breve = 1000; //ms
-    private int pausa_lunga = 2000; //ms
     private int n_bot;
     private int n_bot_sconfitti = 0;
     private DifficoltaBot difficolta_bot;
@@ -81,9 +79,7 @@ public class PartitaOfflineModel extends Observable {
      * Consente di giocare una partita di sette e mezzo.
      * @throws InterruptedException
      */
-    public void gioca() throws InterruptedException{
-        Thread.sleep(pausa_breve);
-        
+    public void gioca(){
         estrai_mazziere();
         
         this.setChanged();
@@ -156,7 +152,7 @@ public class PartitaOfflineModel extends Observable {
         this.nome_giocatore = nome_giocatore;
     }
 
-    private void estrai_mazziere() throws InterruptedException {
+    private void estrai_mazziere(){
         Carta carta_estratta;
         
         mazzo.mischia();
@@ -176,7 +172,7 @@ public class PartitaOfflineModel extends Observable {
         mazziere.setMazziere(true);
     }
 
-    private void gioca_round() throws InterruptedException, MazzierePerdeException {
+    private void gioca_round() throws MazzierePerdeException{
         int pos_mazziere = giocatori.indexOf(mazziere);
         int pos_next_giocatore = pos_mazziere + 1;
         Giocatore giocatore;
@@ -195,14 +191,11 @@ public class PartitaOfflineModel extends Observable {
                     
                     this.setChanged();
                     this.notifyObservers(new RisultatoManoParticolare());
-                    
-                    Thread.sleep(pausa_lunga);
                 }
             }
             if(! (giocatore instanceof GiocatoreUmano)){
                 this.setChanged();
                 this.notifyObservers(new FineManoAvversario(giocatore.getNome(), giocatore.getCarteScoperte(),giocatore.getStato(), giocatore.getPuntata()));
-                Thread.sleep(pausa_breve);
             }
             pos_next_giocatore += 1;
         }
@@ -345,14 +338,12 @@ public class PartitaOfflineModel extends Observable {
        }
    }
     
-    private void fine_round() throws InterruptedException{
+    private void fine_round(){
         boolean game_over = false;
         for(Giocatore giocatore : giocatori){
             
             this.setChanged();
             this.notifyObservers(new FineRound(giocatore));
-            
-            Thread.sleep(pausa_breve);
             if(giocatore.getFiches() == 0 && ! giocatore.haPerso()){
                 if(giocatore instanceof GiocatoreUmano){
                     giocatore.perde();
@@ -379,7 +370,6 @@ public class PartitaOfflineModel extends Observable {
             this.setChanged();
             this.notifyObservers(new AggiornamentoMazziere());
         }
-        Thread.sleep(pausa_lunga);
     }
     
     private void aggiorna_mazziere(){

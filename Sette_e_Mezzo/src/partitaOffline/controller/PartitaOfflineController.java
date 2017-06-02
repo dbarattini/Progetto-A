@@ -24,11 +24,7 @@ public class PartitaOfflineController implements ViewEventListener{
     public void run(){
         this.model.inizializza_partita();
         model.addGiocatoreLocaleEventListener(view);
-        try {
-            this.model.gioca();
-        } catch (InterruptedException ex) {
-            Logger.getLogger(PartitaOfflineController.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        this.model.gioca();
     }
 
     @Override
