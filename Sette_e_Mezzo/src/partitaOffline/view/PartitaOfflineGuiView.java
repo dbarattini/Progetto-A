@@ -177,8 +177,12 @@ public class PartitaOfflineGuiView extends JFrame implements PartitaOfflineView,
         sfondo.repaint();
             
         while(nome == null) {
-            System.out.println("In attesa del nome");
-        } // da risolvere: while vuoto non funziona, con qualsiasi azione funziona
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException ex) {
+                Logger.getLogger(PartitaOfflineGuiView.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
             
         sfondo.remove(askNome);
         sfondo.remove(askNomeButton);
