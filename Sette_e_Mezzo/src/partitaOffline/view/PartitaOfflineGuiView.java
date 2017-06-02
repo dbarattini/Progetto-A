@@ -35,22 +35,23 @@ import partitaOffline.events.RichiediNome;
 import partitaOffline.events.RichiediPuntata;
 import partitaOffline.events.RisultatoManoParticolare;
 import partitaOffline.events.SetNome;
+import partitaOffline.events.SetPuntata;
 import partitaOffline.events.Vittoria;
 
 public class PartitaOfflineGuiView extends JFrame implements PartitaOfflineView, Observer{
     private CopyOnWriteArrayList<ViewEventListener> listeners;
     private PartitaOfflineModel model;    
     private Sfondo sfondo;
-    private String nome;
-    private JTextField askNome;
-    private JButton askNomeButton;
-    private JLabel askNomeLabel;
-    private Map<String, JLabel> cartePlayer, carteG1, carteG2, carteG3, carteG4;
+    private String nome, puntataStr;
+    private JTextField askNome, puntata;
+    //private JButton askNomeButton;
+    //private JLabel askNomeLabel;
+    //private Map<String, JLabel> cartePlayer, carteG1, carteG2, carteG3, carteG4;
     //private JLabel nomePlayer, nomeG1, nomeG2, nomeG3, nomeG4;
     //private JLabel fichesPlayer, fichesG1, fichesG2, fichesG3, fichesG4;
     //private JLabel valoreMPlayer, valoreMG1, valoreMG2, valoreMG3, valoreMG4;
-    int pausa_breve = 1000; //ms
-    int pausa_lunga = 2000; //ms
+    private final int pausa_breve = 1000; //ms
+    private final int pausa_lunga = 2000; //ms
     
     
     public PartitaOfflineGuiView(PartitaOfflineModel model) {
@@ -143,8 +144,8 @@ public class PartitaOfflineGuiView extends JFrame implements PartitaOfflineView,
     public void richiediNome() {
         nome = null;
         askNome = new JTextField();
-        askNomeButton = new JButton(caricaImmagine("dominio/immagini/fatto.png"));
-        askNomeLabel = new JLabel(caricaImmagine("dominio/immagini/richiediNome.png"));
+        JButton askNomeButton = new JButton(caricaImmagine("dominio/immagini/fatto.png"));
+        JLabel askNomeLabel = new JLabel(caricaImmagine("dominio/immagini/richiediNome.png"));
             
         askNome.setFont(new Font("nome", 1, 40));
             
@@ -170,9 +171,7 @@ public class PartitaOfflineGuiView extends JFrame implements PartitaOfflineView,
             } catch (InterruptedException ex) {}
         }
             
-        sfondo.remove(askNome);
-        sfondo.remove(askNomeButton);
-        sfondo.remove(askNomeLabel); 
+        sfondo.removeAll(); 
         sfondo.repaint();
             
         fireViewEvent(new SetNome(nome));
@@ -222,7 +221,7 @@ public class PartitaOfflineGuiView extends JFrame implements PartitaOfflineView,
         for(int i = 0; i < nGiocatori; i++)
             stampaNomeFiches(i, nGiocatori - 1, model.getGiocatori().get(i));
         
-        stampaPlayersButtons();
+        
         
         
         
@@ -285,9 +284,9 @@ public class PartitaOfflineGuiView extends JFrame implements PartitaOfflineView,
         JButton punta = new JButton();
         JTextField puntata = new JTextField();
         
-        stai.setBounds(1060, 580, 140, 60);  // mettere a posto le posizioni
-        punta.setBounds(1060, 500, 140, 60);
-        puntata.setBounds(900, 500, 140, 60);
+        stai.setBounds(1060, 580, 140, 56);  // mettere a posto le posizioni
+        punta.setBounds(1060, 500, 140, 56);
+        puntata.setBounds(900, 500, 140, 56);
         
         sfondo.add(stai);
         sfondo.add(punta);
@@ -296,5 +295,39 @@ public class PartitaOfflineGuiView extends JFrame implements PartitaOfflineView,
     }
     
     public void richiediPuntata() {
+        puntataStr = null;
+        JButton punta = new JButton(caricaImmagine("dominio/immagini/punta.png"));
+        puntata = new JTextField();
+        
+        punta.setBounds(1060, 500, 140, 56);
+        puntata.setBounds(900, 500, 140, 56);
+        
+        Font font = new Font("Puntata", Font.BOLD, 15);
+        puntata.setFont(font);
+        puntata.setForeground(Color.black);
+        
+        punta.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                puntataStr = puntata.getText();
+            };
+        });
+        
+        sfondo.add(punta);
+        sfondo.add(puntata);
+        sfondo.repaint();
+        
+        while(puntataStr == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException ex) {}
+        }
+            
+        sfondo.removeAll();
+        for(int i = 0; i < model.getGiocatori().size(); i++)
+            stampaNomeFiches(i, model.getGiocatori().size() - 1, model.getGiocatori().get(i));
+        sfondo.repaint();
+            
+        fireViewEvent(new SetPuntata(puntataStr));
     }
 }
