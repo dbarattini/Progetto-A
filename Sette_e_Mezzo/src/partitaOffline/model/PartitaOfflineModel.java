@@ -30,6 +30,8 @@ import dominio.gioco.StatoGioco;
 import java.util.ArrayList;
 import java.util.Observable;
 import dominio.musica.AudioPlayer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import partitaOffline.events.EstrattoMazziere;
 import partitaOffline.events.GiocatoreLocaleEventListener;
 import partitaOffline.events.MazzoRimescolato;
@@ -45,7 +47,6 @@ public class PartitaOfflineModel extends Observable {
     private Giocatore mazziere = null;
     private Giocatore next_mazziere = null;
     public static StatoGioco stato_gioco = StatoGioco.menu;
-    public static int LARGHEZZA = 1280, ALTEZZA = 720;
     private int pausa_breve = 1000; //ms
     private int pausa_lunga = 2000; //ms
     private int n_bot;

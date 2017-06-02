@@ -8,7 +8,6 @@ import java.awt.Color;
 import partitaOffline.model.PartitaOfflineModel;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -17,8 +16,6 @@ import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -39,10 +36,9 @@ import partitaOffline.events.RichiediPuntata;
 import partitaOffline.events.RisultatoManoParticolare;
 import partitaOffline.events.SetNome;
 import partitaOffline.events.Vittoria;
-import partitaOffline.model.GiocatoreUmano;
 
 public class PartitaOfflineGuiView extends JFrame implements PartitaOfflineView, Observer{
-    private final CopyOnWriteArrayList<ViewEventListener> listeners;
+    private CopyOnWriteArrayList<ViewEventListener> listeners;
     private PartitaOfflineModel model;    
     private Sfondo sfondo;
     private String nome;
@@ -58,7 +54,7 @@ public class PartitaOfflineGuiView extends JFrame implements PartitaOfflineView,
     
     
     public PartitaOfflineGuiView(PartitaOfflineModel model) {
-        this.listeners = new CopyOnWriteArrayList<>();
+        listeners = new CopyOnWriteArrayList<>();                
         this.model = model;
         this.model.addObserver(this);
         
@@ -71,22 +67,13 @@ public class PartitaOfflineGuiView extends JFrame implements PartitaOfflineView,
 	setLocationRelativeTo(null);
         
         sfondo = new Sfondo("dominio/immagini/sfondo.png", 1275, 690);
-        sfondo.setBounds(0, 0, PartitaOfflineModel.LARGHEZZA, PartitaOfflineModel.ALTEZZA);
+        sfondo.setBounds(0, 0, 1280, 720);
         add(sfondo);
-        
-        // carte di prova
-//        JLabel carta = new JLabel(caricaImmagine("dominio/immagini/AssoDenari.png"));
-//        carta.setBounds(100, 100, 76, 120);
-//        sfondo.add(carta);
-        
-//        JLabel carta2 = new JLabel(caricaImmagine("dominio/immagini/AssoDenari.png"));
-//        carta2.setBounds(600, 100, 76, 120);
-//        sfondo.add(carta2);
         
         setVisible(true);
     }
     
-    public ImageIcon caricaImmagine(String nome){
+    public ImageIcon caricaImmagine(String nome) {
 	ClassLoader caricatore = getClass().getClassLoader();
 	URL percorso = caricatore.getResource(nome);
 	return new ImageIcon(percorso);
@@ -145,6 +132,7 @@ public class PartitaOfflineGuiView extends JFrame implements PartitaOfflineView,
     public void GiocatoreLocaleEventReceived(GiocatoreLocaleEvent evt) {
         if(evt.getArg() instanceof RichiediPuntata){
             //todo richiede la puntata al giocatore
+            richiediPuntata();
         } else if(evt.getArg() instanceof Error){
             //todo mostra l'errore al giocatore
         } else if(evt.getArg() instanceof RichiediGiocata){
@@ -175,7 +163,7 @@ public class PartitaOfflineGuiView extends JFrame implements PartitaOfflineView,
         sfondo.add(askNomeButton);
         sfondo.add(askNomeLabel);            
         sfondo.repaint();
-            
+        
         while(nome == null) {
             System.out.println("In attesa del nome");
         } // da risolvere: while vuoto non funziona, con qualsiasi azione funziona
@@ -231,6 +219,11 @@ public class PartitaOfflineGuiView extends JFrame implements PartitaOfflineView,
         sfondo.removeAll();
         for(int i = 0; i < nGiocatori; i++)
             stampaNomeFiches(i, nGiocatori - 1, model.getGiocatori().get(i));
+        
+        stampaPlayersButtons();
+        
+        
+        
         sfondo.repaint();
     }
     
@@ -283,5 +276,24 @@ public class PartitaOfflineGuiView extends JFrame implements PartitaOfflineView,
         
         sfondo.add(cartaPescata);        
         sfondo.repaint();
+    }
+    
+    public void stampaPlayersButtons() {
+        JButton stai = new JButton();
+        JButton punta = new JButton();
+        JTextField puntata = new JTextField();
+        
+        stai.setBounds(1060, 580, 140, 60);  // mettere a posto le posizioni
+        punta.setBounds(1060, 500, 140, 60);
+        puntata.setBounds(900, 500, 140, 60);
+        
+        sfondo.add(stai);
+        sfondo.add(punta);
+        sfondo.add(puntata);
+        sfondo.repaint();
+    }
+    
+    public void richiediPuntata() {
+        JButton
     }
 }

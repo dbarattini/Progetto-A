@@ -7,9 +7,9 @@ import partitaOffline.view.PartitaOfflineConsoleView;
 
 
 public class PartitaOfflineConsole {
-    private final PartitaOfflineModel model;
-    private final PartitaOfflineConsoleView view;
-    private final PartitaOfflineController controller;
+    private PartitaOfflineModel model;
+    private PartitaOfflineConsoleView view;
+    private PartitaOfflineController controller;
 
     public PartitaOfflineConsole(int n_bot, DifficoltaBot difficolta_bot, int fiches_iniziali) {
         model = new PartitaOfflineModel(n_bot, difficolta_bot, fiches_iniziali);

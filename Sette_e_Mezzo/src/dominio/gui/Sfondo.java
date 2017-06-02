@@ -21,6 +21,7 @@ public class Sfondo extends JPanel {
     }
     
     // disegna l'immagine sull'interfaccia con le giuste proporzioni
+    @Override
     public void paint(Graphics g) {
         g.drawImage(image, 0, 0, larghezza, altezza, this);
 	super.paint(g);
