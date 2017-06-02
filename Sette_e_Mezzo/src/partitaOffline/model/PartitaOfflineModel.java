@@ -84,8 +84,6 @@ public class PartitaOfflineModel extends Observable {
     public void gioca() throws InterruptedException{
         Thread.sleep(pausa_breve);
         
-        Thread.sleep(pausa_breve);
-        
         estrai_mazziere();
         
         this.setChanged();
@@ -123,33 +121,12 @@ public class PartitaOfflineModel extends Observable {
         audio.carica("LoungeBeat.wav", "soundTrack");
     }
     
-    public void inizializza_partita(int numero_bot, DifficoltaBot difficolta_bot, int fiches_iniziali){
-        try {
-            inizzializza_fiches(fiches_iniziali);
-            inizializza_bots(numero_bot, fiches_iniziali, difficolta_bot); 
-            inizializza_giocatore(fiches_iniziali);
-        }catch (NumeroBotException ex) {
-            this.setChanged();
-            this.notifyObservers(new Error("Errore: Il numero di bot dev'essere un valore compreso tra 1 ed 11."));
-        }catch (FichesInizialiException ex) {
-            this.setChanged();
-            this.notifyObservers(new Error("Errore: Il numero di fiches iniziali dev'essere maggiore di 0."));
-        }catch (DifficoltaBotException ex) {
-            this.setChanged();
-            this.notifyObservers(new Error("Errore: Le difficolta disponibili sono: Facile, Medio, Difficile."));
-        } 
-    }
-
-    private void inizzializza_fiches(int fiches_iniziali) throws FichesInizialiException {
-        if(fiches_iniziali <= 0){
-            throw new FichesInizialiException();
-        }
+    public void inizializza_partita(){
+        inizializza_bots(n_bot, fiches_iniziali, difficolta_bot); 
+        inizializza_giocatore(fiches_iniziali);
     }
     
-    private void inizializza_bots(int numero_bot, int fiches_iniziali, DifficoltaBot difficolta_bot) throws NumeroBotException, DifficoltaBotException{
-        if(numero_bot <= 0 || numero_bot >= 12){
-            throw new NumeroBotException();
-        }
+    private void inizializza_bots(int numero_bot, int fiches_iniziali, DifficoltaBot difficolta_bot){
         for(int i = 0; i < numero_bot; i++){
             switch(difficolta_bot){
                 case Facile : {
@@ -163,8 +140,7 @@ public class PartitaOfflineModel extends Observable {
                 case Difficile : {
                     giocatori.add(new BotDifficile("bot"+i, fiches_iniziali, mazzo));
                     break;
-                }
-                default: throw new DifficoltaBotException();       
+                }       
             }
         }
     }

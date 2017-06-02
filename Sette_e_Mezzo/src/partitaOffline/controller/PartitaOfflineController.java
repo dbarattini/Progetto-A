@@ -22,7 +22,7 @@ public class PartitaOfflineController implements ViewEventListener{
     }
     
     public void run(){
-        this.model.inizializza_partita(this.model.getN_bot(), this.model.getDifficolta_bot(), this.model.getFiches_iniziali());
+        this.model.inizializza_partita();
         model.addGiocatoreLocaleEventListener(view);
         try {
             this.model.gioca();
