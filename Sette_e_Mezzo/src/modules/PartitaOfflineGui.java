@@ -15,7 +15,14 @@ public class PartitaOfflineGui {
         model = new PartitaOfflineModel(n_bot, difficolta_bot, fiches_iniziali);
         view = new PartitaOfflineGuiView(model);
         controller = new PartitaOfflineController(model, view);
+        Runnable runnable = new Runnable(){ //il controller va lanciato su un nuovo thread altrimenti entra in conflitto con la GUI
+            @Override
+            public void run() {
+                controller.run();
+            }
+        };
         
-        controller.run();
+        Thread thread = new Thread(runnable);
+        thread.start();
     } 
 }

@@ -82,11 +82,7 @@ public class PartitaOfflineModel extends Observable {
      * Consente di giocare una partita di sette e mezzo.
      * @throws InterruptedException
      */
-    public void gioca() throws InterruptedException{
-        Thread.sleep(pausa_breve);
-        
-        Thread.sleep(pausa_breve);
-        
+    public void gioca(){
         estrai_mazziere();
         
         this.setChanged();
@@ -124,33 +120,12 @@ public class PartitaOfflineModel extends Observable {
         audio.carica("LoungeBeat.wav", "soundTrack");
     }
     
-    public void inizializza_partita(int numero_bot, DifficoltaBot difficolta_bot, int fiches_iniziali){
-        try {
-            inizzializza_fiches(fiches_iniziali);
-            inizializza_bots(numero_bot, fiches_iniziali, difficolta_bot); 
-            inizializza_giocatore(fiches_iniziali);
-        }catch (NumeroBotException ex) {
-            this.setChanged();
-            this.notifyObservers(new Error("Errore: Il numero di bot dev'essere un valore compreso tra 1 ed 11."));
-        }catch (FichesInizialiException ex) {
-            this.setChanged();
-            this.notifyObservers(new Error("Errore: Il numero di fiches iniziali dev'essere maggiore di 0."));
-        }catch (DifficoltaBotException ex) {
-            this.setChanged();
-            this.notifyObservers(new Error("Errore: Le difficolta disponibili sono: Facile, Medio, Difficile."));
-        } 
-    }
-
-    private void inizzializza_fiches(int fiches_iniziali) throws FichesInizialiException {
-        if(fiches_iniziali <= 0){
-            throw new FichesInizialiException();
-        }
+    public void inizializza_partita(){
+        inizializza_bots(n_bot, fiches_iniziali, difficolta_bot); 
+        inizializza_giocatore(fiches_iniziali);
     }
     
-    private void inizializza_bots(int numero_bot, int fiches_iniziali, DifficoltaBot difficolta_bot) throws NumeroBotException, DifficoltaBotException{
-        if(numero_bot <= 0 || numero_bot >= 12){
-            throw new NumeroBotException();
-        }
+    private void inizializza_bots(int numero_bot, int fiches_iniziali, DifficoltaBot difficolta_bot){
         for(int i = 0; i < numero_bot; i++){
             switch(difficolta_bot){
                 case Facile : {
@@ -164,8 +139,7 @@ public class PartitaOfflineModel extends Observable {
                 case Difficile : {
                     giocatori.add(new BotDifficile("bot"+i, fiches_iniziali, mazzo));
                     break;
-                }
-                default: throw new DifficoltaBotException();       
+                }       
             }
         }
     }
@@ -181,7 +155,7 @@ public class PartitaOfflineModel extends Observable {
         this.nome_giocatore = nome_giocatore;
     }
 
-    private void estrai_mazziere() throws InterruptedException {
+    private void estrai_mazziere(){
         Carta carta_estratta;
         
         mazzo.mischia();
@@ -201,7 +175,7 @@ public class PartitaOfflineModel extends Observable {
         mazziere.setMazziere(true);
     }
 
-    private void gioca_round() throws InterruptedException, MazzierePerdeException {
+    private void gioca_round() throws MazzierePerdeException{
         int pos_mazziere = giocatori.indexOf(mazziere);
         int pos_next_giocatore = pos_mazziere + 1;
         Giocatore giocatore;
@@ -220,14 +194,11 @@ public class PartitaOfflineModel extends Observable {
                     
                     this.setChanged();
                     this.notifyObservers(new RisultatoManoParticolare());
-                    
-                    Thread.sleep(pausa_lunga);
                 }
             }
             if(! (giocatore instanceof GiocatoreUmano)){
                 this.setChanged();
                 this.notifyObservers(new FineManoAvversario(giocatore.getNome(), giocatore.getCarteScoperte(),giocatore.getStato(), giocatore.getPuntata()));
-                Thread.sleep(pausa_breve);
             }
             pos_next_giocatore += 1;
         }
@@ -370,14 +341,12 @@ public class PartitaOfflineModel extends Observable {
        }
    }
     
-    private void fine_round() throws InterruptedException{
+    private void fine_round(){
         boolean game_over = false;
         for(Giocatore giocatore : giocatori){
             
             this.setChanged();
             this.notifyObservers(new FineRound(giocatore));
-            
-            Thread.sleep(pausa_breve);
             if(giocatore.getFiches() == 0 && ! giocatore.haPerso()){
                 if(giocatore instanceof GiocatoreUmano){
                     giocatore.perde();
@@ -404,7 +373,6 @@ public class PartitaOfflineModel extends Observable {
             this.setChanged();
             this.notifyObservers(new AggiornamentoMazziere());
         }
-        Thread.sleep(pausa_lunga);
     }
     
     private void aggiorna_mazziere(){

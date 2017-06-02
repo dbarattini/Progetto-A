@@ -29,7 +29,6 @@ public class MenuPrePartitaConsole{
         richiediNumeroBot();
         richiediDifficoltaBot();
         richiediFichesIniziali();
-        System.out.println(numero_bot + " " + difficolta_bot + " " + fiches_iniziali);
         new PartitaOfflineConsole(numero_bot,difficolta_bot, fiches_iniziali);
     }
 

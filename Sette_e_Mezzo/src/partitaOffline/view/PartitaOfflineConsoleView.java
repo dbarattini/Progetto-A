@@ -29,8 +29,8 @@ import partitaOffline.model.PartitaOfflineModel;
 
 public class PartitaOfflineConsoleView implements PartitaOfflineView, Observer{
     private final CopyOnWriteArrayList<ViewEventListener> listeners;
-    private PartitaOfflineModel model;
-    private Scanner scanner;
+    private final PartitaOfflineModel model;
+    private final Scanner scanner;
     int pausa_breve = 1000; //ms
     int pausa_lunga = 2000; //ms
 
@@ -73,23 +73,14 @@ public class PartitaOfflineConsoleView implements PartitaOfflineView, Observer{
         System.out.println("  -----------------------------  ");
         System.out.println("<      ESTRAZIONE MAZZIERE      >");
         System.out.println("  -----------------------------  \n");
-        try {
-            Thread.sleep(pausa_breve);
-        } catch (InterruptedException ex) {
-        }
+        pausa(pausa_breve);
         for(Giocatore giocatore : model.getGiocatori()){
             mostra_carta_coperta_e_valore_mano(giocatore);
-            try {
-                Thread.sleep(pausa_breve);
-            } catch (InterruptedException ex) {
-            }
+            pausa(pausa_breve);
         }
         stampa_messaggio_mazziere();
         System.out.println("---------------------------------"); 
-        try {
-            Thread.sleep(pausa_lunga);
-        } catch (InterruptedException ex) {
-        }
+        pausa(pausa_lunga);
     }
     
     private void mostra_carta_coperta_e_valore_mano(Giocatore giocatore){
@@ -106,6 +97,7 @@ public class PartitaOfflineConsoleView implements PartitaOfflineView, Observer{
             richiediNome();
         }else if(arg instanceof Error){
             System.err.println(((Error) arg).getMessage());
+            pausa(pausa_breve);
         } else if(arg instanceof EstrattoMazziere){
             stampaSchermataEstrazioneMazziere();
         } else if(arg instanceof MazzoRimescolato){
@@ -115,28 +107,35 @@ public class PartitaOfflineConsoleView implements PartitaOfflineView, Observer{
         } else if(arg instanceof FineManoAvversario){
             FineManoAvversario avversario = (FineManoAvversario) arg;
             System.out.println(avversario.getNome() + " " + avversario.getCarteScoperte() + " " + avversario.getStato() + " " + avversario.getPuntata());
+            pausa(pausa_breve);
         } else if(arg instanceof FineRound){
             Giocatore giocatore = ((FineRound) arg).getGiocatore();
             if(giocatore.equals(model.getGiocatori().get(0))){
+                pausa(pausa_lunga);
                 System.out.print("\n");
             }
             System.out.println(giocatore.haPerso() + " " + giocatore.isMazziere() + " " + giocatore.getNome() + " " + giocatore.getTutteLeCarte() + " " + giocatore.getValoreMano() + " "+ giocatore.getStato() + " " + giocatore.getFiches());
             if(giocatore.equals(model.getGiocatori().get(model.getGiocatori().size() - 1))){
-                System.out.println("---------------------------------\n");
+                pausa(pausa_lunga);
+            } else {
+                pausa(pausa_breve);
             }
-        
         } else if(arg instanceof MazzierePerde){
             System.out.println("\n");
             System.out.println("--> Il mazziere ha perso <--");
+            pausa(pausa_breve);
         } else if(arg instanceof AggiornamentoMazziere){
             System.out.println("\n");
             System.out.println("--> il nuovo mazziere é: " + model.getMazziere().getNome() + " <--\n");
+            pausa(pausa_breve);
         } else if(arg instanceof GameOver){
             System.out.println("\n");
             System.out.println("--> Game Over <--");
+            pausa(pausa_breve);
         } else if(arg instanceof Vittoria){
             System.out.println("\n");
             System.out.println("--> Complimenti! Hai sconfitto tutti i bot <--");
+            pausa(pausa_breve);
         }
     }
 
@@ -146,6 +145,7 @@ public class PartitaOfflineConsoleView implements PartitaOfflineView, Observer{
             richiediPuntata(evt);
         } else if(evt.getArg() instanceof Error){
             System.err.println(((Error)evt.getArg()).getMessage());
+            pausa(pausa_breve);
         } else if(evt.getArg() instanceof RichiediGiocata){
             richiediGiocata(evt);
         }
@@ -175,11 +175,7 @@ public class PartitaOfflineConsoleView implements PartitaOfflineView, Observer{
 
     private void stampaSchermataRimescolaMazzo() {
         System.out.println("\n--> Rimescolo il mazzo <--\n");
-        try {
-            Thread.sleep(pausa_lunga);
-        } catch (InterruptedException ex) {
-            Logger.getLogger(PartitaOfflineConsoleView.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        pausa(pausa_lunga);
     }
 
     private void stampaSchermataManoParticolare() {
@@ -187,6 +183,14 @@ public class PartitaOfflineConsoleView implements PartitaOfflineView, Observer{
         System.out.println("Valore Mano: " + model.getGiocatoreLocale().getValoreMano());
         System.out.println("--> " + model.getGiocatoreLocale().getStato() + " <--");
         System.out.print("\n");
+        pausa(pausa_lunga);
     }
     
+    private void pausa(int tempo){
+        try {
+            Thread.sleep(tempo);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(PartitaOfflineConsoleView.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    } 
 }
