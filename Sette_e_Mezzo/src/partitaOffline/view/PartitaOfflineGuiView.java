@@ -136,6 +136,8 @@ public class PartitaOfflineGuiView extends JFrame implements PartitaOfflineView,
             richiediPuntata();
         } else if(evt.getArg() instanceof Error){
             //todo mostra l'errore al giocatore
+            String errore = evt.getArg().toString();
+            JOptionPane.showMessageDialog(null, errore, "Errore !!!", JOptionPane.ERROR_MESSAGE);
         } else if(evt.getArg() instanceof RichiediGiocata){
             //todo richiede la giocata al giocatore
         }
@@ -279,21 +281,6 @@ public class PartitaOfflineGuiView extends JFrame implements PartitaOfflineView,
         sfondo.repaint();
     }
     
-    public void stampaPlayersButtons() {
-        JButton stai = new JButton();
-        JButton punta = new JButton();
-        JTextField puntata = new JTextField();
-        
-        stai.setBounds(1060, 580, 140, 56);  // mettere a posto le posizioni
-        punta.setBounds(1060, 500, 140, 56);
-        puntata.setBounds(900, 500, 140, 56);
-        
-        sfondo.add(stai);
-        sfondo.add(punta);
-        sfondo.add(puntata);
-        sfondo.repaint();
-    }
-    
     public void richiediPuntata() {
         puntataStr = null;
         JButton punta = new JButton(caricaImmagine("dominio/immagini/punta.png"));
@@ -329,5 +316,17 @@ public class PartitaOfflineGuiView extends JFrame implements PartitaOfflineView,
         sfondo.repaint();
             
         fireViewEvent(new SetPuntata(puntataStr));
+    }
+    
+    public void stampaPlayersGiocataButtons() {
+        JButton stai = new JButton();
+        JTextField puntata = new JTextField();
+        
+        stai.setBounds(1060, 580, 140, 56);
+        puntata.setBounds(900, 500, 140, 56);
+        
+        sfondo.add(stai);
+        sfondo.add(puntata);
+        sfondo.repaint();
     }
 }
