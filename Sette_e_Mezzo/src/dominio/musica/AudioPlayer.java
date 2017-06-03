@@ -59,6 +59,17 @@ public class AudioPlayer {
             }
         }
     }
+    
+    public void riavvia_in_loop(String s) throws CanzoneNonTrovataException{
+        if(!muto) {
+            try{
+                riavvolgi(s);
+                riproduci_in_loop(s);
+            } catch(NullPointerException e){
+                throw new CanzoneNonTrovataException(s);
+            }
+        }
+    }
 	
     public void ferma(String s) throws CanzoneNonTrovataException {
         try{

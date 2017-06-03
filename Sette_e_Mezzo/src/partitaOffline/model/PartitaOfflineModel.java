@@ -113,6 +113,7 @@ public class PartitaOfflineModel extends Observable {
     
     private void inizializza_audio() throws CaricamentoCanzoneException{
         audio.carica("LoungeBeat.wav", "soundTrack");
+        audio.carica("deckShuffle.wav", "deckShuffle");
     }
     
     public void inizializza_partita(){
@@ -414,5 +415,9 @@ public class PartitaOfflineModel extends Observable {
 
     public GiocatoreUmano getGiocatoreLocale() {
         return giocatore_locale;
+    }
+    
+    public AudioPlayer getAudio() {
+        return audio;
     }
 }
