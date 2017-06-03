@@ -2,7 +2,6 @@ package partitaOffline.events;
 
 import dominio.classi_dati.Stato;
 import dominio.elementi_di_gioco.Carta;
-import dominio.giocatori.Giocatore;
 import java.util.ArrayList;
 
 /**

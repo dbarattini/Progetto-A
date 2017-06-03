@@ -16,6 +16,8 @@ import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -34,6 +36,7 @@ import partitaOffline.events.RichiediGiocata;
 import partitaOffline.events.RichiediNome;
 import partitaOffline.events.RichiediPuntata;
 import partitaOffline.events.RisultatoManoParticolare;
+import partitaOffline.events.SetGiocata;
 import partitaOffline.events.SetNome;
 import partitaOffline.events.SetPuntata;
 import partitaOffline.events.Vittoria;
@@ -42,8 +45,9 @@ public class PartitaOfflineGuiView extends JFrame implements PartitaOfflineView,
     private CopyOnWriteArrayList<ViewEventListener> listeners;
     private PartitaOfflineModel model;    
     private Sfondo sfondo;
-    private String nome, puntataStr;
+    private String nome, puntataStr, giocata;
     private JTextField askNome, puntata;
+    private JButton carta, stai;
     //private JButton askNomeButton;
     //private JLabel askNomeLabel;
     //private Map<String, JLabel> cartePlayer, carteG1, carteG2, carteG3, carteG4;
@@ -112,6 +116,7 @@ public class PartitaOfflineGuiView extends JFrame implements PartitaOfflineView,
             estrazioneMazziere();
         } else if(arg instanceof MazzoRimescolato){
             //todo mostra il rimescolamento del mazzo
+            rimescoloMazzo();
         } else if(arg instanceof RisultatoManoParticolare){
             //todo mostra lo stato particolare di una mano (Sette e mezzo, reale, sballato)
         } else if(arg instanceof FineManoAvversario){
@@ -140,6 +145,7 @@ public class PartitaOfflineGuiView extends JFrame implements PartitaOfflineView,
             JOptionPane.showMessageDialog(null, errore, "Errore !!!", JOptionPane.ERROR_MESSAGE);
         } else if(evt.getArg() instanceof RichiediGiocata){
             //todo richiede la giocata al giocatore
+            stampaPlayersGiocataButtons();
         }
     }
     
@@ -222,11 +228,7 @@ public class PartitaOfflineGuiView extends JFrame implements PartitaOfflineView,
         sfondo.removeAll();
         for(int i = 0; i < nGiocatori; i++)
             stampaNomeFiches(i, nGiocatori - 1, model.getGiocatori().get(i));
-        
-        
-        
-        
-        
+                
         sfondo.repaint();
     }
     
@@ -273,11 +275,11 @@ public class PartitaOfflineGuiView extends JFrame implements PartitaOfflineView,
     }
     
     public void stampaCarta(int x, int y, String carta) {
-        JLabel cartaPescata = new JLabel(new ImageIcon(caricaImmagine("dominio/immagini/mazzo/" + carta + ".png").getImage().getScaledInstance(75, 75*3/2, Image.SCALE_DEFAULT)));
+        JLabel card = new JLabel(new ImageIcon(caricaImmagine("dominio/immagini/mazzo/" + carta + ".png").getImage().getScaledInstance(75, 75*3/2, Image.SCALE_DEFAULT)));
         
-        cartaPescata.setBounds(x, y, 75, 75*3/2);        
+        card.setBounds(x, y, 75, 75*3/2);        
         
-        sfondo.add(cartaPescata);        
+        sfondo.add(card);        
         sfondo.repaint();
     }
     
@@ -316,17 +318,89 @@ public class PartitaOfflineGuiView extends JFrame implements PartitaOfflineView,
         sfondo.repaint();
             
         fireViewEvent(new SetPuntata(puntataStr));
+        
+        try {
+            Thread.sleep(pausa_breve);
+        } catch (InterruptedException ex) {}
     }
     
     public void stampaPlayersGiocataButtons() {
-        JButton stai = new JButton();
-        JTextField puntata = new JTextField();
+        giocata = null;
+        carta = new JButton(caricaImmagine("dominio/immagini/carta.png"));
+        stai = new JButton(caricaImmagine("dominio/immagini/stai.png"));
         
-        stai.setBounds(1060, 580, 140, 56);
-        puntata.setBounds(900, 500, 140, 56);
+        carta.setBounds(1060, 580, 140, 56);
+        stai.setBounds(1060, 500, 140, 56);
         
+        carta.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                giocata = "carta";
+            };
+        });
+        
+        stai.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                giocata = "sto";
+            };
+        });
+        
+        sfondo.add(carta);
         sfondo.add(stai);
-        sfondo.add(puntata);
         sfondo.repaint();
+        
+        while(giocata == null) {
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException ex) {}
+        }
+        
+        fireViewEvent(new SetGiocata(giocata));
+            
+        sfondo.remove(carta);
+        sfondo.remove(stai);
+        sfondo.repaint();
+    }
+    
+    public void rimescoloMazzo() {
+        Font font = new Font("Deck Shuffle", Font.BOLD, 70);
+        JLabel rimescoloMsg = new JLabel("Rimescolo il mazzo...");
+        rimescoloMsg.setFont(font);
+        rimescoloMsg.setForeground(Color.black);
+        int strWidth = rimescoloMsg.getFontMetrics(font).stringWidth("Rimescolo il mazzo...");
+        rimescoloMsg.setBounds(this.getWidth()/2 - strWidth/2, this.getHeight()/2, strWidth, 90);
+        
+        sfondo.add(rimescoloMsg);
+        sfondo.repaint();
+        
+        for(int i = 0; i < 15; i++)
+            stampaCartaMobileDeckShuffle(this.getWidth()/2 - 187 - i*5, this.getHeight()/2 - 100, "retroCarta", i);
+        
+        try {
+                Thread.sleep(pausa_breve);
+        } catch (InterruptedException ex) {}
+        
+        sfondo.removeAll();
+        for(int i = 0; i < model.getGiocatori().size(); i++)
+            stampaNomeFiches(i, model.getGiocatori().size() - 1, model.getGiocatori().get(i));
+        sfondo.repaint();
+    }
+    
+    public void stampaCartaMobileDeckShuffle(int x, int y, String carta, int spazio) {
+        JLabel card = new JLabel(new ImageIcon(caricaImmagine("dominio/immagini/mazzo/" + carta + ".png").getImage().getScaledInstance(75, 75*3/2, Image.SCALE_DEFAULT)));
+        
+        card.setBounds(x, y, 75, 75*3/2);        
+        
+        sfondo.add(card);
+        sfondo.repaint();
+        
+        for(int i = 0; i < ((this.getWidth()/2 + 20) - x - 8*spazio); i++) {
+            card.setLocation(x + i, y);
+            try {
+                Thread.sleep(1);
+            } catch (InterruptedException ex) {}
+            sfondo.repaint();
+        }
     }
 }

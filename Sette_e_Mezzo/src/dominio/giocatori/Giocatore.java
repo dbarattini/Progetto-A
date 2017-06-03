@@ -1,7 +1,6 @@
 package dominio.giocatori;
 
 
-import dominio.eccezioni.MazzierePerdeException;
 import dominio.eccezioni.SetteeMezzoException;
 import dominio.eccezioni.SetteeMezzoRealeException;
 import dominio.eccezioni.SballatoException;

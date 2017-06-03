@@ -2,8 +2,6 @@ package partitaOffline.controller;
 
 import dominio.view.ViewEvent;
 import dominio.view.ViewEventListener;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import partitaOffline.events.SetGiocata;
 import partitaOffline.events.SetNome;
 import partitaOffline.events.SetPuntata;
