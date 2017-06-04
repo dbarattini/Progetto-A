@@ -40,7 +40,7 @@ public class AudioPlayer {
         }
     }
     
-    private void riavvolgi(String s) throws CanzoneNonTrovataException{
+    public void riavvolgi(String s) throws CanzoneNonTrovataException{
         if(!muto) {
             try{
                 musica.get(s).setFramePosition(0);
