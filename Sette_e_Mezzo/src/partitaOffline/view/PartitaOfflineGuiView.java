@@ -1,6 +1,7 @@
 package partitaOffline.view;
 
 import dominio.eccezioni.CanzoneNonTrovataException;
+import dominio.eccezioni.MattaException;
 import dominio.elementi_di_gioco.Carta;
 import dominio.giocatori.Giocatore;
 import dominio.gui.Sfondo;
@@ -108,27 +109,28 @@ public class PartitaOfflineGuiView extends JFrame implements PartitaOfflineView,
     
     @Override
     public void update(Observable o, Object arg) {
-        if(arg instanceof RichiediNome){
+        if(arg instanceof RichiediNome) {
             //mostra la richiesta del nome al giocatore  
             richiediNome();            
-        } else if(arg instanceof Error){
+        } else if(arg instanceof Error) {
             //mostra l'errore a video
             String errore = ((Error) arg).getMessage();
             JOptionPane.showMessageDialog(null, errore, "Errore !!!", JOptionPane.ERROR_MESSAGE);
-        } else if(arg instanceof EstrattoMazziere){
+        } else if(arg instanceof EstrattoMazziere) {
             //mostra l'estrazione del mazziere
             estrazioneMazziere();
-        } else if(arg instanceof MazzoRimescolato){
+        } else if(arg instanceof MazzoRimescolato) {
             //mostra il rimescolamento del mazzo
             rimescoloMazzo();
-        } else if(arg instanceof RisultatoManoParticolare){
+        } else if(arg instanceof RisultatoManoParticolare) {
             //todo mostra lo stato particolare di una mano (Sette e mezzo, reale, sballato)
             manoParticolarePlayer();
-        } else if(arg instanceof FineManoAvversario){
+        } else if(arg instanceof FineManoAvversario) {
             //todo mostra il risultato della mano di un avversario
             if(needCartaCoperta)
                 stampaCartaCoperta();
-        } else if(arg instanceof FineRound){ //provvisorio
+            stampaManoAvversario(((FineManoAvversario) arg).getNome());
+        } else if(arg instanceof FineRound) { //provvisorio
             //todo mostra le statistiche di fine round
             if(!needCartaCoperta)
                 pausa(pausa_breve);
@@ -136,29 +138,29 @@ public class PartitaOfflineGuiView extends JFrame implements PartitaOfflineView,
             sfondo.removeAll();            
             for(int i = 0; i < model.getGiocatori().size(); i++)
                 stampaNomeFiches(i, model.getGiocatori().size() - 1, model.getGiocatori().get(i));            
-        } else if(arg instanceof MazzierePerde){
+        } else if(arg instanceof MazzierePerde) {
             //todo mostra che il mazziere ha perso
-        } else if(arg instanceof AggiornamentoMazziere){
+        } else if(arg instanceof AggiornamentoMazziere) {
             //todo mostra che é stato scelto un nuovo mazziere
-        } else if(arg instanceof GameOver){
+        } else if(arg instanceof GameOver) {
             //todo mostra che il giocatore ha perso
-        } else if(arg instanceof Vittoria){
+        } else if(arg instanceof Vittoria) {
             //todo mostra che il giocatore ha vinto
         }
     }
 
     @Override
     public void GiocatoreLocaleEventReceived(GiocatoreLocaleEvent evt) {
-        if(evt.getArg() instanceof RichiediPuntata){
+        if(evt.getArg() instanceof RichiediPuntata) {
             //richiede la puntata al giocatore
             if(needCartaCoperta)
                 stampaCartaCoperta();
             richiediPuntata();
-        } else if(evt.getArg() instanceof Error){
+        } else if(evt.getArg() instanceof Error) {
             //mostra l'errore al giocatore
             String errore = ((Error) evt.getArg()).getMessage();
             JOptionPane.showMessageDialog(null, errore, "Errore !!!", JOptionPane.ERROR_MESSAGE);
-        } else if(evt.getArg() instanceof RichiediGiocata){
+        } else if(evt.getArg() instanceof RichiediGiocata) {
             //richiede la giocata al giocatore
             stampaGiocataPlayer();
             if(needCartaCoperta)
@@ -269,7 +271,7 @@ public class PartitaOfflineGuiView extends JFrame implements PartitaOfflineView,
         int nBot = model.getGiocatori().size() - 1;
         int index = model.getGiocatori().indexOf(giocatore);
         JLabel valoreManoGiocatore = new JLabel("Valore mano:   " + giocatore.getValoreMano());
-        
+
         Font font = new Font("Player", Font.BOLD, 25);
         valoreManoGiocatore.setFont(font);
         valoreManoGiocatore.setForeground(Color.black);
@@ -300,10 +302,12 @@ public class PartitaOfflineGuiView extends JFrame implements PartitaOfflineView,
     public void richiediPuntata() {
         puntataStr = null;
         JButton punta = new JButton(caricaImmagine("dominio/immagini/punta.png"));
+        JButton allIN = new JButton(caricaImmagine("dominio/immagini/all_in.png"));
         JLabel valoreMano = stampaValoreMano(model.getGiocatoreLocale());
         puntata = new JTextField();
         
         punta.setBounds(1060, 500, 140, 56);
+        allIN.setBounds(1060, 570, 140, 56);
         puntata.setBounds(900, 500, 140, 56);
         
         Font font = new Font("Puntata", Font.BOLD, 25);
@@ -317,7 +321,15 @@ public class PartitaOfflineGuiView extends JFrame implements PartitaOfflineView,
             };
         });
         
+        allIN.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                puntataStr = String.valueOf(model.getGiocatoreLocale().getFiches());
+            };
+        });
+        
         sfondo.add(punta);
+        sfondo.add(allIN);
         sfondo.add(puntata);
         sfondo.add(valoreMano);
         sfondo.repaint();
@@ -327,6 +339,7 @@ public class PartitaOfflineGuiView extends JFrame implements PartitaOfflineView,
         }
             
         sfondo.remove(punta);
+        sfondo.remove(allIN);
         sfondo.remove(puntata);
         sfondo.repaint();
         sfondo.remove(valoreMano);
@@ -339,14 +352,12 @@ public class PartitaOfflineGuiView extends JFrame implements PartitaOfflineView,
     public void stampaGiocataPlayer() {
         giocata = null;
         Carta lastCard;
-        JLabel ultimaCarta, valoreMano;
         if(!model.getGiocatoreLocale().getCarteScoperte().isEmpty()) {
             lastCard = model.getGiocatoreLocale().getUltimaCartaOttenuta();
-            ultimaCarta = null;
             int index = model.getGiocatoreLocale().getCarteScoperte().indexOf(lastCard);            
-            ultimaCarta = stampaCarta(this.getWidth()/2 - 95 + index*35, 3*this.getHeight()/4 - 60, lastCard.toString());
+            stampaCarta(this.getWidth()/2 - 95 + index*35, 3*this.getHeight()/4 - 60, lastCard.toString());
         }
-        valoreMano = stampaValoreMano(model.getGiocatoreLocale());
+        JLabel valoreMano = stampaValoreMano(model.getGiocatoreLocale());
         carta = new JButton(caricaImmagine("dominio/immagini/carta.png"));
         stai = new JButton(caricaImmagine("dominio/immagini/stai.png"));
         
@@ -473,6 +484,22 @@ public class PartitaOfflineGuiView extends JFrame implements PartitaOfflineView,
         sfondo.remove(valoreMano);
         
         needCartaCoperta = false;
+    }
+    
+    public void stampaManoAvversario(String nome) {
+        Giocatore giocatore = null;
+        for(Giocatore gioc : model.getGiocatori()) {
+            if(gioc.getNome().equals(nome))
+                giocatore = gioc;
+        }
+        int index = model.getGiocatori().indexOf(giocatore);
+        
+        if(!giocatore.getCarteScoperte().isEmpty()) {
+            for(int i = 0; i < giocatore.getCarteScoperte().size(); i++) {
+                stampaCarta((this.getWidth()*(2*index+1))/((model.getGiocatori().size()-1)*2) - 95 + i*35, 180, giocatore.getCartaCoperta().toString());                
+                pausa(pausa_breve);
+            }
+        }
     }
     
     private void pausa(int tempo){
