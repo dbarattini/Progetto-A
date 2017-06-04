@@ -495,8 +495,10 @@ public class PartitaOfflineGuiView extends JFrame implements PartitaOfflineView,
         int index = model.getGiocatori().indexOf(giocatore);
         
         if(!giocatore.getCarteScoperte().isEmpty()) {
+            Carta carta_scoperta;
             for(int i = 0; i < giocatore.getCarteScoperte().size(); i++) {
-                stampaCarta((this.getWidth()*(2*index+1))/((model.getGiocatori().size()-1)*2) - 95 + i*35, 180, giocatore.getCartaCoperta().toString());                
+                carta_scoperta = giocatore.getCarteScoperte().get(i);
+                stampaCarta((this.getWidth()*(2*index+1))/((model.getGiocatori().size()-1)*2) - 95 + i*35, 180, carta_scoperta.toString());                
                 pausa(pausa_breve);
             }
         }
