@@ -114,7 +114,8 @@ public class PartitaOfflineGuiView extends JFrame implements PartitaOfflineView,
         } else if(arg instanceof Error){
             //mostra l'errore a video
             String errore = arg.toString();
-            JOptionPane.showMessageDialog(null, errore, "Errore !!!", JOptionPane.ERROR_MESSAGE);
+            String[] erroreClean = errore.split(":");
+            JOptionPane.showMessageDialog(null, erroreClean[1], "Errore !!!", JOptionPane.ERROR_MESSAGE);
         } else if(arg instanceof EstrattoMazziere){
             //mostra l'estrazione del mazziere
             estrazioneMazziere();
@@ -157,7 +158,8 @@ public class PartitaOfflineGuiView extends JFrame implements PartitaOfflineView,
         } else if(evt.getArg() instanceof Error){
             //mostra l'errore al giocatore
             String errore = evt.getArg().toString();
-            JOptionPane.showMessageDialog(null, errore, "Errore !!!", JOptionPane.ERROR_MESSAGE);
+            String[] erroreClean = errore.split(":");
+            JOptionPane.showMessageDialog(null, erroreClean[1], "Errore !!!", JOptionPane.ERROR_MESSAGE);
         } else if(evt.getArg() instanceof RichiediGiocata){
             //richiede la giocata al giocatore
             stampaGiocataPlayer();
