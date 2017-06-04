@@ -52,6 +52,8 @@ public class PartitaOfflineGuiView extends JFrame implements PartitaOfflineView,
     private String nome, puntataStr, giocata;
     private JTextField askNome, puntata;
     private JButton carta, stai;
+    private boolean needCartaCoperta = true;
+    private ArrayList<JLabel> carteCoperteBots = new ArrayList<>();
     //private JButton askNomeButton;
     //private JLabel askNomeLabel;
     //private Map<String, JLabel> cartePlayer, carteG1, carteG2, carteG3, carteG4;
@@ -126,8 +128,16 @@ public class PartitaOfflineGuiView extends JFrame implements PartitaOfflineView,
             manoParticolarePlayer();
         } else if(arg instanceof FineManoAvversario){
             //todo mostra il risultato della mano di un avversario
-        } else if(arg instanceof FineRound){
+            if(needCartaCoperta)
+                stampaCartaCoperta();
+        } else if(arg instanceof FineRound){ //provvisorio
             //todo mostra le statistiche di fine round
+            if(!needCartaCoperta)
+                pausa(pausa_breve);
+            needCartaCoperta = true;
+            sfondo.removeAll();            
+            for(int i = 0; i < model.getGiocatori().size(); i++)
+                stampaNomeFiches(i, model.getGiocatori().size() - 1, model.getGiocatori().get(i));            
         } else if(arg instanceof MazzierePerde){
             //todo mostra che il mazziere ha perso
         } else if(arg instanceof AggiornamentoMazziere){
@@ -143,6 +153,8 @@ public class PartitaOfflineGuiView extends JFrame implements PartitaOfflineView,
     public void GiocatoreLocaleEventReceived(GiocatoreLocaleEvent evt) {
         if(evt.getArg() instanceof RichiediPuntata){
             //richiede la puntata al giocatore
+            if(needCartaCoperta)
+                stampaCartaCoperta();
             richiediPuntata();
         } else if(evt.getArg() instanceof Error){
             //mostra l'errore al giocatore
@@ -151,6 +163,8 @@ public class PartitaOfflineGuiView extends JFrame implements PartitaOfflineView,
         } else if(evt.getArg() instanceof RichiediGiocata){
             //richiede la giocata al giocatore
             stampaGiocataPlayer();
+            if(needCartaCoperta)
+                stampaCartaCoperta();
         }
     }
     
@@ -288,12 +302,13 @@ public class PartitaOfflineGuiView extends JFrame implements PartitaOfflineView,
     public void richiediPuntata() {
         puntataStr = null;
         JButton punta = new JButton(caricaImmagine("dominio/immagini/punta.png"));
+        JLabel valoreMano = stampaValoreMano(model.getGiocatoreLocale());
         puntata = new JTextField();
         
         punta.setBounds(1060, 500, 140, 56);
         puntata.setBounds(900, 500, 140, 56);
         
-        Font font = new Font("Puntata", Font.BOLD, 15);
+        Font font = new Font("Puntata", Font.BOLD, 25);
         puntata.setFont(font);
         puntata.setForeground(Color.black);
         
@@ -306,16 +321,17 @@ public class PartitaOfflineGuiView extends JFrame implements PartitaOfflineView,
         
         sfondo.add(punta);
         sfondo.add(puntata);
+        sfondo.add(valoreMano);
         sfondo.repaint();
         
         while(puntataStr == null) {
             pausa(100);
         }
             
-        sfondo.removeAll();
-        for(int i = 0; i < model.getGiocatori().size(); i++)
-            stampaNomeFiches(i, model.getGiocatori().size() - 1, model.getGiocatori().get(i));
+        sfondo.remove(punta);
+        sfondo.remove(puntata);
         sfondo.repaint();
+        sfondo.remove(valoreMano);
             
         fireViewEvent(new SetPuntata(puntataStr));
         
@@ -426,7 +442,39 @@ public class PartitaOfflineGuiView extends JFrame implements PartitaOfflineView,
     private void manoParticolarePlayer() {
         Carta ultimaOttenuta = model.getGiocatoreLocale().getUltimaCartaOttenuta();
         int index = model.getGiocatoreLocale().getCarteScoperte().indexOf(ultimaOttenuta);
-        stampaCarta(this.getWidth()/2 - 125 + index*35, 3*this.getHeight()/4 - 60, ultimaOttenuta.toString());
+        stampaCarta(this.getWidth()/2 - 95 + index*35, 3*this.getHeight()/4 - 60, ultimaOttenuta.toString());
+    }
+    
+    private void stampaCartaCoperta() {
+        pausa(pausa_breve);
+        int nGiocatori = model.getGiocatori().size();
+        
+        JLabel valoreMano = null;
+        Font font = new Font("Carte Coperte msg", Font.BOLD, 70);
+        JLabel messaggioCartaCoperta = new JLabel("Distribuisco carta coperta...");
+        messaggioCartaCoperta.setFont(font);
+        messaggioCartaCoperta.setForeground(Color.black);
+        int strWidth = messaggioCartaCoperta.getFontMetrics(font).stringWidth("Distribuisco carta coperta...");
+        messaggioCartaCoperta.setBounds(this.getWidth()/2 - strWidth/2, this.getHeight()/2 - 60, strWidth, 90);
+        
+        sfondo.add(messaggioCartaCoperta);
+        sfondo.repaint();
+        
+        for(int i = 0; i < nGiocatori; i++) {
+            if(i != nGiocatori - 1)
+                carteCoperteBots.add(stampaCarta((this.getWidth()*(2*i+1))/((nGiocatori-1)*2) - 125, 180, "retroCarta"));
+            else {
+                stampaCarta(this.getWidth()/2 - 125, 3*this.getHeight()/4 - 60, model.getGiocatori().get(i).getCartaCoperta().toString());
+                valoreMano = stampaValoreMano(model.getGiocatoreLocale());
+            }
+            pausa(pausa_breve);
+        }
+        
+        sfondo.remove(messaggioCartaCoperta);
+        sfondo.repaint();
+        sfondo.remove(valoreMano);
+        
+        needCartaCoperta = false;
     }
     
     private void pausa(int tempo){
