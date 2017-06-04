@@ -173,19 +173,21 @@ public class PartitaOfflineGuiView extends JFrame implements PartitaOfflineView,
         askNome = new JTextField();
         JButton askNomeButton = new JButton(caricaImmagine("dominio/immagini/fatto.png"));
         JLabel askNomeLabel = new JLabel(caricaImmagine("dominio/immagini/richiediNome.png"));
+        ActionListener action_nome_inserito = new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                nome = askNome.getText();
+            };
+        };
             
         askNome.setFont(new Font("nome", 1, 40));
             
         askNome.setBounds(this.getWidth()/2 - 125, 300, 250, 80);
         askNomeButton.setBounds(this.getWidth()/2 - 100, 400, 200, 80);
         askNomeLabel.setBounds(this.getWidth()/2 - 200, 100, 400, 80);
-            
-        askNomeButton.addActionListener(new ActionListener(){
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                nome = askNome.getText();
-            };
-        });
+        
+        askNome.addActionListener(action_nome_inserito);  
+        askNomeButton.addActionListener(action_nome_inserito);
             
         sfondo.add(askNome);
         sfondo.add(askNomeButton);
