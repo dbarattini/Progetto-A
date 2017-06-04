@@ -52,7 +52,7 @@ public class PartitaOfflineGuiView extends JFrame implements PartitaOfflineView,
     private JTextField askNome, puntata;
     private JButton carta, stai;
     private boolean needCartaCoperta = true;
-    private ArrayList<JLabel> carteCoperteBots = new ArrayList<>();
+    private ArrayList<JLabel> carteCoperteBots = new ArrayList<>(), valoriManoBots = new ArrayList<>();
     //private JButton askNomeButton;
     //private JLabel askNomeLabel;
     //private Map<String, JLabel> cartePlayer, carteG1, carteG2, carteG3, carteG4;
@@ -488,6 +488,7 @@ public class PartitaOfflineGuiView extends JFrame implements PartitaOfflineView,
     
     public void stampaManoAvversario(String nome) {
         Giocatore giocatore = null;
+        JLabel valoreMano = null;
         for(Giocatore gioc : model.getGiocatori()) {
             if(gioc.getNome().equals(nome))
                 giocatore = gioc;
@@ -495,11 +496,41 @@ public class PartitaOfflineGuiView extends JFrame implements PartitaOfflineView,
         int index = model.getGiocatori().indexOf(giocatore);
         
         if(!giocatore.getCarteScoperte().isEmpty()) {
-            for(int i = 0; i < giocatore.getCarteScoperte().size(); i++) {
-                stampaCarta((this.getWidth()*(2*index+1))/((model.getGiocatori().size()-1)*2) - 95 + i*35, 180, giocatore.getCartaCoperta().toString());                
+            for(int i = 0; i < giocatore.getCarteScoperte().size(); i++) {                
+                valoreMano = stampaValoreManoAvversario(giocatore, i+1);
+                stampaCarta((this.getWidth()*(2*index+1))/((model.getGiocatori().size()-1)*2) - 95 + i*35, 180, giocatore.getCarteScoperte().get(i).toString());                                
                 pausa(pausa_breve);
+                sfondo.remove(valoreMano);
+            }
+            valoriManoBots.add(stampaValoreManoAvversario(giocatore, giocatore.getCarteScoperte().size()));
+        }
+    }
+    
+    public JLabel stampaValoreManoAvversario(Giocatore giocatore, int carte) {
+        int nBot = model.getGiocatori().size() - 1;
+        int index = model.getGiocatori().indexOf(giocatore);
+        double valoreMano = 0;
+        
+        for(int i = 0; i < carte; i++) {
+            try {
+                valoreMano += giocatore.getCarteScoperte().get(i).getValoreNumerico();
+            } catch (MattaException ex) {
+                Logger.getLogger(PartitaOfflineGuiView.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+        
+        JLabel valoreManoGiocatore = new JLabel("Valore mano:   " + valoreMano);
+
+        Font font = new Font("Player", Font.BOLD, 25);
+        valoreManoGiocatore.setFont(font);
+        valoreManoGiocatore.setForeground(Color.black);
+        
+        valoreManoGiocatore.setBounds((this.getWidth()*(2*index+1))/(nBot*2) - 125, 120, 350, 40);
+        
+        sfondo.add(valoreManoGiocatore);
+        sfondo.repaint();
+        
+        return valoreManoGiocatore;
     }
     
     private void pausa(int tempo){
