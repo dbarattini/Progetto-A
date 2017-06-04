@@ -11,12 +11,10 @@ import java.awt.Color;
 import partitaOffline.model.PartitaOfflineModel;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -277,9 +275,9 @@ public class PartitaOfflineGuiView extends JFrame implements PartitaOfflineView,
         valoreManoGiocatore.setForeground(Color.black);
         
         if(index != nBot) { // bot
-            valoreManoGiocatore.setBounds((this.getWidth()*(2*index+1))/(nBot*2) - 125, 120, 250, 40);
+            valoreManoGiocatore.setBounds((this.getWidth()*(2*index+1))/(nBot*2) - 125, 120, 350, 40);
         } else { // player
-            valoreManoGiocatore.setBounds(this.getWidth()/4 - 175, 3*this.getHeight()/4 + 20, 250, 40);
+            valoreManoGiocatore.setBounds(this.getWidth()/4 - 175, 3*this.getHeight()/4 + 20, 350, 40);
         }
         
         sfondo.add(valoreManoGiocatore);
