@@ -22,7 +22,7 @@ public class StatoCambiato {
 
     @Override
     public String toString() {
-        return "cambia\tStato\t" + nome + " " + stato;
+        return "cambia\tStatoCambiato\t" + nome + " " + stato;
     }
     
     
