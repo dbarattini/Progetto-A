@@ -22,7 +22,7 @@ public class SetPuntata implements Serializable{
      */
     @Override
     public String toString() {
-        return "evento\tSetPuntata\t"+puntata;
+        return "evento SetPuntata "+puntata;
     }
     
 }

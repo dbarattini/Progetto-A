@@ -22,7 +22,7 @@ public class SetGiocata implements Serializable{
      */
     @Override
     public String toString() {
-        return "evento\tSetGiocata\t"+giocata;
+        return "evento SetGiocata "+giocata;
     }
     
     

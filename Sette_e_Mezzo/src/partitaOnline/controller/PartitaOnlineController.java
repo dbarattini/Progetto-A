@@ -9,6 +9,7 @@ import dominio.view.ViewEventListener;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Observable;
@@ -24,17 +25,18 @@ import partitaOnline.events.*;
 
 
 public class PartitaOnlineController extends Observable implements ViewEventListener, Observer{
-    private PartitaOfflineModel model;
     private PartitaOfflineView view;
     private Leggi leggi;
     private ArrayList<Giocatore> giocatori=new ArrayList<>();
+    private final PrintWriter aServer;
 
-    public PartitaOnlineController(PartitaOfflineModel model, PartitaOfflineView view, Socket socket) {
+    public PartitaOnlineController( PartitaOfflineView view, Socket socket) {
         try {
-            this.model = model;
+            
             this.view = view;
             view.addPartitaOfflineViewEventListener(this);
             this.leggi=new Leggi(new BufferedReader(new InputStreamReader(socket.getInputStream())));
+            this.aServer = new PrintWriter(socket.getOutputStream(), true);
             leggi.addObserver(this);
             Thread t = new Thread(leggi);
             t.start();
@@ -44,23 +46,15 @@ public class PartitaOnlineController extends Observable implements ViewEventList
     }
     
     public void run(){
-        this.model.inizializza_partita(this.model.getN_bot(), this.model.getDifficolta_bot(), this.model.getFiches_iniziali());
-        model.addGiocatoreLocaleEventListener(view);
-        try {
-            this.model.gioca();
-        } catch (InterruptedException ex) {
-            Logger.getLogger(PartitaOnlineController.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        
     }
 
     @Override
     public void ViewEventReceived(ViewEvent evt) {
-        if(evt.getArg() instanceof SetNome){
-            model.setNomeGiocatore(((SetNome)evt.getArg()).getNome());
-        } else if(evt.getArg() instanceof SetPuntata){
-        model.getGiocatoreLocale().PuntataInserita(((SetPuntata)evt.getArg()).getPuntata());
+        if(evt.getArg() instanceof SetPuntata){
+            aServer.println(((SetPuntata)evt.getArg()).toString());
         } else if(evt.getArg() instanceof SetGiocata){
-            model.getGiocatoreLocale().GiocataInserita(((SetGiocata)evt.getArg()).getGiocata());
+            aServer.println(((SetGiocata)evt.getArg()).toString());;
         }
     }   
 
