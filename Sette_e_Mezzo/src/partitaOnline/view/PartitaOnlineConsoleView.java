@@ -30,6 +30,7 @@ public class PartitaOnlineConsoleView implements PartitaOnlineView, Observer{
         this.controller = controller;
         this.controller.addObserver(this);
         scanner = new Scanner(System.in);
+ 
     }
 
     @Override
