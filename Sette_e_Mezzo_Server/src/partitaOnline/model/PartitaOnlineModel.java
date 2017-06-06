@@ -203,6 +203,7 @@ public class PartitaOnlineModel extends Observable {
     private void inizializza_round() {
         for (Giocatore giocatore : giocatori) {
             giocatore.inizializza_mano();
+            this.eventoPerTutti(new StatoCambiato(giocatore.getNome(), Stato.OK));
         }
         next_mazziere = null;
     }
