@@ -15,7 +15,7 @@ import dominio.elementi_di_gioco.Carta;
 public class GiocatoreOnline {
     private String nome;
     private Carta ultimaCartaOttenuta, CartaCoperta;
-    private int valoreMano;
+    private double valoreMano;
     private Stato stato;
     private boolean mazziere, giocatoreLocale;
     private int fiches;
@@ -50,11 +50,11 @@ public class GiocatoreOnline {
         this.CartaCoperta = CartaCoperta;
     }
 
-    public int getValoreMano() {
+    public double getValoreMano() {
         return valoreMano;
     }
 
-    public void setValoreMano(int valoreMano) {
+    public void setValoreMano(double valoreMano) {
         this.valoreMano = valoreMano;
     }
 
