@@ -3,7 +3,6 @@ package partitaOnline.controller;
 import comunicazione.Leggi;
 import dominio.classi_dati.Stato;
 import dominio.elementi_di_gioco.Carta;
-import dominio.giocatori.Giocatore;
 import dominio.giocatori.GiocatoreOnline;
 import dominio.view.ViewEvent;
 import dominio.view.ViewEventListener;
@@ -18,25 +17,23 @@ import java.util.Observer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import partitaOffline.events.SetGiocata;
-import partitaOffline.events.SetNome;
 import partitaOffline.events.SetPuntata;
-import partitaOffline.model.PartitaOfflineModel;
-import partitaOffline.view.PartitaOfflineView;
 import partitaOnline.events.*;
+import partitaOnline.view.PartitaOnlineConsoleView;
 
 
 public class PartitaOnlineController extends Observable implements ViewEventListener, Observer{
-    private PartitaOfflineView view;
+
     private Leggi leggi;
     private ArrayList<GiocatoreOnline> giocatori=new ArrayList<>();
     private PrintWriter aServer;
     private String nomeLocale;
 
-    public PartitaOnlineController( PartitaOfflineView view, Socket socket) {
+    public PartitaOnlineController( Socket socket) {
         try {
             
-            this.view = view;
-            view.addPartitaOfflineViewEventListener(this);
+
+            //view.addPartitaOfflineViewEventListener(this);
             this.leggi=new Leggi(new BufferedReader(new InputStreamReader(socket.getInputStream())));
             this.aServer = new PrintWriter(socket.getOutputStream(), true);
             leggi.addObserver(this);
@@ -47,9 +44,7 @@ public class PartitaOnlineController extends Observable implements ViewEventList
         }
     }
     
-    public void run(){
-        
-    }
+   
 
     @Override
     public void ViewEventReceived(ViewEvent evt) {
