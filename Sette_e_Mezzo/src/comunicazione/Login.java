@@ -122,7 +122,7 @@ public class Login {
             out.println(messaggio_da_inviare);
             String risposta = in.readLine();
             System.out.println("[5] - " + risposta);
-            if (risposta.equals("login effettuato")) {
+            if (risposta.equals("login effetuato")) {
                 throw new LoginEffettuato();
             }
 
