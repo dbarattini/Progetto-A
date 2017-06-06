@@ -4,6 +4,7 @@ import partitaOnline.view.*;
 import partitaOffline.events.SetGiocata;
 import partitaOffline.events.SetPuntata;
 import dominio.giocatori.Giocatore;
+import dominio.giocatori.GiocatoreOnline;
 import dominio.view.ViewEvent;
 import dominio.view.ViewEventListener;
 import java.util.Observable;
@@ -57,7 +58,7 @@ public class PartitaOnlineConsoleView implements PartitaOnlineView, Observer{
             Thread.sleep(pausa_breve);
         } catch (InterruptedException ex) {
         }
-        for(Giocatore giocatore : controller.getGiocatori()){
+        for(GiocatoreOnline giocatore : controller.getGiocatori()){
             mostra_carta_coperta_e_valore_mano(giocatore);
             try {
                 Thread.sleep(pausa_breve);
@@ -72,7 +73,7 @@ public class PartitaOnlineConsoleView implements PartitaOnlineView, Observer{
         }
     }
     
-    private void mostra_carta_coperta_e_valore_mano(Giocatore giocatore){
+    private void mostra_carta_coperta_e_valore_mano(GiocatoreOnline giocatore){
         System.out.println(giocatore.getNome() + " [" + giocatore.getCartaCoperta() + "] " + giocatore.getValoreMano());
     }
     
@@ -94,11 +95,11 @@ public class PartitaOnlineConsoleView implements PartitaOnlineView, Observer{
             FineManoAvversario avversario = (FineManoAvversario) arg;
             System.out.println(avversario.getNome() + " " + avversario.getCarteScoperte() + " " + avversario.getStato() + " " + avversario.getPuntata());
         } else if(arg instanceof FineRound){
-            if(((FineRound) arg).getNome().equals(controller.getGiocatori().get(0).getNome())){
+            if(((FineRound) arg).equals(controller.getGiocatori().get(0))){
                 System.out.print("\n");
             }
             System.out.println(((FineRound) arg).isMazziere() + " " + ((FineRound) arg).getNome() + " " + ((FineRound) arg).getCartaCoperta()+((FineRound) arg).getCarteScoperte() + " " + ((FineRound) arg).getValoreMano() + " "+ ((FineRound) arg).getStato() + " " + ((FineRound) arg).getFiches());
-            if(((FineRound) arg).equals(controller.getGiocatori().get(controller.getGiocatori().size() - 1).getNome())){
+            if(((FineRound) arg).equals(controller.getGiocatori().get(controller.getGiocatori().size() - 1))){
                 System.out.println("---------------------------------\n");
             }
         
