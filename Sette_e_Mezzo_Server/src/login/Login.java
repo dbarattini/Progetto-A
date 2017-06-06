@@ -16,6 +16,7 @@ import partita.Partita;
 import dominio.giocatori.Giocatore;
 import dominio.eccezioni.GiocatoreDisconnessoException;
 import dominio.eccezioni.GiocatoreNonTrovato;
+import dominio.eccezioni.PartitaPiena;
 import dominio.eccezioni.SqlOccupato;
 
 public class Login extends Thread {
@@ -33,10 +34,15 @@ public class Login extends Thread {
     }
 
     private void iniziaPartita() {
-        System.out.println("La partita inizia adesso");
-        giocatore.setUsername(username);
-        giocatore.iniziaLetturaOggetti();
-        partita.aggiungiGiocatore(giocatore);
+        try {
+            System.out.println("La partita inizia adesso");
+            giocatore.setUsername(username);
+            giocatore.iniziaLetturaOggetti();
+            partita.aggiungiGiocatore(giocatore);
+        } catch (PartitaPiena ex) {
+            System.out.println("Partita piena, prego riprovare più tardi");
+            Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
     }
 
