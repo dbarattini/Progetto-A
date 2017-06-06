@@ -14,7 +14,7 @@ public class MazzierePerde implements Serializable{
      */
     @Override
     public String toString() {
-        return "evento MazzierePerde";
+        return "evento\tMazzierePerde";
     }
     
     

@@ -10,7 +10,7 @@ public class EstrattoMazziere implements Serializable{
      */
     @Override
     public String toString() {
-        return "evento EstrattoMazziere";
+        return "evento\tEstrattoMazziere";
     }
     
 }

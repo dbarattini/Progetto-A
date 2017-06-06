@@ -33,7 +33,7 @@ public class RichiediPuntata implements Serializable{
      */
     @Override
     public String toString() {
-        return "evento RichiediPuntata " + carta_coperta.toString() + " " + valore_mano + " " + fiches ;
+        return "evento\tRichiediPuntata\t" + carta_coperta.toString() + " " + valore_mano + " " + fiches ;
     }
     
     

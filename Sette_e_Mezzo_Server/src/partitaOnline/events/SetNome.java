@@ -20,7 +20,7 @@ public class SetNome implements Serializable{
      */
     @Override
     public String toString() {
-        return "evento SetNome "+nome;
+        return "evento\tSetNome\t"+nome;
     }
     
     

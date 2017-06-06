@@ -28,7 +28,7 @@ public class FineRound implements Serializable {
      */
     @Override
     public String toString() {
-        String ritorno = "evento FineRound " + giocatore.getNome() + " " + giocatore.getCartaCoperta() + " ";
+        String ritorno = "evento\tFineRound\t" + giocatore.getNome() + " " + giocatore.getCartaCoperta() + " ";
         for (Carta carta : giocatore.getCarteScoperte()) {
             ritorno += carta.toString() + " ";
         }

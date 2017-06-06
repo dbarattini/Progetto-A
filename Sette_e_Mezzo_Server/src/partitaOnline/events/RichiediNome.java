@@ -9,6 +9,6 @@ public class RichiediNome implements Serializable{
      */
     @Override
     public String toString() {
-        return "evento RichiediNome";
+        return "evento\tRichiediNome";
     }
 }

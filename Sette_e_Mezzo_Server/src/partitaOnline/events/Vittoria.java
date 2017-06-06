@@ -17,7 +17,7 @@ public class Vittoria implements Serializable{
      */
     @Override
     public String toString() {
-        return "evento Vittoria";
+        return "evento\tVittoria";
     }
     
     
