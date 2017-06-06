@@ -14,7 +14,7 @@ import dominio.elementi_di_gioco.Carta;
  */
 public class GiocatoreOnline {
     private String nome;
-    private Carta ultimaCartaOttenuta, CartaScoperta;
+    private Carta ultimaCartaOttenuta, CartaCoperta;
     private int valoreMano;
     private Stato stato;
     private boolean mazziere, giocatoreLocale;
@@ -42,12 +42,12 @@ public class GiocatoreOnline {
         this.ultimaCartaOttenuta = ultimaCartaOttenuta;
     }
 
-    public Carta getCartaScoperta() {
-        return CartaScoperta;
+    public Carta getCartaCoperta() {
+        return CartaCoperta;
     }
 
-    public void setCartaScoperta(Carta CartaScoperta) {
-        this.CartaScoperta = CartaScoperta;
+    public void setCartaCoperta(Carta CartaCoperta) {
+        this.CartaCoperta = CartaCoperta;
     }
 
     public int getValoreMano() {
