@@ -13,32 +13,21 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import partitaOffline.events.AggiornamentoMazziere;
-import partitaOffline.events.EstrattoMazziere;
-import partitaOffline.events.FineManoAvversario;
-import partitaOffline.events.FineRound;
-import partitaOffline.events.GameOver;
 import partitaOffline.events.GiocatoreLocaleEvent;
-import partitaOffline.events.MazzierePerde;
-import partitaOffline.events.MazzoRimescolato;
-import partitaOffline.events.RichiediGiocata;
-import partitaOffline.events.RichiediNome;
-import partitaOffline.events.RichiediPuntata;
-import partitaOffline.events.RisultatoManoParticolare;
-import partitaOffline.events.SetNome;
-import partitaOffline.events.Vittoria;
-import partitaOffline.model.PartitaOfflineModel;
+import partitaOnline.events.*;
+import partitaOnline.controller.PartitaOnlineController;
 
 public class PartitaOnlineConsoleView implements PartitaOnlineView, Observer{
     private final CopyOnWriteArrayList<ViewEventListener> listeners;
-    private PartitaOfflineModel model;
+    private PartitaOnlineController controller;
     private Scanner scanner;
     int pausa_breve = 1000; //ms
     int pausa_lunga = 2000; //ms
 
-    public PartitaOnlineConsoleView(PartitaOfflineModel model) {
+    public PartitaOnlineConsoleView(PartitaOnlineController controller) {
         this.listeners = new CopyOnWriteArrayList<>();
-        this.model = model;
-        this.model.addObserver(this);
+        this.controller = controller;
+        this.controller.addObserver(this);
         scanner = new Scanner(System.in);
     }
 
@@ -60,16 +49,6 @@ public class PartitaOnlineConsoleView implements PartitaOnlineView, Observer{
         }
     }
     
-    private void richiediNome(){
-        String nome;
-        System.out.println("---------------------------------");
-        System.out.println("         Come ti chiami?         \n");
-        System.out.print("            ");
-        nome = scanner.next();
-        System.out.println("---------------------------------");        
-        fireViewEvent(new SetNome(nome));  
-    }
-    
     private void stampaSchermataEstrazioneMazziere(){
         System.out.println("  -----------------------------  ");
         System.out.println("<      ESTRAZIONE MAZZIERE      >");
@@ -78,7 +57,7 @@ public class PartitaOnlineConsoleView implements PartitaOnlineView, Observer{
             Thread.sleep(pausa_breve);
         } catch (InterruptedException ex) {
         }
-        for(Giocatore giocatore : model.getGiocatori()){
+        for(Giocatore giocatore : controller.getGiocatori()){
             mostra_carta_coperta_e_valore_mano(giocatore);
             try {
                 Thread.sleep(pausa_breve);
@@ -98,14 +77,12 @@ public class PartitaOnlineConsoleView implements PartitaOnlineView, Observer{
     }
     
     private void stampa_messaggio_mazziere(){
-        System.out.println("\n--> il Mazziere é: " + model.getMazziere().getNome() + " <--");
+        System.out.println("\n--> il Mazziere é: " + controller.getMazziere().getNome() + " <--");
     }
 
     @Override
     public void update(Observable o, Object arg) {
-        if(arg instanceof RichiediNome){
-            richiediNome();
-        }else if(arg instanceof Error){
+        if(arg instanceof Error){
             System.err.println(((Error) arg).getMessage());
         } else if(arg instanceof EstrattoMazziere){
             stampaSchermataEstrazioneMazziere();
@@ -117,12 +94,11 @@ public class PartitaOnlineConsoleView implements PartitaOnlineView, Observer{
             FineManoAvversario avversario = (FineManoAvversario) arg;
             System.out.println(avversario.getNome() + " " + avversario.getCarteScoperte() + " " + avversario.getStato() + " " + avversario.getPuntata());
         } else if(arg instanceof FineRound){
-            Giocatore giocatore = ((FineRound) arg).getGiocatore();
-            if(giocatore.equals(model.getGiocatori().get(0))){
+            if(((FineRound) arg).getNome().equals(controller.getGiocatori().get(0).getNome())){
                 System.out.print("\n");
             }
-            System.out.println(giocatore.haPerso() + " " + giocatore.isMazziere() + " " + giocatore.getNome() + " " + giocatore.getTutteLeCarte() + " " + giocatore.getValoreMano() + " "+ giocatore.getStato() + " " + giocatore.getFiches());
-            if(giocatore.equals(model.getGiocatori().get(model.getGiocatori().size() - 1))){
+            System.out.println(((FineRound) arg).isMazziere() + " " + ((FineRound) arg).getNome() + " " + ((FineRound) arg).getCartaCoperta()+((FineRound) arg).getCarteScoperte() + " " + ((FineRound) arg).getValoreMano() + " "+ ((FineRound) arg).getStato() + " " + ((FineRound) arg).getFiches());
+            if(((FineRound) arg).equals(controller.getGiocatori().get(controller.getGiocatori().size() - 1).getNome())){
                 System.out.println("---------------------------------\n");
             }
         
@@ -131,7 +107,7 @@ public class PartitaOnlineConsoleView implements PartitaOnlineView, Observer{
             System.out.println("--> Il mazziere ha perso <--");
         } else if(arg instanceof AggiornamentoMazziere){
             System.out.println("\n");
-            System.out.println("--> il nuovo mazziere é: " + model.getMazziere().getNome() + " <--\n");
+            System.out.println("--> il nuovo mazziere é: " + controller.getMazziere().getNome() + " <--\n");
         } else if(arg instanceof GameOver){
             System.out.println("\n");
             System.out.println("--> Game Over <--");
@@ -184,10 +160,12 @@ public class PartitaOnlineConsoleView implements PartitaOnlineView, Observer{
     }
 
     private void stampaSchermataManoParticolare() {
-        System.out.println("Carta Ottenuta: " + model.getGiocatoreLocale().getUltimaCartaOttenuta());
-        System.out.println("Valore Mano: " + model.getGiocatoreLocale().getValoreMano());
-        System.out.println("--> " + model.getGiocatoreLocale().getStato() + " <--");
+        System.out.println("Carta Ottenuta: " + controller.getGiocatoreLocale().getUltimaCartaOttenuta());
+        System.out.println("Valore Mano: " + controller.getGiocatoreLocale().getValoreMano());
+        System.out.println("--> " + controller.getGiocatoreLocale().getStato() + " <--");
         System.out.print("\n");
     }
+
+    
     
 }

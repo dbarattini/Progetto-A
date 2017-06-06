@@ -220,8 +220,11 @@ public class MenuPrePartitaGuiView extends JFrame implements Observer, MenuPrePa
                 fiches_iniziali = fiches.getText();
                 fireViewEvent();
                 new PartitaOfflineGui(model.getNumeroBot(), model.getDifficoltaBot(), model.getFichesIniziali());
+                
             };
         });
+        
+       
         
         sfondo.add(bot1);
         sfondo.add(bot2);

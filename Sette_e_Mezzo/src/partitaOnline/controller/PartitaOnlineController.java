@@ -1,10 +1,15 @@
 package partitaOnline.controller;
 
+import comunicazione.Leggi;
 import dominio.classi_dati.Stato;
 import dominio.elementi_di_gioco.Carta;
-import partitaOffline.controller.*;
+import dominio.giocatori.Giocatore;
 import dominio.view.ViewEvent;
 import dominio.view.ViewEventListener;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.Socket;
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
@@ -18,14 +23,24 @@ import partitaOffline.view.PartitaOfflineView;
 import partitaOnline.events.*;
 
 
-public class PartitaOnlineController implements ViewEventListener, Observer{
+public class PartitaOnlineController extends Observable implements ViewEventListener, Observer{
     private PartitaOfflineModel model;
     private PartitaOfflineView view;
+    private Leggi leggi;
+    private ArrayList<Giocatore> giocatori=new ArrayList<>();
 
-    public PartitaOnlineController(PartitaOfflineModel model, PartitaOfflineView view) {
-        this.model = model;
-        this.view = view;
-        view.addPartitaOfflineViewEventListener(this);
+    public PartitaOnlineController(PartitaOfflineModel model, PartitaOfflineView view, Socket socket) {
+        try {
+            this.model = model;
+            this.view = view;
+            view.addPartitaOfflineViewEventListener(this);
+            this.leggi=new Leggi(new BufferedReader(new InputStreamReader(socket.getInputStream())));
+            leggi.addObserver(this);
+            Thread t = new Thread(leggi);
+            t.start();
+        } catch (IOException ex) {
+            Logger.getLogger(PartitaOnlineController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     public void run(){
@@ -53,7 +68,7 @@ public class PartitaOnlineController implements ViewEventListener, Observer{
     public void update(Observable o, Object arg) {
         String messaggio=arg.toString();
         String dati[]=messaggio.split("\t");
-        Object ritorno;
+        Object ritorno = null;
         if(dati[0].equals("evento")){
             switch (dati[1]){
                 case "Error":
@@ -85,6 +100,8 @@ public class PartitaOnlineController implements ViewEventListener, Observer{
                     break;                            
                 
             }
+            this.setChanged();
+            this.notifyObservers(ritorno);
         }
 
     }
@@ -129,6 +146,18 @@ public class PartitaOnlineController implements ViewEventListener, Observer{
         i++;
         int puntata= Integer.valueOf(componenti[i]);
         return ritorno= new FineManoAvversario(nome, carteScoperte, stato, puntata);
+    }
+
+    public Giocatore getGiocatoreLocale() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public ArrayList<Giocatore> getGiocatori() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public Giocatore getMazziere() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
 }

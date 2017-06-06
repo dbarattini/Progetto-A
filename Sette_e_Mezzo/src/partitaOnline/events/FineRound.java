@@ -70,4 +70,12 @@ public class FineRound implements Serializable {
         return ritorno;
     }
 
+    public String getValoreMano() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public String getStato() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
 }
