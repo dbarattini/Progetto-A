@@ -19,23 +19,18 @@ import java.util.logging.Logger;
 
 public class Login {
     
-    int port;
+    private int port;
     
-    Socket socketClient;
-    BufferedReader in;
-    PrintWriter out;
-    Scanner tastiera;
+
+    private BufferedReader in;
+    private PrintWriter out;
+    private Scanner tastiera;
+    private Socket socketClient;
     
-    
-    public Login() {
+    public Login(Socket socketClient) {
         try {
-           
-            tastiera = new Scanner(System.in);
-            
-            System.out.println("[0] - provo a connettermi al server...");
-            int port = 8080;
-            socketClient = new Socket (InetAddress.getLocalHost(), 8080);
-            System.out.println("[1] - connesso!");
+           this.socketClient=socketClient;
+            tastiera = new Scanner(System.in);           
             in = new BufferedReader(new InputStreamReader(socketClient.getInputStream()));
             out = new PrintWriter(socketClient.getOutputStream(), true);
         } catch (UnknownHostException ex) {
