@@ -21,6 +21,7 @@ import java.util.ArrayList;
 import java.util.Observable;
 import partitaOnline.cambia.CartaCoperta;
 import partitaOnline.cambia.GiocatoreDisconnesso;
+import partitaOnline.cambia.Mazziere;
 import partitaOnline.cambia.NuovoGiocatore;
 import partitaOnline.events.EstrattoMazziere;
 import partitaOnline.events.MazzoRimescolato;
@@ -150,7 +151,9 @@ public class PartitaOnlineModel extends Observable {
                 }
             }
             mazziere = regole_di_gioco.carta_piu_alta(mazziere, giocatore);
+            
         }
+        this.eventoPerTutti(new Mazziere(mazziere.getNome()));
         mazziere.setMazziere(true);
     }
 
@@ -355,6 +358,7 @@ public class PartitaOnlineModel extends Observable {
         mazziere.setMazziere(false);
         next_mazziere.setMazziere(true);
         mazziere = next_mazziere;
+        this.eventoPerTutti(new Mazziere(mazziere.getNome()));
     }
 
     private void eventoPerTutti(Object evento) {
