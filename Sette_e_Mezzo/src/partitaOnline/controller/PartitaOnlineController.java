@@ -194,9 +194,12 @@ public class PartitaOnlineController extends Observable implements ViewEventList
         return giocatori;
     }
 
-    public Giocatore getMazziere() {
-        
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public GiocatoreOnline getMazziere() {
+        for(GiocatoreOnline gioc : giocatori){
+            if(gioc.isMazziere())
+                return gioc;
+        }
+        return null;
     }
 
     private void setMazziere(String nome) {
