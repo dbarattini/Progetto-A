@@ -93,6 +93,15 @@ public class PartitaOnlineController extends Observable implements ViewEventList
             case "Mazziere":
                 setMazziere(dati[2]);
                 break;
+            case "StatoCambiato":
+                componenti=dati[2].split(" ");
+                giocatoreDaNome(componenti[0]).setStato(Stato.valueOf(componenti[1]));
+                break;
+            case "UltimaCartaOttenuta":
+                componenti=dati[2].split(" ");
+                giocatoreDaNome(componenti[0]).setUltimaCartaOttenuta(new Carta(componenti[1].substring(0, 1), componenti[2].substring(1, 2)));
+                break;
+                
         }
     }
 
