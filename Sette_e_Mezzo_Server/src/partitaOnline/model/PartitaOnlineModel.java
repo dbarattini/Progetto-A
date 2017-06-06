@@ -23,6 +23,7 @@ import partitaOnline.cambia.CartaCoperta;
 import partitaOnline.cambia.GiocatoreDisconnesso;
 import partitaOnline.cambia.Mazziere;
 import partitaOnline.cambia.NuovoGiocatore;
+import partitaOnline.cambia.StatoCambiato;
 import partitaOnline.events.EstrattoMazziere;
 import partitaOnline.events.MazzoRimescolato;
 
@@ -193,6 +194,7 @@ public class PartitaOnlineModel extends Observable {
     private void gestisciDisconnessioneMazziere(Giocatore giocatore) throws InterruptedException {
         this.eventoPerTutti(new Error("mazziere disconnesso"));
         giocatore.setStato(Stato.Sballato);
+        this.eventoPerTutti(new StatoCambiato(giocatore.getNome(), Stato.Sballato));
         this.eventoPerTutti(new RisultatoManoParticolare());
 
         Thread.sleep(pausa_lunga);
@@ -269,15 +271,18 @@ public class PartitaOnlineModel extends Observable {
                     giocatore.chiedi_carta(carta_estratta);
                 } catch (SballatoException ex) {
                     giocatore.setStato(Stato.Sballato);
+                    this.eventoPerTutti(new StatoCambiato(giocatore.getNome(), Stato.Sballato));
                     if (!giocatore.isMazziere()) {
                         giocatore.paga(mazziere); //giocatore se sballa paga subito.
                     }
                     continua = false;
                 } catch (SetteeMezzoRealeException ex) {
                     giocatore.setStato(Stato.SetteeMezzoReale);
+                    this.eventoPerTutti(new StatoCambiato(giocatore.getNome(), Stato.SetteeMezzoReale));
                     continua = false;
                 } catch (SetteeMezzoException ex) {
                     giocatore.setStato(Stato.SetteeMezzo);
+                    this.eventoPerTutti(new StatoCambiato(giocatore.getNome(), Stato.SetteeMezzo));
                     continua = false;
                 }
             }
