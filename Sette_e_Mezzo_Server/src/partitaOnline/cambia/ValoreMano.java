@@ -11,9 +11,9 @@ package partitaOnline.cambia;
  */
 public class ValoreMano {
     private String nome;
-    private int valore;
+    private double valore;
 
-    public ValoreMano(String nome, int valore) {
+    public ValoreMano(String nome, double valore) {
         this.nome = nome;
         this.valore = valore;
     }
