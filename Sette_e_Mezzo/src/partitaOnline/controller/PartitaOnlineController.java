@@ -87,7 +87,9 @@ public class PartitaOnlineController extends Observable implements ViewEventList
                 componenti=dati[2].split(" ");
                 giocatoreDaNome(componenti[0]).setCartaCoperta(new Carta(componenti[1].substring(0, 1), componenti[2].substring(1, 2)));
                 break;
-                
+            case "GiocatoreDisconnesso":
+                giocatori.remove(giocatoreDaNome(dati[2]));
+                break
         }
     }
 
