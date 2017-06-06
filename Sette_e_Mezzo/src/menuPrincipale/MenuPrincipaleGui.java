@@ -5,6 +5,7 @@
  */
 package menuPrincipale;
 
+import GUI.GuiOpzioni;
 import GUI.RegoleGui;
 import dominio.classi_dati.OpzioniMenu;
 import dominio.gui.Sfondo;
@@ -20,6 +21,7 @@ import menuPrePartita.MenuPrePartitaGui;
 public class MenuPrincipaleGui extends JFrame implements ActionListener{
     MenuPrePartitaGui menu_pre_partita;
     RegoleGui menu_regole;
+    GuiOpzioni menu_opzioni;
     private JButton partita_off, partita_on, regole, opzioni;
     private Sfondo sfondo;
     
@@ -28,6 +30,9 @@ public class MenuPrincipaleGui extends JFrame implements ActionListener{
         this.menu_regole.addIndietroActionListener(this);
         this.menu_pre_partita = new MenuPrePartitaGui();
         menu_pre_partita.addIndietroActionListener(this);
+        this.menu_opzioni = new GuiOpzioni();
+        menu_opzioni.addIndietroActionListener(this);
+        
         inizializza_GUI();       
         setVisible(true);
     }  
@@ -102,8 +107,8 @@ public class MenuPrincipaleGui extends JFrame implements ActionListener{
                                 break;
             case GiocaOnline : System.out.println("on");
                                 break;
-            case Impostazioni: System.out.println("imp");
-                break;
+            case Impostazioni: menu_opzioni.setVisible(true);
+                                break;
             case RegoleDiGioco: menu_regole.setVisible(true);
                                 break;
         }
@@ -115,6 +120,8 @@ public class MenuPrincipaleGui extends JFrame implements ActionListener{
             menu_pre_partita.setVisible(false);
         else if(menu_regole.isVisible())
             menu_regole.setVisible(false);
+        else if (menu_opzioni.isVisible())
+            menu_opzioni.setVisible(false);
         this.setVisible(true);
     }
 }

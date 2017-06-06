@@ -3,20 +3,19 @@ package GUI;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
-import GUI.ChiudiRegole;
 
 public class RegoleGui extends JFrame{
+    private JButton indietro;
     
     public RegoleGui(){
         
         setSize(800, 400);
-        addWindowListener(new ChiudiRegole());
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setTitle("REGOLE DI GIOCO");
         setResizable(false);
         
@@ -45,16 +44,12 @@ public class RegoleGui extends JFrame{
         pulsanteIndietro.setBackground(Color.WHITE);
         pulsanteIndietro.setLayout(new FlowLayout());
         
-        JButton indietro = new JButton("INDIETRO");
-        indietro.addActionListener(new ActionListener(){
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                dispose();
-            }
-        });
+        indietro = new JButton("INDIETRO");
         pulsanteIndietro.add(indietro);
         add(pulsanteIndietro, BorderLayout.SOUTH);
-        
-        setVisible(true);
+    }
+    
+    public void addIndietroActionListener(ActionListener l){
+        indietro.addActionListener(l);
     }
 }

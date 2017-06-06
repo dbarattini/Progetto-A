@@ -3,21 +3,19 @@ package GUI;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
-import java.awt.GridLayout;
-import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextArea;
 
 
 public class RiconoscimentiGui extends JFrame{
+    private JButton indietro;
     
   public RiconoscimentiGui(){
         setSize(500, 400);
-        addWindowListener(new ChiudiRiconoscimenti());
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setTitle("RICONOSCIMENTI");
         
         
@@ -49,19 +47,13 @@ public class RiconoscimentiGui extends JFrame{
         pulsanteIndietro.setBackground(Color.WHITE);
         pulsanteIndietro.setLayout(new FlowLayout());
         
-        JButton indietro = new JButton("INDIETRO");
-        indietro.addActionListener(new ActionListener(){
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                dispose();
-            }
-        });
+        indietro = new JButton("INDIETRO");
         pulsanteIndietro.add(indietro);
         add(pulsanteIndietro, BorderLayout.SOUTH);
         
-        
-        
         setVisible(true);
   }
-   
+     public void addIndietroActionListener(ActionListener l){
+        indietro.addActionListener(l);
+    }
 }
