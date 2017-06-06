@@ -181,23 +181,12 @@ public class PartitaOnlineController extends Observable implements ViewEventList
         }
         return null;
     }
-    public Giocatore getGiocatoreLocale() {
-        //getNome
-        //getUltimaCartaScoperta
-        //getCartaCoperta        
-        //getValoreMano
-        //getStato
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public GiocatoreOnline getGiocatoreLocale() {
+        return giocatoreDaNome(nomeLocale);
     }
 
-    public ArrayList<Giocatore> getGiocatori() {
-        //getNomi
-        //getUltimaCartaScoperta
-        //getCartaCoperta 
-        //getValoreMano
-        //getStato
-        //booleanMazziere
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public ArrayList<GiocatoreOnline> getGiocatori() {
+        return giocatori;
     }
 
     public Giocatore getMazziere() {
