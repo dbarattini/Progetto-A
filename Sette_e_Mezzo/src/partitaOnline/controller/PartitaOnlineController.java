@@ -89,7 +89,7 @@ public class PartitaOnlineController extends Observable implements ViewEventList
                 break;
             case "GiocatoreDisconnesso":
                 giocatori.remove(giocatoreDaNome(dati[2]));
-                break
+                break;
         }
     }
 
