@@ -11,5 +11,5 @@ package classi_dati;
  */
 public enum ImpostazioniMenu {
  
-    Musica, Profilo, Riconoscimenti;
+    Musica, Profilo, Riconoscimenti, Indietro;
 }

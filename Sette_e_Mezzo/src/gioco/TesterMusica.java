@@ -12,10 +12,10 @@ import eccezioni.CaricamentoCanzoneException;
  *
  * @author Max & family
  */
-//public class TesterMusica {
-//    
-//    public static void main (String[] args) throws InterruptedException, CanzoneNonTrovataException, CaricamentoCanzoneException {
-//        Musica musica = new Musica();
-//        musica.selezionaImpostazione();
-//    }
-//}
+public class TesterMusica {
+    
+    public static void main (String[] args) throws InterruptedException, CanzoneNonTrovataException, CaricamentoCanzoneException {
+        Musica musica = new Musica();
+        musica.selezionaImpostazione();
+    }
+}

@@ -21,6 +21,8 @@ public class Musica {
     
     private AudioPlayer audio;
     private ImpostazioniMusica impostazioni;
+    private boolean on=false;
+    private boolean off=true;
 
     public Musica() {
        this.audio = new AudioPlayer();
@@ -45,19 +47,38 @@ public class Musica {
                 switch(impostazioni) {
                 
                     case Play: 
+                        if(off) {
                         audio.carica("LoungeBeat.wav", "soundTrack");
                         audio.riproduci("soundTrack");
+                        setOn();
+                        }
                         break;
                     case Stop:
+                        if(on) {
                         audio.ferma("soundTrack");
+                        setOff();
+                        }
                         break;
                     case Riavvia:
+                        if(on) {
                         audio.ferma("soundTrack");
                         audio.riavvia("soundTrack");
+                        }
+                        else {
+                            audio.carica("LoungeBeat.wav", "soundTrack");
+                            audio.riproduci("soundTrack");
+                            setOn();
+                        }
                         break;
                     case Loop:
+                        if(off) {
                         audio.carica("LoungeBeat.wav", "soundTrack");
                         audio.riproduci_in_loop("soundTrack");
+                        setOn();
+                        }
+                        else {
+                            audio.riproduci_in_loop("soundTrack");
+                        }
                         break;
                     case Carica:
                         System.out.println("Inserisci la canzone da caricare");
@@ -67,6 +88,10 @@ public class Musica {
                         String input2 = scanner.next();
                         audio.carica(input, input2);
                         audio.riproduci(input2);
+                        break;
+                    case Indietro:
+                        Impostazioni imp = new Impostazioni();
+                        imp.selezionaImpostazione();
                         break;
                 }
             } catch (NullPointerException e) {    
@@ -82,6 +107,7 @@ public class Musica {
         out.println("3. RIAVVIA");
         out.println("4. RIPRODUCI IN LOOP");
         out.println("5. CARICA CANZONE");
+        out.println("6. INDIETRO");
     }
     
     private ImpostazioniMusica richiediImpostazioneMusica() {
@@ -110,6 +136,10 @@ public class Musica {
                     impostazioni_prov=ImpostazioniMusica.Carica;
                     System.out.println("Hai selezionato CARICA");
                 }
+                if (input.equals("6") || input.toLowerCase().equals("indietro")) {
+                    impostazioni_prov=ImpostazioniMusica.Indietro;
+                    System.out.println("Hai selezionato INDIETRO");
+                }
             }   
                 catch (IllegalArgumentException ex){
                 System.out.println("IMPOSTAZIONE NON VALIDA");
@@ -119,6 +149,18 @@ public class Musica {
 //                    System.out.println("IMPOSTAZIONE NON VALIDA");
         return impostazioni_prov;
     }
+
+    private void setOn() {
+        this.on = true;
+        this.off = false;
+    }
+
+    private void setOff() {
+        this.on = false;
+        this.off = true;
+    }
+    
+    
 }
     
 

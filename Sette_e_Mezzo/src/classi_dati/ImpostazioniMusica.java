@@ -11,5 +11,5 @@ package classi_dati;
  */
 public enum ImpostazioniMusica {
     
-    Play, Stop, Riavvia, Loop, Carica
+    Play, Stop, Riavvia, Loop, Carica, Indietro;
 }
