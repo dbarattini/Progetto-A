@@ -21,7 +21,7 @@ import java.util.logging.Logger;
 public class Leggi extends Observable implements Runnable {
 
     private BufferedReader reader;
-    private String message="";
+    private String message = "";
     private boolean disconnesso = false;
     PrintStream out;
 
@@ -37,13 +37,16 @@ public class Leggi extends Observable implements Runnable {
             printMessage();
 
         } catch (SocketTimeoutException e) {
-                run();
+            run();
 
         } catch (IOException ex) {
             Logger.getLogger(Leggi.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        if(message!=null)
+        } catch (Exception e) {
             run();
+        }
+        if (message != null) {
+            run();
+        }
     }
 
     public void printMessage() {
@@ -51,7 +54,7 @@ public class Leggi extends Observable implements Runnable {
             this.setChanged();
             this.notifyObservers(message);
         } else if (message == null) {
-            disconnesso=true;
+            disconnesso = true;
             this.setChanged();
             this.notifyObservers(new GiocatoreDisconnessoException());
         }
