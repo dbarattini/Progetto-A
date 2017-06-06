@@ -27,6 +27,32 @@ public class FineRound implements Serializable {
         this.puntata=puntata;
     }
 
+    public String getNome() {
+        return nome;
+    }
+
+    public Carta getCartaCoperta() {
+        return cartaCoperta;
+    }
+
+    public ArrayList<Carta> getCarteScoperte() {
+        return carteScoperte;
+    }
+
+    public int getFiches() {
+        return fiches;
+    }
+
+    public int getPuntata() {
+        return puntata;
+    }
+
+    public boolean isIsMazziere() {
+        return isMazziere;
+    }
+    
+    
+
     /**
      *
      * @return "evento FineRound " + username + " " +
