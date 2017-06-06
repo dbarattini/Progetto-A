@@ -4,8 +4,6 @@ import dominio.eccezioni.GiocatoreDisconnessoException;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
@@ -19,16 +17,11 @@ public class Client extends Observable implements Observer {
     private final PrintWriter aGiocatore;
     private final BufferedReader daGiocatore;
     private final Socket socket;
-//    private final ObjectOutputStream paccoPerGiocatore;
-//    private ObjectInputStream paccoDaGiocatore;
     private Leggi leggi;
-    private LeggiOggetto leggiOggetto;
 
     public Client(Socket socket) throws IOException {
         this.daGiocatore = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         this.aGiocatore = new PrintWriter(socket.getOutputStream(), true);
-//        this.paccoPerGiocatore = new ObjectOutputStream(socket.getOutputStream());
-//        this.paccoDaGiocatore = new ObjectInputStream(socket.getInputStream());
         this.socket = socket;
 
     }
@@ -38,10 +31,6 @@ public class Client extends Observable implements Observer {
     }
 
     public void iniziaLetturaOggetto() {
-//        this.leggiOggetto = new LeggiOggetto(paccoDaGiocatore);
-//        leggiOggetto.addObserver(this);
-//        Thread m = new Thread(leggiOggetto);
-//        m.start();
         this.leggi=new Leggi(daGiocatore);
         leggi.addObserver(this);
         Thread t = new Thread(leggi);
@@ -60,20 +49,9 @@ public class Client extends Observable implements Observer {
         }
         return letto;
     }
-//    
-//    public Object leggiOggetto() throws IOException{
-//        Object letto=null;        
-//        try {
-//            letto=paccoDaGiocatore.readObject();
-//            return letto;
-//        }  catch (ClassNotFoundException ex) {
-//            Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//        return letto;
-//    }
+
 
     public void scriviOggetto(Object pacco) throws IOException {
-        //paccoPerGiocatore.writeObject(pacco);
         aGiocatore.println(pacco.toString());
     }
 
