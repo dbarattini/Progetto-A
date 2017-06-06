@@ -11,16 +11,16 @@ package partitaOnline.cambia;
  */
 public class Mazziere {
     private String nome;
-    private boolean mazziere;
 
-    public Mazziere(String nome, boolean mazziere) {
+
+    public Mazziere(String nome) {
         this.nome = nome;
-        this.mazziere = mazziere;
+
     }
 
     @Override
     public String toString() {
-        return "cambia\tMazziere\t" + nome + " " + mazziere;
+        return "cambia\tMazziere\t" + nome ;
     }
     
     
