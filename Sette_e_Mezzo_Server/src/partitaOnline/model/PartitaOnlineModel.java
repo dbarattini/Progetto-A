@@ -319,7 +319,7 @@ public class PartitaOnlineModel extends Observable {
         for (Giocatore giocatore : giocatori) {
 
             Thread.sleep(pausa_breve);
-            this.eventoPerTutti(new FineRound(giocatore));
+            this.eventoPerTutti(new FineRound(giocatore.getNome(),giocatore.getCartaCoperta(),giocatore.getCarteScoperte(), giocatore.getFiches(), giocatore.isMazziere(), giocatore.getPuntata()));
 
             if (giocatore.getFiches() == 0 && !giocatore.haPerso() && !giocatore.isDisconnesso()) {
                 giocatore.perde();

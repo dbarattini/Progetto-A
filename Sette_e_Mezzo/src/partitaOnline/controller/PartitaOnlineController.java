@@ -28,7 +28,7 @@ public class PartitaOnlineController extends Observable implements ViewEventList
     private PartitaOfflineView view;
     private Leggi leggi;
     private ArrayList<Giocatore> giocatori=new ArrayList<>();
-    private final PrintWriter aServer;
+    private PrintWriter aServer;
 
     public PartitaOnlineController( PartitaOfflineView view, Socket socket) {
         try {
@@ -143,14 +143,26 @@ public class PartitaOnlineController extends Observable implements ViewEventList
     }
 
     public Giocatore getGiocatoreLocale() {
+        //getNome
+        //getUltimaCartaScoperta
+        //getCartaCoperta        
+        //getValoreMano
+        //getStato
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     public ArrayList<Giocatore> getGiocatori() {
+        //getNomi
+        //getUltimaCartaScoperta
+        //getCartaCoperta 
+        //getValoreMano
+        //getStato
+        //booleanMazziere
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     public Giocatore getMazziere() {
+        
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
