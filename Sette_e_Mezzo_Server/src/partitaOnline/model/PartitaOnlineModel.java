@@ -25,6 +25,7 @@ import partitaOnline.cambia.Mazziere;
 import partitaOnline.cambia.NuovoGiocatore;
 import partitaOnline.cambia.StatoCambiato;
 import partitaOnline.cambia.UltimaCartaOttenuta;
+import partitaOnline.cambia.ValoreMano;
 import partitaOnline.events.EstrattoMazziere;
 import partitaOnline.events.MazzoRimescolato;
 
@@ -272,8 +273,10 @@ public class PartitaOnlineModel extends Observable {
                 try {
                     this.eventoPerTutti(new UltimaCartaOttenuta(giocatore.getNome(), carta_estratta));
                     giocatore.chiedi_carta(carta_estratta);
+                    this.eventoPerTutti(new ValoreMano(giocatore.getNome(), giocatore.getValoreMano()));
                     
                 } catch (SballatoException ex) {
+                    this.eventoPerTutti(new ValoreMano(giocatore.getNome(), giocatore.getValoreMano()));
                     giocatore.setStato(Stato.Sballato);
                     this.eventoPerTutti(new StatoCambiato(giocatore.getNome(), Stato.Sballato));
                     if (!giocatore.isMazziere()) {
@@ -281,10 +284,12 @@ public class PartitaOnlineModel extends Observable {
                     }
                     continua = false;
                 } catch (SetteeMezzoRealeException ex) {
+                    this.eventoPerTutti(new ValoreMano(giocatore.getNome(), giocatore.getValoreMano()));
                     giocatore.setStato(Stato.SetteeMezzoReale);
                     this.eventoPerTutti(new StatoCambiato(giocatore.getNome(), Stato.SetteeMezzoReale));
                     continua = false;
                 } catch (SetteeMezzoException ex) {
+                    this.eventoPerTutti(new ValoreMano(giocatore.getNome(), giocatore.getValoreMano()));
                     giocatore.setStato(Stato.SetteeMezzo);
                     this.eventoPerTutti(new StatoCambiato(giocatore.getNome(), Stato.SetteeMezzo));
                     continua = false;
