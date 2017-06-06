@@ -83,7 +83,11 @@ public class PartitaOnlineController extends Observable implements ViewEventList
                 String componenti[]=dati[2].split(" ");
                 giocatori.add(new GiocatoreOnline(componenti[0], Integer.valueOf(componenti[1])));
                 break;
-            case 
+            case "CartaCoperta":
+                componenti=dati[2].split(" ");
+                giocatoreDaNome(componenti[0]).setCartaCoperta(new Carta(componenti[1].substring(0, 1), componenti[2].substring(1, 2)));
+                break;
+                
         }
     }
 
@@ -170,6 +174,13 @@ public class PartitaOnlineController extends Observable implements ViewEventList
         return ritorno= new FineManoAvversario(nome, carteScoperte, stato, puntata);
     }
 
+    private GiocatoreOnline giocatoreDaNome(String nome){
+        for(GiocatoreOnline giocatore :giocatori){
+            if(nome.equals(giocatore.getNome()))
+                return giocatore;
+        }
+        return null;
+    }
     public Giocatore getGiocatoreLocale() {
         //getNome
         //getUltimaCartaScoperta
