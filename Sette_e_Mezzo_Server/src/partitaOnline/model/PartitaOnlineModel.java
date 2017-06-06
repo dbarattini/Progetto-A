@@ -24,6 +24,7 @@ import partitaOnline.cambia.GiocatoreDisconnesso;
 import partitaOnline.cambia.Mazziere;
 import partitaOnline.cambia.NuovoGiocatore;
 import partitaOnline.cambia.StatoCambiato;
+import partitaOnline.cambia.UltimaCartaOttenuta;
 import partitaOnline.events.EstrattoMazziere;
 import partitaOnline.events.MazzoRimescolato;
 
@@ -269,7 +270,9 @@ public class PartitaOnlineModel extends Observable {
                     }
                 }
                 try {
+                    this.eventoPerTutti(new UltimaCartaOttenuta(giocatore.getNome(), carta_estratta));
                     giocatore.chiedi_carta(carta_estratta);
+                    
                 } catch (SballatoException ex) {
                     giocatore.setStato(Stato.Sballato);
                     this.eventoPerTutti(new StatoCambiato(giocatore.getNome(), Stato.Sballato));
