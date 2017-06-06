@@ -84,7 +84,7 @@ public class PartitaOnlineModel extends Observable {
 
     public void aggiungiGiocatori(ArrayList giocatori) {
         inizzializza_fiches(giocatori);
-        //    this.giocatori.addAll(giocatori); //non capisco perchè ma lo inserisce già da un altra parte
+        this.giocatori.addAll(giocatori);
     }
 
     public void rimuoviGiocatori(ArrayList giocatori) throws InterruptedException {

@@ -77,7 +77,7 @@ public class Partita extends Thread {
     
     private void iniziaPartita(){
         try {
-            this.model.inizializza_partita(giocatori);
+            this.model.inizializza_partita((ArrayList<Giocatore>)giocatori.clone());
         } catch (InterruptedException ex) {
             Logger.getLogger(Partita.class.getName()).log(Level.SEVERE, null, ex);
         }
