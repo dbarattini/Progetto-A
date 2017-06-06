@@ -5,6 +5,7 @@
  */
 package menuPrincipale;
 
+import GUI.RegoleGui;
 import dominio.classi_dati.OpzioniMenu;
 import dominio.gui.Sfondo;
 import java.awt.Dimension;
@@ -18,10 +19,13 @@ import menuPrePartita.MenuPrePartitaGui;
 
 public class MenuPrincipaleGui extends JFrame implements ActionListener{
     MenuPrePartitaGui menu_pre_partita;
+    RegoleGui menu_regole;
     private JButton partita_off, partita_on, regole, opzioni;
     private Sfondo sfondo;
     
     public MenuPrincipaleGui() { 
+        this.menu_regole = new RegoleGui();
+        this.menu_regole.addIndietroActionListener(this);
         this.menu_pre_partita = new MenuPrePartitaGui();
         menu_pre_partita.addIndietroActionListener(this);
         inizializza_GUI();       
@@ -100,14 +104,17 @@ public class MenuPrincipaleGui extends JFrame implements ActionListener{
                                 break;
             case Impostazioni: System.out.println("imp");
                 break;
-            case RegoleDiGioco: System.out.println("regole");
+            case RegoleDiGioco: menu_regole.setVisible(true);
                                 break;
         }
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
-       menu_pre_partita.setVisible(false);
-       this.setVisible(true);
+        if(menu_pre_partita.isVisible())
+            menu_pre_partita.setVisible(false);
+        else if(menu_regole.isVisible())
+            menu_regole.setVisible(false);
+        this.setVisible(true);
     }
 }
