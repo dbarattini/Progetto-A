@@ -1,5 +1,6 @@
 package partitaOffline.view;
 
+import dominio.classi_dati.Stato;
 import dominio.eccezioni.CanzoneNonTrovataException;
 import dominio.eccezioni.MattaException;
 import dominio.elementi_di_gioco.Carta;
@@ -132,12 +133,13 @@ public class PartitaOfflineGuiView extends JFrame implements PartitaOfflineView,
             stampaManoAvversario(((FineManoAvversario) arg).getNome());
         } else if(arg instanceof FineRound) { //provvisorio
             //todo mostra le statistiche di fine round
+            Giocatore giocatore = ((FineRound) arg).getGiocatore();
+            if(giocatore != model.getGiocatoreLocale())
+                scopriCartaCoperta(giocatore);
             if(!needCartaCoperta)
-                pausa(pausa_breve);
-            needCartaCoperta = true;
-            sfondo.removeAll();            
-            for(int i = 0; i < model.getGiocatori().size(); i++)
-                stampaNomeFiches(i, model.getGiocatori().size() - 1, model.getGiocatori().get(i));            
+                needCartaCoperta = true;
+            stampaValoreManoFineRound(giocatore);
+            checkFineRound(giocatore);
         } else if(arg instanceof MazzierePerde) {
             //todo mostra che il mazziere ha perso
         } else if(arg instanceof AggiornamentoMazziere) {
@@ -413,7 +415,7 @@ public class PartitaOfflineGuiView extends JFrame implements PartitaOfflineView,
             audio.ferma("soundTrack");
             audio.riproduci("deckShuffle");
         } catch (CanzoneNonTrovataException ex) {
-            Logger.getLogger(PartitaOfflineGuiView.class.getName()).log(Level.SEVERE, null, ex);
+            ex.printStackTrace();
         }
         
         for(int i = 0; i < 12; i++)
@@ -425,7 +427,7 @@ public class PartitaOfflineGuiView extends JFrame implements PartitaOfflineView,
             audio.riavvia_in_loop("soundTrack");
             audio.riavvolgi("deckShuffle");
         } catch (CanzoneNonTrovataException ex) {
-            Logger.getLogger(PartitaOfflineGuiView.class.getName()).log(Level.SEVERE, null, ex);
+            ex.printStackTrace();
         }
                 
         sfondo.remove(rimescoloMsg);
@@ -451,14 +453,22 @@ public class PartitaOfflineGuiView extends JFrame implements PartitaOfflineView,
     }
     
     private void manoParticolarePlayer() {
+        Stato stato = model.getGiocatoreLocale().getStato();
         Carta ultimaOttenuta = model.getGiocatoreLocale().getUltimaCartaOttenuta();
         int index = model.getGiocatoreLocale().getCarteScoperte().indexOf(ultimaOttenuta);
         stampaCarta(this.getWidth()/2 - 95 + index*35, 3*this.getHeight()/4 - 60, ultimaOttenuta.toString());
+        if(stato == Stato.Sballato)
+            stampaSballato(model.getGiocatoreLocale());
     }
     
     private void stampaCartaCoperta() {
-        pausa(pausa_breve);
         int nGiocatori = model.getGiocatori().size();
+        sfondo.removeAll();
+        sfondo.repaint();
+        for(int i = 0; i < nGiocatori; i++)
+            stampaNomeFiches(i, nGiocatori - 1, model.getGiocatori().get(i));
+        
+        pausa(pausa_breve);
         
         JLabel valoreMano = null;
         Font font = new Font("Carte Coperte msg", Font.BOLD, 70);
@@ -489,12 +499,8 @@ public class PartitaOfflineGuiView extends JFrame implements PartitaOfflineView,
     }
     
     public void stampaManoAvversario(String nome) {
-        Giocatore giocatore = null;
+        Giocatore giocatore = getGiocatore(nome);
         JLabel valoreMano = null;
-        for(Giocatore gioc : model.getGiocatori()) {
-            if(gioc.getNome().equals(nome))
-                giocatore = gioc;
-        }
         int index = model.getGiocatori().indexOf(giocatore);
         
         if(!giocatore.getCarteScoperte().isEmpty()) {
@@ -504,7 +510,15 @@ public class PartitaOfflineGuiView extends JFrame implements PartitaOfflineView,
                 pausa(pausa_breve);
                 sfondo.remove(valoreMano);
             }
-            valoriManoBots.add(stampaValoreManoAvversario(giocatore, giocatore.getCarteScoperte().size()));
+            if(giocatore.getStato() != Stato.Sballato)
+                valoriManoBots.add(stampaValoreManoAvversario(giocatore, giocatore.getCarteScoperte().size()));
+            else {
+                valoriManoBots.add(stampaSballato(giocatore));
+                scopriCartaCoperta(giocatore);
+            }
+        } else {
+            valoriManoBots.add(stampaValoreManoAvversario(giocatore, -1));
+            pausa(pausa_breve);
         }
     }
     
@@ -517,11 +531,15 @@ public class PartitaOfflineGuiView extends JFrame implements PartitaOfflineView,
             try {
                 valoreMano += giocatore.getCarteScoperte().get(i).getValoreNumerico();
             } catch (MattaException ex) {
-                Logger.getLogger(PartitaOfflineGuiView.class.getName()).log(Level.SEVERE, null, ex);
+                ex.printStackTrace();
             }
         }
         
-        JLabel valoreManoGiocatore = new JLabel("Valore mano:   " + valoreMano);
+        JLabel valoreManoGiocatore;
+        if(carte != -1)
+            valoreManoGiocatore = new JLabel("Valore mano:   " + valoreMano);
+        else
+            valoreManoGiocatore = new JLabel("Valore mano:   ??");
 
         Font font = new Font("Player", Font.BOLD, 25);
         valoreManoGiocatore.setFont(font);
@@ -535,11 +553,65 @@ public class PartitaOfflineGuiView extends JFrame implements PartitaOfflineView,
         return valoreManoGiocatore;
     }
     
+    private void scopriCartaCoperta(Giocatore giocatore) {
+        int index = model.getGiocatori().indexOf(giocatore);
+
+        carteCoperteBots.get(index).setIcon(caricaImmagine("dominio/immagini/mazzo/" + giocatore.getCartaCoperta().toString() + ".png"));
+        sfondo.repaint();
+        
+        pausa(pausa_breve);
+    }
+    
+    private JLabel stampaSballato(Giocatore giocatore) { // da fare
+        int nBot = model.getGiocatori().size() - 1;
+        int index = model.getGiocatori().indexOf(giocatore);
+        JLabel valoreSballato = new JLabel("SBALLATO");
+        
+        Font font = new Font("Player", Font.BOLD, 25);
+        valoreSballato.setFont(font);
+        valoreSballato.setForeground(Color.red);
+        
+        if(giocatore != model.getGiocatoreLocale())
+            valoreSballato.setBounds((this.getWidth()*(2*index+1))/(nBot*2) - 125, 120, 350, 40);
+        else
+            valoreSballato.setBounds(this.getWidth()/4 - 175, 3*this.getHeight()/4 + 20, 350, 40);
+        
+        sfondo.add(valoreSballato);
+        sfondo.repaint();
+        
+        return valoreSballato;
+    }
+    
+    private Giocatore getGiocatore(String nome) {
+        Giocatore giocatore = null;
+        for(Giocatore gioc : model.getGiocatori()) {
+            if(gioc.getNome().equals(nome))
+                giocatore = gioc;
+        }
+        return giocatore;
+    }
+    
+    private void stampaValoreManoFineRound(Giocatore giocatore) {
+        int index = model.getGiocatori().indexOf(giocatore);
+        
+        valoriManoBots.get(index).setText("Valore mano:   " + giocatore.getValoreMano());
+        sfondo.repaint();
+        
+        pausa(pausa_breve);
+    }
+    
+    private void checkFineRound(Giocatore giocatore) {
+        if(giocatore == model.getGiocatoreLocale()) {
+            carteCoperteBots.clear();
+            valoriManoBots.clear();
+        }
+    }
+    
     private void pausa(int tempo){
         try {
             Thread.sleep(tempo);
         } catch (InterruptedException ex) {
-            Logger.getLogger(PartitaOfflineConsoleView.class.getName()).log(Level.SEVERE, null, ex);
+            ex.printStackTrace();
         }
     }
 }
