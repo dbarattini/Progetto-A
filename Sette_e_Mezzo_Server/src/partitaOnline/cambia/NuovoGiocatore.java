@@ -11,14 +11,16 @@ package partitaOnline.cambia;
  */
 public class NuovoGiocatore {
     private String nome;
+    private int fiches;
 
-    public NuovoGiocatore(String nome) {
+    public NuovoGiocatore(String nome, int fiches) {
         this.nome = nome;
+        this.fiches=fiches;
     }
 
     @Override
     public String toString() {
-        return "cambia\tNuovoGiocatore\t" + nome ;
+        return "cambia\tNuovoGiocatore\t" + nome + " "+ fiches;
     }
     
     
