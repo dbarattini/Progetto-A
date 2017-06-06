@@ -47,7 +47,7 @@ public class FineRound implements Serializable {
         return puntata;
     }
 
-    public boolean isIsMazziere() {
+    public boolean isMazziere() {
         return isMazziere;
     }
     
