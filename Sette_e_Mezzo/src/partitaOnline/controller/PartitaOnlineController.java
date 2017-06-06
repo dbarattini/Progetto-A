@@ -90,6 +90,9 @@ public class PartitaOnlineController extends Observable implements ViewEventList
             case "GiocatoreDisconnesso":
                 giocatori.remove(giocatoreDaNome(dati[2]));
                 break;
+            case "Mazziere":
+                setMazziere(dati[2]);
+                break;
         }
     }
 
@@ -194,6 +197,14 @@ public class PartitaOnlineController extends Observable implements ViewEventList
     public Giocatore getMazziere() {
         
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    private void setMazziere(String nome) {
+        for(GiocatoreOnline gioc : giocatori){
+            if(gioc.isMazziere())
+                gioc.setMazziere(false);
+        }
+        giocatoreDaNome(nome).setMazziere(true);
     }
 
     
