@@ -22,7 +22,7 @@ public class Error {
      */
     @Override
     public String toString() {
-        return "evento " + messaggio ;
+        return "evento\tError\t" + messaggio ;
     }
     
 }

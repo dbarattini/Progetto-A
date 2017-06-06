@@ -17,6 +17,6 @@ public class RisultatoManoParticolare implements Serializable{
      */
     @Override
     public String toString() {
-        return "evento RisultatoManoParticolare";
+        return "evento\tRisultatoManoParticolare";
     }
 }

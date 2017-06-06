@@ -14,7 +14,7 @@ public class RoundInizializzato implements Serializable{
      */
     @Override
     public String toString() {
-        return "evento RoundInizializzato";
+        return "evento\tRoundInizializzato";
     }
     
 }

@@ -46,7 +46,7 @@ public class FineManoAvversario implements Serializable{
      */
     @Override
     public String toString() {
-        String ritorno="evento FineManoAvversario " + nome + " ";
+        String ritorno="evento\tFineManoAvversario\t" + nome + " ";
         for(Carta carta : carteScoperte){
             ritorno+=carta.toString()+" ";
         }

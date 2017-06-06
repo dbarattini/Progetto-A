@@ -37,7 +37,7 @@ public class RichiediGiocata implements Serializable{
      */
     @Override
     public String toString() {
-        String ritorno="evento RichiediGiocata " + cartaCoperta.toString() + " ";
+        String ritorno="evento\tRichiediGiocata\t" + cartaCoperta.toString() + " ";
         for(Carta carta : carteScoperte){
             ritorno+=carta.toString()+" ";
         }

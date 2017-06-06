@@ -17,7 +17,7 @@ public class GameOver implements Serializable{
      */
     @Override
     public String toString() {
-        return "evento GameOver";
+        return "evento\tGameOver";
     }
     
     
