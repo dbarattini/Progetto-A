@@ -19,6 +19,8 @@ import dominio.gioco.RegoleDiGioco;
 import dominio.gioco.StatoGioco;
 import java.util.ArrayList;
 import java.util.Observable;
+import partitaOnline.cambia.CartaCoperta;
+import partitaOnline.cambia.GiocatoreDisconnesso;
 import partitaOnline.cambia.NuovoGiocatore;
 import partitaOnline.events.EstrattoMazziere;
 import partitaOnline.events.MazzoRimescolato;
@@ -95,6 +97,10 @@ public class PartitaOnlineModel extends Observable {
     }
 
     public void rimuoviGiocatori(ArrayList giocatori) throws InterruptedException {
+        this.giocatori.removeAll(giocatori);
+        for(Object gioc : giocatori){
+            this.eventoPerTutti(new GiocatoreDisconnesso(((Giocatore)gioc).getNome()));
+        }
         salvaFiches(giocatori);
         for (Object giocatore : giocatori) {
             if (((Giocatore) giocatore).isMazziere()) {
@@ -108,7 +114,7 @@ public class PartitaOnlineModel extends Observable {
                 this.eventoPerTutti(new MazzoRimescolato());
             }
         }
-        this.giocatori.removeAll(giocatori);
+
     }
 
     private void inizzializza_fiches(ArrayList giocatori) {
@@ -137,6 +143,7 @@ public class PartitaOnlineModel extends Observable {
                 try {
                     carta_estratta = mazzo.estrai_carta();
                     giocatore.prendi_carta_iniziale(carta_estratta);
+                    this.eventoPerTutti(new CartaCoperta(giocatore.getNome(), carta_estratta));
                     break;
                 } catch (FineMazzoException ex) {
                     mazzo.rimescola(); //non dovrebbe accadere
@@ -204,6 +211,7 @@ public class PartitaOnlineModel extends Observable {
                     if (!giocatore.haPerso() && !giocatore.isDisconnesso()) {
                         carta_estratta = mazzo.estrai_carta();
                         giocatore.prendi_carta_iniziale(carta_estratta);
+                        this.eventoPerTutti(new CartaCoperta(giocatore.getNome(), carta_estratta));
                     }
                     break;
                 } catch (FineMazzoException ex) {
