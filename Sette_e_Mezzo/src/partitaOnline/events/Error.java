@@ -15,7 +15,9 @@ public class Error {
     public Error(String messaggio) {
         this.messaggio=messaggio;
     }
-    
+     public String getMessage(){
+         return messaggio;
+     }
     /**
      *
      * @return "evento " + "Errore: " + "messaggiodierrorecondati";
