@@ -19,6 +19,7 @@ import dominio.gioco.RegoleDiGioco;
 import dominio.gioco.StatoGioco;
 import java.util.ArrayList;
 import java.util.Observable;
+import partitaOnline.cambia.NuovoGiocatore;
 import partitaOnline.events.EstrattoMazziere;
 import partitaOnline.events.MazzoRimescolato;
 
@@ -66,6 +67,9 @@ public class PartitaOnlineModel extends Observable {
 
     public void inizializza_partita(ArrayList giocatori) throws InterruptedException {
         this.giocatori = giocatori;
+        for(Object gioc : giocatori){
+            this.eventoPerTutti(new NuovoGiocatore(((Giocatore)gioc).getNome(),((Giocatore)gioc).getFiches() ));
+        }
         inizzializza_fiches(this.giocatori);
         Thread.sleep(pausa_breve);
 
@@ -85,6 +89,9 @@ public class PartitaOnlineModel extends Observable {
     public void aggiungiGiocatori(ArrayList giocatori) {
         inizzializza_fiches(giocatori);
         this.giocatori.addAll(giocatori);
+        for(Object gioc : giocatori){
+            this.eventoPerTutti(new NuovoGiocatore(((Giocatore)gioc).getNome(),((Giocatore)gioc).getFiches()));
+        }
     }
 
     public void rimuoviGiocatori(ArrayList giocatori) throws InterruptedException {

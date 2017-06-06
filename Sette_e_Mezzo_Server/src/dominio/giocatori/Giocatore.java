@@ -28,7 +28,7 @@ import java.util.logging.Logger;
 import partitaOnline.events.RichiediGiocata;
 import partitaOnline.events.RichiediPuntata;
 import partitaOnline.events.Error;
-import partitaOnline.events.SetPuntata;
+
 
 public class Giocatore implements Observer {
 
@@ -454,6 +454,7 @@ public class Giocatore implements Observer {
 
     public void setUsername(String username) {
         this.nome = username;
+        client.scrivi("setta\tNome\t"+nome);
     }
 
     public Socket getSocket() {
