@@ -1,5 +1,6 @@
 package partita;
 
+import dominio.eccezioni.PartitaPiena;
 import dominio.eccezioni.GiocatoreDisconnessoException;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -10,34 +11,38 @@ import partitaOnline.model.PartitaOnlineModel;
 import dominio.giocatori.Giocatore;
 import javax.swing.SwingUtilities;
 
-
 public class Partita extends Thread {
+
     private ArrayList<Giocatore> giocatori;
     private ArrayList<Giocatore> giocatori_in_attesa;
     private ArrayList<Giocatore> giocatori_disconnessi;
     private PartitaOnlineModel model;
-    private boolean iniziata=false;
-    
-    public Partita(){
-        this.giocatori = new ArrayList<>(); 
+    private boolean iniziata = false;
+
+    public Partita() {
+        this.giocatori = new ArrayList<>();
         this.giocatori_in_attesa = new ArrayList<>();
         this.giocatori_disconnessi = new ArrayList<>();
-        this.model= new PartitaOnlineModel();
+        this.model = new PartitaOnlineModel();
     }
-     
-    public void aggiungiGiocatore(Giocatore giocatore){
-        this.giocatori_in_attesa.add(giocatore);
-        try {
-            Thread.sleep(100); //da il tempo di stabilizzare la connessione e caricare eventuali gui
-        } catch (InterruptedException ex) {
-            Logger.getLogger(Partita.class.getName()).log(Level.SEVERE, null, ex);
+
+    public void aggiungiGiocatore(Giocatore giocatore) throws PartitaPiena {
+        if (giocatori.size() < 5) {
+            this.giocatori_in_attesa.add(giocatore);
+            try {
+                Thread.sleep(100); //da il tempo di stabilizzare la connessione e caricare eventuali gui
+            } catch (InterruptedException ex) {
+                Logger.getLogger(Partita.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
+        else
+            throw new PartitaPiena();
     }
 
     @Override
     public void run() {
         try {
- 
+
             sleep(10);
             setGiocatori();
             sleep(10);
@@ -49,48 +54,47 @@ public class Partita extends Thread {
             Logger.getLogger(Partita.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-    private void gira(){
+
+    private void gira() {
         run();
     }
-      
-    private void giocaPartita(){
-        if(giocatori.size()>1){
-            if(iniziata){
+
+    private void giocaPartita() {
+        if (giocatori.size() > 1) {
+            if (iniziata) {
                 giocaTurno();
-            }
-            else{
+            } else {
                 System.out.println("Partita iniziata");
                 iniziaPartita();
-                iniziata=true;
+                iniziata = true;
             }
+        } else if (iniziata) {
+            iniziata = false;
         }
     }
-    
-    private void giocaTurno(){
+
+    private void giocaTurno() {
         try {
             this.model.gioca();
         } catch (InterruptedException ex) {
             Logger.getLogger(Partita.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-    
-    private void iniziaPartita(){
+
+    private void iniziaPartita() {
         try {
-            this.model.inizializza_partita((ArrayList<Giocatore>)giocatori.clone());
+            this.model.inizializza_partita((ArrayList<Giocatore>) giocatori.clone());
         } catch (InterruptedException ex) {
             Logger.getLogger(Partita.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-  
-    
-    private void setGiocatori() throws IOException, InterruptedException{
-        if(iniziata){
+
+    private void setGiocatori() throws IOException, InterruptedException {
+        if (iniziata) {
             aggiungiGiocatori();
             rimuoviGiocatori();
-        }
-        else{
-            if(! giocatori_in_attesa.isEmpty()){
+        } else {
+            if (!giocatori_in_attesa.isEmpty()) {
                 giocatori.addAll(giocatori_in_attesa);
                 giocatori_in_attesa.clear();
             }
@@ -99,38 +103,38 @@ public class Partita extends Thread {
 
     private void rimuoviGiocatori() throws IOException, InterruptedException {
         controllaConnessione();
-        if(!giocatori_disconnessi.isEmpty()){
+        if (!giocatori_disconnessi.isEmpty()) {
             this.model.rimuoviGiocatori(giocatori_disconnessi);
             giocatori_disconnessi.clear();
         }
     }
 
     private void aggiungiGiocatori() {
-        if(! giocatori_in_attesa.isEmpty()){
+        if (!giocatori_in_attesa.isEmpty()) {
             giocatori.addAll(giocatori_in_attesa);
             this.model.aggiungiGiocatori(giocatori_in_attesa);
             giocatori_in_attesa.clear();
         }
     }
-    
-    private void controllaConnessione() throws IOException{
-        if(!giocatori.isEmpty()){
-            for(Giocatore giocatore : giocatori){
-                if(giocatore.isDisconnesso()){
+
+    private void controllaConnessione() throws IOException {
+        if (!giocatori.isEmpty()) {
+            for (Giocatore giocatore : giocatori) {
+                if (giocatore.isDisconnesso()) {
                     System.out.println(giocatore.getNome() + " disconnesso");
                     this.giocatori_disconnessi.add(giocatore);
-                }        
+                }
             }
         }
 
-        if(! giocatori_disconnessi.isEmpty()){
+        if (!giocatori_disconnessi.isEmpty()) {
             giocatori.removeAll(giocatori_disconnessi);
-            for(Giocatore giocatore_disconnesso : giocatori_disconnessi){
-                for(Giocatore giocatore : giocatori){
+            for (Giocatore giocatore_disconnesso : giocatori_disconnessi) {
+                for (Giocatore giocatore : giocatori) {
                     giocatore.scrivi(giocatore_disconnesso.getNome() + " diconnesso");
                 }
             }
         }
     }
-    
+
 }
