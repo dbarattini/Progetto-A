@@ -69,39 +69,66 @@ public class PartitaOnlineController implements ViewEventListener, Observer{
                     ritorno= new RisultatoManoParticolare();
                     break;
                 case "FineManoAvversario":
-                    int i=1;
-                    String componenti[]=dati[2].split(" ");
-                    String nome=componenti[0];
-                    ArrayList<Carta> carteScoperte = null;
-                    for(i=1; ;i++){
-                        if(componenti[i].equals("fineCarte"))
-                            break;
-                        else
-                            carteScoperte.add(new Carta(componenti[i].substring(0, 1),componenti[i].substring(1, 2)));
-                    }
-                    i++;
-                    Stato stato=Stato.valueOf(componenti[i]);
-                    i++;
-                    int puntata= Integer.valueOf(componenti[i]);
-                    ritorno= new FineManoAvversario(nome, carteScoperte, stato, puntata);
+                    ritorno=fineManoAvversario(dati);
                     break;
                 case "FineRound":
-                    
+                    ritorno=fineRound(dati);
                     break;
                 case "MazzierePerde":
-                    
+                    ritorno= new MazzierePerde();
                     break;
                 case "AggiornamentoMazziere":
-                    
+                    ritorno= new AggiornamentoMazziere();
                     break;
                 case "GameOver":
-                    
-                    break;
-                            
+                    ritorno= new GameOver();
+                    break;                            
                 
             }
         }
 
+    }
+
+    private Object fineRound(String[] dati) throws NumberFormatException {
+        Object ritorno;
+        int i=1;
+        String componentiFR[]=dati[2].split(" ");
+        String nome=componentiFR[0];
+        Carta cartaCoperta=new Carta(componentiFR[i].substring(0, 1),componentiFR[i].substring(1, 2));
+        ArrayList<Carta> carteScoperte = null;
+        for(i=2; ;i++){
+            if(componentiFR[i].equals("fineCarte"))
+                break;
+            else
+                carteScoperte.add(new Carta(componentiFR[i].substring(0, 1),componentiFR[i].substring(1, 2)));
+        }
+        i++;
+        int fiches= Integer.valueOf(componentiFR[i]);
+        i++;
+        boolean isMazziere=Boolean.getBoolean(componentiFR[i]);
+        i++;
+        int puntata=0;
+        if(!isMazziere) puntata=Integer.valueOf(componentiFR[i]);
+        return ritorno= new FineRound(nome,cartaCoperta, carteScoperte, fiches,isMazziere, puntata);
+    }
+
+    private Object fineManoAvversario(String[] dati) throws NumberFormatException {
+        Object ritorno;
+        int i=1;
+        String componenti[]=dati[2].split(" ");
+        String nome=componenti[0];
+        ArrayList<Carta> carteScoperte = null;
+        for(i=1; ;i++){
+            if(componenti[i].equals("fineCarte"))
+                break;
+            else
+                carteScoperte.add(new Carta(componenti[i].substring(0, 1),componenti[i].substring(1, 2)));
+        }
+        i++;
+        Stato stato=Stato.valueOf(componenti[i]);
+        i++;
+        int puntata= Integer.valueOf(componenti[i]);
+        return ritorno= new FineManoAvversario(nome, carteScoperte, stato, puntata);
     }
     
 }
