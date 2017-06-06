@@ -18,6 +18,13 @@ public class GiocatoreOnline {
     private int valoreMano;
     private Stato stato;
     private boolean mazziere, giocatoreLocale;
+    private int fiches;
+
+    public GiocatoreOnline(String nome, int fiches) {
+        this.nome = nome;
+        this.fiches = fiches;
+    }   
+    
 
     public String getNome() {
         return nome;

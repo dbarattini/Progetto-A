@@ -4,6 +4,7 @@ import comunicazione.Leggi;
 import dominio.classi_dati.Stato;
 import dominio.elementi_di_gioco.Carta;
 import dominio.giocatori.Giocatore;
+import dominio.giocatori.GiocatoreOnline;
 import dominio.view.ViewEvent;
 import dominio.view.ViewEventListener;
 import java.io.BufferedReader;
@@ -27,8 +28,9 @@ import partitaOnline.events.*;
 public class PartitaOnlineController extends Observable implements ViewEventListener, Observer{
     private PartitaOfflineView view;
     private Leggi leggi;
-    private ArrayList<Giocatore> giocatori=new ArrayList<>();
+    private ArrayList<GiocatoreOnline> giocatori=new ArrayList<>();
     private PrintWriter aServer;
+    private String nomeLocale;
 
     public PartitaOnlineController( PartitaOfflineView view, Socket socket) {
         try {
@@ -62,42 +64,68 @@ public class PartitaOnlineController extends Observable implements ViewEventList
     public void update(Observable o, Object arg) {
         String messaggio=arg.toString();
         String dati[]=messaggio.split("\t");
-        Object ritorno = null;
+        
         if(dati[0].equals("evento")){
-            switch (dati[1]){
-                case "Error":
-                    ritorno=new Error(dati[2]);
-                    break;
-                case "EstrattoMazziere":
-                    ritorno= new EstrattoMazziere();
-                    break;
-                case "MazzoRimescolato":
-                    ritorno= new MazzoRimescolato();
-                    break;
-                case "RisultatoManoParticolare":
-                    ritorno= new RisultatoManoParticolare();
-                    break;
-                case "FineManoAvversario":
-                    ritorno=fineManoAvversario(dati);
-                    break;
-                case "FineRound":
-                    ritorno=fineRound(dati);
-                    break;
-                case "MazzierePerde":
-                    ritorno= new MazzierePerde();
-                    break;
-                case "AggiornamentoMazziere":
-                    ritorno= new AggiornamentoMazziere();
-                    break;
-                case "GameOver":
-                    ritorno= new GameOver();
-                    break;                            
-                
-            }
-            this.setChanged();
-            this.notifyObservers(ritorno);
+            gestisciEvento(dati);
+        }
+        else if(dati[0].equals("setta")){
+            gestisciSettaggio(dati);
+        }
+        else if(dati[0].equals("cambia")){
+            gestisciCambiamento(dati);
         }
 
+    }
+    
+    private void gestisciCambiamento(String[] dati) {
+        switch (dati[1]){
+            case "NuovoGiocatore":
+                String componenti[]=dati[2].split(" ");
+                giocatori.add(new GiocatoreOnline(componenti[0], Integer.valueOf(componenti[1])));
+                break;
+            case 
+        }
+    }
+
+    private void gestisciSettaggio(String[] dati) {
+        if(dati[1].equals("Nome"))
+            this.nomeLocale=dati[2];
+    }
+
+    private void gestisciEvento(String[] dati) throws NumberFormatException {
+        Object ritorno = null;
+        switch (dati[1]){
+            case "Error":
+                ritorno=new Error(dati[2]);
+                break;
+            case "EstrattoMazziere":
+                ritorno= new EstrattoMazziere();
+                break;
+            case "MazzoRimescolato":
+                ritorno= new MazzoRimescolato();
+                break;
+            case "RisultatoManoParticolare":
+                ritorno= new RisultatoManoParticolare();
+                break;
+            case "FineManoAvversario":
+                ritorno=fineManoAvversario(dati);
+                break;
+            case "FineRound":
+                ritorno=fineRound(dati);
+                break;
+            case "MazzierePerde":
+                ritorno= new MazzierePerde();
+                break;
+            case "AggiornamentoMazziere":
+                ritorno= new AggiornamentoMazziere();
+                break;
+            case "GameOver":
+                ritorno= new GameOver();
+                break;
+                
+        }
+        this.setChanged();
+        this.notifyObservers(ritorno);
     }
 
     private Object fineRound(String[] dati) throws NumberFormatException {
@@ -165,5 +193,7 @@ public class PartitaOnlineController extends Observable implements ViewEventList
         
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+
+    
     
 }
