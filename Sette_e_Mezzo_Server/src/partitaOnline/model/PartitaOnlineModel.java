@@ -74,10 +74,10 @@ public class PartitaOnlineModel extends Observable {
     public void inizializza_partita(ArrayList giocatori) throws InterruptedException {
         this.giocatori = giocatori;
         inizzializza_fiches(this.giocatori);
-        for(Object gioc : this.giocatori){
-            this.eventoPerTutti(new NuovoGiocatore(((Giocatore)gioc).getNome(),((Giocatore)gioc).getFiches() ));
+        for (Object gioc : this.giocatori) {
+            this.eventoPerTutti(new NuovoGiocatore(((Giocatore) gioc).getNome(), ((Giocatore) gioc).getFiches()));
         }
-        
+
         Thread.sleep(pausa_breve);
 
         Thread.sleep(pausa_breve);
@@ -96,15 +96,15 @@ public class PartitaOnlineModel extends Observable {
     public void aggiungiGiocatori(ArrayList giocatori) {
         inizzializza_fiches(giocatori);
         this.giocatori.addAll(giocatori);
-        for(Object gioc : this.giocatori){
-            this.eventoPerTutti(new NuovoGiocatore(((Giocatore)gioc).getNome(),((Giocatore)gioc).getFiches()));
+        for (Object gioc : this.giocatori) {
+            this.eventoPerTutti(new NuovoGiocatore(((Giocatore) gioc).getNome(), ((Giocatore) gioc).getFiches()));
         }
     }
 
     public void rimuoviGiocatori(ArrayList giocatori) throws InterruptedException {
         this.giocatori.removeAll(giocatori);
-        for(Object gioc : this.giocatori){
-            this.eventoPerTutti(new GiocatoreDisconnesso(((Giocatore)gioc).getNome()));
+        for (Object gioc : this.giocatori) {
+            this.eventoPerTutti(new GiocatoreDisconnesso(((Giocatore) gioc).getNome()));
         }
         salvaFiches(giocatori);
         for (Object giocatore : giocatori) {
@@ -124,11 +124,7 @@ public class PartitaOnlineModel extends Observable {
 
     private void inizzializza_fiches(ArrayList giocatori) {
         for (Object giocatore : giocatori) {
-            try {
-                ((Giocatore) giocatore).inizializzaFiches();
-            } catch (FichesInizialiException ex) {
-                this.eventoPerTutti(new Error("Errore: Il numero di fiches iniziali dev'essere maggiore di 0."));
-            }
+            ((Giocatore) giocatore).inizializzaFiches();
         }
     }
 
@@ -149,14 +145,14 @@ public class PartitaOnlineModel extends Observable {
                     carta_estratta = mazzo.estrai_carta();
                     giocatore.prendi_carta_iniziale(carta_estratta);
                     this.eventoPerTutti(new ValoreMano(giocatore.getNome(), giocatore.getValoreMano()));
-                    this.eventoPerTutti(new CartaCoperta(giocatore.getNome(), carta_estratta));                    
+                    this.eventoPerTutti(new CartaCoperta(giocatore.getNome(), carta_estratta));
                     break;
                 } catch (FineMazzoException ex) {
                     mazzo.rimescola(); //non dovrebbe accadere
                 }
             }
             mazziere = regole_di_gioco.carta_piu_alta(mazziere, giocatore);
-            
+
         }
         this.eventoPerTutti(new Mazziere(mazziere.getNome()));
         mazziere.setMazziere(true);
@@ -276,7 +272,7 @@ public class PartitaOnlineModel extends Observable {
                     this.eventoPerTutti(new UltimaCartaOttenuta(giocatore.getNome(), carta_estratta));
                     giocatore.chiedi_carta(carta_estratta);
                     this.eventoPerTutti(new ValoreMano(giocatore.getNome(), giocatore.getValoreMano()));
-                    
+
                 } catch (SballatoException ex) {
                     this.eventoPerTutti(new ValoreMano(giocatore.getNome(), giocatore.getValoreMano()));
                     giocatore.setStato(Stato.Sballato);
@@ -353,7 +349,7 @@ public class PartitaOnlineModel extends Observable {
         for (Giocatore giocatore : giocatori) {
 
             Thread.sleep(pausa_breve);
-            this.eventoPerTutti(new FineRound(giocatore.getNome(),giocatore.getCartaCoperta(),giocatore.getCarteScoperte(), giocatore.getFiches(),giocatore.getValoreMano(), giocatore.getStato(), giocatore.isMazziere(), giocatore.getPuntata()));
+            this.eventoPerTutti(new FineRound(giocatore.getNome(), giocatore.getCartaCoperta(), giocatore.getCarteScoperte(), giocatore.getFiches(), giocatore.getValoreMano(), giocatore.getStato(), giocatore.isMazziere(), giocatore.getPuntata()));
 
             if (giocatore.getFiches() == 0 && !giocatore.haPerso() && !giocatore.isDisconnesso()) {
                 giocatore.perde();
