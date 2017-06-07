@@ -80,7 +80,9 @@ public class PartitaOnlineController extends Observable implements ViewEventList
                 break;
             case "CartaCoperta":
                 componenti=dati[2].split(" ");
-                giocatoreDaNome(componenti[0]).setCartaCoperta(new Carta(componenti[1].substring(0, 1), componenti[2].substring(1, 2)));
+                String valore= componenti[1].substring(0, 1);
+                String seme= componenti[1].substring(1, 2);
+                giocatoreDaNome(componenti[0]).setCartaCoperta(new Carta(valore, seme));
                 break;
             case "GiocatoreDisconnesso":
                 giocatori.remove(giocatoreDaNome(dati[2]));
@@ -94,7 +96,7 @@ public class PartitaOnlineController extends Observable implements ViewEventList
                 break;
             case "UltimaCartaOttenuta":
                 componenti=dati[2].split(" ");
-                giocatoreDaNome(componenti[0]).setUltimaCartaOttenuta(new Carta(componenti[1].substring(0, 1), componenti[2].substring(1, 2)));
+                giocatoreDaNome(componenti[0]).setUltimaCartaOttenuta(new Carta(componenti[1].substring(0, 1), componenti[1].substring(1, 2)));
                 break;
             case "ValoreMAno":
                 componenti=dati[2].split(" ");
