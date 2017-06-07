@@ -22,8 +22,6 @@ import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -54,15 +52,9 @@ public class PartitaOfflineGuiView extends JFrame implements PartitaOfflineView,
     private String nome, puntataStr, giocata;
     private JTextField askNome, puntata;
     private JButton carta, stai;
-    private boolean needCartaCoperta = true;
+    private boolean needCartaCoperta = true, needToMarkMazziere = false;
     private ArrayList<JLabel> carteCoperteBots = new ArrayList<>();
     private Map<String, JLabel> valoriMano = new HashMap<>();
-    //private JButton askNomeButton;
-    //private JLabel askNomeLabel;
-    //private Map<String, JLabel> cartePlayer, carteG1, carteG2, carteG3, carteG4;
-    //private JLabel nomePlayer, nomeG1, nomeG2, nomeG3, nomeG4;
-    //private JLabel fichesPlayer, fichesG1, fichesG2, fichesG3, fichesG4;
-    //private JLabel valoreMPlayer, valoreMG1, valoreMG2, valoreMG3, valoreMG4;
     private final int pausa_breve = 1000; //ms
     private final int pausa_lunga = 2000; //ms
     
@@ -142,6 +134,7 @@ public class PartitaOfflineGuiView extends JFrame implements PartitaOfflineView,
             if(!needCartaCoperta)
                 needCartaCoperta = true;
             stampaValoreManoFineRound(giocatore);
+            stampaMessaggioFineRound(giocatore);
             checkFineRound(giocatore);
         } else if(arg instanceof MazzierePerde) {
             //todo mostra che il mazziere ha perso
@@ -243,6 +236,7 @@ public class PartitaOfflineGuiView extends JFrame implements PartitaOfflineView,
         pausa(pausa_lunga);
         
         sfondo.removeAll();
+        needToMarkMazziere = true;
         for(int i = 0; i < nGiocatori; i++)
             stampaNomeFiches(i, nGiocatori - 1, model.getGiocatori().get(i));
                 
@@ -255,9 +249,16 @@ public class PartitaOfflineGuiView extends JFrame implements PartitaOfflineView,
         
         Font font = new Font("Player", Font.BOLD, 25);
         nomeGiocatore.setFont(font);
-        nomeGiocatore.setForeground(Color.black);
         fichesGiocatore.setFont(font);
         fichesGiocatore.setForeground(Color.black);
+        
+        if(needToMarkMazziere) {
+            if(giocatore.isMazziere())
+                nomeGiocatore.setForeground(Color.orange);
+            else
+                nomeGiocatore.setForeground(Color.black);        
+        } else
+            nomeGiocatore.setForeground(Color.black);
         
         if(index != nBot) { // bot
             nomeGiocatore.setBounds((this.getWidth()*(2*index+1))/(nBot*2) - 125, 40, 250, 40);
@@ -628,11 +629,40 @@ public class PartitaOfflineGuiView extends JFrame implements PartitaOfflineView,
         sfondo.repaint();
     }
     
+    // stampa per il giocatore passato il messaggio di fine round di vincita o perdita
+    private void stampaMessaggioFineRound(Giocatore giocatore) {
+        Giocatore mazziere = model.getMazziere();
+        String msg = "";
+        
+        if(!giocatore.isMazziere()) {
+            if((giocatore.getValoreMano() > mazziere.getValoreMano()) || (giocatore.getStato() == Stato.Sballato))
+                msg = giocatore.getNome() + " riceve " + giocatore.getPuntata() + " dal mazziere";
+            else
+                msg = giocatore.getNome() + " paga " + giocatore.getPuntata() + " al mazziere";
+        } else
+            msg = "Il mazziere regola i suoi conti";
+        
+        Font font = new Font("MsgFineRound", Font.BOLD, 70);
+        JLabel msgFineRound = new JLabel(msg);
+        msgFineRound.setFont(font);
+        msgFineRound.setForeground(Color.black);
+        int strWidth = msgFineRound.getFontMetrics(font).stringWidth(msg);
+        msgFineRound.setBounds(this.getWidth()/2 - strWidth/2, this.getHeight()/2 - 60, strWidth, 90);
+        
+        sfondo.add(msgFineRound);
+        sfondo.repaint();
+        
+        pausa(pausa_lunga);
+        
+        sfondo.remove(msgFineRound);
+    }
+    
     // controlla la fine effettiva del round per tutti i giocatori e resetta carte coperte e valori mano
     private void checkFineRound(Giocatore giocatore) {
         if(giocatore == model.getGiocatoreLocale()) {
             carteCoperteBots.clear();
             valoriMano.clear();
+            sfondo.repaint();
         }
     }
     
