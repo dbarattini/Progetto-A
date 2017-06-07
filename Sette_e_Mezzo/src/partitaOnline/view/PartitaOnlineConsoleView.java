@@ -117,17 +117,6 @@ public class PartitaOnlineConsoleView implements PartitaOnlineView, Observer{
         }
     }
 
-    @Override
-    public void GiocatoreLocaleEventReceived(GiocatoreLocaleEvent evt) {
-//        if(evt.getArg() instanceof RichiediPuntata){
-//            richiediPuntata(evt);
-//        } else if(evt.getArg() instanceof Error){
-//            System.err.println(((Error)evt.getArg()).getMessage());
-//        } else if(evt.getArg() instanceof RichiediGiocata){
-//            richiediGiocata(evt);
-//        }
-    }
-
     private void richiediPuntata(Object richiediPuntata) {
         System.out.print("\n");
         System.out.println("Carta coperta: " + ((RichiediPuntata) richiediPuntata).getCarta_coperta());
