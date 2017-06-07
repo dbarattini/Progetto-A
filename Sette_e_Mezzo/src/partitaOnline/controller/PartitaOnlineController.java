@@ -184,28 +184,32 @@ public class PartitaOnlineController extends Observable implements ViewEventList
     private Object fineRound(String[] dati) throws NumberFormatException {
         Object ritorno;
         int i = 1;
-        String componentiFR[] = dati[2].split(" ");
-        String nome = componentiFR[0];
-        Carta cartaCoperta = new Carta(componentiFR[i].substring(0, 1), componentiFR[i].substring(1, 2));
+        String componenti[] = dati[2].split(" ");
+        String nome = componenti[0];
+        Carta cartaCoperta = new Carta(componenti[i].substring(0, 1), componenti[i].substring(1, 2));
         ArrayList<Carta> carteScoperte = new ArrayList();
         for (i = 2;; i++) {
-            if (componentiFR[i].equals("fineCarte")) {
+            if (componenti[i].equals("fineCarte")) {
                 break;
             } else {
-                carteScoperte.add(new Carta(componentiFR[i].substring(0, 1), componentiFR[i].substring(1, 2)));
+                carteScoperte.add(new Carta(componenti[i].substring(0, 1), componenti[i].substring(1, 2)));
             }
         }
         i = i + 1;
-        int fiches = Integer.valueOf(componentiFR[i]);
+        int fiches = Integer.valueOf(componenti[i]);
         i = i + 1;
-        boolean isMazziere = Boolean.valueOf(componentiFR[i]);
+        double valoreMano = Double.valueOf(componenti[i]);
+        i=i+1;
+        Stato stato= Stato.valueOf(componenti[i]);
+        i++;
+        boolean isMazziere = Boolean.valueOf(componenti[i]);
 
         i = i + 1;
         int puntata = 0;
         if (!isMazziere) {
-            puntata = Integer.valueOf(componentiFR[i]);
+            puntata = Integer.valueOf(componenti[i]);
         }
-        return ritorno = new FineRound(nome, cartaCoperta, carteScoperte, fiches, isMazziere, puntata);
+        return ritorno = new FineRound(nome, cartaCoperta, carteScoperte, fiches,valoreMano, stato, isMazziere, puntata);
     }
 
     private Object fineManoAvversario(String[] dati) throws NumberFormatException {
