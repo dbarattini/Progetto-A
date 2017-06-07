@@ -31,7 +31,7 @@ import partitaOnline.events.Error;
 
 
 public class Giocatore implements Observer {
-
+    private final int fichesMinime=200;
     private String nome;
     private int fiches;
     private boolean mazziere;
@@ -99,12 +99,12 @@ public class Giocatore implements Observer {
     /**
      * Prende le fiches dal databse e le carica nel giocatore
      */
-    public void inizializzaFiches() throws FichesInizialiException {
+    public void inizializzaFiches()  {
         SQL sql = new SQL();
         try {
             this.fiches = sql.getFiches(nome);
-            if (fiches <= 0) {
-                throw new FichesInizialiException(this);
+            if (fiches < fichesMinime) {
+                fiches=fichesMinime;
             }
         } catch (SqlOccupato ex) {
             try {
