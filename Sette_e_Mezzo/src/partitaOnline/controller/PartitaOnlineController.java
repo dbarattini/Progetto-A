@@ -76,7 +76,17 @@ public class PartitaOnlineController extends Observable implements ViewEventList
         switch (dati[1]) {
             case "NuovoGiocatore":
                 String componenti[] = dati[2].split(" ");
-                giocatori.add(new GiocatoreOnline(componenti[0], Integer.valueOf(componenti[1])));
+                String nome = componenti[0];
+                int fiches = Integer.valueOf(componenti[1]);
+                boolean esiste = false;
+                for (GiocatoreOnline giocatore : giocatori) {
+                    if (nome.equals(giocatore.getNome())) {
+                        esiste = true;
+                    }
+                }
+                if (!esiste) {
+                    giocatori.add(new GiocatoreOnline(nome, fiches));
+                }
                 break;
             case "CartaCoperta":
                 componenti = dati[2].split(" ");
@@ -199,8 +209,8 @@ public class PartitaOnlineController extends Observable implements ViewEventList
         int fiches = Integer.valueOf(componenti[i]);
         i = i + 1;
         double valoreMano = Double.valueOf(componenti[i]);
-        i=i+1;
-        Stato stato= Stato.valueOf(componenti[i]);
+        i = i + 1;
+        Stato stato = Stato.valueOf(componenti[i]);
         i++;
         boolean isMazziere = Boolean.valueOf(componenti[i]);
 
@@ -209,7 +219,7 @@ public class PartitaOnlineController extends Observable implements ViewEventList
         if (!isMazziere) {
             puntata = Integer.valueOf(componenti[i]);
         }
-        return ritorno = new FineRound(nome, cartaCoperta, carteScoperte, fiches,valoreMano, stato, isMazziere, puntata);
+        return ritorno = new FineRound(nome, cartaCoperta, carteScoperte, fiches, valoreMano, stato, isMazziere, puntata);
     }
 
     private Object fineManoAvversario(String[] dati) throws NumberFormatException {
