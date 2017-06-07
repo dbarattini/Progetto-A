@@ -7,7 +7,6 @@ import dominio.eccezioni.SetteeMezzoRealeException;
 import dominio.eccezioni.SballatoException;
 import dominio.classi_dati.Giocata;
 import dominio.classi_dati.Stato;
-import dominio.eccezioni.FichesInizialiException;
 import dominio.eccezioni.FineMazzoException;
 import dominio.eccezioni.GiocataNonValidaException;
 import dominio.eccezioni.MattaException;
