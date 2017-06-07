@@ -29,12 +29,12 @@ public class PartitaOnlineController extends Observable implements ViewEventList
     private PrintWriter aServer;
     private String nomeLocale;
 
-    public PartitaOnlineController( Socket socket) {
+    public PartitaOnlineController( Socket socket, BufferedReader in) {
         try {
             
 
             //view.addPartitaOfflineViewEventListener(this);
-            this.leggi=new Leggi(new BufferedReader(new InputStreamReader(socket.getInputStream())));
+            this.leggi=new Leggi(in);
             this.aServer = new PrintWriter(socket.getOutputStream(), true);
             leggi.addObserver(this);
             Thread t = new Thread(leggi);

@@ -66,7 +66,7 @@ public class Login {
 
             comunica();
         } catch (LoginEffettuato ex) {
-            controller= new PartitaOnlineController(socketClient);
+            controller= new PartitaOnlineController(socketClient, in);
             new PartitaOnlineConsoleView(controller);
         }
 
