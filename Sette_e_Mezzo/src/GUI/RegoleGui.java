@@ -12,6 +12,7 @@ import javax.swing.JTextArea;
 import GUI.ChiudiRegole;
 
 public class RegoleGui extends JFrame{
+    private JButton indietro;
     
     public RegoleGui(){
         
@@ -45,16 +46,12 @@ public class RegoleGui extends JFrame{
         pulsanteIndietro.setBackground(Color.WHITE);
         pulsanteIndietro.setLayout(new FlowLayout());
         
-        JButton indietro = new JButton("INDIETRO");
-        indietro.addActionListener(new ActionListener(){
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                dispose();
-            }
-        });
+        indietro = new JButton("INDIETRO");
         pulsanteIndietro.add(indietro);
         add(pulsanteIndietro, BorderLayout.SOUTH);
-        
-        setVisible(true);
+    }
+  
+    public void addIndietroActionListener(ActionListener l){
+        indietro.addActionListener(l);
     }
 }
