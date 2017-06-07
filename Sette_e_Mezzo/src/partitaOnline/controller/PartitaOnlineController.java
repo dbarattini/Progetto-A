@@ -16,8 +16,6 @@ import java.util.Observable;
 import java.util.Observer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import partitaOnline.events.SetGiocata;
-import partitaOnline.events.SetPuntata;
 import partitaOnline.events.*;
 import partitaOnline.view.PartitaOnlineConsoleView;
 
@@ -201,11 +199,11 @@ public class PartitaOnlineController extends Observable implements ViewEventList
             else
                 carteScoperte.add(new Carta(componentiFR[i].substring(0, 1),componentiFR[i].substring(1, 2)));
         }
-        i++;
+        i=i+1;
         int fiches= Integer.valueOf(componentiFR[i]);
-        i++;
+        i=i+1;
         boolean isMazziere=Boolean.getBoolean(componentiFR[i]);
-        i++;
+        i=i+1;
         int puntata=0;
         if(!isMazziere) puntata=Integer.valueOf(componentiFR[i]);
         return ritorno= new FineRound(nome,cartaCoperta, carteScoperte, fiches,isMazziere, puntata);
@@ -223,9 +221,9 @@ public class PartitaOnlineController extends Observable implements ViewEventList
             else
                 carteScoperte.add(new Carta(componenti[i].substring(0, 1),componenti[i].substring(1, 2)));
         }
-        i++;
+        i=i+1;
         Stato stato=Stato.valueOf(componenti[i]);
-        i++;
+        i=i+1;
         int puntata= Integer.valueOf(componenti[i]);
         return ritorno= new FineManoAvversario(nome, carteScoperte, stato, puntata);
     }
