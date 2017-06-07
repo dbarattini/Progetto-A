@@ -214,7 +214,7 @@ public class PartitaOnlineController extends Observable implements ViewEventList
         int i=1;
         String componenti[]=dati[2].split(" ");
         String nome=componenti[0];
-        ArrayList<Carta> carteScoperte = null;
+        ArrayList<Carta> carteScoperte= new ArrayList();
         for(i=1; ;i++){
             if(componenti[i].equals("fineCarte"))
                 break;
