@@ -140,10 +140,44 @@ public class PartitaOnlineController extends Observable implements ViewEventList
             case "GameOver":
                 ritorno= new GameOver();
                 break;
+            case "RichiediGiocata":
+                ritorno = richediGiocata(dati);
+                break;
+            case "RichiediPuntata":
+                ritorno= richiediPunatata(dati);
+                break;
                 
         }
         this.setChanged();
         this.notifyObservers(ritorno);
+    }
+
+    private Object richiediPunatata(String[] dati) throws NumberFormatException {
+        Object ritorno;
+        String componenti[]=dati[2].split(" ");
+        Carta coperta = new Carta(componenti[0].substring(0, 1),componenti[0].substring(1, 2));
+        Double valoreMano=Double.valueOf(componenti[1]);
+        int fiches= Integer.valueOf(componenti[2]);
+        ritorno= new RichiediPuntata(coperta, valoreMano, fiches);
+        return ritorno;
+    }
+
+    private Object richediGiocata(String[] dati) throws NumberFormatException {
+        Object ritorno;
+        String componenti[]=dati[2].split(" ");
+        ArrayList<Carta>  carte= new ArrayList();
+        double valoreMano=0;
+        for(int i=0; i<componenti.length; i++){
+            if(componenti[i].equals("fineCarte")){
+                valoreMano=Double.valueOf(componenti[i+1]);
+                break;
+            }
+            carte.add(new Carta(componenti[i].substring(0, 1),componenti[i].substring(1, 2)));
+        }
+        Carta coperta= carte.get(0);
+        carte.remove(coperta);
+        ritorno= new RichiediGiocata(coperta,carte,valoreMano );
+        return ritorno;
     }
 
     private Object fineRound(String[] dati) throws NumberFormatException {
