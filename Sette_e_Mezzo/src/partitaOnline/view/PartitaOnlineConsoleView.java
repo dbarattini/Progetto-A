@@ -1,8 +1,8 @@
 package partitaOnline.view;
 
 import partitaOnline.view.*;
-import partitaOffline.events.SetGiocata;
-import partitaOffline.events.SetPuntata;
+import partitaOnline.events.SetGiocata;
+import partitaOnline.events.SetPuntata;
 import dominio.giocatori.Giocatore;
 import dominio.giocatori.GiocatoreOnline;
 import dominio.view.ViewEvent;
@@ -30,6 +30,7 @@ public class PartitaOnlineConsoleView implements PartitaOnlineView, Observer{
         this.controller = controller;
         this.controller.addObserver(this);
         scanner = new Scanner(System.in);
+        listeners.add(controller);
  
     }
 
@@ -144,7 +145,7 @@ public class PartitaOnlineConsoleView implements PartitaOnlineView, Observer{
         System.out.println("Fiches: " + ((RichiediPuntata) richiediPuntata).getFiches());
         System.out.println("Quante fiches vuoi puntare?");
         String puntata = scanner.next();
-        fireViewEvent(new SetPuntata(puntata));
+        controller.riceviEventoDaVista(new SetPuntata(puntata));
         System.out.print("\n");
     }
     
@@ -155,7 +156,7 @@ public class PartitaOnlineConsoleView implements PartitaOnlineView, Observer{
         System.out.println("Carte scoperte: " + ((RichiediGiocata) richiediGiocata).getCarteScoperte());
         System.out.println("Carta o Stai?");
         String giocata = scanner.next();
-        fireViewEvent(new SetGiocata(giocata));
+        controller.riceviEventoDaVista(new SetGiocata(giocata));
         System.out.print("\n");
     }
 
