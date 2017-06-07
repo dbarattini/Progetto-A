@@ -16,8 +16,8 @@ import java.util.Observable;
 import java.util.Observer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import partitaOffline.events.SetGiocata;
-import partitaOffline.events.SetPuntata;
+import partitaOnline.events.SetGiocata;
+import partitaOnline.events.SetPuntata;
 import partitaOnline.events.*;
 import partitaOnline.view.PartitaOnlineConsoleView;
 
