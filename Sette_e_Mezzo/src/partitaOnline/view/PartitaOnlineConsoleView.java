@@ -117,35 +117,42 @@ public class PartitaOnlineConsoleView implements PartitaOnlineView, Observer{
             System.out.println("\n");
             System.out.println("--> Complimenti! Hai sconfitto tutti i bot <--");
         }
+        else if(arg instanceof RichiediPuntata){
+            richiediPuntata(arg);
+        } else if(arg instanceof Error){
+            System.err.println(((Error)arg).getMessage());
+        } else if(arg instanceof RichiediGiocata){
+            richiediGiocata(arg);
+        }
     }
 
     @Override
     public void GiocatoreLocaleEventReceived(GiocatoreLocaleEvent evt) {
-        if(evt.getArg() instanceof RichiediPuntata){
-            richiediPuntata(evt);
-        } else if(evt.getArg() instanceof Error){
-            System.err.println(((Error)evt.getArg()).getMessage());
-        } else if(evt.getArg() instanceof RichiediGiocata){
-            richiediGiocata(evt);
-        }
+//        if(evt.getArg() instanceof RichiediPuntata){
+//            richiediPuntata(evt);
+//        } else if(evt.getArg() instanceof Error){
+//            System.err.println(((Error)evt.getArg()).getMessage());
+//        } else if(evt.getArg() instanceof RichiediGiocata){
+//            richiediGiocata(evt);
+//        }
     }
 
-    private void richiediPuntata(GiocatoreLocaleEvent evt) {
+    private void richiediPuntata(Object richiediPuntata) {
         System.out.print("\n");
-        System.out.println("Carta coperta: " + ((RichiediPuntata) evt.getArg()).getCarta_coperta());
-        System.out.println("Valore Mano : " + ((RichiediPuntata) evt.getArg()).getValore_mano());
-        System.out.println("Fiches: " + ((RichiediPuntata) evt.getArg()).getFiches());
+        System.out.println("Carta coperta: " + ((RichiediPuntata) richiediPuntata).getCarta_coperta());
+        System.out.println("Valore Mano : " + ((RichiediPuntata) richiediPuntata).getValore_mano());
+        System.out.println("Fiches: " + ((RichiediPuntata) richiediPuntata).getFiches());
         System.out.println("Quante fiches vuoi puntare?");
         String puntata = scanner.next();
         fireViewEvent(new SetPuntata(puntata));
         System.out.print("\n");
     }
     
-    private void richiediGiocata(GiocatoreLocaleEvent evt){
+    private void richiediGiocata(Object richiediGiocata){
         System.out.print("\n");
-        System.out.println("Valore Mano : " + ((RichiediGiocata) evt.getArg()).getValoreMano());
-        System.out.println("Carta coperta: " + ((RichiediGiocata) evt.getArg()).getCartaCoperta());
-        System.out.println("Carte scoperte: " + ((RichiediGiocata) evt.getArg()).getCarteScoperte());
+        System.out.println("Valore Mano : " + ((RichiediGiocata) richiediGiocata).getValoreMano());
+        System.out.println("Carta coperta: " + ((RichiediGiocata) richiediGiocata).getCartaCoperta());
+        System.out.println("Carte scoperte: " + ((RichiediGiocata) richiediGiocata).getCarteScoperte());
         System.out.println("Carta o Stai?");
         String giocata = scanner.next();
         fireViewEvent(new SetGiocata(giocata));
