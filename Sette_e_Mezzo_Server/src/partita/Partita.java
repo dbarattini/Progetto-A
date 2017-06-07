@@ -1,7 +1,6 @@
 package partita;
 
 import dominio.eccezioni.PartitaPiena;
-import dominio.eccezioni.GiocatoreDisconnessoException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.logging.Level;
@@ -9,7 +8,6 @@ import java.util.logging.Logger;
 import static java.lang.Thread.sleep;
 import partitaOnline.model.PartitaOnlineModel;
 import dominio.giocatori.Giocatore;
-import javax.swing.SwingUtilities;
 
 public class Partita extends Thread {
 
