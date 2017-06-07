@@ -13,7 +13,7 @@ import java.util.Scanner;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import partitaOffline.events.AggiornamentoMazziere;
+import partitaOnline.events.AggiornamentoMazziere;
 import partitaOffline.events.GiocatoreLocaleEvent;
 import partitaOnline.events.*;
 import partitaOnline.controller.PartitaOnlineController;
@@ -32,16 +32,6 @@ public class PartitaOnlineConsoleView implements PartitaOnlineView, Observer{
         scanner = new Scanner(System.in);
         listeners.add(controller);
  
-    }
-
-    @Override
-    public void addPartitaOnlineViewEventListener(ViewEventListener l) {
-        listeners.add(l);
-    }
-
-    @Override
-    public void removePartitaOnlineViewEventListener(ViewEventListener l) {
-        listeners.remove(l);
     }
 
     protected void fireViewEvent(Object arg) {
