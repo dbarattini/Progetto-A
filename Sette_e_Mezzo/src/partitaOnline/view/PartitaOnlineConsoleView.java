@@ -14,7 +14,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import partitaOnline.events.AggiornamentoMazziere;
-import partitaOffline.events.GiocatoreLocaleEvent;
+import partitaOnline.events.GiocatoreLocaleEvent;
 import partitaOnline.events.*;
 import partitaOnline.controller.PartitaOnlineController;
 
