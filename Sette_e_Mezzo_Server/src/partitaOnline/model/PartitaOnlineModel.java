@@ -74,7 +74,7 @@ public class PartitaOnlineModel extends Observable {
     public void inizializza_partita(ArrayList giocatori) throws InterruptedException {
         this.giocatori = giocatori;
         inizzializza_fiches(this.giocatori);
-        for(Object gioc : giocatori){
+        for(Object gioc : this.giocatori){
             this.eventoPerTutti(new NuovoGiocatore(((Giocatore)gioc).getNome(),((Giocatore)gioc).getFiches() ));
         }
         
@@ -148,8 +148,8 @@ public class PartitaOnlineModel extends Observable {
                 try {
                     carta_estratta = mazzo.estrai_carta();
                     giocatore.prendi_carta_iniziale(carta_estratta);
-                    this.eventoPerTutti(new CartaCoperta(giocatore.getNome(), carta_estratta));
                     this.eventoPerTutti(new ValoreMano(giocatore.getNome(), giocatore.getValoreMano()));
+                    this.eventoPerTutti(new CartaCoperta(giocatore.getNome(), carta_estratta));                    
                     break;
                 } catch (FineMazzoException ex) {
                     mazzo.rimescola(); //non dovrebbe accadere
