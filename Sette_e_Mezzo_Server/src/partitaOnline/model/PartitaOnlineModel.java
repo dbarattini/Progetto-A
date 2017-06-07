@@ -5,7 +5,6 @@ import partitaOnline.events.MazzierePerde;
 import partitaOnline.events.FineRound;
 import partitaOnline.events.FineManoAvversario;
 import partitaOnline.events.RisultatoManoParticolare;
-import dominio.eccezioni.FichesInizialiException;
 import dominio.elementi_di_gioco.Mazzo;
 import dominio.giocatori.Giocatore;
 import dominio.classi_dati.Stato;
