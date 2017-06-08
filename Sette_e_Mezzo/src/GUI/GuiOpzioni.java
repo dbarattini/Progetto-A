@@ -10,14 +10,15 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 
-public class GuiOpzioni  extends JFrame {
+public class GuiOpzioni  extends JFrame implements ActionListener {
     RiconoscimentiGui opzioni_riconoscimenti; 
     private Sfondo sfondo;
     private JButton musica, profilo, riconoscimenti, indietro;
     private ImageIcon musicaOn, musicaOff;
     
     public GuiOpzioni() {
-        
+        this.opzioni_riconoscimenti = new RiconoscimentiGui();
+        opzioni_riconoscimenti.addIndietroActionListener(this);
         
         setTitle("Opzioni");
         setPreferredSize(new Dimension(800, 600));
@@ -76,18 +77,16 @@ public class GuiOpzioni  extends JFrame {
         riconoscimenti.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e) {
-                new RiconoscimentiGui();
-                dispose();
-                
+                opzioni_riconoscimenti.setVisible(true);
+                chiudi();
             };
         });
+        
         
         sfondo.add(musica);
         sfondo.add(profilo);
         sfondo.add(riconoscimenti);
         sfondo.add(indietro);
-        
-        setVisible(true);
     }
     
     private ImageIcon caricaImmagine(String nome){
@@ -104,5 +103,10 @@ public class GuiOpzioni  extends JFrame {
         indietro.addActionListener(l);
     }
 
-    
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if(opzioni_riconoscimenti.isVisible())
+          opzioni_riconoscimenti.setVisible(false);
+        this.setVisible(true);
+    }
 }

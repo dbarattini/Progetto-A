@@ -51,7 +51,6 @@ public class RiconoscimentiGui extends JFrame{
         pulsanteIndietro.add(indietro);
         add(pulsanteIndietro, BorderLayout.SOUTH);
         
-        setVisible(true);
   }
      public void addIndietroActionListener(ActionListener l){
         indietro.addActionListener(l);

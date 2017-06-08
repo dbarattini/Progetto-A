@@ -33,6 +33,7 @@ public class MenuPrincipaleGui extends JFrame implements ActionListener{
         this.menu_opzioni = new GuiOpzioni();
         menu_opzioni.addIndietroActionListener(this);
         
+        
         inizializza_GUI();       
         setVisible(true);
     }  

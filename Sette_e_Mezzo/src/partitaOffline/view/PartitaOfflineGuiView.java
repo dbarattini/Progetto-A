@@ -17,11 +17,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -52,14 +52,9 @@ public class PartitaOfflineGuiView extends JFrame implements PartitaOfflineView,
     private String nome, puntataStr, giocata;
     private JTextField askNome, puntata;
     private JButton carta, stai;
-    private boolean needCartaCoperta = true;
-    private ArrayList<JLabel> carteCoperteBots = new ArrayList<>(), valoriManoBots = new ArrayList<>();
-    //private JButton askNomeButton;
-    //private JLabel askNomeLabel;
-    //private Map<String, JLabel> cartePlayer, carteG1, carteG2, carteG3, carteG4;
-    //private JLabel nomePlayer, nomeG1, nomeG2, nomeG3, nomeG4;
-    //private JLabel fichesPlayer, fichesG1, fichesG2, fichesG3, fichesG4;
-    //private JLabel valoreMPlayer, valoreMG1, valoreMG2, valoreMG3, valoreMG4;
+    private boolean needCartaCoperta = true, needToMarkMazziere = false;
+    private ArrayList<JLabel> carteCoperteBots = new ArrayList<>();
+    private Map<String, JLabel> valoriMano = new HashMap<>();
     private final int pausa_breve = 1000; //ms
     private final int pausa_lunga = 2000; //ms
     
@@ -131,7 +126,7 @@ public class PartitaOfflineGuiView extends JFrame implements PartitaOfflineView,
             if(needCartaCoperta)
                 stampaCartaCoperta();
             stampaManoAvversario(((FineManoAvversario) arg).getNome());
-        } else if(arg instanceof FineRound) { //provvisorio
+        } else if(arg instanceof FineRound) {
             //todo mostra le statistiche di fine round
             Giocatore giocatore = ((FineRound) arg).getGiocatore();
             if(giocatore != model.getGiocatoreLocale())
@@ -139,6 +134,7 @@ public class PartitaOfflineGuiView extends JFrame implements PartitaOfflineView,
             if(!needCartaCoperta)
                 needCartaCoperta = true;
             stampaValoreManoFineRound(giocatore);
+            stampaMessaggioFineRound(giocatore);
             checkFineRound(giocatore);
         } else if(arg instanceof MazzierePerde) {
             //todo mostra che il mazziere ha perso
@@ -170,7 +166,8 @@ public class PartitaOfflineGuiView extends JFrame implements PartitaOfflineView,
         }
     }
     
-    public void richiediNome() {
+    // stampa la richiesta del nome del giocatore e attende fino all'inserimento
+    private void richiediNome() {
         nome = null;
         askNome = new JTextField();
         JButton askNomeButton = new JButton(caricaImmagine("dominio/immagini/fatto.png"));
@@ -206,11 +203,12 @@ public class PartitaOfflineGuiView extends JFrame implements PartitaOfflineView,
         fireViewEvent(new SetNome(nome));
     }
     
-    public void estrazioneMazziere() {
+    // stampa l'animazione di estrazione mazziere, con messaggio finale a mazziere estratto
+    private void estrazioneMazziere() {
         int nGiocatori = model.getGiocatori().size();
         
         for(int i = 0; i < nGiocatori; i++)
-            stampaNomeFiches(i, nGiocatori - 1, model.getGiocatori().get(i));
+            stampaNomeFiches(model.getGiocatori().get(i));
         
         pausa(pausa_breve);
         
@@ -240,23 +238,32 @@ public class PartitaOfflineGuiView extends JFrame implements PartitaOfflineView,
         pausa(pausa_lunga);
         
         sfondo.removeAll();
+        needToMarkMazziere = true;
         for(int i = 0; i < nGiocatori; i++)
-            stampaNomeFiches(i, nGiocatori - 1, model.getGiocatori().get(i));
+            stampaNomeFiches(model.getGiocatori().get(i));
                 
         sfondo.repaint();
     }
     
-    // pensare a soluzione per cancellare i components locali da sfondo (possibile soluzione: tenere un indice che si incrementa per ogni comp aggiunto e creare un array con gli indici da eliminare al repaint finale)
-    // soluzione temporanea ma penso finale: ridisegnare sempre i nomi e le fiches e/o i valori mano (veloce e semplice)
-    public void stampaNomeFiches(int index, int nBot, Giocatore giocatore) {
+    // stampa nome e fiches del giocatore passato, i giocatori hanno nome nero, il mazziere arancione
+    private void stampaNomeFiches(Giocatore giocatore) {
+        int nBot = model.getGiocatori().size() - 1;
+        int index = model.getGiocatori().indexOf(giocatore);
         JLabel nomeGiocatore = new JLabel("Nome:   " + giocatore.getNome());
         JLabel fichesGiocatore = new JLabel("Fiches:   " + giocatore.getFiches());
         
         Font font = new Font("Player", Font.BOLD, 25);
         nomeGiocatore.setFont(font);
-        nomeGiocatore.setForeground(Color.black);
         fichesGiocatore.setFont(font);
         fichesGiocatore.setForeground(Color.black);
+        
+        if(needToMarkMazziere) {
+            if(giocatore.isMazziere())
+                nomeGiocatore.setForeground(Color.orange);
+            else
+                nomeGiocatore.setForeground(Color.black);        
+        } else
+            nomeGiocatore.setForeground(Color.black);
         
         if(index != nBot) { // bot
             nomeGiocatore.setBounds((this.getWidth()*(2*index+1))/(nBot*2) - 125, 40, 250, 40);
@@ -271,7 +278,8 @@ public class PartitaOfflineGuiView extends JFrame implements PartitaOfflineView,
         sfondo.repaint();
     }
     
-    public JLabel stampaValoreMano(Giocatore giocatore) {
+    // stampa il valore della mano del giocatore passato, già correttamente posizionato
+    private JLabel stampaValoreMano(Giocatore giocatore) {
         int nBot = model.getGiocatori().size() - 1;
         int index = model.getGiocatori().indexOf(giocatore);
         JLabel valoreManoGiocatore = new JLabel("Valore mano:   " + giocatore.getValoreMano());
@@ -292,7 +300,8 @@ public class PartitaOfflineGuiView extends JFrame implements PartitaOfflineView,
         return valoreManoGiocatore;
     }
     
-    public JLabel stampaCarta(int x, int y, String carta) {
+    // stampa la carta "carta" a x, y
+    private JLabel stampaCarta(int x, int y, String carta) {
         JLabel card = new JLabel(caricaImmagine("dominio/immagini/mazzo/" + carta + ".png"));
         
         card.setBounds(x, y, 75, 113);        
@@ -303,11 +312,11 @@ public class PartitaOfflineGuiView extends JFrame implements PartitaOfflineView,
         return card;
     }
     
-    public void richiediPuntata() {
+    // stampa i bottoni e il campo di testo per permettere al giocatore di puntare quanto vuole ( minimo 1, massimo ALL IN )
+    private void richiediPuntata() {
         puntataStr = null;
         JButton punta = new JButton(caricaImmagine("dominio/immagini/punta.png"));
         JButton allIN = new JButton(caricaImmagine("dominio/immagini/all_in.png"));
-        JLabel valoreMano = stampaValoreMano(model.getGiocatoreLocale());
         puntata = new JTextField();
         
         punta.setBounds(1060, 500, 140, 56);
@@ -335,7 +344,6 @@ public class PartitaOfflineGuiView extends JFrame implements PartitaOfflineView,
         sfondo.add(punta);
         sfondo.add(allIN);
         sfondo.add(puntata);
-        sfondo.add(valoreMano);
         sfondo.repaint();
         
         while(puntataStr == null) {
@@ -346,14 +354,14 @@ public class PartitaOfflineGuiView extends JFrame implements PartitaOfflineView,
         sfondo.remove(allIN);
         sfondo.remove(puntata);
         sfondo.repaint();
-        sfondo.remove(valoreMano);
             
         fireViewEvent(new SetPuntata(puntataStr));
         
         pausa(pausa_breve);
     }
     
-    public void stampaGiocataPlayer() {
+    // stampa i bottoni stai e carta per permettere al giocatore di scegliere la mossa, nel caso di carta stampa la carta
+    private void stampaGiocataPlayer() {
         giocata = null;
         Carta lastCard;
         if(!model.getGiocatoreLocale().getCarteScoperte().isEmpty()) {
@@ -361,7 +369,7 @@ public class PartitaOfflineGuiView extends JFrame implements PartitaOfflineView,
             int index = model.getGiocatoreLocale().getCarteScoperte().indexOf(lastCard);            
             stampaCarta(this.getWidth()/2 - 95 + index*35, 3*this.getHeight()/4 - 60, lastCard.toString());
         }
-        JLabel valoreMano = stampaValoreMano(model.getGiocatoreLocale());
+        aggiornaValoreManoPlayer();
         carta = new JButton(caricaImmagine("dominio/immagini/carta.png"));
         stai = new JButton(caricaImmagine("dominio/immagini/stai.png"));
         
@@ -394,11 +402,11 @@ public class PartitaOfflineGuiView extends JFrame implements PartitaOfflineView,
             
         sfondo.remove(carta);
         sfondo.remove(stai);
-        sfondo.remove(valoreMano);
         sfondo.repaint();
     }
     
-    public void rimescoloMazzo() {
+    // stampa il mazzo che viene rimescolato con relativo messaggio
+    private void rimescoloMazzo() {
         ArrayList<JLabel> carte = new ArrayList<>();
         Font font = new Font("Deck Shuffle", Font.BOLD, 70);
         JLabel rimescoloMsg = new JLabel("Rimescolo il mazzo...");
@@ -436,7 +444,8 @@ public class PartitaOfflineGuiView extends JFrame implements PartitaOfflineView,
         sfondo.repaint();
     }
     
-    public JLabel stampaCartaMobileDeckShuffle(int x, int y, String carta, int spazio) {
+    // serve solo come oggetto del deck shuffle
+    private JLabel stampaCartaMobileDeckShuffle(int x, int y, String carta, int spazio) {
         JLabel card = new JLabel(caricaImmagine("dominio/immagini/mazzo/" + carta + ".png"));
         
         card.setBounds(x, y, 75, 113);
@@ -452,25 +461,40 @@ public class PartitaOfflineGuiView extends JFrame implements PartitaOfflineView,
         return card;
     }
     
+    // stampa l'ultima carta del giocatore in seguito a una mano particolare ( sballato, 7 e mezzo o 7 e mezzo reale )
     private void manoParticolarePlayer() {
         Stato stato = model.getGiocatoreLocale().getStato();
         Carta ultimaOttenuta = model.getGiocatoreLocale().getUltimaCartaOttenuta();
         int index = model.getGiocatoreLocale().getCarteScoperte().indexOf(ultimaOttenuta);
         stampaCarta(this.getWidth()/2 - 95 + index*35, 3*this.getHeight()/4 - 60, ultimaOttenuta.toString());
-        if(stato == Stato.Sballato)
-            stampaSballato(model.getGiocatoreLocale());
+        if(null != stato) switch (stato) {
+            case Sballato:
+                sfondo.remove(valoriMano.get(model.getGiocatoreLocale().getNome()));
+                valoriMano.remove(model.getGiocatoreLocale().getNome());
+                valoriMano.put(model.getGiocatoreLocale().getNome(), stampaSballato(model.getGiocatoreLocale()));
+                pausa(pausa_breve);
+                break;
+            case SetteeMezzo:
+                index++;  // stampare sette e mezzo
+                break;
+            case SetteeMezzoReale:
+                index++;  // stampare sette e mezzo reale
+                break;
+            default:
+                break;
+        }
     }
     
+    // stampa la carta coperta degli avversari non visibile e quella del giocatore locale visibile
     private void stampaCartaCoperta() {
         int nGiocatori = model.getGiocatori().size();
         sfondo.removeAll();
         sfondo.repaint();
         for(int i = 0; i < nGiocatori; i++)
-            stampaNomeFiches(i, nGiocatori - 1, model.getGiocatori().get(i));
+            stampaNomeFiches(model.getGiocatori().get(i));
         
         pausa(pausa_breve);
         
-        JLabel valoreMano = null;
         Font font = new Font("Carte Coperte msg", Font.BOLD, 70);
         JLabel messaggioCartaCoperta = new JLabel("Distribuisco carta coperta...");
         messaggioCartaCoperta.setFont(font);
@@ -486,43 +510,45 @@ public class PartitaOfflineGuiView extends JFrame implements PartitaOfflineView,
                 carteCoperteBots.add(stampaCarta((this.getWidth()*(2*i+1))/((nGiocatori-1)*2) - 125, 180, "retroCarta"));
             else {
                 stampaCarta(this.getWidth()/2 - 125, 3*this.getHeight()/4 - 60, model.getGiocatori().get(i).getCartaCoperta().toString());
-                valoreMano = stampaValoreMano(model.getGiocatoreLocale());
+                valoriMano.put(model.getGiocatoreLocale().getNome(), stampaValoreMano(model.getGiocatoreLocale()));
             }
             pausa(pausa_breve);
         }
         
         sfondo.remove(messaggioCartaCoperta);
         sfondo.repaint();
-        sfondo.remove(valoreMano);
         
         needCartaCoperta = false;
     }
     
-    public void stampaManoAvversario(String nome) {
+    // stampa le carte pescate dall'avversario ( e sballato se sballa )
+    private void stampaManoAvversario(String nome) {
         Giocatore giocatore = getGiocatore(nome);
         JLabel valoreMano = null;
         int index = model.getGiocatori().indexOf(giocatore);
         
         if(!giocatore.getCarteScoperte().isEmpty()) {
             for(int i = 0; i < giocatore.getCarteScoperte().size(); i++) {                
-                valoreMano = stampaValoreManoAvversario(giocatore, i+1);
+                valoreMano = stampaValoreManoAttualeAvversario(giocatore, i+1);
                 stampaCarta((this.getWidth()*(2*index+1))/((model.getGiocatori().size()-1)*2) - 95 + i*35, 180, giocatore.getCarteScoperte().get(i).toString());                                
                 pausa(pausa_breve);
                 sfondo.remove(valoreMano);
             }
             if(giocatore.getStato() != Stato.Sballato)
-                valoriManoBots.add(stampaValoreManoAvversario(giocatore, giocatore.getCarteScoperte().size()));
+                valoriMano.put(giocatore.getNome(), stampaValoreManoAttualeAvversario(giocatore, giocatore.getCarteScoperte().size()));
             else {
-                valoriManoBots.add(stampaSballato(giocatore));
+                valoriMano.put(giocatore.getNome(), stampaSballato(giocatore));
                 scopriCartaCoperta(giocatore);
-            }
+                pausa(pausa_breve);
+            }                 
         } else {
-            valoriManoBots.add(stampaValoreManoAvversario(giocatore, -1));
+            valoriMano.put(giocatore.getNome(), stampaValoreManoAttualeAvversario(giocatore, -1));
             pausa(pausa_breve);
         }
     }
     
-    public JLabel stampaValoreManoAvversario(Giocatore giocatore, int carte) {
+    // serve durante la stampa della mano avversario per aggiornare il valore mano
+    private JLabel stampaValoreManoAttualeAvversario(Giocatore giocatore, int carte) {
         int nBot = model.getGiocatori().size() - 1;
         int index = model.getGiocatori().indexOf(giocatore);
         double valoreMano = 0;
@@ -537,9 +563,9 @@ public class PartitaOfflineGuiView extends JFrame implements PartitaOfflineView,
         
         JLabel valoreManoGiocatore;
         if(carte != -1)
-            valoreManoGiocatore = new JLabel("Valore mano:   " + valoreMano);
+            valoreManoGiocatore = new JLabel("Valore attuale:   " + valoreMano);
         else
-            valoreManoGiocatore = new JLabel("Valore mano:   ??");
+            valoreManoGiocatore = new JLabel("Valore attuale:   0");
 
         Font font = new Font("Player", Font.BOLD, 25);
         valoreManoGiocatore.setFont(font);
@@ -553,16 +579,16 @@ public class PartitaOfflineGuiView extends JFrame implements PartitaOfflineView,
         return valoreManoGiocatore;
     }
     
+    // scopre la carta coperta ( usato se sballato o a fine round per vedere il valore a fine round)
     private void scopriCartaCoperta(Giocatore giocatore) {
         int index = model.getGiocatori().indexOf(giocatore);
 
         carteCoperteBots.get(index).setIcon(caricaImmagine("dominio/immagini/mazzo/" + giocatore.getCartaCoperta().toString() + ".png"));
         sfondo.repaint();
-        
-        pausa(pausa_breve);
     }
     
-    private JLabel stampaSballato(Giocatore giocatore) { // da fare
+    // stampa SBALLATO in rosso se un giocatore sballa
+    private JLabel stampaSballato(Giocatore giocatore) {
         int nBot = model.getGiocatori().size() - 1;
         int index = model.getGiocatori().indexOf(giocatore);
         JLabel valoreSballato = new JLabel("SBALLATO");
@@ -582,6 +608,7 @@ public class PartitaOfflineGuiView extends JFrame implements PartitaOfflineView,
         return valoreSballato;
     }
     
+    // ritorna il giocatore dato il nome
     private Giocatore getGiocatore(String nome) {
         Giocatore giocatore = null;
         for(Giocatore gioc : model.getGiocatori()) {
@@ -591,22 +618,75 @@ public class PartitaOfflineGuiView extends JFrame implements PartitaOfflineView,
         return giocatore;
     }
     
+    // stampa il valore mano a fine round ( solo per gli avversari perchè quello del giocatore è sempre visibile )
     private void stampaValoreManoFineRound(Giocatore giocatore) {
-        int index = model.getGiocatori().indexOf(giocatore);
-        
-        valoriManoBots.get(index).setText("Valore mano:   " + giocatore.getValoreMano());
-        sfondo.repaint();
-        
-        pausa(pausa_breve);
-    }
-    
-    private void checkFineRound(Giocatore giocatore) {
-        if(giocatore == model.getGiocatoreLocale()) {
-            carteCoperteBots.clear();
-            valoriManoBots.clear();
+        if(giocatore != model.getGiocatoreLocale()) {
+            if(giocatore.getStato() != Stato.Sballato) {
+                stampaValoreMano(giocatore);
+                valoriMano.get(giocatore.getNome()).setText("Valore mano:   " + giocatore.getValoreMano());
+                sfondo.repaint();
+
+                pausa(pausa_breve);
+            }
         }
     }
     
+    // aggiorna il valore mano del giocatore ( usato ad ogni giocata )
+    private void aggiornaValoreManoPlayer() {
+        Giocatore giocatore = model.getGiocatoreLocale();
+        valoriMano.get(giocatore.getNome()).setText("Valore mano:   " + giocatore.getValoreMano());
+        sfondo.repaint();
+    }
+    
+    // stampa per il giocatore passato il messaggio di fine round di vincita o perdita
+    private void stampaMessaggioFineRound(Giocatore giocatore) {
+        Giocatore mazziere = model.getMazziere();
+        String msg = "";
+        
+        if(!giocatore.isMazziere()) {
+            if(mazziere.getStato() == Stato.Sballato) {
+                if(giocatore.getStato() == Stato.Sballato)
+                    msg = giocatore.getNome() + " paga " + giocatore.getPuntata() + " al mazziere";
+                else if ((giocatore.getStato() == Stato.OK) || (giocatore.getStato() == Stato.SetteeMezzo))
+                    msg = giocatore.getNome() + " riceve " + giocatore.getPuntata() + " dal mazziere";
+                else if(giocatore.getStato() == Stato.SetteeMezzoReale)
+                    msg = giocatore.getNome() + " riceve " + 2*giocatore.getPuntata() + " dal mazziere";
+            } else {
+                if((giocatore.getStato() == Stato.Sballato) || (giocatore.getValoreMano() <= mazziere.getValoreMano()))
+                    msg = giocatore.getNome() + " paga " + giocatore.getPuntata() + " al mazziere";
+                else if (giocatore.getValoreMano() > mazziere.getValoreMano())
+                    msg = giocatore.getNome() + " riceve " + giocatore.getPuntata() + " dal mazziere";
+                else if ((giocatore.getStato() == Stato.SetteeMezzoReale) && (giocatore.getValoreMano() > mazziere.getValoreMano()))
+                    msg = giocatore.getNome() + " riceve " + 2*giocatore.getPuntata() + " dal mazziere";
+            }
+        } else
+            msg = "Il mazziere regola i suoi conti";
+        
+        Font font = new Font("MsgFineRound", Font.BOLD, 70);
+        JLabel msgFineRound = new JLabel(msg);
+        msgFineRound.setFont(font);
+        msgFineRound.setForeground(Color.black);
+        int strWidth = msgFineRound.getFontMetrics(font).stringWidth(msg);
+        msgFineRound.setBounds(this.getWidth()/2 - strWidth/2, this.getHeight()/2 - 60, strWidth, 90);
+        
+        sfondo.add(msgFineRound);
+        sfondo.repaint();
+        
+        pausa(pausa_lunga);
+        
+        sfondo.remove(msgFineRound);
+    }
+    
+    // controlla la fine effettiva del round per tutti i giocatori e resetta carte coperte e valori mano
+    private void checkFineRound(Giocatore giocatore) {
+        if(giocatore == model.getGiocatoreLocale()) {
+            carteCoperteBots.clear();
+            valoriMano.clear();
+            sfondo.repaint();
+        }
+    }
+    
+    // stoppa il thread per tempo ms
     private void pausa(int tempo){
         try {
             Thread.sleep(tempo);
