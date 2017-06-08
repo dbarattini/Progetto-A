@@ -1,9 +1,7 @@
 package partitaOnline.view;
 
-import partitaOnline.view.*;
 import partitaOnline.events.SetGiocata;
 import partitaOnline.events.SetPuntata;
-import dominio.giocatori.Giocatore;
 import dominio.giocatori.GiocatoreOnline;
 import dominio.view.ViewEvent;
 import dominio.view.ViewEventListener;
@@ -14,7 +12,6 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import partitaOnline.events.AggiornamentoMazziere;
-import partitaOnline.events.GiocatoreLocaleEvent;
 import partitaOnline.events.*;
 import partitaOnline.controller.PartitaOnlineController;
 
