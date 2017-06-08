@@ -1,7 +1,7 @@
 package sette_e_mezzo;
 
 import static dominio.classi_dati.DifficoltaBot.Facile;
-import modules.PartitaOfflineGui;
+import moduli.PartitaOfflineGui;
 
 public class provaGUI {
     

@@ -1,4 +1,4 @@
-package GUI;
+package menuRiconoscimenti;
 
 import java.awt.BorderLayout;
 import java.awt.Color;

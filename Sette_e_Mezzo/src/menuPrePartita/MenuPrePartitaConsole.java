@@ -7,7 +7,7 @@ package menuPrePartita;
 
 import dominio.classi_dati.DifficoltaBot;
 import java.util.Scanner;
-import modules.PartitaOfflineConsole;
+import moduli.PartitaOfflineConsole;
 
 
 public class MenuPrePartitaConsole{

@@ -1,4 +1,4 @@
-package modules;
+package moduli;
 
 import dominio.classi_dati.DifficoltaBot;
 import partitaOffline.controller.PartitaOfflineController;

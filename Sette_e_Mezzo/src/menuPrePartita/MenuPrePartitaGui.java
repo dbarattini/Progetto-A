@@ -17,7 +17,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
-import modules.PartitaOfflineGui;
+import moduli.PartitaOfflineGui;
 
 
 
