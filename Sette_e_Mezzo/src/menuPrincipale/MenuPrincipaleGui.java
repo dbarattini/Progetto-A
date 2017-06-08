@@ -25,7 +25,7 @@ public class MenuPrincipaleGui extends JFrame implements ActionListener{
     
     public MenuPrincipaleGui() { 
         this.menu_regole = new RegoleGui();
-        this.menu_regole.addIndietroActionListener(this);
+//        this.menu_regole.addIndietroActionListener(this);
         this.menu_pre_partita = new MenuPrePartitaGui();
         menu_pre_partita.addIndietroActionListener(this);
         inizializza_GUI();       

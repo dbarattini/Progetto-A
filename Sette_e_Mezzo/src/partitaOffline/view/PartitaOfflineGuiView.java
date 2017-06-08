@@ -166,6 +166,7 @@ public class PartitaOfflineGuiView extends JFrame implements PartitaOfflineView,
         }
     }
     
+    // stampa la richiesta del nome del giocatore e attende fino all'inserimento
     private void richiediNome() {
         nome = null;
         askNome = new JTextField();
@@ -202,11 +203,12 @@ public class PartitaOfflineGuiView extends JFrame implements PartitaOfflineView,
         fireViewEvent(new SetNome(nome));
     }
     
+    // stampa l'animazione di estrazione mazziere, con messaggio finale a mazziere estratto
     private void estrazioneMazziere() {
         int nGiocatori = model.getGiocatori().size();
         
         for(int i = 0; i < nGiocatori; i++)
-            stampaNomeFiches(i, nGiocatori - 1, model.getGiocatori().get(i));
+            stampaNomeFiches(model.getGiocatori().get(i));
         
         pausa(pausa_breve);
         
@@ -238,12 +240,15 @@ public class PartitaOfflineGuiView extends JFrame implements PartitaOfflineView,
         sfondo.removeAll();
         needToMarkMazziere = true;
         for(int i = 0; i < nGiocatori; i++)
-            stampaNomeFiches(i, nGiocatori - 1, model.getGiocatori().get(i));
+            stampaNomeFiches(model.getGiocatori().get(i));
                 
         sfondo.repaint();
     }
     
-    private void stampaNomeFiches(int index, int nBot, Giocatore giocatore) {
+    // stampa nome e fiches del giocatore passato, i giocatori hanno nome nero, il mazziere arancione
+    private void stampaNomeFiches(Giocatore giocatore) {
+        int nBot = model.getGiocatori().size() - 1;
+        int index = model.getGiocatori().indexOf(giocatore);
         JLabel nomeGiocatore = new JLabel("Nome:   " + giocatore.getNome());
         JLabel fichesGiocatore = new JLabel("Fiches:   " + giocatore.getFiches());
         
@@ -273,6 +278,7 @@ public class PartitaOfflineGuiView extends JFrame implements PartitaOfflineView,
         sfondo.repaint();
     }
     
+    // stampa il valore della mano del giocatore passato, già correttamente posizionato
     private JLabel stampaValoreMano(Giocatore giocatore) {
         int nBot = model.getGiocatori().size() - 1;
         int index = model.getGiocatori().indexOf(giocatore);
@@ -294,6 +300,7 @@ public class PartitaOfflineGuiView extends JFrame implements PartitaOfflineView,
         return valoreManoGiocatore;
     }
     
+    // stampa la carta "carta" a x, y
     private JLabel stampaCarta(int x, int y, String carta) {
         JLabel card = new JLabel(caricaImmagine("dominio/immagini/mazzo/" + carta + ".png"));
         
@@ -305,6 +312,7 @@ public class PartitaOfflineGuiView extends JFrame implements PartitaOfflineView,
         return card;
     }
     
+    // stampa i bottoni e il campo di testo per permettere al giocatore di puntare quanto vuole ( minimo 1, massimo ALL IN )
     private void richiediPuntata() {
         puntataStr = null;
         JButton punta = new JButton(caricaImmagine("dominio/immagini/punta.png"));
@@ -352,6 +360,7 @@ public class PartitaOfflineGuiView extends JFrame implements PartitaOfflineView,
         pausa(pausa_breve);
     }
     
+    // stampa i bottoni stai e carta per permettere al giocatore di scegliere la mossa, nel caso di carta stampa la carta
     private void stampaGiocataPlayer() {
         giocata = null;
         Carta lastCard;
@@ -482,7 +491,7 @@ public class PartitaOfflineGuiView extends JFrame implements PartitaOfflineView,
         sfondo.removeAll();
         sfondo.repaint();
         for(int i = 0; i < nGiocatori; i++)
-            stampaNomeFiches(i, nGiocatori - 1, model.getGiocatori().get(i));
+            stampaNomeFiches(model.getGiocatori().get(i));
         
         pausa(pausa_breve);
         
@@ -635,10 +644,21 @@ public class PartitaOfflineGuiView extends JFrame implements PartitaOfflineView,
         String msg = "";
         
         if(!giocatore.isMazziere()) {
-            if((giocatore.getValoreMano() > mazziere.getValoreMano()) || (giocatore.getStato() == Stato.Sballato))
-                msg = giocatore.getNome() + " riceve " + giocatore.getPuntata() + " dal mazziere";
-            else
-                msg = giocatore.getNome() + " paga " + giocatore.getPuntata() + " al mazziere";
+            if(mazziere.getStato() == Stato.Sballato) {
+                if(giocatore.getStato() == Stato.Sballato)
+                    msg = giocatore.getNome() + " paga " + giocatore.getPuntata() + " al mazziere";
+                else if ((giocatore.getStato() == Stato.OK) || (giocatore.getStato() == Stato.SetteeMezzo))
+                    msg = giocatore.getNome() + " riceve " + giocatore.getPuntata() + " dal mazziere";
+                else if(giocatore.getStato() == Stato.SetteeMezzoReale)
+                    msg = giocatore.getNome() + " riceve " + 2*giocatore.getPuntata() + " dal mazziere";
+            } else {
+                if((giocatore.getStato() == Stato.Sballato) || (giocatore.getValoreMano() <= mazziere.getValoreMano()))
+                    msg = giocatore.getNome() + " paga " + giocatore.getPuntata() + " al mazziere";
+                else if (giocatore.getValoreMano() > mazziere.getValoreMano())
+                    msg = giocatore.getNome() + " riceve " + giocatore.getPuntata() + " dal mazziere";
+                else if ((giocatore.getStato() == Stato.SetteeMezzoReale) && (giocatore.getValoreMano() > mazziere.getValoreMano()))
+                    msg = giocatore.getNome() + " riceve " + 2*giocatore.getPuntata() + " dal mazziere";
+            }
         } else
             msg = "Il mazziere regola i suoi conti";
         
