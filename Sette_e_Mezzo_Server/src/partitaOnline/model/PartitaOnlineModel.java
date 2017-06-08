@@ -26,6 +26,7 @@ import partitaOnline.cambia.StatoCambiato;
 import partitaOnline.cambia.UltimaCartaOttenuta;
 import partitaOnline.cambia.ValoreMano;
 import partitaOnline.events.EstrattoMazziere;
+import partitaOnline.events.GameOver;
 import partitaOnline.events.MazzoRimescolato;
 
 public class PartitaOnlineModel extends Observable {
@@ -346,11 +347,11 @@ public class PartitaOnlineModel extends Observable {
 
     private void fine_round() throws InterruptedException {
         for (Giocatore giocatore : giocatori) {
-
             Thread.sleep(pausa_breve);
             this.eventoPerTutti(new FineRound(giocatore.getNome(), giocatore.getCartaCoperta(), giocatore.getCarteScoperte(), giocatore.getFiches(), giocatore.getValoreMano(), giocatore.getStato(), giocatore.isMazziere(), giocatore.getPuntata()));
 
             if (giocatore.getFiches() == 0 && !giocatore.haPerso() && !giocatore.isDisconnesso()) {
+                this.eventoPerTutti(new GameOver(giocatore.getNome()));
                 giocatore.perde();
                 if (giocatore.isMazziere()) {
                     this.eventoPerTutti(new MazzierePerde());
