@@ -87,7 +87,7 @@ public class PartitaOnlineController extends Observable implements ViewEventList
                 setMazziere(dati[2]);
                 break;
             case "StatoCambiato":
-                String [] componenti = dati[2].split(" ");
+                String[] componenti = dati[2].split(" ");
                 giocatoreDaNome(componenti[0]).setStato(Stato.valueOf(componenti[1]));
                 break;
             case "UltimaCartaOttenuta":
@@ -157,7 +157,9 @@ public class PartitaOnlineController extends Observable implements ViewEventList
                 ritorno = new AggiornamentoMazziere();
                 break;
             case "GameOver":
-                ritorno = new GameOver();
+                giocatoreDaNome(dati[2]).perde();
+                if (nomeLocale.equals(dati[2]))
+                    ritorno = new GameOver();
                 break;
             case "RichiediGiocata":
                 ritorno = richediGiocata(dati);
