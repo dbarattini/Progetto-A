@@ -31,7 +31,6 @@ public class GuiOpzioni  extends JFrame implements ActionListener {
         
         inizializzaGui();
         
-        setVisible(true);
     }
     
     private void inizializzaGui() {

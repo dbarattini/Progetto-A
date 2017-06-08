@@ -49,7 +49,7 @@ public class RegoleGui extends JFrame{
         add(pulsanteIndietro, BorderLayout.SOUTH);
     }
     
-    public void addIndietroActionListener(ActionListener l){
+  public void addIndietroActionListener(ActionListener l){
         indietro.addActionListener(l);
     }
 }
