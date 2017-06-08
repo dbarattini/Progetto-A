@@ -75,24 +75,10 @@ public class PartitaOnlineController extends Observable implements ViewEventList
     private void gestisciCambiamento(String[] dati) {
         switch (dati[1]) {
             case "NuovoGiocatore":
-                String componenti[] = dati[2].split(" ");
-                String nome = componenti[0];
-                int fiches = Integer.valueOf(componenti[1]);
-                boolean esiste = false;
-                for (GiocatoreOnline giocatore : giocatori) {
-                    if (nome.equals(giocatore.getNome())) {
-                        esiste = true;
-                    }
-                }
-                if (!esiste) {
-                    giocatori.add(new GiocatoreOnline(nome, fiches));
-                }
+                nuovoGiocatore(dati);
                 break;
             case "CartaCoperta":
-                componenti = dati[2].split(" ");
-                String valore = componenti[1].substring(0, 1);
-                String seme = componenti[1].substring(1, 2);
-                giocatoreDaNome(componenti[0]).setCartaCoperta(new Carta(valore, seme));
+                cartaCoperta(dati);
                 break;
             case "GiocatoreDisconnesso":
                 giocatori.remove(giocatoreDaNome(dati[2]));
@@ -101,7 +87,7 @@ public class PartitaOnlineController extends Observable implements ViewEventList
                 setMazziere(dati[2]);
                 break;
             case "StatoCambiato":
-                componenti = dati[2].split(" ");
+                String [] componenti = dati[2].split(" ");
                 giocatoreDaNome(componenti[0]).setStato(Stato.valueOf(componenti[1]));
                 break;
             case "UltimaCartaOttenuta":
@@ -112,6 +98,28 @@ public class PartitaOnlineController extends Observable implements ViewEventList
                 componenti = dati[2].split(" ");
                 giocatoreDaNome(componenti[0]).setValoreMano(Double.valueOf(componenti[1]));
                 break;
+        }
+    }
+
+    private void cartaCoperta(String[] dati) {
+        String componenti[] = dati[2].split(" ");
+        String valore = componenti[1].substring(0, 1);
+        String seme = componenti[1].substring(1, 2);
+        giocatoreDaNome(componenti[0]).setCartaCoperta(new Carta(valore, seme));
+    }
+
+    private void nuovoGiocatore(String[] dati) throws NumberFormatException {
+        String componenti[] = dati[2].split(" ");
+        String nome = componenti[0];
+        int fiches = Integer.valueOf(componenti[1]);
+        boolean esiste = false;
+        for (GiocatoreOnline giocatore : giocatori) {
+            if (nome.equals(giocatore.getNome())) {
+                esiste = true;
+            }
+        }
+        if (!esiste) {
+            giocatori.add(new GiocatoreOnline(nome, fiches));
         }
     }
 
