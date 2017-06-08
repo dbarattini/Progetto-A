@@ -1,6 +1,6 @@
 package partitaOffline.events;
 
-import dominio.classi_dati.Stato;
+import dominio.classi_dati.StatoMano;
 import dominio.elementi_di_gioco.Carta;
 import java.util.ArrayList;
 
@@ -12,10 +12,10 @@ public class FineManoAvversario {
     
     private String nome;
     private ArrayList<Carta> carteScoperte;
-    private Stato stato;
+    private StatoMano stato;
     private int puntata;
 
-    public FineManoAvversario(String nome, ArrayList<Carta> carteScoperte, Stato stato, int puntata) {
+    public FineManoAvversario(String nome, ArrayList<Carta> carteScoperte, StatoMano stato, int puntata) {
         this.nome = nome;
         this.carteScoperte = carteScoperte;
         this.stato = stato;
@@ -30,7 +30,7 @@ public class FineManoAvversario {
         return carteScoperte;
     }
 
-    public Stato getStato() {
+    public StatoMano getStato() {
         return stato;
     }
 

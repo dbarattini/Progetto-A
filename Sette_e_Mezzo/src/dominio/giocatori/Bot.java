@@ -13,7 +13,7 @@ public abstract class Bot extends Giocatore {
      * 
      * @param nome nome del bot
      * @param fiches quantità fiches iniziali
-     * @param mazzo questa variabile è il mazzo della partita, necessario per far decidere la giocata e la puntata al bot
+     * @param mazzo mazzo della partita, necessario per far decidere la giocata e la puntata al bot
      */
     public Bot (String nome, int fiches, Mazzo mazzo) {
         super(nome, fiches);
@@ -21,32 +21,40 @@ public abstract class Bot extends Giocatore {
     }
     /**
      * 
-     * @return ritorna il valore numerico della carta che se pescata farebbe sballare il giocatore
+     * @return valore numerico della carta che se pescata farebbe sballare il giocatore
      */
     protected double calcola_valore_sballo() {
-        double prov = (7.5 - this.valore_mano) + 0.5;
-        return prov;
+        double valore_sballo = (7.5 - this.valore_mano) + 0.5;
+        return valore_sballo;
     }
     /**
      * 
-     * @return calcola la percentuale di sballare se si decide di chiedere una carta
+     * @return percentuale di sballare se si decide di chiedere una carta
      */
     protected double calcola_percentuale_sballo() {
-        double sballo = calcola_valore_sballo();
-        double percentuale = 0;
+        double numero_carte_sballo = conta_carte_sballo();
+        double percentuale_sballo = 0;
+        
+        double numero_carte_da_giocare = (double) this.mazzo.getCarteDaGiocare().size();
+        percentuale_sballo = (numero_carte_sballo/numero_carte_da_giocare)*100;
+        return percentuale_sballo;
+    }
+    
+    private double conta_carte_sballo(){
+        double valore_sballo = calcola_valore_sballo();
         double contatore = 0;
+        
         for (Carta c : this.mazzo.getCarteDaGiocare()) {
             try {
-                if(c.getValoreNumerico() >= sballo) {
+                if(c.getValoreNumerico() >= valore_sballo) {
                     contatore += 1;
                 }
             } catch (MattaException ex) {
                 // la matta non conta come carta da sballo
             }
         }
-        double daGioc=(double) this.mazzo.getCarteDaGiocare().size();
-        percentuale = (contatore/daGioc)*100;
-        return percentuale;
+        
+        return contatore;
     }
     
 }

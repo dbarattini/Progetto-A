@@ -11,7 +11,7 @@ import dominio.elementi_di_gioco.Mazzo;
 import dominio.giocatori.BotFacile;
 import dominio.giocatori.Giocatore;
 import dominio.classi_dati.DifficoltaBot;
-import dominio.classi_dati.Stato;
+import dominio.classi_dati.StatoMano;
 import dominio.eccezioni.CanzoneNonTrovataException;
 import dominio.eccezioni.CaricamentoCanzoneException;
 import dominio.eccezioni.FineMazzoException;
@@ -186,7 +186,7 @@ public class PartitaOfflineModel extends Observable {
             giocatore = getProssimoGiocatore(pos_next_giocatore);
             if(! giocatore.haPerso()){  
                 esegui_mano(giocatore);
-                if(giocatore instanceof GiocatoreUmano && giocatore.getStato() != Stato.OK){
+                if(giocatore instanceof GiocatoreUmano && giocatore.getStato() != StatoMano.OK){
                     
                     this.setChanged();
                     this.notifyObservers(new RisultatoManoParticolare());
@@ -271,16 +271,16 @@ public class PartitaOfflineModel extends Observable {
                 try {
                     giocatore.chiedi_carta(carta_estratta);
                 } catch (SballatoException ex) {
-                    giocatore.setStato(Stato.Sballato);
+                    giocatore.setStato(StatoMano.Sballato);
                     if(!giocatore.isMazziere()){
                         giocatore.paga(mazziere); //giocatore se sballa paga subito.
                     }
                     continua = false;
                 } catch (SetteeMezzoRealeException ex) {
-                    giocatore.setStato(Stato.SetteeMezzoReale);
+                    giocatore.setStato(StatoMano.SetteeMezzoReale);
                     continua = false;
                 } catch (SetteeMezzoException ex) {
-                    giocatore.setStato(Stato.SetteeMezzo);
+                    giocatore.setStato(StatoMano.SetteeMezzo);
                     continua = false;
                 }
             }

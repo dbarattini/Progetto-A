@@ -5,7 +5,7 @@ import dominio.eccezioni.SetteeMezzoException;
 import dominio.eccezioni.SetteeMezzoRealeException;
 import dominio.eccezioni.SballatoException;
 import dominio.classi_dati.Giocata;
-import dominio.classi_dati.Stato;
+import dominio.classi_dati.StatoMano;
 import dominio.eccezioni.FineMazzoException;
 import dominio.eccezioni.MattaException;
 import dominio.elementi_di_gioco.Carta;
@@ -20,7 +20,7 @@ public abstract class Giocatore {
     private int puntata;
     protected ArrayList<Carta> carte_scoperte= new ArrayList<>();
     protected double valore_mano = 0;
-    private Stato stato;
+    private StatoMano stato;
     private boolean perso = false;
     
     /**
@@ -47,7 +47,7 @@ public abstract class Giocatore {
         puntata = 0;
         carte_scoperte.clear();
         valore_mano = 0;
-        stato = Stato.OK;
+        stato = StatoMano.OK;
     }
     
     /**
@@ -279,7 +279,7 @@ public abstract class Giocatore {
     }
     
     
-    public void setStato(Stato stato){
+    public void setStato(StatoMano stato){
         this.stato = stato;
     }
     
@@ -314,7 +314,7 @@ public abstract class Giocatore {
         return nome;
     }
     
-    public Stato getStato(){
+    public StatoMano getStato(){
         return stato;
     }
     

@@ -1,6 +1,6 @@
 package dominio.classi_dati;
 
 
-public enum Stato {
+public enum StatoMano {
     OK, SetteeMezzo, SetteeMezzoReale, Sballato
 }
