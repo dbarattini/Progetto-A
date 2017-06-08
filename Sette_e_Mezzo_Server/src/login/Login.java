@@ -26,7 +26,7 @@ public class Login extends Thread {
     private String mail, password, username;
     private Giocatore giocatore;
     private Partita partita;
-    private int fiches = 1000;
+    private final int fichesIniziali = 1000;
 
     public Login(Giocatore giocatore, Partita partita) throws IOException {
         this.giocatore = giocatore;
@@ -134,7 +134,7 @@ public class Login extends Thread {
     }
 
     private void registra() throws SqlOccupato {
-        sql.aggiungiGiocatore(mail, password, username, fiches);
+        sql.aggiungiGiocatore(mail, password, username, fichesIniziali);
         giocatore.scrivi("registrazione effetuata");
         run();
     }
