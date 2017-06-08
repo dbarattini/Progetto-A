@@ -17,7 +17,7 @@ public class GiocatoreOnline {
     private Carta ultimaCartaOttenuta, CartaCoperta;
     private double valoreMano;
     private Stato stato;
-    private boolean mazziere, giocatoreLocale;
+    private boolean mazziere=false;
     private int fiches;
     private boolean perso=false;
 
@@ -73,15 +73,7 @@ public class GiocatoreOnline {
 
     public void setMazziere(boolean mazziere) {
         this.mazziere = mazziere;
-    }
-
-    public boolean isGiocatoreLocale() {
-        return giocatoreLocale;
-    }
-
-    public void setGiocatoreLocale(boolean giocatoreLocale) {
-        this.giocatoreLocale = giocatoreLocale;
-    }
+    } 
     
     /**
      * Imposta il booleano perso a true.
