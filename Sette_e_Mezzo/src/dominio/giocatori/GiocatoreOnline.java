@@ -19,6 +19,7 @@ public class GiocatoreOnline {
     private Stato stato;
     private boolean mazziere, giocatoreLocale;
     private int fiches;
+    private boolean perso=false;
 
     public GiocatoreOnline(String nome, int fiches) {
         this.nome = nome;
@@ -80,6 +81,17 @@ public class GiocatoreOnline {
 
     public void setGiocatoreLocale(boolean giocatoreLocale) {
         this.giocatoreLocale = giocatoreLocale;
+    }
+    
+    /**
+     * Imposta il booleano perso a true.
+     */
+    public void perde(){
+        perso = true;
+    }
+    
+    public boolean haPerso(){
+        return perso;
     }
     
     
