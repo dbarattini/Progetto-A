@@ -28,8 +28,6 @@ public class PartitaOnlineController extends Observable implements ViewEventList
 
     public PartitaOnlineController(Socket socket, BufferedReader in) {
         try {
-
-            //view.addPartitaOfflineViewEventListener(this);
             this.leggi = new Leggi(in);
             this.aServer = new PrintWriter(socket.getOutputStream(), true);
             leggi.addObserver(this);
@@ -42,11 +40,11 @@ public class PartitaOnlineController extends Observable implements ViewEventList
 
     @Override
     public void ViewEventReceived(ViewEvent evt) {
-        if (evt.getArg() instanceof SetPuntata) {
-            aServer.println(((SetPuntata) evt.getArg()).toString());
-        } else if (evt.getArg() instanceof SetGiocata) {
-            aServer.println(((SetGiocata) evt.getArg()).toString());;
-        }
+//        if (evt.getArg() instanceof SetPuntata) {
+//            aServer.println(((SetPuntata) evt.getArg()).toString());
+//        } else if (evt.getArg() instanceof SetGiocata) {
+//            aServer.println(((SetGiocata) evt.getArg()).toString());;
+//        }
     }
 
     public void riceviEventoDaVista(Object oggetto) {

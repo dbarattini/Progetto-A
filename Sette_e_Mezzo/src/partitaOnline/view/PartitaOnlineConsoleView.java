@@ -18,7 +18,7 @@ import partitaOnline.events.GiocatoreLocaleEvent;
 import partitaOnline.events.*;
 import partitaOnline.controller.PartitaOnlineController;
 
-public class PartitaOnlineConsoleView implements PartitaOnlineView, Observer{
+public class PartitaOnlineConsoleView implements  Observer{
     private final CopyOnWriteArrayList<ViewEventListener> listeners;
     private PartitaOnlineController controller;
     private Scanner scanner;
