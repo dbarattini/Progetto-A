@@ -219,7 +219,6 @@ public class MenuPrePartitaGui extends JFrame{
                     checkNumeroBot();
                     checkDifficoltaBot();
                     dispose();
-                    System.out.println(numero_bot + " " + difficolta_bot + " " + fiches_iniziali);
                     new PartitaOfflineGui(numero_bot, difficolta_bot, fiches_iniziali);
                 } catch (FichesInizialiException ex) {
                     JOptionPane.showMessageDialog(null, "Errore: Il numero di fiches iniziali dev'essere un numero compreso tra 1 e 100000000.", "Errore", JOptionPane.ERROR_MESSAGE);
