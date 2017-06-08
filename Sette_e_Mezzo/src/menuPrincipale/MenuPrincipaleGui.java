@@ -6,7 +6,7 @@
 package menuPrincipale;
 
 import GUI.GuiOpzioni;
-import GUI.RegoleGui;
+import menuRegole.RegoleGui;
 import dominio.classi_dati.OpzioniMenu;
 import dominio.gui.Sfondo;
 import java.awt.Dimension;
