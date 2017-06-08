@@ -103,7 +103,7 @@ public class PartitaOnlineModel extends Observable {
 
     public void rimuoviGiocatori(ArrayList giocatori) throws InterruptedException {
         this.giocatori.removeAll(giocatori);
-        for (Object gioc : this.giocatori) {
+        for (Object gioc : giocatori) {
             this.eventoPerTutti(new GiocatoreDisconnesso(((Giocatore) gioc).getNome()));
         }
         salvaFiches(giocatori);
