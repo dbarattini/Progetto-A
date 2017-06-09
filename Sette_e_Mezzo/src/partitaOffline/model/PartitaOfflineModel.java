@@ -186,7 +186,7 @@ public class PartitaOfflineModel extends Observable {
             giocatore = getProssimoGiocatore(pos_next_giocatore);
             if(! giocatore.haPerso()){  
                 esegui_mano(giocatore);
-                if(giocatore instanceof GiocatoreUmano && giocatore.getStato() != StatoMano.OK){
+                if(giocatore instanceof GiocatoreUmano && giocatore.getStatoMano() != StatoMano.OK){
                     
                     this.setChanged();
                     this.notifyObservers(new RisultatoManoParticolare());
@@ -194,7 +194,7 @@ public class PartitaOfflineModel extends Observable {
             }
             if(! (giocatore instanceof GiocatoreUmano)){
                 this.setChanged();
-                this.notifyObservers(new FineManoAvversario(giocatore.getNome(), giocatore.getCarteScoperte(),giocatore.getStato(), giocatore.getPuntata()));
+                this.notifyObservers(new FineManoAvversario(giocatore.getNome(), giocatore.getCarteScoperte(),giocatore.getStatoMano(), giocatore.getPuntata()));
             }
             pos_next_giocatore += 1;
         }
@@ -271,16 +271,16 @@ public class PartitaOfflineModel extends Observable {
                 try {
                     giocatore.chiedi_carta(carta_estratta);
                 } catch (SballatoException ex) {
-                    giocatore.setStato(StatoMano.Sballato);
+                    giocatore.setStatoMano(StatoMano.Sballato);
                     if(!giocatore.isMazziere()){
-                        giocatore.paga(mazziere); //giocatore se sballa paga subito.
+                        giocatore.paga_normale(mazziere); //giocatore se sballa paga subito.
                     }
                     continua = false;
                 } catch (SetteeMezzoRealeException ex) {
-                    giocatore.setStato(StatoMano.SetteeMezzoReale);
+                    giocatore.setStatoMano(StatoMano.SetteeMezzoReale);
                     continua = false;
                 } catch (SetteeMezzoException ex) {
-                    giocatore.setStato(StatoMano.SetteeMezzo);
+                    giocatore.setStatoMano(StatoMano.SetteeMezzo);
                     continua = false;
                 }
             }

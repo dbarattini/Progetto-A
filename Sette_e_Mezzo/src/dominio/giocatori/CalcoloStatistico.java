@@ -12,7 +12,7 @@ public class CalcoloStatistico {
      * @param mazzo
      * @return percentuale di sballare se si decide di chiedere una carta
      */
-    public double calcola_percentuale_sballo(double valore_mano, Mazzo mazzo) {
+    public double calcola_percentuale_sballo(ValoreMano valore_mano, Mazzo mazzo) {
         double numero_carte_sballo = conta_carte_sballo(valore_mano, mazzo);
         double percentuale_sballo = 0;
 
@@ -21,8 +21,8 @@ public class CalcoloStatistico {
         return percentuale_sballo;
     }
 
-    private double conta_carte_sballo(double valore_mano, Mazzo mazzo) {
-        double valore_sballo = calcola_valore_sballo(valore_mano);
+    private double conta_carte_sballo(ValoreMano valore_mano, Mazzo mazzo) {
+        double valore_sballo = calcola_valore_sballo(valore_mano.getValore());
         double contatore = 0;
 
         for (Carta c : mazzo.getCarteDaGiocare()) {

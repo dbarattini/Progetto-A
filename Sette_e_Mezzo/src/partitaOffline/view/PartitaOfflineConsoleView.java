@@ -114,7 +114,7 @@ public class PartitaOfflineConsoleView implements PartitaOfflineView, Observer{
                 pausa(pausa_lunga);
                 System.out.print("\n");
             }
-            System.out.println(giocatore.haPerso() + " " + giocatore.isMazziere() + " " + giocatore.getNome() + " " + giocatore.getTutteLeCarte() + " " + giocatore.getValoreMano() + " "+ giocatore.getStato() + " " + giocatore.getFiches());
+            System.out.println(giocatore.haPerso() + " " + giocatore.isMazziere() + " " + giocatore.getNome() + " " + giocatore.getTutteLeCarte() + " " + giocatore.getValoreMano() + " "+ giocatore.getStatoMano() + " " + giocatore.getFiches());
             if(giocatore.equals(model.getGiocatori().get(model.getGiocatori().size() - 1))){
                 pausa(pausa_lunga);
             } else {
@@ -181,7 +181,7 @@ public class PartitaOfflineConsoleView implements PartitaOfflineView, Observer{
     private void stampaSchermataManoParticolare() {
         System.out.println("Carta Ottenuta: " + model.getGiocatoreLocale().getUltimaCartaOttenuta());
         System.out.println("Valore Mano: " + model.getGiocatoreLocale().getValoreMano());
-        System.out.println("--> " + model.getGiocatoreLocale().getStato() + " <--");
+        System.out.println("--> " + model.getGiocatoreLocale().getStatoMano() + " <--");
         System.out.print("\n");
         pausa(pausa_lunga);
     }

@@ -463,7 +463,7 @@ public class PartitaOfflineGuiView extends JFrame implements PartitaOfflineView,
     
     // stampa l'ultima carta del giocatore in seguito a una mano particolare ( sballato, 7 e mezzo o 7 e mezzo reale )
     private void manoParticolarePlayer() {
-        StatoMano stato = model.getGiocatoreLocale().getStato();
+        StatoMano stato = model.getGiocatoreLocale().getStatoMano();
         Carta ultimaOttenuta = model.getGiocatoreLocale().getUltimaCartaOttenuta();
         int index = model.getGiocatoreLocale().getCarteScoperte().indexOf(ultimaOttenuta);
         stampaCarta(this.getWidth()/2 - 95 + index*35, 3*this.getHeight()/4 - 60, ultimaOttenuta.toString());
@@ -534,7 +534,7 @@ public class PartitaOfflineGuiView extends JFrame implements PartitaOfflineView,
                 pausa(pausa_breve);
                 sfondo.remove(valoreMano);
             }
-            if(giocatore.getStato() != StatoMano.Sballato)
+            if(giocatore.getStatoMano() != StatoMano.Sballato)
                 valoriMano.put(giocatore.getNome(), stampaValoreManoAttualeAvversario(giocatore, giocatore.getCarteScoperte().size()));
             else {
                 valoriMano.put(giocatore.getNome(), stampaSballato(giocatore));
@@ -621,7 +621,7 @@ public class PartitaOfflineGuiView extends JFrame implements PartitaOfflineView,
     // stampa il valore mano a fine round ( solo per gli avversari perchè quello del giocatore è sempre visibile )
     private void stampaValoreManoFineRound(Giocatore giocatore) {
         if(giocatore != model.getGiocatoreLocale()) {
-            if(giocatore.getStato() != StatoMano.Sballato) {
+            if(giocatore.getStatoMano() != StatoMano.Sballato) {
                 stampaValoreMano(giocatore);
                 valoriMano.get(giocatore.getNome()).setText("Valore mano:   " + giocatore.getValoreMano());
                 sfondo.repaint();
@@ -644,19 +644,19 @@ public class PartitaOfflineGuiView extends JFrame implements PartitaOfflineView,
         String msg = "";
         
         if(!giocatore.isMazziere()) {
-            if(mazziere.getStato() == StatoMano.Sballato) {
-                if(giocatore.getStato() == StatoMano.Sballato)
+            if(mazziere.getStatoMano() == StatoMano.Sballato) {
+                if(giocatore.getStatoMano() == StatoMano.Sballato)
                     msg = giocatore.getNome() + " paga " + giocatore.getPuntata() + " al mazziere";
-                else if ((giocatore.getStato() == StatoMano.OK) || (giocatore.getStato() == StatoMano.SetteeMezzo))
+                else if ((giocatore.getStatoMano() == StatoMano.OK) || (giocatore.getStatoMano() == StatoMano.SetteeMezzo))
                     msg = giocatore.getNome() + " riceve " + giocatore.getPuntata() + " dal mazziere";
-                else if(giocatore.getStato() == StatoMano.SetteeMezzoReale)
+                else if(giocatore.getStatoMano() == StatoMano.SetteeMezzoReale)
                     msg = giocatore.getNome() + " riceve " + 2*giocatore.getPuntata() + " dal mazziere";
             } else {
-                if((giocatore.getStato() == StatoMano.Sballato) || (giocatore.getValoreMano() <= mazziere.getValoreMano()))
+                if((giocatore.getStatoMano() == StatoMano.Sballato) || (giocatore.getValoreMano() <= mazziere.getValoreMano()))
                     msg = giocatore.getNome() + " paga " + giocatore.getPuntata() + " al mazziere";
                 else if (giocatore.getValoreMano() > mazziere.getValoreMano())
                     msg = giocatore.getNome() + " riceve " + giocatore.getPuntata() + " dal mazziere";
-                else if ((giocatore.getStato() == StatoMano.SetteeMezzoReale) && (giocatore.getValoreMano() > mazziere.getValoreMano()))
+                else if ((giocatore.getStatoMano() == StatoMano.SetteeMezzoReale) && (giocatore.getValoreMano() > mazziere.getValoreMano()))
                     msg = giocatore.getNome() + " riceve " + 2*giocatore.getPuntata() + " dal mazziere";
             }
         } else

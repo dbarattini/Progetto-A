@@ -47,15 +47,15 @@ public class RegoleDiGioco {
      * @throws MazzierePerdeException
      */
     public Giocatore risultato_mano(Giocatore mazziere, Giocatore giocatore, Giocatore next_mazziere){
-        switch(mazziere.getStato()){
+        switch(mazziere.getStatoMano()){
             case Sballato: {
-                switch(giocatore.getStato()){
+                switch(giocatore.getStatoMano()){
                     case SetteeMezzo:{
-                        mazziere.paga(giocatore);
+                        mazziere.paga_normale(giocatore);
                         break;
                     }
                     case OK:{
-                        mazziere.paga(giocatore);
+                        mazziere.paga_normale(giocatore);
                         break;
                     }
                     case SetteeMezzoReale:{
@@ -66,16 +66,16 @@ public class RegoleDiGioco {
                 } break;
             }
             case OK: {
-                switch(giocatore.getStato()){
+                switch(giocatore.getStatoMano()){
                     case SetteeMezzo:{
-                        mazziere.paga(giocatore);
+                        mazziere.paga_normale(giocatore);
                         break;
                     }
                     case OK:{ 
                         if(mazziere.getValoreMano() >= giocatore.getValoreMano()){
-                            giocatore.paga(mazziere);
+                            giocatore.paga_normale(mazziere);
                         }else{
-                            mazziere.paga(giocatore);
+                            mazziere.paga_normale(giocatore);
                         } 
                         break;
                     }
@@ -87,13 +87,13 @@ public class RegoleDiGioco {
                 } break;
             }
             case SetteeMezzo: {
-                switch(giocatore.getStato()){
+                switch(giocatore.getStatoMano()){
                     case SetteeMezzo:{
-                        giocatore.paga(mazziere);
+                        giocatore.paga_normale(mazziere);
                         break;
                     }
                     case OK:{
-                        giocatore.paga(mazziere);
+                        giocatore.paga_normale(mazziere);
                         break;
                     }
                     case SetteeMezzoReale:{
@@ -104,7 +104,7 @@ public class RegoleDiGioco {
                 } break;
             }
             case SetteeMezzoReale: {
-                switch(giocatore.getStato()){
+                switch(giocatore.getStatoMano()){
                     case SetteeMezzo:{
                         giocatore.paga_reale(mazziere);
                         break;
@@ -114,7 +114,7 @@ public class RegoleDiGioco {
                         break;
                     }
                     case SetteeMezzoReale:{
-                        giocatore.paga(mazziere);
+                        giocatore.paga_normale(mazziere);
                         next_mazziere = scegli_next_mazziere(giocatore,next_mazziere);
                         break;
                     }
@@ -134,15 +134,15 @@ public class RegoleDiGioco {
      * @return next_mazziere
      */
     public Giocatore risultato_mano_percentuale(Giocatore mazziere, Giocatore giocatore, Giocatore next_mazziere, double percentuale){
-        switch(mazziere.getStato()){
+        switch(mazziere.getStatoMano()){
             case Sballato: {
-                switch(giocatore.getStato()){
+                switch(giocatore.getStatoMano()){
                     case SetteeMezzo:{
-                        mazziere.pagaPercentuale(giocatore, percentuale);
+                        mazziere.paga_normale_percentuale(giocatore, percentuale);
                         break;
                     }
                     case OK:{
-                        mazziere.pagaPercentuale(giocatore, percentuale);
+                        mazziere.paga_normale_percentuale(giocatore, percentuale);
                         break;
                     }
                     case SetteeMezzoReale:{
@@ -153,16 +153,16 @@ public class RegoleDiGioco {
                 } break;
             }
             case OK: {
-                switch(giocatore.getStato()){
+                switch(giocatore.getStatoMano()){
                     case SetteeMezzo:{
-                        mazziere.pagaPercentuale(giocatore, percentuale);
+                        mazziere.paga_normale_percentuale(giocatore, percentuale);
                         break;
                     }
                     case OK:{ 
                         if(mazziere.getValoreMano() >= giocatore.getValoreMano()){
-                            giocatore.pagaPercentuale(giocatore, percentuale);
+                            giocatore.paga_normale_percentuale(giocatore, percentuale);
                         }else{
-                            mazziere.pagaPercentuale(giocatore, percentuale);
+                            mazziere.paga_normale_percentuale(giocatore, percentuale);
                         } 
                         break;
                     }
@@ -174,13 +174,13 @@ public class RegoleDiGioco {
                 } break;
             }
             case SetteeMezzo: {
-                switch(giocatore.getStato()){
+                switch(giocatore.getStatoMano()){
                     case SetteeMezzo:{
-                        giocatore.pagaPercentuale(giocatore, percentuale);
+                        giocatore.paga_normale_percentuale(giocatore, percentuale);
                         break;
                     }
                     case OK:{
-                        giocatore.pagaPercentuale(giocatore, percentuale);
+                        giocatore.paga_normale_percentuale(giocatore, percentuale);
                         break;
                     }
                     case SetteeMezzoReale:{
@@ -191,7 +191,7 @@ public class RegoleDiGioco {
                 } break;
             }
             case SetteeMezzoReale: {
-                switch(giocatore.getStato()){
+                switch(giocatore.getStatoMano()){
                     case SetteeMezzo:{
                         giocatore.paga_reale_percentuale(giocatore, percentuale);
                         break;
@@ -201,7 +201,7 @@ public class RegoleDiGioco {
                         break;
                     }
                     case SetteeMezzoReale:{
-                        giocatore.pagaPercentuale(giocatore, percentuale);
+                        giocatore.paga_normale_percentuale(giocatore, percentuale);
                         next_mazziere = scegli_next_mazziere(giocatore,next_mazziere);
                         break;
                     }
@@ -220,9 +220,9 @@ public class RegoleDiGioco {
      */
     public int controlla_finanze_mazziere(Giocatore mazziere, Giocatore giocatore){
         int guadagno=0;
-        switch(mazziere.getStato()){
+        switch(mazziere.getStatoMano()){
             case Sballato: {
-                switch(giocatore.getStato()){
+                switch(giocatore.getStatoMano()){
                     case SetteeMezzo:{
                         guadagno-=giocatore.getPuntata();
                         break;
@@ -238,7 +238,7 @@ public class RegoleDiGioco {
                 } break;
             }
             case OK: {
-                switch(giocatore.getStato()){
+                switch(giocatore.getStatoMano()){
                     case SetteeMezzo:{
                        guadagno-=giocatore.getPuntata();
                         break;
@@ -258,7 +258,7 @@ public class RegoleDiGioco {
                 } break;
             }
             case SetteeMezzo: {
-                switch(giocatore.getStato()){
+                switch(giocatore.getStatoMano()){
                     case SetteeMezzo:{
                         guadagno+=giocatore.getPuntata();
                         break;
@@ -274,7 +274,7 @@ public class RegoleDiGioco {
                 } break;
             }
             case SetteeMezzoReale: {
-                switch(giocatore.getStato()){
+                switch(giocatore.getStatoMano()){
                     case SetteeMezzo:{
                         guadagno+=giocatore.getPuntata()*2;
                         break;
