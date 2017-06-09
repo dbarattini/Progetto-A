@@ -108,11 +108,11 @@ public abstract class Giocatore {
     }
     
     public int aggiungi_puntata_reale() {
-        fiches = fiches - (2 * puntata);
+        fiches = fiches - puntata; //quando si punta viene gia scalata una puntata
         if (fiches < 0) {
             int buf = fiches;
             fiches = 0;
-            return puntata + (buf + puntata);
+            return puntata + (buf + puntata); //puntata piu tutte le fiches restanti
         }
         return puntata * 2;
     }
