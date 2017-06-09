@@ -4,6 +4,11 @@ import dominio.eccezioni.MazzierePerdeException;
 import dominio.giocatori.Giocatore;
 
 public class RegoleDiGioco {
+    GestorePagamenti gestore_pagamenti;
+    
+    public RegoleDiGioco(){
+        gestore_pagamenti = new GestorePagamenti();
+    }
     
     /**
      * Determina quale tra i due giocatori ha in mano la carta piú alta.
@@ -51,15 +56,15 @@ public class RegoleDiGioco {
             case Sballato: {
                 switch(giocatore.getStatoMano()){
                     case SetteeMezzo:{
-                        mazziere.paga_normale(giocatore);
+                        gestore_pagamenti.paga_normale(mazziere, giocatore);
                         break;
                     }
                     case OK:{
-                        mazziere.paga_normale(giocatore);
+                        gestore_pagamenti.paga_normale(mazziere, giocatore);
                         break;
                     }
                     case SetteeMezzoReale:{
-                        mazziere.paga_reale(giocatore);
+                        gestore_pagamenti.paga_reale(mazziere, giocatore);
                         next_mazziere = scegli_next_mazziere(giocatore,next_mazziere);
                         break;
                     }
@@ -68,19 +73,19 @@ public class RegoleDiGioco {
             case OK: {
                 switch(giocatore.getStatoMano()){
                     case SetteeMezzo:{
-                        mazziere.paga_normale(giocatore);
+                        gestore_pagamenti.paga_normale(mazziere, giocatore);
                         break;
                     }
                     case OK:{ 
                         if(mazziere.getValoreMano() >= giocatore.getValoreMano()){
-                            giocatore.paga_normale(mazziere);
+                            gestore_pagamenti.paga_normale(giocatore, mazziere);
                         }else{
-                            mazziere.paga_normale(giocatore);
+                            gestore_pagamenti.paga_normale(mazziere, giocatore);
                         } 
                         break;
                     }
                     case SetteeMezzoReale:{
-                        mazziere.paga_reale(giocatore);
+                        gestore_pagamenti.paga_reale(mazziere, giocatore);
                         next_mazziere = scegli_next_mazziere(giocatore,next_mazziere);
                         break;
                     }
@@ -89,15 +94,15 @@ public class RegoleDiGioco {
             case SetteeMezzo: {
                 switch(giocatore.getStatoMano()){
                     case SetteeMezzo:{
-                        giocatore.paga_normale(mazziere);
+                        gestore_pagamenti.paga_normale(giocatore, mazziere);
                         break;
                     }
                     case OK:{
-                        giocatore.paga_normale(mazziere);
+                        gestore_pagamenti.paga_normale(giocatore, mazziere);
                         break;
                     }
                     case SetteeMezzoReale:{
-                        mazziere.paga_reale(giocatore);
+                        gestore_pagamenti.paga_reale(mazziere, giocatore);
                         next_mazziere = scegli_next_mazziere(giocatore,next_mazziere);
                         break;
                     }
@@ -106,15 +111,15 @@ public class RegoleDiGioco {
             case SetteeMezzoReale: {
                 switch(giocatore.getStatoMano()){
                     case SetteeMezzo:{
-                        giocatore.paga_reale(mazziere);
+                        gestore_pagamenti.paga_reale(giocatore, mazziere);
                         break;
                     }
                     case OK:{
-                        giocatore.paga_reale(mazziere);
+                        gestore_pagamenti.paga_reale(giocatore, mazziere);
                         break;
                     }
                     case SetteeMezzoReale:{
-                        giocatore.paga_normale(mazziere);
+                        gestore_pagamenti.paga_normale(giocatore, mazziere);
                         next_mazziere = scegli_next_mazziere(giocatore,next_mazziere);
                         break;
                     }
@@ -133,20 +138,20 @@ public class RegoleDiGioco {
      * @param percentuale
      * @return next_mazziere
      */
-    public Giocatore risultato_mano_percentuale(Giocatore mazziere, Giocatore giocatore, Giocatore next_mazziere, double percentuale){
+   public Giocatore risultato_mano_percentuale(Giocatore mazziere, Giocatore giocatore, Giocatore next_mazziere, double percentuale){
         switch(mazziere.getStatoMano()){
             case Sballato: {
                 switch(giocatore.getStatoMano()){
                     case SetteeMezzo:{
-                        mazziere.paga_normale_percentuale(giocatore, percentuale);
+                        gestore_pagamenti.paga_normale_percentuale(mazziere, giocatore, percentuale);
                         break;
                     }
                     case OK:{
-                        mazziere.paga_normale_percentuale(giocatore, percentuale);
+                        gestore_pagamenti.paga_normale_percentuale(mazziere, giocatore, percentuale);
                         break;
                     }
                     case SetteeMezzoReale:{
-                        mazziere.paga_reale_percentuale(giocatore, percentuale);
+                        gestore_pagamenti.paga_reale_percentuale(mazziere, giocatore, percentuale);
                         next_mazziere = scegli_next_mazziere(giocatore,next_mazziere);
                         break;
                     }
@@ -155,19 +160,19 @@ public class RegoleDiGioco {
             case OK: {
                 switch(giocatore.getStatoMano()){
                     case SetteeMezzo:{
-                        mazziere.paga_normale_percentuale(giocatore, percentuale);
+                        gestore_pagamenti.paga_normale_percentuale(mazziere, giocatore, percentuale);
                         break;
                     }
                     case OK:{ 
                         if(mazziere.getValoreMano() >= giocatore.getValoreMano()){
-                            giocatore.paga_normale_percentuale(giocatore, percentuale);
+                            gestore_pagamenti.paga_normale_percentuale(giocatore, mazziere, percentuale);
                         }else{
-                            mazziere.paga_normale_percentuale(giocatore, percentuale);
+                            gestore_pagamenti.paga_normale_percentuale(mazziere, giocatore, percentuale);
                         } 
                         break;
                     }
                     case SetteeMezzoReale:{
-                        mazziere.paga_reale_percentuale(giocatore, percentuale);
+                        gestore_pagamenti.paga_reale_percentuale(mazziere, giocatore, percentuale);
                         next_mazziere = scegli_next_mazziere(giocatore,next_mazziere);
                         break;
                     }
@@ -176,15 +181,15 @@ public class RegoleDiGioco {
             case SetteeMezzo: {
                 switch(giocatore.getStatoMano()){
                     case SetteeMezzo:{
-                        giocatore.paga_normale_percentuale(giocatore, percentuale);
+                        gestore_pagamenti.paga_normale_percentuale(giocatore, mazziere, percentuale);
                         break;
                     }
                     case OK:{
-                        giocatore.paga_normale_percentuale(giocatore, percentuale);
+                        gestore_pagamenti.paga_normale_percentuale(giocatore, mazziere, percentuale);
                         break;
                     }
                     case SetteeMezzoReale:{
-                        mazziere.paga_reale_percentuale(giocatore, percentuale);
+                        gestore_pagamenti.paga_reale_percentuale(mazziere, giocatore, percentuale);
                         next_mazziere = scegli_next_mazziere(giocatore,next_mazziere);
                         break;
                     }
@@ -193,15 +198,15 @@ public class RegoleDiGioco {
             case SetteeMezzoReale: {
                 switch(giocatore.getStatoMano()){
                     case SetteeMezzo:{
-                        giocatore.paga_reale_percentuale(giocatore, percentuale);
+                        gestore_pagamenti.paga_reale_percentuale(giocatore, mazziere, percentuale);
                         break;
                     }
                     case OK:{
-                        giocatore.paga_reale_percentuale(giocatore, percentuale);
+                        gestore_pagamenti.paga_reale_percentuale(giocatore, mazziere, percentuale);
                         break;
                     }
                     case SetteeMezzoReale:{
-                        giocatore.paga_normale_percentuale(giocatore, percentuale);
+                        gestore_pagamenti.paga_normale_percentuale(giocatore, mazziere, percentuale);
                         next_mazziere = scegli_next_mazziere(giocatore,next_mazziere);
                         break;
                     }

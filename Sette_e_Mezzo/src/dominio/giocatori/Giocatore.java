@@ -102,9 +102,19 @@ public abstract class Giocatore {
      */
     protected abstract int decidi_puntata();
 
-    private void punta(int puntata) {
+    public void punta(int puntata) {
         fiches = fiches - puntata;
         this.puntata = puntata;
+    }
+    
+    public int aggiungi_puntata_reale() {
+        fiches = fiches - (2 * puntata);
+        if (fiches < 0) {
+            int buf = fiches;
+            fiches = 0;
+            return puntata + (buf + puntata);
+        }
+        return puntata * 2;
     }
 
     /**
@@ -120,94 +130,6 @@ public abstract class Giocatore {
         carte_scoperte.add(carta);
         valore_mano.aggiorna(carta_coperta, carte_scoperte);
         valore_mano.controlla(carta_coperta, carte_scoperte);
-    }
-
-    /**
-     * Consente i pagamenti normali ad un avversario.
-     *
-     * @param avversario
-     */
-    public void paga_normale(Giocatore avversario) {
-        int pagamento = getPagamento(avversario);
-
-        this.paga(avversario, pagamento);
-    }
-
-    /**
-     * Consente i pagamenti normali percentuali ad un avversario.
-     *
-     * @param avversario
-     * @param percentuale
-     */
-    public void paga_normale_percentuale(Giocatore avversario, double percentuale) {
-        int pagamento_percentuale;
-        double pagamento;
-
-        pagamento = (double) this.getPagamento(avversario);
-        pagamento_percentuale = (int) (pagamento * percentuale);
-        this.paga(avversario, pagamento_percentuale);
-    }
-
-    /**
-     * Consente i pagamenti reali ad un avversario.
-     *
-     * @param avversario
-     */
-    public void paga_reale(Giocatore avversario) {
-        int pagamento;
-
-        pagamento = this.getPagamentoReale(avversario);
-        this.paga(avversario, pagamento);
-    }
-
-    /**
-     * Consente i pagamenti reali percentuali ad un avversario.
-     *
-     * @param avversario
-     * @param percentuale
-     */
-    public void paga_reale_percentuale(Giocatore avversario, double percentuale) {
-        int pagamento_percentuale;
-        double pagamento;
-
-        pagamento = this.getPagamentoReale(avversario);
-        pagamento_percentuale = (int) (pagamento * percentuale);
-        this.paga(avversario, pagamento_percentuale);
-    }
-
-    private int getPagamento(Giocatore avversario) {
-        if (this.isMazziere()) {
-            return avversario.getPuntata();
-        } else {
-            return this.puntata;
-        }
-    }
-
-    private int getPagamentoReale(Giocatore avversario) {
-        if (this.isMazziere()) {
-            return avversario.getPuntata() * 2;
-        } else {
-            return this.punta_reale();
-        }
-    }
-
-    private int punta_reale() {
-        fiches = fiches - (2 * puntata);
-        if (fiches < 0) {
-            int buf = fiches;
-            fiches = 0;
-            return puntata + (buf + puntata);
-        }
-        return puntata * 2;
-    }
-
-    private void paga(Giocatore avversario, int puntata) {
-        if (this.isMazziere()) {
-            this.punta(puntata);
-            avversario.riscuoti(puntata);
-        } else {
-            avversario.riscuoti(puntata);
-        }
     }
 
     /**

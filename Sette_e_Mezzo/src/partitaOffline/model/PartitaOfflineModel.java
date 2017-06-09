@@ -22,6 +22,7 @@ import dominio.eccezioni.SetteeMezzoRealeException;
 import dominio.elementi_di_gioco.Carta;
 import dominio.giocatori.BotDifficile;
 import dominio.giocatori.BotMedio;
+import dominio.gioco.GestorePagamenti;
 import dominio.gioco.RegoleDiGioco;
 import dominio.gioco.StatoGioco;
 import java.util.ArrayList;
@@ -49,6 +50,7 @@ public class PartitaOfflineModel extends Observable {
     private DifficoltaBot difficolta_bot;
     private int fiches_iniziali;
     private String nome_giocatore;
+    private GestorePagamenti gestore_pagamenti;
     
     /**
      *
@@ -60,6 +62,7 @@ public class PartitaOfflineModel extends Observable {
         this.n_bot = numero_bot;
         this.difficolta_bot = difficolta_bot;
         this.fiches_iniziali = fiches_iniziali;
+        this.gestore_pagamenti = new GestorePagamenti();
         
         try {
             inizializza_audio();
@@ -273,7 +276,7 @@ public class PartitaOfflineModel extends Observable {
                 } catch (SballatoException ex) {
                     giocatore.setStatoMano(StatoMano.Sballato);
                     if(!giocatore.isMazziere()){
-                        giocatore.paga_normale(mazziere); //giocatore se sballa paga subito.
+                        gestore_pagamenti.paga_normale(giocatore, mazziere); //giocatore se sballa paga subito.
                     }
                     continua = false;
                 } catch (SetteeMezzoRealeException ex) {
