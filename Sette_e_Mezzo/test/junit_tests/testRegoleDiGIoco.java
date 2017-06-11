@@ -80,10 +80,6 @@ public class testRegoleDiGIoco {
         }
         
         regole.risultato_mano(mazziere, giocatore2, null);
-        
-        assertEquals(90, mazziere.getFiches());
-        assertEquals(110, giocatore2.getFiches());
-        
         regole.risultato_mano(mazziere, giocatore1, null);
         
         assertEquals(100, mazziere.getFiches());

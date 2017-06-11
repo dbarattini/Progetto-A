@@ -83,6 +83,7 @@ public class GestorePagamenti {
             pagante.punta(puntata);
             pagato.riscuoti(puntata);
         } else {
+            pagato.punta(puntata);
             pagato.riscuoti(puntata);
         }
     }
