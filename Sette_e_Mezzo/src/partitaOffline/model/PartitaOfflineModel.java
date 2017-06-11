@@ -24,7 +24,6 @@ import dominio.giocatori.BotDifficile;
 import dominio.giocatori.BotMedio;
 import dominio.gioco.GestorePagamenti;
 import dominio.gioco.RegoleDiGioco;
-import dominio.gioco.StatoGioco;
 import java.util.ArrayList;
 import java.util.Observable;
 import dominio.musica.AudioPlayer;
@@ -42,7 +41,6 @@ public class PartitaOfflineModel extends Observable {
     private final Mazzo mazzo = new Mazzo();
     private Giocatore mazziere = null;
     private Giocatore next_mazziere = null;
-    public static StatoGioco stato_gioco = StatoGioco.menu;
     private int n_bot;
     private int n_bot_sconfitti = 0;
     private DifficoltaBot difficolta_bot;
