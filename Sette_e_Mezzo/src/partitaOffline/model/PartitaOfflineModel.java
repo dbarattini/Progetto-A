@@ -43,8 +43,6 @@ public class PartitaOfflineModel extends Observable {
     private Giocatore mazziere = null;
     private Giocatore next_mazziere = null;
     public static StatoGioco stato_gioco = StatoGioco.menu;
-    private int pausa_breve = 1000; //ms
-    private int pausa_lunga = 2000; //ms
     private int n_bot;
     private int n_bot_sconfitti = 0;
     private DifficoltaBot difficolta_bot;

@@ -15,6 +15,78 @@ public class testGestorePagamenti {
     }
     
     @Test
+    public void testGiocatorePagaNormaleMazziere(){
+        
+        Giocatore giocatore = new Giocatore("giocatore", 100) {
+            @Override
+            protected Giocata decidi_giocata() {
+                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            }
+
+            @Override
+            protected int decidi_puntata() {
+                return 10;
+            }
+        };
+        
+        Giocatore mazziere = new Giocatore("mazziere", 100) {
+            @Override
+            protected Giocata decidi_giocata() {
+                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            }
+
+            @Override
+            protected int decidi_puntata() {
+                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            }
+        };
+        
+        mazziere.setMazziere(true);
+        giocatore.effettua_puntata();
+        
+        gestore_pagamenti.paga_normale(giocatore, mazziere);
+        
+        assertEquals(90, giocatore.getFiches());
+        assertEquals(110, mazziere.getFiches());
+    }
+    
+        @Test
+    public void testMazzierePagaNormaleGiocatore(){
+        
+        Giocatore giocatore = new Giocatore("giocatore", 100) {
+            @Override
+            protected Giocata decidi_giocata() {
+                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            }
+
+            @Override
+            protected int decidi_puntata() {
+                return 10;
+            }
+        };
+        
+        Giocatore mazziere = new Giocatore("mazziere", 100) {
+            @Override
+            protected Giocata decidi_giocata() {
+                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            }
+
+            @Override
+            protected int decidi_puntata() {
+                throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+            }
+        };
+        
+        mazziere.setMazziere(true);
+        giocatore.effettua_puntata();
+        
+        gestore_pagamenti.paga_normale(mazziere, giocatore);
+        
+        assertEquals(110, giocatore.getFiches());
+        assertEquals(90, mazziere.getFiches());
+    }
+    
+    @Test
     public void testGiocatorePagaRealeMazziere(){
         
         Giocatore giocatore = new Giocatore("giocatore", 100) {
