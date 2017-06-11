@@ -475,7 +475,8 @@ public class PartitaOfflineGuiView extends JFrame implements PartitaOfflineView,
                 pausa(pausa_breve);
                 break;
             case SetteeMezzo:
-                index++;  // stampare sette e mezzo
+                index++;  // stampare sette e mezzo                
+                aggiornaValoreManoPlayer();
                 break;
             case SetteeMezzoReale:
                 index++;  // stampare sette e mezzo reale
