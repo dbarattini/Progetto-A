@@ -22,7 +22,8 @@ import dominio.eccezioni.SetteeMezzoRealeException;
 import dominio.elementi_di_gioco.Carta;
 import dominio.giocatori.BotDifficile;
 import dominio.giocatori.BotMedio;
-import dominio.gioco.GestorePagamenti;
+import dominio.pagamenti.PagamentoReale;
+import dominio.pagamenti.PagamentoVirtuale;
 import dominio.gioco.RegoleDiGioco;
 import java.util.ArrayList;
 import java.util.Observable;
@@ -46,7 +47,8 @@ public class PartitaOfflineModel extends Observable {
     private DifficoltaBot difficolta_bot;
     private int fiches_iniziali;
     private String nome_giocatore;
-    private GestorePagamenti gestore_pagamenti;
+    private PagamentoReale pagamento_reale;
+    private PagamentoVirtuale pagamento_virtuale;
     
     /**
      *
@@ -58,7 +60,8 @@ public class PartitaOfflineModel extends Observable {
         this.n_bot = numero_bot;
         this.difficolta_bot = difficolta_bot;
         this.fiches_iniziali = fiches_iniziali;
-        this.gestore_pagamenti = new GestorePagamenti();
+        this.pagamento_reale = new PagamentoReale();
+        this.pagamento_virtuale = new PagamentoVirtuale();
         
         try {
             inizializza_audio();
@@ -82,7 +85,7 @@ public class PartitaOfflineModel extends Observable {
         this.setChanged();
         this.notifyObservers(new EstrattoMazziere());
         
-        mazzo.aggiorna_fine_round();
+        mazzo.aggiornaFineRound();
         mazzo.rimescola();
         
         this.setChanged();
@@ -95,13 +98,13 @@ public class PartitaOfflineModel extends Observable {
             } catch (MazzierePerdeException ex) {
                 this.setChanged();
                 this.notifyObservers(new MazzierePerde());
-                mazziere.azzera_fiches();
+                mazziere.azzeraFiches();
                 mazziere.perde();
                 mazziere_successivo();
                 
             }
             fine_round();
-            mazzo.aggiorna_fine_round();
+            mazzo.aggiornaFineRound();
             if(n_bot_sconfitti == n_bot){
                 this.setChanged();
                 this.notifyObservers(new Vittoria());
@@ -158,14 +161,14 @@ public class PartitaOfflineModel extends Observable {
         for(Giocatore giocatore : giocatori){
             while(true){
                 try {
-                    carta_estratta = mazzo.estrai_carta();
-                    giocatore.prendi_carta_iniziale(carta_estratta);
+                    carta_estratta = mazzo.estraiCarta();
+                    giocatore.prendiCartaIniziale(carta_estratta);
                     break;
                 }catch (FineMazzoException ex) {
                     mazzo.rimescola(); //non dovrebbe accadere
                 }
             }
-            mazziere = regole_di_gioco.carta_piu_alta(mazziere, giocatore);
+            mazziere = regole_di_gioco.cartaPiuAlta(mazziere, giocatore);
         }
         mazziere.setMazziere(true);
     }
@@ -201,7 +204,7 @@ public class PartitaOfflineModel extends Observable {
     
     private void inizializza_round(){
         for(Giocatore giocatore : giocatori){
-            giocatore.inizializza_mano();
+            giocatore.inizializzaMano();
         }
         next_mazziere = null;
     }
@@ -213,8 +216,8 @@ public class PartitaOfflineModel extends Observable {
             while(true){
                 try {
                     if(! giocatore.haPerso()){
-                        carta_estratta = mazzo.estrai_carta();
-                        giocatore.prendi_carta_iniziale(carta_estratta);
+                        carta_estratta = mazzo.estraiCarta();
+                        giocatore.prendiCartaIniziale(carta_estratta);
                     }
                     break;
                 } catch (FineMazzoException ex) {
@@ -232,7 +235,7 @@ public class PartitaOfflineModel extends Observable {
     private void effettua_puntate() {
         for(Giocatore giocatore : giocatori){
             if(! giocatore.equals(mazziere)){
-                giocatore.effettua_puntata();
+                giocatore.effettuaPuntata();
             }
         }
         if(mazziere instanceof GiocatoreUmano){
@@ -250,10 +253,10 @@ public class PartitaOfflineModel extends Observable {
         boolean continua = true;
         
         while(continua){
-            continua = giocatore.effettua_giocata();
+            continua = giocatore.effettuaGiocata();
             if(continua){
                 try {
-                    carta_estratta = mazzo.estrai_carta();
+                    carta_estratta = mazzo.estraiCarta();
                 } catch (FineMazzoException ex) {
                     mazzo.rimescola();
                     
@@ -262,17 +265,17 @@ public class PartitaOfflineModel extends Observable {
                     
                     mazziere_successivo();
                     try {
-                        carta_estratta = mazzo.estrai_carta();
+                        carta_estratta = mazzo.estraiCarta();
                     } catch (FineMazzoException ex1) {
                         //////////////////////////////
                     }
                 }
                 try {
-                    giocatore.chiedi_carta(carta_estratta);
+                    giocatore.chiediCarta(carta_estratta);
                 } catch (SballatoException ex) {
                     giocatore.setStatoMano(StatoMano.Sballato);
                     if(!giocatore.isMazziere()){
-                        gestore_pagamenti.paga_normale(giocatore, mazziere); //giocatore se sballa paga subito.
+                        pagamento_reale.normale(giocatore, mazziere, 1); //giocatore se sballa paga subito.
                     }
                     continua = false;
                 } catch (SetteeMezzoRealeException ex) {
@@ -287,20 +290,21 @@ public class PartitaOfflineModel extends Observable {
     }
     
     private void calcola_risultato() throws MazzierePerdeException{ 
-        int fichesMazziere=controllaMazziere();
-        if(fichesMazziere>0){
+        Giocatore mazziere_prova = controllaMazziere();
+        double fichesMazziereProva = (double) mazziere_prova.getFiches();
+        if(fichesMazziereProva >0){
             for(Giocatore giocatore : giocatori){
                 if(! giocatore.isMazziere()){              
-                    next_mazziere = regole_di_gioco.risultato_mano(mazziere, giocatore, next_mazziere);
+                    next_mazziere = regole_di_gioco.risultatoMano(mazziere, giocatore, next_mazziere, 1, pagamento_reale);
                 }
             }
         }
         else {
-            double fichesAttualiMazziere=(double)mazziere.getFiches();
-            double percentuale=(double)(fichesAttualiMazziere/(fichesAttualiMazziere-fichesMazziere));            
+            double fichesAttualiMazziere= (double) mazziere.getFiches();
+            double percentuale=(double)(fichesAttualiMazziere/(fichesAttualiMazziere-fichesMazziereProva));            
             for(Giocatore giocatore : giocatori){
                 if(! giocatore.isMazziere()){              
-                    next_mazziere = regole_di_gioco.risultato_mano_percentuale(mazziere, giocatore, next_mazziere, percentuale);
+                    next_mazziere = regole_di_gioco.risultatoMano(mazziere, giocatore, next_mazziere, percentuale, pagamento_reale);
                 }
             }
              throw new MazzierePerdeException();
@@ -308,14 +312,14 @@ public class PartitaOfflineModel extends Observable {
            
     }        
 
-    private int controllaMazziere() {
-        int guadagno=mazziere.getFiches();
+    private Giocatore controllaMazziere() {
+        Giocatore mazziere_prova = (Giocatore) mazziere.clone(); //clone del mazziere su cui verranno effettuati i calcoli
         for(Giocatore giocatore : giocatori){
             if(! giocatore.isMazziere()){
-                guadagno+=regole_di_gioco.controlla_finanze_mazziere(mazziere, giocatore);                       
+                this.regole_di_gioco.risultatoMano(mazziere_prova, giocatore, next_mazziere, 1, pagamento_virtuale);                      
             }
         }
-        return guadagno;
+        return mazziere_prova;
     }
     
    private void mazziere_successivo(){

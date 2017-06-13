@@ -34,7 +34,7 @@ public class GiocatoreUmano extends Giocatore{
     }
     
     @Override
-    protected int decidi_puntata() {
+    protected int decidiPuntata() {
         while(true){
                 fireGiocatoreLocaleEvent(new RichiediPuntata(this.carta_coperta, this.valore_mano, this.getFiches()));
                 if(puntata_effettuata != 0){
@@ -84,7 +84,7 @@ public class GiocatoreUmano extends Giocatore{
     }
     
     @Override
-    protected Giocata decidi_giocata() {
+    protected Giocata decidiGiocata() {
         while(true){
             try {
                 this.fireGiocatoreLocaleEvent(new RichiediGiocata(this.getCartaCoperta(), this.getCarteScoperte(), this.getValoreMano()));

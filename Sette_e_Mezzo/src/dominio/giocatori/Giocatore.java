@@ -9,7 +9,7 @@ import dominio.eccezioni.FineMazzoException;
 import dominio.elementi_di_gioco.Carta;
 import java.util.ArrayList;
 
-public abstract class Giocatore {
+public abstract class Giocatore implements Cloneable{
 
     private final String nome;
     private int fiches;
@@ -39,7 +39,7 @@ public abstract class Giocatore {
      * - Inizializza lo stato della mano a OK
      *
      */
-    public void inizializza_mano() {
+    public void inizializzaMano() {
         carta_coperta = null;
         puntata = 0;
         carte_scoperte.clear();
@@ -53,7 +53,7 @@ public abstract class Giocatore {
      * @param carta carta pescata
      * @throws FineMazzoException avvisa se il mazzo non ha piú carte estraibili
      */
-    public void prendi_carta_iniziale(Carta carta) throws FineMazzoException {
+    public void prendiCartaIniziale(Carta carta) throws FineMazzoException {
         carta_coperta = carta;
         valore_mano.aggiorna(carta_coperta, carte_scoperte);
     }
@@ -63,8 +63,8 @@ public abstract class Giocatore {
      *
      * @return continua o meno la mano.
      */
-    public boolean effettua_giocata() {
-        Giocata giocata = decidi_giocata();
+    public boolean effettuaGiocata() {
+        Giocata giocata = decidiGiocata();
         return gioca(giocata);
     }
 
@@ -84,14 +84,14 @@ public abstract class Giocatore {
      *
      * @return la giocata scelta
      */
-    protected abstract Giocata decidi_giocata();
+    protected abstract Giocata decidiGiocata();
 
     /**
      * Effettua una puntata.
      *
      */
-    public void effettua_puntata() {
-        int valore_puntata = decidi_puntata();
+    public void effettuaPuntata() {
+        int valore_puntata = decidiPuntata();
         punta(valore_puntata);
     }
 
@@ -100,14 +100,14 @@ public abstract class Giocatore {
      *
      * @return il valore della puntata scelta
      */
-    protected abstract int decidi_puntata();
+    protected abstract int decidiPuntata();
 
     public void punta(int puntata) {
         fiches = fiches - puntata;
         this.puntata = puntata;
     }
     
-    public int aggiungi_puntata_reale() {
+    public int aggiungiPuntataReale() {
         fiches = fiches - puntata; //quando si punta viene gia scalata una puntata
         if (fiches < 0) {
             int buf = fiches;
@@ -126,7 +126,7 @@ public abstract class Giocatore {
      * @throws SetteeMezzoRealeException
      * @throws SetteeMezzoException
      */
-    public void chiedi_carta(Carta carta) throws SballatoException, SetteeMezzoRealeException, SetteeMezzoException {
+    public void chiediCarta(Carta carta) throws SballatoException, SetteeMezzoRealeException, SetteeMezzoException {
         carte_scoperte.add(carta);
         valore_mano.aggiorna(carta_coperta, carte_scoperte);
         valore_mano.controlla(carta_coperta, carte_scoperte);
@@ -144,7 +144,7 @@ public abstract class Giocatore {
     /**
      * Azzera il numero di fiches del giocatore.
      */
-    public void azzera_fiches() {
+    public void azzeraFiches() {
         fiches = 0;
     }
 
@@ -208,5 +208,15 @@ public abstract class Giocatore {
 
     public Carta getUltimaCartaOttenuta() {
         return carte_scoperte.get(carte_scoperte.size() - 1);
+    }
+    
+    @Override
+    public Object clone(){
+            try {
+                    return super.clone();
+            } catch (CloneNotSupportedException e) {
+                    e.printStackTrace();
+                    return null;
+            }
     }
 }

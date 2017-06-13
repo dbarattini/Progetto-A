@@ -22,8 +22,8 @@ public abstract class Bot extends Giocatore {
     }
 
     @Override
-    protected int decidi_puntata() {
-        double percentuale_sballo = calcolo_statistico.calcola_percentuale_sballo(valore_mano, mazzo);
+    protected int decidiPuntata() {
+        double percentuale_sballo = calcolo_statistico.calcolaPercentualeSballo(valore_mano, mazzo);
         double fiches = (double) this.getFiches();
         int puntata;
 
@@ -41,8 +41,8 @@ public abstract class Bot extends Giocatore {
     protected abstract int getPercentualePerPuntareTanto();
 
     @Override
-    protected Giocata decidi_giocata() {
-        double percentuale_sballo = calcolo_statistico.calcola_percentuale_sballo(valore_mano, mazzo);
+    protected Giocata decidiGiocata() {
+        double percentuale_sballo = calcolo_statistico.calcolaPercentualeSballo(valore_mano, mazzo);
 
         if (percentuale_sballo < getPercentualePerChiedereCarta()) {
             return Giocata.Carta;

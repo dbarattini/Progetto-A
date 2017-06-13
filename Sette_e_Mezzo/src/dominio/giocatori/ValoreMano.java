@@ -26,10 +26,10 @@ public class ValoreMano {
      * @param carte_scoperte carte richieste dopo la prima
      */
     public void aggiorna(Carta carta_coperta, ArrayList<Carta> carte_scoperte) {
-        this.valore_mano = calcola_nuovo_valore(carta_coperta, carte_scoperte);
+        this.valore_mano = calcolaNuovoValore(carta_coperta, carte_scoperte);
     }
 
-    private double calcola_nuovo_valore(Carta carta_coperta, ArrayList<Carta> carte_scoperte) {
+    private double calcolaNuovoValore(Carta carta_coperta, ArrayList<Carta> carte_scoperte) {
         double valore_mano = 0;
         boolean matta = false;
 

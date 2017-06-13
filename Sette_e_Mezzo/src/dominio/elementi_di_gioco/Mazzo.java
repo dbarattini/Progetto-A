@@ -33,7 +33,7 @@ public class Mazzo {
      * @return la carta estratta.
      * @throws FineMazzoException lanciata se il mazzo non ha carte da giocare.
      */
-    public Carta estrai_carta() throws FineMazzoException{
+    public Carta estraiCarta() throws FineMazzoException{
         try{
             Carta carta_distribuita = carte_da_giocare.remove(0);
             carte_in_gioco.add(carta_distribuita);
@@ -47,7 +47,7 @@ public class Mazzo {
      * Aggiorna il mazzo al termine di un round.
      * Sposta le carte_in_gioco in carte_giocate.
      */
-    public void aggiorna_fine_round(){
+    public void aggiornaFineRound(){
         carte_giocate.addAll(carte_in_gioco);
         carte_in_gioco.clear();
     }
