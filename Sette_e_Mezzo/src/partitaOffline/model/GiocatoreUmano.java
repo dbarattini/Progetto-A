@@ -66,9 +66,9 @@ public class GiocatoreUmano extends Giocatore{
         }
     }
     
-    /**
-     * Stampa la carta coperta.
-     */
+//    /**
+//     * Stampa la carta coperta.
+//     */
 //    public void stampaCartaCoperta(){
 //        out.println("Carta Coperta: " + this.carta_coperta);
 //    }
