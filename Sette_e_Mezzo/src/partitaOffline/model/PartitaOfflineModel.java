@@ -24,7 +24,7 @@ import dominio.giocatori.BotDifficile;
 import dominio.giocatori.BotMedio;
 import dominio.pagamenti.PagamentoReale;
 import dominio.pagamenti.PagamentoVirtuale;
-import dominio.gioco.RegoleDiGioco;
+import dominio.elementi_di_gioco.Regole;
 import java.util.ArrayList;
 import java.util.Observable;
 import dominio.musica.AudioPlayer;
@@ -35,7 +35,7 @@ import partitaOffline.events.RichiediNome;
 
 
 public class PartitaOfflineModel extends Observable {
-    private RegoleDiGioco regole_di_gioco = new RegoleDiGioco();
+    private Regole regole_di_gioco = new Regole();
     private AudioPlayer audio = new AudioPlayer();
     private ArrayList<Giocatore> giocatori=new ArrayList<>();
     private GiocatoreUmano giocatore_locale;
