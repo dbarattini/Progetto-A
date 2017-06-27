@@ -65,7 +65,7 @@ public class PartitaOfflineModel extends Observable {
         
         try {
             inizializza_audio();
-            audio.riproduci_in_loop("soundTrack");
+            audio.riproduciInLoop("soundTrack");
         } catch (CaricamentoCanzoneException ex) {
             this.setChanged();
             this.notifyObservers(new Error("Errore: Impossibile caricare la canzone " + ex.getCanzone()));
