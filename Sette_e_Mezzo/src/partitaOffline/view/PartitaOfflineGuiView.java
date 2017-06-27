@@ -432,7 +432,7 @@ public class PartitaOfflineGuiView extends JFrame implements PartitaOfflineView,
         pausa(pausa_breve);
         
         try {
-            audio.riavvia_in_loop("soundTrack");
+            audio.riavviaInLoop("soundTrack");
             audio.riavvolgi("deckShuffle");
         } catch (CanzoneNonTrovataException ex) {
             ex.printStackTrace();

@@ -1,9 +1,9 @@
-package dominio.gioco;
+package dominio.elementi_di_gioco;
 
 import dominio.pagamenti.Pagamento;
 import dominio.giocatori.Giocatore;
 
-public class RegoleDiGioco {
+public class Regole {
 
     /**
      * Determina quale tra i due giocatori ha in mano la carta piú alta. Le

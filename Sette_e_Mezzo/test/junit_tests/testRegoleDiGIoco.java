@@ -5,7 +5,7 @@ import dominio.eccezioni.FineMazzoException;
 import dominio.elementi_di_gioco.Carta;
 import dominio.giocatori.Giocatore;
 import dominio.pagamenti.PagamentoReale;
-import dominio.gioco.RegoleDiGioco;
+import dominio.elementi_di_gioco.Regole;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.junit.Test;
@@ -16,10 +16,10 @@ import static org.junit.Assert.*;
  * @author xXEgoOneXx
  */
 public class testRegoleDiGIoco {
-    RegoleDiGioco regole;
+    Regole regole;
     
     public testRegoleDiGIoco() {
-        regole = new RegoleDiGioco();
+        regole = new Regole();
     }
     
     @Test
