@@ -21,15 +21,24 @@ public class GiocatoreOnline {
     private int fiches;
     private boolean perso=false;
     private int puntata;
+    private int numCarteScoperte;
 
     public GiocatoreOnline(String nome, int fiches) {
         this.nome = nome;
         this.fiches = fiches;
     }  
 
+    public int getNumCarteScoperte() {
+        return numCarteScoperte;
+    }
+
+    public void setNumCarteScoperte(int numCarteScoperte) {
+        this.numCarteScoperte = numCarteScoperte;
+    }    
+    
     public int getPuntata() {
         return puntata;
-    }
+    }    
 
     public void setPuntata(int puntata) {
         this.puntata = puntata;
