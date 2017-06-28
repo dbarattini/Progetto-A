@@ -60,6 +60,7 @@ public class CriptazioneTest {
         System.out.println("codifica Messaggio");
         String msg = "#La su io & te 4ever!";
         String result =cript.codificaMessaggio(msg);
+        System.out.println(result+" "+msg);
         assertNotEquals(msg, result);
     }
 

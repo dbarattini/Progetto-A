@@ -147,7 +147,7 @@ public class PartitaOnlineConsoleView implements  Observer{
     private void stampaSchermataManoParticolare() {
         System.out.println("Carta Ottenuta: " + controller.getGiocatoreLocale().getUltimaCartaOttenuta());
         System.out.println("Valore Mano: " + controller.getGiocatoreLocale().getValoreMano());
-        System.out.println("--> " + controller.getGiocatoreLocale().getStato() + " <--");
+        System.out.println("--> " + controller.getGiocatoreLocale().getStatoMano() + " <--");
         System.out.print("\n");
     }
 

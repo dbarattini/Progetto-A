@@ -121,26 +121,41 @@ public class PartitaOnlineGuiView extends JFrame implements Observer{
         } else if(arg instanceof Vittoria) {
             //todo mostra che il giocatore ha vinto
         }
-    }
-
-    @Override
-    public void GiocatoreLocaleEventReceived(GiocatoreLocaleEvent evt) {
-        if(evt.getArg() instanceof RichiediPuntata) {
+        if(arg instanceof RichiediPuntata) {
             //richiede la puntata al giocatore
             if(needCartaCoperta)
                 stampaCartaCoperta();
             richiediPuntata();
-        } else if(evt.getArg() instanceof Error) {
+        } else if(arg instanceof Error) {
             //mostra l'errore al giocatore
-            String errore = ((Error) evt.getArg()).getMessage();
+            String errore = ((Error) arg).getMessage();
             JOptionPane.showMessageDialog(null, errore, "Errore", JOptionPane.ERROR_MESSAGE);
-        } else if(evt.getArg() instanceof RichiediGiocata) {
+        } else if(arg instanceof RichiediGiocata) {
             //richiede la giocata al giocatore
             stampaGiocataPlayer();
             if(needCartaCoperta)
                 stampaCartaCoperta();
         }
     }
+//
+//    @Override
+//    public void GiocatoreLocaleEventReceived(GiocatoreLocaleEvent evt) {
+//        if(evt.getArg() instanceof RichiediPuntata) {
+//            //richiede la puntata al giocatore
+//            if(needCartaCoperta)
+//                stampaCartaCoperta();
+//            richiediPuntata();
+//        } else if(evt.getArg() instanceof Error) {
+//            //mostra l'errore al giocatore
+//            String errore = ((Error) evt.getArg()).getMessage();
+//            JOptionPane.showMessageDialog(null, errore, "Errore", JOptionPane.ERROR_MESSAGE);
+//        } else if(evt.getArg() instanceof RichiediGiocata) {
+//            //richiede la giocata al giocatore
+//            stampaGiocataPlayer();
+//            if(needCartaCoperta)
+//                stampaCartaCoperta();
+//        }
+//    }
     
     // stampa la richiesta del nome del giocatore e attende fino all'inserimento
     private void richiediNome() {
@@ -500,7 +515,7 @@ public class PartitaOnlineGuiView extends JFrame implements Observer{
     
     // stampa le carte pescate dall'avversario ( e sballato se sballa )
     private void stampaManoAvversario(String nome) {
-        Giocatore giocatore = getGiocatore(nome);
+        GiocatoreOnline giocatore = getGiocatore(nome);
         JLabel valoreMano = null;
         int index = controller.getGiocatori().indexOf(giocatore);
         
