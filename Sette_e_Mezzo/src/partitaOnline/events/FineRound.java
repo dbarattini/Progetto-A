@@ -20,7 +20,7 @@ public class FineRound implements Serializable {
     private boolean isMazziere;
     private double valoreMano;
     private StatoMano stato;
-    
+    private GiocatoreOnline giocatore;
 
     public FineRound(String nome, Carta cartaCoperta,  ArrayList<Carta> carteScoperte, int fiches, double valoreMano, StatoMano stato, boolean isMazziere, int puntata) {
         this.nome=nome;
@@ -84,8 +84,13 @@ public class FineRound implements Serializable {
     }
 
     public GiocatoreOnline getGiocatore() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return giocatore;
     }
+
+    public void setGiocatore(GiocatoreOnline giocatore) {
+        this.giocatore = giocatore;
+    }   
+    
 
    
 }
