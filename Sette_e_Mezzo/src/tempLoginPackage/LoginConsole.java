@@ -1,5 +1,6 @@
-package comunicazione;
+package tempLoginPackage;
 
+import comunicazione.Client;
 import dominio.eccezioni.LoginEffettuato;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -18,7 +19,7 @@ import java.util.logging.Logger;
 import partitaOnline.controller.PartitaOnlineController;
 import partitaOnline.view.PartitaOnlineConsoleView;
 
-public class Login {
+public class LoginConsole {
 
 
     private BufferedReader in;
@@ -27,7 +28,7 @@ public class Login {
     private Socket socketClient;
     private PartitaOnlineController controller;
 
-    public Login(Socket socketClient) {
+    public LoginConsole(Socket socketClient) {
         try {
             this.socketClient = socketClient;
             tastiera = new Scanner(System.in);
@@ -126,7 +127,7 @@ public class Login {
             }
 
         } catch (IOException ex) {
-            Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(LoginConsole.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ArrayIndexOutOfBoundsException ex) {
             System.err.println("messaggio inserito non valido");
         }
@@ -150,7 +151,7 @@ public class Login {
             System.out.println("[5] - " + risposta);
 
         } catch (IOException ex) {
-            Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(LoginConsole.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }
@@ -177,7 +178,7 @@ public class Login {
             System.out.println("[5] - " + risposta);
 
         } catch (IOException ex) {
-            Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(LoginConsole.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 }
