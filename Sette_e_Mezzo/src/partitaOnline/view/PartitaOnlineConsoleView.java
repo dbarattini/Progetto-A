@@ -111,6 +111,13 @@ public class PartitaOnlineConsoleView implements  Observer{
         } else if(arg instanceof RichiediGiocata){
             richiediGiocata(arg);
         }
+        else if(arg instanceof GiocatoreStaPuntando){
+            //todo giocatore sta puntando
+         }
+        else if(arg instanceof StatoCambiato){
+            //todo stato cambiato
+         }
+        //invia ha chiesto carta o se sta, cambiamenti stato
     }
 
     private void richiediPuntata(Object richiediPuntata) {
