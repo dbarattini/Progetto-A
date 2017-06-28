@@ -7,7 +7,6 @@ import dominio.elementi_di_gioco.Carta;
 import dominio.giocatori.GiocatoreOnline;
 import dominio.gui.Sfondo;
 import dominio.musica.AudioPlayer;
-import dominio.view.ViewEvent;
 import dominio.view.ViewEventListener;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -21,6 +20,8 @@ import java.util.Map;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -42,6 +43,7 @@ public class PartitaOnlineGuiView extends JFrame implements Observer{
     private Map<String, JLabel> valoriMano = new HashMap<>();
     private final int pausa_breve = 1000; //ms
     private final int pausa_lunga = 2000; //ms
+    private AudioPlayer audio = new AudioPlayer();;
     
     
     public PartitaOnlineGuiView(PartitaOnlineController controller) {
@@ -62,6 +64,12 @@ public class PartitaOnlineGuiView extends JFrame implements Observer{
         sfondo.setBounds(0, 0, 1280, 720);
         add(sfondo);
         
+        try {
+            audio.riproduciInLoop("soundTrack");
+        } catch (CanzoneNonTrovataException ex) {
+            Logger.getLogger(PartitaOnlineGuiView.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
         setVisible(true);
     }
     
@@ -69,15 +77,11 @@ public class PartitaOnlineGuiView extends JFrame implements Observer{
 	ClassLoader caricatore = getClass().getClassLoader();
 	URL percorso = caricatore.getResource(nome);
 	return new ImageIcon(percorso);
-    }
-    
+    }    
 
     @Override
     public void update(Observable o, Object arg) {
-        if(arg instanceof RichiediNome) {
-            //mostra la richiesta del nome al giocatore  
-            richiediNome();            
-        } else if(arg instanceof Error) {
+        if(arg instanceof Error) {
             //mostra l'errore a video
             String errore = ((Error) arg).getMessage();
             JOptionPane.showMessageDialog(null, errore, "Errore", JOptionPane.ERROR_MESSAGE);
@@ -94,7 +98,7 @@ public class PartitaOnlineGuiView extends JFrame implements Observer{
             //todo mostra il risultato della mano di un avversario
             if(needCartaCoperta)
                 stampaCartaCoperta();
-            stampaManoAvversario(((FineManoAvversario) arg).getNome());
+            //stampaManoAvversario(((FineManoAvversario) arg).getNome());
         } else if(arg instanceof FineRound) {
             //todo mostra le statistiche di fine round
             GiocatoreOnline giocatore = ((FineRound) arg).getGiocatore();
@@ -113,8 +117,7 @@ public class PartitaOnlineGuiView extends JFrame implements Observer{
             //todo mostra che il giocatore ha perso
         } else if(arg instanceof Vittoria) {
             //todo mostra che il giocatore ha vinto
-        }
-        if(arg instanceof RichiediPuntata) {
+        }else if(arg instanceof RichiediPuntata) {
             //richiede la puntata al giocatore
             if(needCartaCoperta)
                 stampaCartaCoperta();
@@ -128,76 +131,16 @@ public class PartitaOnlineGuiView extends JFrame implements Observer{
             stampaGiocataPlayer();
             if(needCartaCoperta)
                 stampaCartaCoperta();
-        }
-        else if(arg instanceof GiocatoreStaPuntando){
+        } else if(arg instanceof GiocatoreStaPuntando){
             //todo giocatore sta puntando
-         }
-        else if(arg instanceof StatoCambiato){
-            //todo stato cambiato
-         }
-        else if(arg instanceof GiocatoreSta){
-            //todo se il giocatore sta
-        }
-        else if(arg instanceof GiocatoreHaPescato){
+            
+        } else if(arg instanceof StatoCambiato){
+            //todo stato cambiato per ogni giocatore
+            
+        } else if(arg instanceof GiocatoreHaPescato){
             //todo se il giocatore ha pescato una carta
-        }
-       
-    }
-//
-//    @Override
-//    public void GiocatoreLocaleEventReceived(GiocatoreLocaleEvent evt) {
-//        if(evt.getArg() instanceof RichiediPuntata) {
-//            //richiede la puntata al giocatore
-//            if(needCartaCoperta)
-//                stampaCartaCoperta();
-//            richiediPuntata();
-//        } else if(evt.getArg() instanceof Error) {
-//            //mostra l'errore al giocatore
-//            String errore = ((Error) evt.getArg()).getMessage();
-//            JOptionPane.showMessageDialog(null, errore, "Errore", JOptionPane.ERROR_MESSAGE);
-//        } else if(evt.getArg() instanceof RichiediGiocata) {
-//            //richiede la giocata al giocatore
-//            stampaGiocataPlayer();
-//            if(needCartaCoperta)
-//                stampaCartaCoperta();
-//        }
-//    }
-    
-    // stampa la richiesta del nome del giocatore e attende fino all'inserimento
-    private void richiediNome() {
-        nome = null;
-        askNome = new JTextField();
-        JButton askNomeButton = new JButton(caricaImmagine("dominio/immagini/fatto.png"));
-        JLabel askNomeLabel = new JLabel(caricaImmagine("dominio/immagini/richiediNome.png"));
-        ActionListener action_nome_inserito = new ActionListener(){
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                nome = askNome.getText();
-            };
-        };
             
-        askNome.setFont(new Font("nome", 1, 40));
-            
-        askNome.setBounds(this.getWidth()/2 - 125, 300, 250, 80);
-        askNomeButton.setBounds(this.getWidth()/2 - 100, 400, 200, 80);
-        askNomeLabel.setBounds(this.getWidth()/2 - 200, 100, 400, 80);
-        
-        askNome.addActionListener(action_nome_inserito);  
-        askNomeButton.addActionListener(action_nome_inserito);
-            
-        sfondo.add(askNome);
-        sfondo.add(askNomeButton);
-        sfondo.add(askNomeLabel);            
-        sfondo.repaint();
-        
-        while(nome == null) {
-            pausa(100);
-        }
-            
-        sfondo.removeAll(); 
-        sfondo.repaint();
-            
-        controller.riceviEventoDaVista(new SetNome(nome));
+        }       
     }
     
     // stampa l'animazione di estrazione mazziere, con messaggio finale a mazziere estratto
@@ -361,9 +304,9 @@ public class PartitaOnlineGuiView extends JFrame implements Observer{
     private void stampaGiocataPlayer() {
         giocata = null;
         Carta lastCard;
-        if(!controller.getGiocatoreLocale().getCarteScoperte().isEmpty()) {
+        if(controller.getGiocatoreLocale().getNumCarteScoperte() != 0) {
             lastCard = controller.getGiocatoreLocale().getUltimaCartaOttenuta();
-            int index = controller.getGiocatoreLocale().getCarteScoperte().indexOf(lastCard);            
+            int index = controller.getGiocatoreLocale().getNumCarteScoperte() - 1;            
             stampaCarta(this.getWidth()/2 - 95 + index*35, 3*this.getHeight()/4 - 60, lastCard.toString());
         }
         aggiornaValoreManoPlayer();
@@ -415,7 +358,6 @@ public class PartitaOnlineGuiView extends JFrame implements Observer{
         sfondo.add(rimescoloMsg);
         sfondo.repaint();
         
-        AudioPlayer audio = controller.getAudio();
         try {
             audio.ferma("soundTrack");
             audio.riproduci("deckShuffle");
@@ -462,7 +404,7 @@ public class PartitaOnlineGuiView extends JFrame implements Observer{
     private void manoParticolarePlayer() {
         StatoMano stato = controller.getGiocatoreLocale().getStatoMano();
         Carta ultimaOttenuta = controller.getGiocatoreLocale().getUltimaCartaOttenuta();
-        int index = controller.getGiocatoreLocale().getCarteScoperte().indexOf(ultimaOttenuta);
+        int index = controller.getGiocatoreLocale().getNumCarteScoperte() - 1;
         stampaCarta(this.getWidth()/2 - 95 + index*35, 3*this.getHeight()/4 - 60, ultimaOttenuta.toString());
         if(null != stato) switch (stato) {
             case Sballato:
@@ -493,7 +435,7 @@ public class PartitaOnlineGuiView extends JFrame implements Observer{
         
         pausa(pausa_breve);
         
-        Font font = new Font("Carte Coperte msg", Font.BOLD, 70);
+        Font font = new Font("CarteCoperteMsg", Font.BOLD, 70);
         JLabel messaggioCartaCoperta = new JLabel("Distribuisco carta coperta...");
         messaggioCartaCoperta.setFont(font);
         messaggioCartaCoperta.setForeground(Color.black);
@@ -519,63 +461,63 @@ public class PartitaOnlineGuiView extends JFrame implements Observer{
         needCartaCoperta = false;
     }
     
-    // stampa le carte pescate dall'avversario ( e sballato se sballa )
-    private void stampaManoAvversario(String nome) {
-        GiocatoreOnline giocatore = getGiocatore(nome);
-        JLabel valoreMano = null;
-        int index = controller.getGiocatori().indexOf(giocatore);
-        
-        if(!giocatore.getCarteScoperte().isEmpty()) {
-            for(int i = 0; i < giocatore.getCarteScoperte().size(); i++) {                
-                valoreMano = stampaValoreManoAttualeAvversario(giocatore, i+1);
-                stampaCarta((this.getWidth()*(2*index+1))/((controller.getGiocatori().size()-1)*2) - 95 + i*35, 180, giocatore.getCarteScoperte().get(i).toString());                                
-                pausa(pausa_breve);
-                sfondo.remove(valoreMano);
-            }
-            if(giocatore.getStatoMano() != StatoMano.Sballato)
-                valoriMano.put(giocatore.getNome(), stampaValoreManoAttualeAvversario(giocatore, giocatore.getCarteScoperte().size()));
-            else {
-                valoriMano.put(giocatore.getNome(), stampaSballato(giocatore));
-                scopriCartaCoperta(giocatore);
-                pausa(pausa_breve);
-            }                 
-        } else {
-            valoriMano.put(giocatore.getNome(), stampaValoreManoAttualeAvversario(giocatore, -1));
-            pausa(pausa_breve);
-        }
-    }
+//    // stampa le carte pescate dall'avversario ( e sballato se sballa )
+//    private void stampaManoAvversario(String nome) {
+//        GiocatoreOnline giocatore = getGiocatore(nome);
+//        JLabel valoreMano = null;
+//        int index = controller.getGiocatori().indexOf(giocatore);
+//        
+//        if(giocatore.getNumCarteScoperte() != 0) {
+//            for(int i = 0; i < giocatore.getNumCarteScoperte(); i++) {                
+//                valoreMano = stampaValoreManoAttualeAvversario(giocatore, i+1);
+//                stampaCarta((this.getWidth()*(2*index+1))/((controller.getGiocatori().size()-1)*2) - 95 + i*35, 180, giocatore.getUltimaCartaOttenuta().toString());                                
+//                pausa(pausa_breve);
+//                sfondo.remove(valoreMano);
+//            }
+//            if(giocatore.getStatoMano() != StatoMano.Sballato)
+//                valoriMano.put(giocatore.getNome(), stampaValoreManoAttualeAvversario(giocatore, giocatore.getCarteScoperte().size()));
+//            else {
+//                valoriMano.put(giocatore.getNome(), stampaSballato(giocatore));
+//                scopriCartaCoperta(giocatore);
+//                pausa(pausa_breve);
+//            }                 
+//        } else {
+//            valoriMano.put(giocatore.getNome(), stampaValoreManoAttualeAvversario(giocatore, -1));
+//            pausa(pausa_breve);
+//        }
+//    }
     
-    // serve durante la stampa della mano avversario per aggiornare il valore mano
-    private JLabel stampaValoreManoAttualeAvversario(GiocatoreOnline giocatore, int carte) {
-        int nBot = controller.getGiocatori().size() - 1;
-        int index = controller.getGiocatori().indexOf(giocatore);
-        double valoreMano = 0;
-        
-        for(int i = 0; i < carte; i++) {
-            try {
-                valoreMano += giocatore.getCarteScoperte().get(i).getValoreNumerico();
-            } catch (MattaException ex) {
-                ex.printStackTrace();
-            }
-        }
-        
-        JLabel valoreManoGiocatore;
-        if(carte != -1)
-            valoreManoGiocatore = new JLabel("Valore attuale:   " + valoreMano);
-        else
-            valoreManoGiocatore = new JLabel("Valore attuale:   0");
-
-        Font font = new Font("Player", Font.BOLD, 25);
-        valoreManoGiocatore.setFont(font);
-        valoreManoGiocatore.setForeground(Color.black);
-        
-        valoreManoGiocatore.setBounds((this.getWidth()*(2*index+1))/(nBot*2) - 125, 120, 350, 40);
-        
-        sfondo.add(valoreManoGiocatore);
-        sfondo.repaint();
-        
-        return valoreManoGiocatore;
-    }
+//    // serve durante la stampa della mano avversario per aggiornare il valore mano
+//    private JLabel stampaValoreManoAttualeAvversario(GiocatoreOnline giocatore, int carte) {
+//        int nBot = controller.getGiocatori().size() - 1;
+//        int index = controller.getGiocatori().indexOf(giocatore);
+//        double valoreMano = 0;
+//        
+//        for(int i = 0; i < carte; i++) {
+//            try {
+//                valoreMano += giocatore.getCarteScoperte().get(i).getValoreNumerico();
+//            } catch (MattaException ex) {
+//                ex.printStackTrace();
+//            }
+//        }
+//        
+//        JLabel valoreManoGiocatore;
+//        if(carte != -1)
+//            valoreManoGiocatore = new JLabel("Valore attuale:   " + valoreMano);
+//        else
+//            valoreManoGiocatore = new JLabel("Valore attuale:   0");
+//
+//        Font font = new Font("Player", Font.BOLD, 25);
+//        valoreManoGiocatore.setFont(font);
+//        valoreManoGiocatore.setForeground(Color.black);
+//        
+//        valoreManoGiocatore.setBounds((this.getWidth()*(2*index+1))/(nBot*2) - 125, 120, 350, 40);
+//        
+//        sfondo.add(valoreManoGiocatore);
+//        sfondo.repaint();
+//        
+//        return valoreManoGiocatore;
+//    }
     
     // scopre la carta coperta ( usato se sballato o a fine round per vedere il valore a fine round)
     private void scopriCartaCoperta(GiocatoreOnline giocatore) {
