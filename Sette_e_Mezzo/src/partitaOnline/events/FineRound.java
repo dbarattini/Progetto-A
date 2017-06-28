@@ -3,6 +3,7 @@ package partitaOnline.events;
 import dominio.classi_dati.StatoMano;
 import dominio.elementi_di_gioco.Carta;
 import dominio.giocatori.Giocatore;
+import dominio.giocatori.GiocatoreOnline;
 import java.io.Serializable;
 import java.util.ArrayList;
 
@@ -80,6 +81,10 @@ public class FineRound implements Serializable {
         ritorno += "fineCarte "+fiches+" " + valoreMano + " " + stato + " " + isMazziere;
         if(!isMazziere) ritorno+=" "+puntata;
         return ritorno;
+    }
+
+    public GiocatoreOnline getGiocatore() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
    
