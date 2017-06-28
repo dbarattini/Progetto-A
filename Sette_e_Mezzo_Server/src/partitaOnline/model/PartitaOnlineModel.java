@@ -269,7 +269,7 @@ public class PartitaOnlineModel extends Observable {
                     }
                 }
                 try {
-                    this.eventoPerTutti(new UltimaCartaOttenuta(giocatore.getNome(), carta_estratta));
+                    this.eventoPerTutti(new UltimaCartaOttenuta(giocatore.getNome(), carta_estratta, giocatore.getCarteScoperte().size()));
                     giocatore.chiedi_carta(carta_estratta);
                     this.eventoPerTutti(new ValoreMano(giocatore.getNome(), giocatore.getValoreMano()));
 
