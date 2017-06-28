@@ -1,17 +1,15 @@
 package partitaOnline.view;
 
-import partitaOffline.view.*;
 import dominio.classi_dati.StatoMano;
 import dominio.eccezioni.CanzoneNonTrovataException;
 import dominio.eccezioni.MattaException;
 import dominio.elementi_di_gioco.Carta;
-import dominio.giocatori.Giocatore;
+import dominio.giocatori.GiocatoreOnline;
 import dominio.gui.Sfondo;
 import dominio.musica.AudioPlayer;
 import dominio.view.ViewEvent;
 import dominio.view.ViewEventListener;
 import java.awt.Color;
-import partitaOffline.model.PartitaOfflineModel;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
@@ -29,22 +27,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
-import partitaOffline.events.AggiornamentoMazziere;
-import partitaOffline.events.EstrattoMazziere;
-import partitaOffline.events.FineManoAvversario;
-import partitaOffline.events.FineRound;
-import partitaOffline.events.GameOver;
-import partitaOffline.events.GiocatoreLocaleEvent;
-import partitaOffline.events.MazzierePerde;
-import partitaOffline.events.MazzoRimescolato;
-import partitaOffline.events.RichiediGiocata;
-import partitaOffline.events.RichiediNome;
-import partitaOffline.events.RichiediPuntata;
-import partitaOffline.events.RisultatoManoParticolare;
-import partitaOffline.events.SetGiocata;
-import partitaOffline.events.SetNome;
-import partitaOffline.events.SetPuntata;
-import partitaOffline.events.Vittoria;
+import partitaOnline.events.*;
 import partitaOnline.controller.PartitaOnlineController;
 
 public class PartitaOnlineGuiView extends JFrame implements Observer{
@@ -121,7 +104,7 @@ public class PartitaOnlineGuiView extends JFrame implements Observer{
             stampaManoAvversario(((FineManoAvversario) arg).getNome());
         } else if(arg instanceof FineRound) {
             //todo mostra le statistiche di fine round
-            Giocatore giocatore = ((FineRound) arg).getGiocatore();
+            GiocatoreOnline giocatore = ((FineRound) arg).getGiocatore();
             if(giocatore != controller.getGiocatoreLocale())
                 scopriCartaCoperta(giocatore);
             if(!needCartaCoperta)
@@ -217,7 +200,7 @@ public class PartitaOnlineGuiView extends JFrame implements Observer{
         
         pausa(pausa_breve);
         
-        Giocatore mazziere = controller.getMazziere();
+        GiocatoreOnline mazziere = controller.getMazziere();
         Font font = new Font("Player", Font.BOLD, 70);
         JLabel messaggioMazziere = new JLabel("Il mazziere è: " + mazziere.getNome());
         messaggioMazziere.setFont(font);
@@ -239,7 +222,7 @@ public class PartitaOnlineGuiView extends JFrame implements Observer{
     }
     
     // stampa nome e fiches del giocatore passato, i giocatori hanno nome nero, il mazziere arancione
-    private void stampaNomeFiches(Giocatore giocatore) {
+    private void stampaNomeFiches(GiocatoreOnline giocatore) {
         int nBot = controller.getGiocatori().size() - 1;
         int index = controller.getGiocatori().indexOf(giocatore);
         JLabel nomeGiocatore = new JLabel("Nome:   " + giocatore.getNome());
@@ -272,7 +255,7 @@ public class PartitaOnlineGuiView extends JFrame implements Observer{
     }
     
     // stampa il valore della mano del giocatore passato, già correttamente posizionato
-    private JLabel stampaValoreMano(Giocatore giocatore) {
+    private JLabel stampaValoreMano(GiocatoreOnline giocatore) {
         int nBot = controller.getGiocatori().size() - 1;
         int index = controller.getGiocatori().indexOf(giocatore);
         JLabel valoreManoGiocatore = new JLabel("Valore mano:   " + giocatore.getValoreMano());
@@ -542,7 +525,7 @@ public class PartitaOnlineGuiView extends JFrame implements Observer{
     }
     
     // serve durante la stampa della mano avversario per aggiornare il valore mano
-    private JLabel stampaValoreManoAttualeAvversario(Giocatore giocatore, int carte) {
+    private JLabel stampaValoreManoAttualeAvversario(GiocatoreOnline giocatore, int carte) {
         int nBot = controller.getGiocatori().size() - 1;
         int index = controller.getGiocatori().indexOf(giocatore);
         double valoreMano = 0;
@@ -574,7 +557,7 @@ public class PartitaOnlineGuiView extends JFrame implements Observer{
     }
     
     // scopre la carta coperta ( usato se sballato o a fine round per vedere il valore a fine round)
-    private void scopriCartaCoperta(Giocatore giocatore) {
+    private void scopriCartaCoperta(GiocatoreOnline giocatore) {
         int index = controller.getGiocatori().indexOf(giocatore);
 
         carteCoperteBots.get(index).setIcon(caricaImmagine("dominio/immagini/mazzo/" + giocatore.getCartaCoperta().toString() + ".png"));
@@ -582,7 +565,7 @@ public class PartitaOnlineGuiView extends JFrame implements Observer{
     }
     
     // stampa SBALLATO in rosso se un giocatore sballa
-    private JLabel stampaSballato(Giocatore giocatore) {
+    private JLabel stampaSballato(GiocatoreOnline giocatore) {
         int nBot = controller.getGiocatori().size() - 1;
         int index = controller.getGiocatori().indexOf(giocatore);
         JLabel valoreSballato = new JLabel("SBALLATO");
@@ -603,9 +586,9 @@ public class PartitaOnlineGuiView extends JFrame implements Observer{
     }
     
     // ritorna il giocatore dato il nome
-    private Giocatore getGiocatore(String nome) {
-        Giocatore giocatore = null;
-        for(Giocatore gioc : controller.getGiocatori()) {
+    private GiocatoreOnline getGiocatore(String nome) {
+        GiocatoreOnline giocatore = null;
+        for(GiocatoreOnline gioc : controller.getGiocatori()) {
             if(gioc.getNome().equals(nome))
                 giocatore = gioc;
         }
@@ -613,7 +596,7 @@ public class PartitaOnlineGuiView extends JFrame implements Observer{
     }
     
     // stampa il valore mano a fine round ( solo per gli avversari perchè quello del giocatore è sempre visibile )
-    private void stampaValoreManoFineRound(Giocatore giocatore) {
+    private void stampaValoreManoFineRound(GiocatoreOnline giocatore) {
         if(giocatore != controller.getGiocatoreLocale()) {
             if(giocatore.getStatoMano() != StatoMano.Sballato) {
                 stampaValoreMano(giocatore);
@@ -627,14 +610,14 @@ public class PartitaOnlineGuiView extends JFrame implements Observer{
     
     // aggiorna il valore mano del giocatore ( usato ad ogni giocata )
     private void aggiornaValoreManoPlayer() {
-        Giocatore giocatore = controller.getGiocatoreLocale();
+        GiocatoreOnline giocatore = controller.getGiocatoreLocale();
         valoriMano.get(giocatore.getNome()).setText("Valore mano:   " + giocatore.getValoreMano());
         sfondo.repaint();
     }
     
     // stampa per il giocatore passato il messaggio di fine round di vincita o perdita
-    private void stampaMessaggioFineRound(Giocatore giocatore) {
-        Giocatore mazziere = controller.getMazziere();
+    private void stampaMessaggioFineRound(GiocatoreOnline giocatore) {
+        GiocatoreOnline mazziere = controller.getMazziere();
         String msg = "";
         
         if(!giocatore.isMazziere()) {
@@ -672,7 +655,7 @@ public class PartitaOnlineGuiView extends JFrame implements Observer{
     }
     
     // controlla la fine effettiva del round per tutti i giocatori e resetta carte coperte e valori mano
-    private void checkFineRound(Giocatore giocatore) {
+    private void checkFineRound(GiocatoreOnline giocatore) {
         if(giocatore == controller.getGiocatoreLocale()) {
             carteCoperteBots.clear();
             valoriMano.clear();
