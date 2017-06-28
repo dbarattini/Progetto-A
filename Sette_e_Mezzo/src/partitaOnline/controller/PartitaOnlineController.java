@@ -85,6 +85,8 @@ public class PartitaOnlineController extends Observable implements ViewEventList
             case "StatoCambiato":
                 String[] componenti = dati[2].split(" ");
                 giocatoreDaNome(componenti[0]).setStato(StatoMano.valueOf(componenti[1]));
+                this.setChanged();
+                this.notifyObservers(new StatoCambiato(componenti[0],StatoMano.valueOf(componenti[1]) ));
                 break;
             case "UltimaCartaOttenuta":
                 componenti = dati[3].split(" ");
@@ -95,6 +97,7 @@ public class PartitaOnlineController extends Observable implements ViewEventList
                 componenti = dati[2].split(" ");
                 giocatoreDaNome(componenti[0]).setValoreMano(Double.valueOf(componenti[1]));
                 break;
+            
         }
     }
 
@@ -163,6 +166,9 @@ public class PartitaOnlineController extends Observable implements ViewEventList
                 break;
             case "RichiediPuntata":
                 ritorno = richiediPunatata(dati);
+                break;
+            case "GiocatoreStaPuntando":
+                ritorno= new GiocatoreStaPuntando(dati[2]);
                 break;
 
         }
