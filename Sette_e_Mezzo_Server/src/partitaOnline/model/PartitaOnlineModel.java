@@ -28,6 +28,7 @@ import partitaOnline.cambia.UltimaCartaOttenuta;
 import partitaOnline.cambia.ValoreMano;
 import partitaOnline.events.EstrattoMazziere;
 import partitaOnline.events.GameOver;
+import partitaOnline.events.GiocatoreSta;
 import partitaOnline.events.MazzoRimescolato;
 
 public class PartitaOnlineModel extends Observable {
@@ -256,6 +257,8 @@ public class PartitaOnlineModel extends Observable {
 
         while (continua) {
             continua = giocatore.effettua_giocata();
+            if(!continua)
+                this.eventoPerTutti(new GiocatoreSta(giocatore.getNome()));
             if (continua) {
                 try {
                     carta_estratta = mazzo.estrai_carta();
