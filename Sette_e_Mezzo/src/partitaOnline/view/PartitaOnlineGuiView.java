@@ -2,6 +2,7 @@ package partitaOnline.view;
 
 import dominio.classi_dati.StatoMano;
 import dominio.eccezioni.CanzoneNonTrovataException;
+import dominio.eccezioni.CaricamentoCanzoneException;
 import dominio.eccezioni.MattaException;
 import dominio.elementi_di_gioco.Carta;
 import dominio.giocatori.GiocatoreOnline;
@@ -46,7 +47,7 @@ public class PartitaOnlineGuiView extends JFrame implements Observer{
     private AudioPlayer audio = new AudioPlayer();;
     
     
-    public PartitaOnlineGuiView(PartitaOnlineController controller) {
+    public PartitaOnlineGuiView(PartitaOnlineController controller) throws CaricamentoCanzoneException {
         listeners = new CopyOnWriteArrayList<>();                
         this.controller = controller;
         this.controller.addObserver(this);
@@ -65,12 +66,18 @@ public class PartitaOnlineGuiView extends JFrame implements Observer{
         add(sfondo);
         
         try {
+            inizializza_audio();
             audio.riproduciInLoop("soundTrack");
         } catch (CanzoneNonTrovataException ex) {
             Logger.getLogger(PartitaOnlineGuiView.class.getName()).log(Level.SEVERE, null, ex);
         }
         
         setVisible(true);
+    }
+    
+    private void inizializza_audio() throws CaricamentoCanzoneException {
+        audio.carica("LoungeBeat.wav", "soundTrack");
+        audio.carica("deckShuffle.wav", "deckShuffle");
     }
     
     public ImageIcon caricaImmagine(String nome) {

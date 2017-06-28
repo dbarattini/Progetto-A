@@ -101,7 +101,7 @@ public class PartitaOnlineController extends Observable implements ViewEventList
 
     private void ultimaCartaOttenuta(String[] dati) throws NumberFormatException {
         String[] componenti;
-        componenti = dati[3].split(" ");
+        componenti = dati[2].split(" ");
         String nome=componenti[0];
         GiocatoreOnline giocatore=giocatoreDaNome(nome);
         giocatore.setUltimaCartaOttenuta(new Carta(componenti[1].substring(0, 1), componenti[1].substring(1, 2)));
