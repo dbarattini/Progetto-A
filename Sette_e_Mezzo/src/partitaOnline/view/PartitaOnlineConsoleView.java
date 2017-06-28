@@ -117,7 +117,7 @@ public class PartitaOnlineConsoleView implements  Observer{
         else if(arg instanceof StatoCambiato){
             //todo stato cambiato
          }
-        //invia ha chiesto carta o se sta, cambiamenti stato
+        //invia ha chiesto carta o se sta
     }
 
     private void richiediPuntata(Object richiediPuntata) {

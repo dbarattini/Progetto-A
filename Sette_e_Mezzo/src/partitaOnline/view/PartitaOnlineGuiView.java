@@ -71,14 +71,7 @@ public class PartitaOnlineGuiView extends JFrame implements Observer{
 	return new ImageIcon(percorso);
     }
     
-    protected void fireViewEvent(Object arg) {
-        ViewEvent evt = new ViewEvent(this, arg);
 
-        for (ViewEventListener l : listeners) {
-            l.ViewEventReceived(evt);
-        }
-    }
-    
     @Override
     public void update(Observable o, Object arg) {
         if(arg instanceof RichiediNome) {
@@ -191,7 +184,7 @@ public class PartitaOnlineGuiView extends JFrame implements Observer{
         sfondo.removeAll(); 
         sfondo.repaint();
             
-        fireViewEvent(new SetNome(nome));
+        controller.riceviEventoDaVista(new SetNome(nome));
     }
     
     // stampa l'animazione di estrazione mazziere, con messaggio finale a mazziere estratto
@@ -346,7 +339,7 @@ public class PartitaOnlineGuiView extends JFrame implements Observer{
         sfondo.remove(puntata);
         sfondo.repaint();
             
-        fireViewEvent(new SetPuntata(puntataStr));
+        controller.riceviEventoDaVista(new SetPuntata(puntataStr));
         
         pausa(pausa_breve);
     }
@@ -389,7 +382,7 @@ public class PartitaOnlineGuiView extends JFrame implements Observer{
             pausa(pausa_breve);
         }
         
-        fireViewEvent(new SetGiocata(giocata));
+        controller.riceviEventoDaVista(new SetGiocata(giocata));
             
         sfondo.remove(carta);
         sfondo.remove(stai);

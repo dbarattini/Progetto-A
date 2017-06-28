@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.Observable;
 import partitaOnline.cambia.CartaCoperta;
 import partitaOnline.cambia.GiocatoreDisconnesso;
-import partitaOnline.cambia.GiocatoreStaPuntando;
+import partitaOnline.events.GiocatoreStaPuntando;
 import partitaOnline.cambia.Mazziere;
 import partitaOnline.cambia.NuovoGiocatore;
 import partitaOnline.cambia.StatoCambiato;
