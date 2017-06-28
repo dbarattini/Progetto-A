@@ -1,6 +1,5 @@
 package tempLoginPackage;
 
-import dominio.eccezioni.LoginEffettuato;
 import dominio.gui.Sfondo;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -14,8 +13,6 @@ import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.URL;
 import java.net.UnknownHostException;
-import java.util.Arrays;
-import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
@@ -25,6 +22,7 @@ import javax.swing.JLabel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import partitaOnline.controller.PartitaOnlineController;
+import partitaOnline.view.PartitaOnlineGuiView;
 
 public class LoginMenu extends JFrame {
     
@@ -101,8 +99,8 @@ public class LoginMenu extends JFrame {
                 idString = id.getText();
                 passwordString = new String(password.getPassword());
                 if(checkLogin(idString, passwordString)) {
-                   controller= new PartitaOnlineController(socketClient, in);
-                    System.out.println("evviva");
+                    controller= new PartitaOnlineController(socketClient, in);
+                    new PartitaOnlineGuiView(controller);
                 } else {
                     loginErrato();
                 }
