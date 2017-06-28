@@ -15,15 +15,17 @@ import dominio.elementi_di_gioco.Carta;
 public class UltimaCartaOttenuta {
     private Carta ultimaCartaOttenuta;
     private String nome;
+    private int index;
     
-    public UltimaCartaOttenuta(String nome, Carta carta){
+    public UltimaCartaOttenuta(String nome, Carta carta, int indexCarta){
         this.nome=nome;
         this.ultimaCartaOttenuta=carta;
+        this.index=indexCarta;
     }
 
     @Override
     public String toString() {
-        return "cambia\tUltimaCartaOttenuta\t"  + nome +" "  + ultimaCartaOttenuta;
+        return "cambia\tUltimaCartaOttenuta\t"  + nome +" "  + ultimaCartaOttenuta+ " " + index;
     }
 
     
