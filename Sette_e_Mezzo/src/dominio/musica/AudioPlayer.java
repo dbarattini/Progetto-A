@@ -11,7 +11,7 @@ import javax.sound.sampled.*;
 public class AudioPlayer {
 
     private Map<String, Clip> musica;
-    private static boolean muto = false;
+    public static boolean muto = false;
 
     public AudioPlayer() {
         musica = new HashMap<>();

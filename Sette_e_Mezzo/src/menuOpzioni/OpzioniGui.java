@@ -52,20 +52,20 @@ public class OpzioniGui  extends JFrame implements ActionListener {
         riconoscimenti.setBounds(this.getWidth()/2 - 100, 350, 200, 80);
         indietro.setBounds(this.getWidth()/2 - 100, 450, 200, 80);
         
-//        musica.addActionListener(new ActionListener(){
-//            @Override
-//            public void actionPerformed(ActionEvent e) {
-//                if(AudioPlayer.MUTO == true) {
-//                    AudioPlayer.MUTO = false;
-//                    musica.setIcon(musicaOn);
-//                    musica.repaint();
-//                } else {
-//                    AudioPlayer.MUTO = true;
-//                    musica.setIcon(musicaOff);
-//                    musica.repaint();
-//                }
-//            };
-//        });
+        musica.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                if(AudioPlayer.muto == true) {
+                    AudioPlayer.muto = false;
+                    musica.setIcon(musicaOn);
+                    musica.repaint();
+                } else {
+                    AudioPlayer.muto = true;
+                    musica.setIcon(musicaOff);
+                    musica.repaint();
+                }
+            };
+        });
         
         profilo.addActionListener(new ActionListener(){
             @Override
