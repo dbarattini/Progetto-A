@@ -20,12 +20,21 @@ public class GiocatoreOnline {
     private boolean mazziere=false;
     private int fiches;
     private boolean perso=false;
+    private int puntata;
 
     public GiocatoreOnline(String nome, int fiches) {
         this.nome = nome;
         this.fiches = fiches;
-    }   
-    
+    }  
+
+    public int getPuntata() {
+        return puntata;
+    }
+
+    public void setPuntata(int puntata) {
+        this.puntata = puntata;
+    }
+        
 
     public String getNome() {
         return nome;
@@ -59,7 +68,7 @@ public class GiocatoreOnline {
         this.valoreMano = valoreMano;
     }
 
-    public StatoMano getStato() {
+    public StatoMano getStatoMano() {
         return stato;
     }
 
