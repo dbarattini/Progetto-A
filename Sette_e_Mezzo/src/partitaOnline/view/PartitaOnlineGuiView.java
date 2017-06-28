@@ -135,7 +135,10 @@ public class PartitaOnlineGuiView extends JFrame implements Observer{
         else if(arg instanceof StatoCambiato){
             //todo stato cambiato
          }
-        //invia ha chiesto carta o se sta
+        else if(arg instanceof GiocatoreSta){
+            //todo se il giocatore sta
+        }
+       
     }
 //
 //    @Override
