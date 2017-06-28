@@ -99,9 +99,10 @@ public class LoginMenu extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 idString = id.getText();
-                passwordString = Arrays.toString(password.getPassword());
+                passwordString = new String(password.getPassword());
                 if(checkLogin(idString, passwordString)) {
                    controller= new PartitaOnlineController(socketClient, in);
+                    System.out.println("evviva");
                 } else {
                     loginErrato();
                 }
