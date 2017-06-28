@@ -138,6 +138,9 @@ public class PartitaOnlineGuiView extends JFrame implements Observer{
         else if(arg instanceof GiocatoreSta){
             //todo se il giocatore sta
         }
+        else if(arg instanceof GiocatoreHaPescato){
+            //todo se il giocatore ha pescato una carta
+        }
        
     }
 //
