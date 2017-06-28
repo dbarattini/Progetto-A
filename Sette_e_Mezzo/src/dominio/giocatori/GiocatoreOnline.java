@@ -34,6 +34,14 @@ public class GiocatoreOnline {
     public void setPuntata(int puntata) {
         this.puntata = puntata;
     }
+
+    public int getFiches() {
+        return fiches;
+    }
+
+    public void setFiches(int fiches) {
+        this.fiches = fiches;
+    }
         
 
     public String getNome() {
