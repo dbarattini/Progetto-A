@@ -6,8 +6,14 @@ import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.Socket;
 import java.net.URL;
+import java.net.UnknownHostException;
 import java.util.Arrays;
+import java.util.Scanner;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -25,7 +31,12 @@ public class RegistrazioneMenu extends JFrame {
     private String idString = null, passwordString = null, emailString = null;
     private boolean regConfermata = false;
     
-    public RegistrazioneMenu() {
+    private BufferedReader in;
+    private PrintWriter out;
+    private Socket socketClient;
+    
+    public RegistrazioneMenu(Socket socketClient) {
+        inizializzaConnessione(socketClient);
         setTitle("Registrazione");
         setPreferredSize(new Dimension(1000, 800));
 	setMinimumSize(new Dimension(1000, 800));		
@@ -37,6 +48,19 @@ public class RegistrazioneMenu extends JFrame {
         inizializzaGUI();
         
         setVisible(true);
+    }
+    
+    private void inizializzaConnessione(Socket socketClient) {
+        try {
+            this.socketClient = socketClient;
+            in = new BufferedReader(new InputStreamReader(socketClient.getInputStream()));
+            out = new PrintWriter(socketClient.getOutputStream(), true);
+        } catch (UnknownHostException ex) {
+            System.err.println("Host sconosciuto");
+        } catch (Exception e) {
+            System.out.println(e.getLocalizedMessage());
+            System.err.println("Impossibile connnettersi al server");
+        }
     }
     
     private void inizializzaGUI() {
