@@ -170,6 +170,9 @@ public class PartitaOnlineController extends Observable implements ViewEventList
             case "GiocatoreStaPuntando":
                 ritorno= new GiocatoreStaPuntando(dati[2]);
                 break;
+            case "GiocatoreSta":
+                ritorno=new GiocatoreSta(dati[2]);
+                break;
 
         }
         this.setChanged();
