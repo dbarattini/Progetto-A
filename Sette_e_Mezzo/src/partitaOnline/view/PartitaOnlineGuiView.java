@@ -47,7 +47,7 @@ public class PartitaOnlineGuiView extends JFrame implements Observer{
     private AudioPlayer audio = new AudioPlayer();;
     
     
-    public PartitaOnlineGuiView(PartitaOnlineController controller) throws CaricamentoCanzoneException {
+    public PartitaOnlineGuiView(PartitaOnlineController controller){
         listeners = new CopyOnWriteArrayList<>();                
         this.controller = controller;
         this.controller.addObserver(this);
@@ -69,6 +69,8 @@ public class PartitaOnlineGuiView extends JFrame implements Observer{
             inizializza_audio();
             audio.riproduciInLoop("soundTrack");
         } catch (CanzoneNonTrovataException ex) {
+            Logger.getLogger(PartitaOnlineGuiView.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (CaricamentoCanzoneException ex) {
             Logger.getLogger(PartitaOnlineGuiView.class.getName()).log(Level.SEVERE, null, ex);
         }
         

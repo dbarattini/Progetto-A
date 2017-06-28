@@ -13,8 +13,7 @@ public class Client {
     public Client() {
         
         try {
-            //this.indirizzo = InetAddress.getLocalHost();
-            String indirizzo = "87.14.29.217";
+            this.indirizzo = InetAddress.getLocalHost();
             System.out.println("[0] - provo a connettermi al server...");
             int port = 8080;
             socketClient = new Socket(indirizzo, 8080);
