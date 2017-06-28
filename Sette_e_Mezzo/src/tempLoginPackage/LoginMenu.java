@@ -1,13 +1,21 @@
 package tempLoginPackage;
 
+import dominio.eccezioni.LoginEffettuato;
 import dominio.gui.Sfondo;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.net.Socket;
 import java.net.URL;
+import java.net.UnknownHostException;
 import java.util.Arrays;
+import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.ImageIcon;
@@ -16,6 +24,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+import partitaOnline.controller.PartitaOnlineController;
 
 public class LoginMenu extends JFrame {
     
@@ -27,7 +36,14 @@ public class LoginMenu extends JFrame {
     private String idString = null, passwordString = null;
     private boolean loginConfermato = false;
     
-    public LoginMenu() {
+    private BufferedReader in;
+    private PrintWriter out;
+    private Socket socketClient;
+    private PartitaOnlineController controller;
+
+    
+    public LoginMenu(Socket socketClient) {
+        inizializzaConnessione(socketClient);
         setTitle("Sette e Mezzo");
         setPreferredSize(new Dimension(1000, 800));
 	setMinimumSize(new Dimension(1000, 800));		
@@ -39,6 +55,19 @@ public class LoginMenu extends JFrame {
         inizializzaGUI();
         
         setVisible(true);
+    }
+
+    private void inizializzaConnessione(Socket socketClient1) {
+        try {
+            this.socketClient = socketClient1;
+            in = new BufferedReader(new InputStreamReader(socketClient1.getInputStream()));
+            out = new PrintWriter(socketClient1.getOutputStream(), true);
+        }catch (UnknownHostException ex) {
+            System.err.println("Host sconosciuto");
+        }catch (Exception e) {
+            System.out.println(e.getLocalizedMessage());
+            System.err.println("Impossibile connnettersi al server");
+        }
     }
     
     private void inizializzaGUI() {
@@ -72,7 +101,7 @@ public class LoginMenu extends JFrame {
                 idString = id.getText();
                 passwordString = Arrays.toString(password.getPassword());
                 if(checkLogin(idString, passwordString)) {
-                    // apre gioco online
+                   controller= new PartitaOnlineController(socketClient, in);
                 } else {
                     loginErrato();
                 }
@@ -103,9 +132,20 @@ public class LoginMenu extends JFrame {
     }
     
     private boolean checkLogin(String id, String pass) {
-        // controlla da server e db se il login è corretto
-        
-        return false; // temporaneo
+        try {
+            String credenziali=id+" "+pass;
+            String messaggio_da_inviare = "login " + credenziali;
+            out.println(messaggio_da_inviare);
+            String risposta = in.readLine();
+            if (risposta.equals("login effetuato")) {
+                return true;
+            }
+            
+            
+        } catch (IOException ex) {
+            Logger.getLogger(LoginMenu.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false; 
     }
     
     private void loginErrato() {
