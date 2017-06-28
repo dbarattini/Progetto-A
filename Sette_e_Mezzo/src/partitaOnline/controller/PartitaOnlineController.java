@@ -213,6 +213,7 @@ public class PartitaOnlineController extends Observable implements ViewEventList
         }
         i = i + 1;
         int fiches = Integer.valueOf(componenti[i]);
+        giocatoreDaNome(nome).setFiches(fiches);
         i = i + 1;
         double valoreMano = Double.valueOf(componenti[i]);
         i = i + 1;
@@ -224,6 +225,7 @@ public class PartitaOnlineController extends Observable implements ViewEventList
         int puntata = 0;
         if (!isMazziere) {
             puntata = Integer.valueOf(componenti[i]);
+            giocatoreDaNome(nome).setPuntata(puntata);
         }
         return ritorno = new FineRound(nome, cartaCoperta, carteScoperte, fiches, valoreMano, stato, isMazziere, puntata);
     }
@@ -245,6 +247,7 @@ public class PartitaOnlineController extends Observable implements ViewEventList
         StatoMano stato = StatoMano.valueOf(componenti[i]);
         i = i + 1;
         int puntata = Integer.valueOf(componenti[i]);
+        giocatoreDaNome(nome).setPuntata(puntata);
         return ritorno = new FineManoAvversario(nome, carteScoperte, stato, puntata);
     }
 
