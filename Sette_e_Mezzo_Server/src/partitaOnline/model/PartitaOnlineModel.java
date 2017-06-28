@@ -20,6 +20,7 @@ import java.util.ArrayList;
 import java.util.Observable;
 import partitaOnline.cambia.CartaCoperta;
 import partitaOnline.cambia.GiocatoreDisconnesso;
+import partitaOnline.cambia.GiocatoreStaPuntando;
 import partitaOnline.cambia.Mazziere;
 import partitaOnline.cambia.NuovoGiocatore;
 import partitaOnline.cambia.StatoCambiato;
@@ -234,7 +235,7 @@ public class PartitaOnlineModel extends Observable {
     private void effettua_puntate() {
         for (Giocatore giocatore : giocatori) {
             if (!giocatore.equals(mazziere) && !giocatore.isDisconnesso()) {
-                this.eventoPerTutti(new GiocatoreStaPunatando(giocatore.getNome()));
+                this.eventoPerTutti(new GiocatoreStaPuntando(giocatore.getNome()));
                 giocatore.effettua_puntata();
                 
             }
