@@ -6,7 +6,7 @@
 package sette_e_mezzo;
 
 import comunicazione.Client;
-import comunicazione.Login;
+import tempLoginPackage.LoginConsole;
 
 /**
  *
@@ -16,7 +16,7 @@ public class PartitaOnline {
     
     public static void main(String[] args) {
         Client client= new Client();
-        Login login = new Login(client.getSocketClient());
+        LoginConsole login = new LoginConsole(client.getSocketClient());
         login.comunica();
     }
     

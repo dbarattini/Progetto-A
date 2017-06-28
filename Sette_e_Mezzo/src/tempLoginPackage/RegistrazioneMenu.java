@@ -1,4 +1,6 @@
-package tempProvaRegistrazione;
+package tempLoginPackage;
+
+
 
 import dominio.gui.Sfondo;
 import java.awt.Color;
