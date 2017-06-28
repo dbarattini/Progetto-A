@@ -228,7 +228,9 @@ public class PartitaOnlineController extends Observable implements ViewEventList
             puntata = Integer.valueOf(componenti[i]);
             giocatoreDaNome(nome).setPuntata(puntata);
         }
-        return ritorno = new FineRound(nome, cartaCoperta, carteScoperte, fiches, valoreMano, stato, isMazziere, puntata);
+        ritorno = new FineRound(nome, cartaCoperta, carteScoperte, fiches, valoreMano, stato, isMazziere, puntata);
+        ((FineRound) ritorno).setGiocatore(giocatoreDaNome(nome));
+        return ritorno;
     }
 
     private Object fineManoAvversario(String[] dati) throws NumberFormatException {
@@ -252,7 +254,7 @@ public class PartitaOnlineController extends Observable implements ViewEventList
         return ritorno = new FineManoAvversario(nome, carteScoperte, stato, puntata);
     }
 
-    public GiocatoreOnline giocatoreDaNome(String nome) {
+    private GiocatoreOnline giocatoreDaNome(String nome) {
         for (GiocatoreOnline giocatore : giocatori) {
             if (nome.equals(giocatore.getNome())) {
                 return giocatore;
