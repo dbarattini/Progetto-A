@@ -248,7 +248,7 @@ public class PartitaOnlineController extends Observable implements ViewEventList
         return ritorno = new FineManoAvversario(nome, carteScoperte, stato, puntata);
     }
 
-    private GiocatoreOnline giocatoreDaNome(String nome) {
+    public GiocatoreOnline giocatoreDaNome(String nome) {
         for (GiocatoreOnline giocatore : giocatori) {
             if (nome.equals(giocatore.getNome())) {
                 return giocatore;
