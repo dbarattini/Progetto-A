@@ -89,9 +89,7 @@ public class PartitaOnlineController extends Observable implements ViewEventList
                 this.notifyObservers(new StatoCambiato(componenti[0],StatoMano.valueOf(componenti[1]) ));
                 break;
             case "UltimaCartaOttenuta":
-                componenti = dati[3].split(" ");
-                giocatoreDaNome(componenti[0]).setUltimaCartaOttenuta(new Carta(componenti[1].substring(0, 1), componenti[1].substring(1, 2)));
-                giocatoreDaNome(componenti[0]).setNumCarteScoperte(Integer.valueOf(componenti[2]));
+                ultimaCartaOttenuta(dati);
                 break;
             case "ValoreMano":
                 componenti = dati[2].split(" ");
@@ -99,6 +97,17 @@ public class PartitaOnlineController extends Observable implements ViewEventList
                 break;
             
         }
+    }
+
+    private void ultimaCartaOttenuta(String[] dati) throws NumberFormatException {
+        String[] componenti;
+        componenti = dati[3].split(" ");
+        String nome=componenti[0];
+        GiocatoreOnline giocatore=giocatoreDaNome(nome);
+        giocatore.setUltimaCartaOttenuta(new Carta(componenti[1].substring(0, 1), componenti[1].substring(1, 2)));
+        giocatore.setNumCarteScoperte(Integer.valueOf(componenti[2]));
+        this.setChanged();
+        this.notifyObservers(new GiocatoreHaPescato(giocatore));
     }
 
     private void cartaCoperta(String[] dati) {
