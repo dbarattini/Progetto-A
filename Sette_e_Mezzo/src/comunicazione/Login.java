@@ -20,7 +20,6 @@ import partitaOnline.view.PartitaOnlineConsoleView;
 
 public class Login {
 
-    private int port;
 
     private BufferedReader in;
     private PrintWriter out;
