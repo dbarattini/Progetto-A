@@ -20,6 +20,15 @@ public class StatoCambiato {
         this.stato = stato;
     }
 
+    public String getNome() {
+        return nome;
+    }
+
+    public StatoMano getStato() {
+        return stato;
+    }
+
+    
     @Override
     public String toString() {
         return "cambia\tStatoCambiato\t" + nome + " " + stato;
