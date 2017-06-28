@@ -129,6 +129,13 @@ public class PartitaOnlineGuiView extends JFrame implements Observer{
             if(needCartaCoperta)
                 stampaCartaCoperta();
         }
+        else if(arg instanceof GiocatoreStaPuntando){
+            //todo giocatore sta puntando
+         }
+        else if(arg instanceof StatoCambiato){
+            //todo stato cambiato
+         }
+        //invia ha chiesto carta o se sta
     }
 //
 //    @Override
