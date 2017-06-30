@@ -101,6 +101,7 @@ public class LoginMenu extends JFrame {
                 if(checkLogin(idString, passwordString)) {
                     controller= new PartitaOnlineController(socketClient, in);
                     new PartitaOnlineGuiView(controller);
+                    setVisible(false);
                 } else {
                     loginErrato();
                 }
