@@ -46,8 +46,7 @@ public class PartitaOnlineGuiView extends JFrame implements Observer{
     private final int pausa_lunga = 2000; //ms
     private AudioPlayer audio = new AudioPlayer();;
     
-    boolean tempBoolForDebug = false;
-    
+    boolean tempBoolForDebug = false;    
     
     public PartitaOnlineGuiView(PartitaOnlineController controller) {
         listeners = new CopyOnWriteArrayList<>();                
