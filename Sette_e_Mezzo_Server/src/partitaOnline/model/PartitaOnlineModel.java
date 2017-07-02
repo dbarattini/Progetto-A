@@ -30,6 +30,7 @@ import partitaOnline.events.EstrattoMazziere;
 import partitaOnline.events.GameOver;
 import partitaOnline.events.GiocatoreHaPuntato;
 import partitaOnline.events.GiocatoreIniziaTurno;
+import partitaOnline.events.GiocatoreSta;
 import partitaOnline.events.MazzoRimescolato;
 
 public class PartitaOnlineModel extends Observable {
@@ -303,6 +304,8 @@ public class PartitaOnlineModel extends Observable {
                     continua = false;
                 }
             }
+            else
+                this.eventoPerTutti(new GiocatoreSta(giocatore.getNome()));
         }
     }
 
