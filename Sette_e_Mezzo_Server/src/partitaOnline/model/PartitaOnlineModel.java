@@ -26,6 +26,7 @@ import partitaOnline.cambia.NuovoGiocatore;
 import partitaOnline.cambia.StatoCambiato;
 import partitaOnline.cambia.UltimaCartaOttenuta;
 import partitaOnline.cambia.ValoreMano;
+import partitaOnline.events.DistribuiteCarteCoperte;
 import partitaOnline.events.EstrattoMazziere;
 import partitaOnline.events.GameOver;
 import partitaOnline.events.GiocatoreHaPuntato;
@@ -233,6 +234,7 @@ public class PartitaOnlineModel extends Observable {
                 }
             }
         }
+        this.eventoPerTutti(new DistribuiteCarteCoperte());
     }
 
     private void effettua_puntate() {
