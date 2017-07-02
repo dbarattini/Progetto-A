@@ -29,6 +29,7 @@ import partitaOnline.cambia.ValoreMano;
 import partitaOnline.events.EstrattoMazziere;
 import partitaOnline.events.GameOver;
 import partitaOnline.events.GiocatoreHaPuntato;
+import partitaOnline.events.GiocatoreIniziaTurno;
 import partitaOnline.events.MazzoRimescolato;
 
 public class PartitaOnlineModel extends Observable {
@@ -254,6 +255,8 @@ public class PartitaOnlineModel extends Observable {
     private void esegui_mano(Giocatore giocatore) throws MazzierePerdeException {
         Carta carta_estratta = null;
         boolean continua = true;
+        
+        this.eventoPerTutti(new GiocatoreIniziaTurno(giocatore.getNome()));
 
         while (continua) {
             continua = giocatore.effettua_giocata();
