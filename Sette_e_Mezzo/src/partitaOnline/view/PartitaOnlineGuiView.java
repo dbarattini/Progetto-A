@@ -157,6 +157,8 @@ public class PartitaOnlineGuiView extends JFrame implements Observer{
                 else
                     stampaStatoPlayer();
             }
+        } else if(arg instanceof IniziaPartita){
+            //todo
         }
     }
     

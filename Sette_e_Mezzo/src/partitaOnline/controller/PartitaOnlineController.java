@@ -191,7 +191,9 @@ public class PartitaOnlineController extends Observable implements ViewEventList
             case "DistribuiteCarteCoperte":
                 ritorno= new DistribuiteCarteCoperte();
                 break;
-            
+            case "IniziaPartita":
+                ritorno= new IniziaPartita();
+                break;
         }
         this.setChanged();
         this.notifyObservers(ritorno);
