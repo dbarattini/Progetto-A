@@ -28,6 +28,7 @@ import partitaOnline.cambia.UltimaCartaOttenuta;
 import partitaOnline.cambia.ValoreMano;
 import partitaOnline.events.EstrattoMazziere;
 import partitaOnline.events.GameOver;
+import partitaOnline.events.GiocatoreHaPuntato;
 import partitaOnline.events.MazzoRimescolato;
 
 public class PartitaOnlineModel extends Observable {
@@ -237,7 +238,7 @@ public class PartitaOnlineModel extends Observable {
             if (!giocatore.equals(mazziere) && !giocatore.isDisconnesso()) {
                 this.eventoPerTutti(new GiocatoreStaPuntando(giocatore.getNome()));
                 giocatore.effettua_puntata();
-                
+                this.eventoPerTutti(new GiocatoreHaPuntato(giocatore.getNome()));
             }
         }
         if (mazziere instanceof Giocatore) {
