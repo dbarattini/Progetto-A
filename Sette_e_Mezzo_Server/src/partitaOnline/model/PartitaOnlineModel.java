@@ -32,6 +32,7 @@ import partitaOnline.events.GameOver;
 import partitaOnline.events.GiocatoreHaPuntato;
 import partitaOnline.events.GiocatoreIniziaTurno;
 import partitaOnline.events.GiocatoreSta;
+import partitaOnline.events.IniziaPartita;
 import partitaOnline.events.MazzoRimescolato;
 
 public class PartitaOnlineModel extends Observable {
@@ -100,6 +101,9 @@ public class PartitaOnlineModel extends Observable {
 
     public void aggiungiGiocatori(ArrayList giocatori) {
         inizzializza_fiches(giocatori);
+        for (Object gioc : this.giocatori) {
+            ((Giocatore) gioc).scriviOggetto(new IniziaPartita());
+        }
         this.giocatori.addAll(giocatori);
         for (Object gioc : this.giocatori) {
             this.eventoPerTutti(new NuovoGiocatore(((Giocatore) gioc).getNome(), ((Giocatore) gioc).getFiches()));
