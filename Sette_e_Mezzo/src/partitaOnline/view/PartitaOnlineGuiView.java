@@ -150,7 +150,9 @@ public class PartitaOnlineGuiView extends JFrame implements Observer{
                 valoriMano.put(nomeGioc, stampaStato(getGiocatore(nomeGioc)));        
                 pausa(pausa_breve);
             }
-        }       
+        } else if (arg instanceof GiocatoreHaPuntato){
+            //todo
+        }
     }
     
     // stampa l'animazione di estrazione mazziere, con messaggio finale a mazziere estratto
