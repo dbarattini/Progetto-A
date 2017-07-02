@@ -222,7 +222,8 @@ public class PartitaOnlineModel extends Observable {
                     if (!giocatore.haPerso() && !giocatore.isDisconnesso()) {
                         carta_estratta = mazzo.estrai_carta();
                         giocatore.prendi_carta_iniziale(carta_estratta);
-                        this.eventoPerTutti(new CartaCoperta(giocatore.getNome(), carta_estratta, giocatore.getValoreMano()));
+                        this.eventoPerTutti(new ValoreMano(giocatore.getNome(), giocatore.getValoreMano()));
+                        this.eventoPerTutti(new CartaCoperta(giocatore.getNome(), carta_estratta));
                     }
                     break;
                 } catch (FineMazzoException ex) {
