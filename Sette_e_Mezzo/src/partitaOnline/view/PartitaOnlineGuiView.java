@@ -159,6 +159,8 @@ public class PartitaOnlineGuiView extends JFrame implements Observer{
             }
         } else if(arg instanceof IniziaPartita){
             //todo
+        }else if(arg instanceof IniziaPartita){
+            //todo
         }
     }
     
