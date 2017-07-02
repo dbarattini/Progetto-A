@@ -133,15 +133,15 @@ public class PartitaOnlineGuiView extends JFrame implements Observer{
         } else if(arg instanceof GiocatoreStaPuntando){
             String nomeGioc = ((GiocatoreStaPuntando) arg).getNome();
             stampaMsg(nomeGioc + " sta puntando");
-        } /*else if(arg instanceof GiocatoreStaGiocando){
-            String nomeGioc = ((GiocatoreStaGiocando) arg).getNome();
+        } else if(arg instanceof GiocatoreIniziaTurno){
+            String nomeGioc = ((GiocatoreIniziaTurno) arg).getGiocatore();
             stampaMsg(nomeGioc + " sta giocando");
-        }*/ else if(arg instanceof GiocatoreHaPescato){
+        } else if(arg instanceof GiocatoreHaPescato){
             GiocatoreOnline giocatore = ((GiocatoreHaPescato) arg).getGiocatore();
             stampaGiocatoreHaPescato(giocatore);
-        } /*else if(arg instanceof GiocatoreSta){
+        } else if(arg instanceof GiocatoreSta){
             sfondo.repaint();
-        }*/ else if(arg instanceof StatoCambiato){
+        } else if(arg instanceof StatoCambiato){
             //todo stato cambiato per ogni giocatore
             if(tempBoolForDebug) {  // sembra che StatoCambiato arrivi anche prima di puntare (da verificare quando viene inviato)
                 String nomeGioc = ((StatoCambiato) arg).getNome();
