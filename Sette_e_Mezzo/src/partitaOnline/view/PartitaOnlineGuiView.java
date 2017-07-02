@@ -44,7 +44,7 @@ public class PartitaOnlineGuiView extends JFrame implements Observer{
     private Map<String, JLabel> valoriMano = new HashMap<>();
     private final int pausa_breve = 1000; //ms
     private final int pausa_lunga = 2000; //ms
-    private AudioPlayer audio = new AudioPlayer();;
+    private AudioPlayer audio = new AudioPlayer();
     
     public PartitaOnlineGuiView(PartitaOnlineController controller) {
         listeners = new CopyOnWriteArrayList<>();                
@@ -158,8 +158,6 @@ public class PartitaOnlineGuiView extends JFrame implements Observer{
                     stampaStatoPlayer();
             }
         } else if(arg instanceof IniziaPartita){
-            //todo
-        }else if(arg instanceof IniziaPartita){
             //todo
         }
     }
