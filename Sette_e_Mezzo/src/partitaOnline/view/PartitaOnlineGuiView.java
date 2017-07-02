@@ -96,6 +96,8 @@ public class PartitaOnlineGuiView extends JFrame implements Observer{
             JOptionPane.showMessageDialog(null, errore, "Errore", JOptionPane.ERROR_MESSAGE);
         } else if(arg instanceof EstrattoMazziere) {
             estrazioneMazziere();
+            if(needCartaCoperta)
+                stampaCartaCoperta();
         } else if(arg instanceof MazzoRimescolato) {
             rimescoloMazzo();
         } else if(arg instanceof RisultatoManoParticolare) {
@@ -122,13 +124,13 @@ public class PartitaOnlineGuiView extends JFrame implements Observer{
         } else if(arg instanceof Vittoria) {
             //todo mostra che il giocatore ha vinto
         }else if(arg instanceof RichiediPuntata) {
-            if(needCartaCoperta)
-                stampaCartaCoperta();
+//            if(needCartaCoperta)
+//                stampaCartaCoperta();
             richiediPuntata();
             tempBoolForDebug = true;
         } else if(arg instanceof RichiediGiocata) {
-            stampaGiocataPlayer();
-            if(needCartaCoperta)
+//            stampaGiocataPlayer();
+//            if(needCartaCoperta)
                 stampaCartaCoperta();
         } else if(arg instanceof GiocatoreStaPuntando){
             String nomeGioc = ((GiocatoreStaPuntando) arg).getNome();
