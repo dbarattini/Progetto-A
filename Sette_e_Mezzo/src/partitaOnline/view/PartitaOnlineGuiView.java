@@ -117,7 +117,7 @@ public class PartitaOnlineGuiView extends JFrame implements Observer{
         } else if(arg instanceof Vittoria) {
             //todo mostra che il giocatore ha vinto
         } else if(arg instanceof RichiediPuntata) {
-            richiediPuntata();
+            stampaPuntataPlayer();
             needStatoCambiato = true;
         } else if(arg instanceof RichiediGiocata) {
             stampaGiocataPlayer();
@@ -171,12 +171,15 @@ public class PartitaOnlineGuiView extends JFrame implements Observer{
         
         pausa(pausa_breve);
         
+        int indexAvversario = 0;
+        
         for(int i = 0; i < nGiocatori; i++) {
             stampaValoreMano(controller.getGiocatori().get(i));
-            if(controller.getGiocatori().get(i) != controller.getGiocatoreLocale())
-                stampaCarta((this.getWidth()*(2*i+1))/((nGiocatori-1)*2) - 125, 180, controller.getGiocatori().get(i).getCartaCoperta().toString());
-            else
-                stampaCarta(this.getWidth()/2 - 125, 3*this.getHeight()/4 - 60, controller.getGiocatori().get(i).getCartaCoperta().toString());
+            if(controller.getGiocatori().get(i) != controller.getGiocatoreLocale()) {
+                stampaCarta((this.getWidth()*(2*indexAvversario+1))/((nGiocatori-1)*2) - 125, 180, controller.getGiocatori().get(i).getCartaCoperta().toString());
+                indexAvversario++;
+            } else
+                stampaCarta(this.getWidth()/2 - 125, 3*this.getHeight()/4 - 60, controller.getGiocatoreLocale().getCartaCoperta().toString());
             
             pausa(pausa_breve);
         }
@@ -208,6 +211,9 @@ public class PartitaOnlineGuiView extends JFrame implements Observer{
     private void stampaNomeFiches(GiocatoreOnline giocatore) {
         int numAvversari = controller.getGiocatori().size() - 1;
         int index = controller.getGiocatori().indexOf(giocatore);
+        if(index > controller.getGiocatori().indexOf(controller.getGiocatoreLocale()))
+            index--;
+        
         JLabel nomeGiocatore = new JLabel("Nome:   " + giocatore.getNome());
         JLabel fichesGiocatore = new JLabel("Fiches:   " + giocatore.getFiches());
         
@@ -241,8 +247,10 @@ public class PartitaOnlineGuiView extends JFrame implements Observer{
     private JLabel stampaValoreMano(GiocatoreOnline giocatore) {
         int numAvversari = controller.getGiocatori().size() - 1;
         int index = controller.getGiocatori().indexOf(giocatore);
+        if(index > controller.getGiocatori().indexOf(controller.getGiocatoreLocale()))
+            index--;
+        
         JLabel valoreManoGiocatore = new JLabel("Valore mano:   " + giocatore.getValoreMano());
-
         Font font = new Font("Player", Font.BOLD, 25);
         valoreManoGiocatore.setFont(font);
         valoreManoGiocatore.setForeground(Color.black);
@@ -272,7 +280,7 @@ public class PartitaOnlineGuiView extends JFrame implements Observer{
     }
     
     // stampa i bottoni e il campo di testo per permettere al giocatore di puntare quanto vuole ( minimo 1, massimo ALL IN )
-    private void richiediPuntata() {
+    private void stampaPuntataPlayer() {
         puntataStr = null;
         JButton punta = new JButton(caricaImmagine("dominio/immagini/punta.png"));
         JButton allIN = new JButton(caricaImmagine("dominio/immagini/all_in.png"));
@@ -325,7 +333,7 @@ public class PartitaOnlineGuiView extends JFrame implements Observer{
         Carta lastCard;
         if(controller.getGiocatoreLocale().getNumCarteScoperte() != 0) {
             lastCard = controller.getGiocatoreLocale().getUltimaCartaOttenuta();
-            int index = controller.getGiocatoreLocale().getNumCarteScoperte() - 1;            
+            int index = controller.getGiocatoreLocale().getNumCarteScoperte();// - 1;            
             stampaCarta(this.getWidth()/2 - 95 + index*35, 3*this.getHeight()/4 - 60, lastCard.toString());
         }
         aggiornaValoreManoPlayer();
@@ -458,11 +466,15 @@ public class PartitaOnlineGuiView extends JFrame implements Observer{
         sfondo.add(messaggioCartaCoperta);
         sfondo.repaint();
         
+        int indexAvversario = 0;
+        
         for(int i = 0; i < nGiocatori; i++) {
-            if(controller.getGiocatori().get(i) != controller.getGiocatoreLocale())
-                carteCoperteAvversari.add(stampaCarta((this.getWidth()*(2*i+1))/((nGiocatori-1)*2) - 125, 180, "retroCarta"));
+            if(controller.getGiocatori().get(i) != controller.getGiocatoreLocale()) {
+                carteCoperteAvversari.add(stampaCarta((this.getWidth()*(2*indexAvversario+1))/((nGiocatori-1)*2) - 125, 180, "retroCarta"));
+                indexAvversario++;
+            }
             else {
-                stampaCarta(this.getWidth()/2 - 125, 3*this.getHeight()/4 - 60, controller.getGiocatori().get(i).getCartaCoperta().toString());
+                stampaCarta(this.getWidth()/2 - 125, 3*this.getHeight()/4 - 60, controller.getGiocatoreLocale().getCartaCoperta().toString());
                 valoriMano.put(controller.getGiocatoreLocale().getNome(), stampaValoreMano(controller.getGiocatoreLocale()));
             }
             pausa(pausa_breve);
@@ -478,7 +490,9 @@ public class PartitaOnlineGuiView extends JFrame implements Observer{
     private void stampaGiocatoreHaPescato(GiocatoreOnline giocatore) {
         String nomeGioc = giocatore.getNome();
         int indexGioc = controller.getGiocatori().indexOf(giocatore);
-        int indexCarta = giocatore.getNumCarteScoperte() - 1;
+        if(indexGioc > controller.getGiocatori().indexOf(controller.getGiocatoreLocale()))
+            indexGioc--;
+        int indexCarta = giocatore.getNumCarteScoperte();// - 1;
         
         valoriMano.put(nomeGioc, stampaValoreManoAttualeAvversario(giocatore));
         Carta lastCard = giocatore.getUltimaCartaOttenuta();            
@@ -489,6 +503,8 @@ public class PartitaOnlineGuiView extends JFrame implements Observer{
     private JLabel stampaValoreManoAttualeAvversario(GiocatoreOnline giocatore) {
         int nGioc = controller.getGiocatori().size() - 1;
         int index = controller.getGiocatori().indexOf(giocatore);
+        if(index > controller.getGiocatori().indexOf(controller.getGiocatoreLocale()))
+            index--;
         double valoreMano = 0;
         
         try {
@@ -527,6 +543,8 @@ public class PartitaOnlineGuiView extends JFrame implements Observer{
     // scopre la carta coperta ( usato se sballato o a fine round per vedere il valore a fine round)
     private void scopriCartaCoperta(GiocatoreOnline giocatore) {
         int index = controller.getGiocatori().indexOf(giocatore);
+        if(index > controller.getGiocatori().indexOf(controller.getGiocatoreLocale()))
+            index--;
 
         carteCoperteAvversari.get(index).setIcon(caricaImmagine("dominio/immagini/mazzo/" + giocatore.getCartaCoperta().toString() + ".png"));
         sfondo.repaint();
@@ -536,6 +554,8 @@ public class PartitaOnlineGuiView extends JFrame implements Observer{
     private JLabel stampaStato(GiocatoreOnline giocatore) {
         int numAvversari = controller.getGiocatori().size() - 1;
         int index = controller.getGiocatori().indexOf(giocatore);
+        if(index > controller.getGiocatori().indexOf(controller.getGiocatoreLocale()))
+            index--;
         JLabel stato = null;
         
         Font font = new Font("StatoMano", Font.BOLD, 25);
