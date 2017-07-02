@@ -98,10 +98,10 @@ public class PartitaOnlineGuiView extends JFrame implements Observer{
             estrazioneMazziere();
         } else if(arg instanceof MazzoRimescolato) {
             rimescoloMazzo();
-//        } else if(arg instanceof DistribuiteCarteCoperte) {
-//            if(needCartaCoperta)
-//                stampaCartaCoperta();
-//        } else if(arg instanceof RisultatoManoParticolare) {
+        } else if(arg instanceof DistribuiteCarteCoperte) {
+            if(needCartaCoperta)
+                stampaCartaCoperta();
+        } else if(arg instanceof RisultatoManoParticolare) {
             manoParticolarePlayer();
         } else if(arg instanceof FineRound) {
             GiocatoreOnline giocatore = ((FineRound) arg).getGiocatore();
@@ -502,7 +502,7 @@ public class PartitaOnlineGuiView extends JFrame implements Observer{
         msgGiocataPlayer.setFont(font);
         msgGiocataPlayer.setForeground(Color.black);
 //        int strWidth = msgGiocataPlayer.getFontMetrics(font).stringWidth(msg);
-int strWidth = msgGiocataPlayer.getFontMetrics(font).stringWidth("Giocatore sta puntanto/giocando");
+        int strWidth = msgGiocataPlayer.getFontMetrics(font).stringWidth("Giocatore sta puntanto/giocando");
         msgGiocataPlayer.setBounds(this.getWidth()/2 - strWidth/2, this.getHeight()/2 - 60, strWidth, 90);
 
         sfondo.add(msgGiocataPlayer);
