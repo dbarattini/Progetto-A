@@ -87,7 +87,7 @@ public class PartitaOnlineGuiView extends JFrame implements Observer{
 	ClassLoader caricatore = getClass().getClassLoader();
 	URL percorso = caricatore.getResource(nome);
 	return new ImageIcon(percorso);
-    }    
+    }
 
     @Override
     public void update(Observable o, Object arg) {
@@ -96,17 +96,14 @@ public class PartitaOnlineGuiView extends JFrame implements Observer{
             JOptionPane.showMessageDialog(null, errore, "Errore", JOptionPane.ERROR_MESSAGE);
         } else if(arg instanceof EstrattoMazziere) {
             estrazioneMazziere();
-            if(needCartaCoperta)
-                stampaCartaCoperta();
         } else if(arg instanceof MazzoRimescolato) {
             rimescoloMazzo();
-        } else if(arg instanceof RisultatoManoParticolare) {
+//        } else if(arg instanceof DistribuiteCarteCoperte) {
+//            if(needCartaCoperta)
+//                stampaCartaCoperta();
+//        } else if(arg instanceof RisultatoManoParticolare) {
             manoParticolarePlayer();
-        } /*else if(arg instanceof FineManoAvversario) {
-            if(needCartaCoperta)
-                stampaCartaCoperta();
-            stampaManoAvversario(((FineManoAvversario) arg).getNome());
-        }*/ else if(arg instanceof FineRound) {
+        } else if(arg instanceof FineRound) {
             GiocatoreOnline giocatore = ((FineRound) arg).getGiocatore();
             if(giocatore != controller.getGiocatoreLocale())
                 scopriCartaCoperta(giocatore);
@@ -124,14 +121,10 @@ public class PartitaOnlineGuiView extends JFrame implements Observer{
         } else if(arg instanceof Vittoria) {
             //todo mostra che il giocatore ha vinto
         }else if(arg instanceof RichiediPuntata) {
-//            if(needCartaCoperta)
-//                stampaCartaCoperta();
             richiediPuntata();
             tempBoolForDebug = true;
         } else if(arg instanceof RichiediGiocata) {
-//            stampaGiocataPlayer();
-//            if(needCartaCoperta)
-                stampaCartaCoperta();
+            stampaGiocataPlayer();
         } else if(arg instanceof GiocatoreStaPuntando){
             String nomeGioc = ((GiocatoreStaPuntando) arg).getNome();
             stampaMsg(nomeGioc + " sta puntando");
@@ -145,7 +138,7 @@ public class PartitaOnlineGuiView extends JFrame implements Observer{
             sfondo.repaint();
         } else if(arg instanceof StatoCambiato){
             //todo stato cambiato per ogni giocatore
-            if(tempBoolForDebug) {  // sembra che StatoCambiato arrivi anche prima di puntare (da verificare quando viene inviato)
+            if(tempBoolForDebug) {
                 String nomeGioc = ((StatoCambiato) arg).getNome();
                 sfondo.remove(valoriMano.get(nomeGioc));
                 valoriMano.remove(nomeGioc);
@@ -504,10 +497,12 @@ public class PartitaOnlineGuiView extends JFrame implements Observer{
     // stampa il messaggio passato (usato per stampare " giocatore sta puntando/giocando )
     private void stampaMsg(String msg) {
         Font font = new Font("MsgGiocataAvversario", Font.BOLD, 70);
-        JLabel msgGiocataPlayer = new JLabel(msg);
+//        JLabel msgGiocataPlayer = new JLabel(msg);
+        JLabel msgGiocataPlayer = new JLabel("Giocatore sta puntanto/giocando");
         msgGiocataPlayer.setFont(font);
         msgGiocataPlayer.setForeground(Color.black);
-        int strWidth = msgGiocataPlayer.getFontMetrics(font).stringWidth(msg);
+//        int strWidth = msgGiocataPlayer.getFontMetrics(font).stringWidth(msg);
+int strWidth = msgGiocataPlayer.getFontMetrics(font).stringWidth("Giocatore sta puntanto/giocando");
         msgGiocataPlayer.setBounds(this.getWidth()/2 - strWidth/2, this.getHeight()/2 - 60, strWidth, 90);
 
         sfondo.add(msgGiocataPlayer);
