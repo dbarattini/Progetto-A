@@ -14,15 +14,17 @@ import dominio.elementi_di_gioco.Carta;
 public class CartaCoperta {
     private String nome;
     private Carta coperta;
+    private double valore;
 
-    public CartaCoperta(String nome, Carta coperta) {
+    public CartaCoperta(String nome, Carta coperta, double valore) {
         this.nome = nome;
         this.coperta = coperta;
+        this.valore=valore;
     }
 
     @Override
     public String toString() {
-        return "cambia\tCartaCoperta\t" + nome + " " + coperta ;
+        return "cambia\tCartaCoperta\t" + nome + " " + coperta + " " + valore;
     }
     
     
