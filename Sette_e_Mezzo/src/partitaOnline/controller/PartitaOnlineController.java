@@ -35,6 +35,19 @@ public class PartitaOnlineController extends Observable implements ViewEventList
             Logger.getLogger(PartitaOnlineController.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
+    public PartitaOnlineController(Socket socket, BufferedReader in, String nome) {
+        try {
+            this.nomeLocale=nome;
+            this.leggi = new Leggi(in);
+            this.aServer = new PrintWriter(socket.getOutputStream(), true);
+            leggi.addObserver(this);
+            Thread t = new Thread(leggi);
+            t.start();
+        } catch (IOException ex) {
+            Logger.getLogger(PartitaOnlineController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 
     @Override
     public void ViewEventReceived(ViewEvent evt) {

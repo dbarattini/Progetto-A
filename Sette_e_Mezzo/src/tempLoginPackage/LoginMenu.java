@@ -21,11 +21,12 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 import partitaOnline.controller.PartitaOnlineController;
 import partitaOnline.view.PartitaOnlineGuiView;
 
 public class LoginMenu extends JFrame {
-    
+
     private Sfondo sfondo;
     private JButton fatto, riprova;
     private JTextField id;
@@ -33,25 +34,24 @@ public class LoginMenu extends JFrame {
     private JLabel richiediLogin, idLabel, passwordLabel, messLogErrato;
     private String idString = null, passwordString = null;
     private boolean loginConfermato = false;
-    
+
     private BufferedReader in;
     private PrintWriter out;
     private Socket socketClient;
     private PartitaOnlineController controller;
 
-    
     public LoginMenu(Socket socketClient) {
         inizializzaConnessione(socketClient);
         setTitle("Sette e Mezzo");
         setPreferredSize(new Dimension(1000, 800));
-	setMinimumSize(new Dimension(1000, 800));		
-	pack();
+        setMinimumSize(new Dimension(1000, 800));
+        pack();
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	setResizable(false);
-	setLocationRelativeTo(null);       
-        
+        setResizable(false);
+        setLocationRelativeTo(null);
+
         inizializzaGUI();
-        
+
         setVisible(true);
     }
 
@@ -60,19 +60,19 @@ public class LoginMenu extends JFrame {
             this.socketClient = socketClient1;
             in = new BufferedReader(new InputStreamReader(socketClient1.getInputStream()));
             out = new PrintWriter(socketClient1.getOutputStream(), true);
-        }catch (UnknownHostException ex) {
+        } catch (UnknownHostException ex) {
             System.err.println("Host sconosciuto");
-        }catch (Exception e) {
+        } catch (Exception e) {
             System.out.println(e.getLocalizedMessage());
             System.err.println("Impossibile connnettersi al server");
         }
     }
-    
+
     private void inizializzaGUI() {
         sfondo = new Sfondo("dominio/immagini/sfondo.png", 995, 765);
         sfondo.setBounds(0, 0, 1000, 800);
         add(sfondo);
-        
+
         fatto = new JButton(caricaImmagine("dominio/immagini/fatto.png"));
         riprova = new JButton(caricaImmagine("dominio/immagini/riprova.png"));
         id = new JTextField();
@@ -80,35 +80,34 @@ public class LoginMenu extends JFrame {
         richiediLogin = new JLabel(caricaImmagine("dominio/immagini/richiediLogin.png"));
         idLabel = new JLabel(caricaImmagine("dominio/immagini/idLogin.png"));
         passwordLabel = new JLabel(caricaImmagine("dominio/immagini/passwordLogin.png"));
-        
+
         Font font = new Font("Login", 1, 40);
         id.setFont(font);
         password.setFont(font);
-        
-        fatto.setBounds(this.getWidth()/2 - 100, 600, 200, 80);
-        riprova.setBounds(this.getWidth()/2 - 100, 600, 200, 80);
+
+        fatto.setBounds(this.getWidth() / 2 - 100, 600, 200, 80);
+        riprova.setBounds(this.getWidth() / 2 - 100, 600, 200, 80);
         id.setBounds(510, 250, 300, 80);
         password.setBounds(510, 350, 300, 80);
-        richiediLogin.setBounds(this.getWidth()/2 - 308, 30, 617, 135);
+        richiediLogin.setBounds(this.getWidth() / 2 - 308, 30, 617, 135);
         idLabel.setBounds(211, 251, 120, 78);
         passwordLabel.setBounds(100, 338, 342, 105);
-        
-        fatto.addActionListener(new ActionListener(){
+
+        fatto.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 idString = id.getText();
                 passwordString = new String(password.getPassword());
-                if(checkLogin(idString, passwordString)) {
-                    controller= new PartitaOnlineController(socketClient, in);
-                    new PartitaOnlineGuiView(controller);
-                    setVisible(false);
+                if (checkLogin(idString, passwordString)) {
+                    IniziaPartita();
                 } else {
                     loginErrato();
                 }
-            };
+            }
+        ;
         });
         
-        riprova.addActionListener(new ActionListener(){
+        riprova.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 sfondo.remove(riprova);
@@ -120,7 +119,8 @@ public class LoginMenu extends JFrame {
                 sfondo.add(idLabel);
                 sfondo.add(passwordLabel);
                 sfondo.repaint();
-            };
+            }
+        ;
         });
         
         sfondo.add(fatto);
@@ -130,35 +130,44 @@ public class LoginMenu extends JFrame {
         sfondo.add(idLabel);
         sfondo.add(passwordLabel);
     }
-    
+
+    private void IniziaPartita() {
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                new SalaDiAspetto(socketClient, in);
+            }
+        });
+        this.dispose();
+
+    }
+
     private boolean checkLogin(String id, String pass) {
         try {
-            String credenziali=id+" "+pass;
+            String credenziali = id + " " + pass;
             String messaggio_da_inviare = "login " + credenziali;
             out.println(messaggio_da_inviare);
             String risposta = in.readLine();
             if (risposta.equals("login effetuato")) {
                 return true;
             }
-            
-            
+
         } catch (IOException ex) {
             Logger.getLogger(LoginMenu.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return false; 
+        return false;
     }
-    
+
     private void loginErrato() {
         Font font = new Font("LoginErratoMsg", Font.BOLD, 60);
         messLogErrato = new JLabel("<html>Login non riuscito,"
-                                + "<br> riprova per favore</html>");
+                + "<br> riprova per favore</html>");
         messLogErrato.setFont(font);
         messLogErrato.setForeground(Color.black);
-        messLogErrato.setBounds(this.getWidth()/2 - 270, 150, 800, 400);
-        
+        messLogErrato.setBounds(this.getWidth() / 2 - 270, 150, 800, 400);
+
         id.setText("");
         password.setText("");
-        
+
         sfondo.add(messLogErrato);
         sfondo.add(riprova);
         sfondo.remove(fatto);
@@ -169,10 +178,10 @@ public class LoginMenu extends JFrame {
         sfondo.remove(passwordLabel);
         sfondo.repaint();
     }
-    
-    private ImageIcon caricaImmagine(String nome){
-	ClassLoader loader = getClass().getClassLoader();
-	URL percorso = loader.getResource(nome);
-	return new ImageIcon(percorso);
+
+    private ImageIcon caricaImmagine(String nome) {
+        ClassLoader loader = getClass().getClassLoader();
+        URL percorso = loader.getResource(nome);
+        return new ImageIcon(percorso);
     }
 }

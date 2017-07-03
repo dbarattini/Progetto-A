@@ -52,11 +52,6 @@ public class Partita extends Thread {
             Logger.getLogger(Partita.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
-    private void gira() {
-        run();
-    }
-
     private void giocaPartita() {
         if (giocatori.size() > 1) {
             if (iniziata) {
