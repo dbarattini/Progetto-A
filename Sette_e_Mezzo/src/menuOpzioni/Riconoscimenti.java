@@ -61,8 +61,9 @@ public class Riconoscimenti {
         System.out.println(mbergamaschi);
         System.out.println(smbaye);
         System.out.println(scolmi);
+        
         Scanner scanner = new Scanner(System.in);
-        String continua = scanner.nextLine();
+        scanner.nextLine();
         System.out.print("\n");
     }
 }

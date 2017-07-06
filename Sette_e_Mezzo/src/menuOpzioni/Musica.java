@@ -111,32 +111,28 @@ public class Musica {
     private ImpostazioniMusica richiediImpostazioneMusica() {
         ImpostazioniMusica impostazioni_prov = null;
         Scanner scanner = new Scanner(in);        
+        System.out.print("                                         ");
         String input = scanner.next();
+        System.out.print("\n");
             
         try { 
                 if(input.equals("1") || input.toLowerCase().equals("play")) {
                     impostazioni_prov=ImpostazioniMusica.Play;
-                    System.out.println("Hai selezionato PLAY");
                 }
                 if (input.equals("2") || input.toLowerCase().equals("stop")) {
                     impostazioni_prov=ImpostazioniMusica.Stop;
-                    System.out.println("Hai selezionato STOP");
                 }
                 if (input.equals("3") || input.toLowerCase().equals("riavvia")) {
                     impostazioni_prov=ImpostazioniMusica.Riavvia;
-                    System.out.println("Hai selezionato RIAVVIA");
                 }
                 if (input.equals("4") || input.toLowerCase().equals("loop")) {
                     impostazioni_prov=ImpostazioniMusica.Loop;
-                    System.out.println("Hai selezionato LOOP");
                 }
                 if (input.equals("5") || input.toLowerCase().equals("carica")) {
                     impostazioni_prov=ImpostazioniMusica.Carica;
-                    System.out.println("Hai selezionato CARICA");
                 }
                 if (input.equals("6") || input.toLowerCase().equals("indietro")) {
                     impostazioni_prov=ImpostazioniMusica.Indietro;
-                    System.out.println("Hai selezionato INDIETRO");
                 }
             }   
                 catch (IllegalArgumentException ex){

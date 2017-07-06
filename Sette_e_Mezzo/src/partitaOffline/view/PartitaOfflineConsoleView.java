@@ -61,25 +61,25 @@ public class PartitaOfflineConsoleView implements PartitaOfflineView, Observer{
     
     private void richiediNome(){
         String nome;
-        System.out.println("---------------------------------");
-        System.out.println("         Come ti chiami?         \n");
-        System.out.print("            ");
+        System.out.println("-------------------------------------------------------------------------------");
+        System.out.println("                               Come ti chiami?                               \n");
+        System.out.print("                                        ");
         nome = scanner.next();
-        System.out.println("---------------------------------");        
+        System.out.println("-------------------------------------------------------------------------------");        
         fireViewEvent(new SetNome(nome));  
     }
     
     private void stampaSchermataEstrazioneMazziere(){
-        System.out.println("  -----------------------------  ");
-        System.out.println("<      ESTRAZIONE MAZZIERE      >");
-        System.out.println("  -----------------------------  \n");
+        System.out.println("  ---------------------------------------------------------------------------  ");
+        System.out.println("<                             ESTRAZIONE MAZZIERE                             >");
+        System.out.println("  ---------------------------------------------------------------------------  \n");
         pausa(pausa_breve);
         for(Giocatore giocatore : model.getGiocatori()){
             mostra_carta_coperta_e_valore_mano(giocatore);
             pausa(pausa_breve);
         }
         stampa_messaggio_mazziere();
-        System.out.println("---------------------------------"); 
+        System.out.println("-------------------------------------------------------------------------------"); 
         pausa(pausa_lunga);
     }
     
@@ -88,7 +88,7 @@ public class PartitaOfflineConsoleView implements PartitaOfflineView, Observer{
     }
     
     private void stampa_messaggio_mazziere(){
-        System.out.println("\n--> il Mazziere é: " + model.getMazziere().getNome() + " <--");
+        System.out.println("\n------> il Mazziere é: " + model.getMazziere().getNome() + " <------");
     }
 
     @Override
@@ -122,19 +122,19 @@ public class PartitaOfflineConsoleView implements PartitaOfflineView, Observer{
             }
         } else if(arg instanceof MazzierePerde){
             System.out.println("\n");
-            System.out.println("--> Il mazziere ha perso <--");
+            System.out.println("---------------------------> Il mazziere ha perso <----------------------------");
             pausa(pausa_breve);
         } else if(arg instanceof AggiornamentoMazziere){
             System.out.println("\n");
-            System.out.println("--> il nuovo mazziere é: " + model.getMazziere().getNome() + " <--\n");
+            System.out.println("---> il nuovo mazziere é: " + model.getMazziere().getNome() + " <---\n");
             pausa(pausa_breve);
         } else if(arg instanceof GameOver){
             System.out.println("\n");
-            System.out.println("--> Game Over <--");
+            System.out.println("---------------------------------> Game Over <---------------------------------");
             pausa(pausa_breve);
         } else if(arg instanceof Vittoria){
             System.out.println("\n");
-            System.out.println("--> Complimenti! Hai sconfitto tutti i bot <--");
+            System.out.println("-------------------> Complimenti! Hai sconfitto tutti i bot <------------------");
             pausa(pausa_breve);
         }
     }
@@ -174,7 +174,7 @@ public class PartitaOfflineConsoleView implements PartitaOfflineView, Observer{
     }
 
     private void stampaSchermataRimescolaMazzo() {
-        System.out.println("\n--> Rimescolo il mazzo <--\n");
+        System.out.println("\n-----------------------------> Rimescolo il mazzo <----------------------------\n");
         pausa(pausa_lunga);
     }
 

@@ -81,8 +81,10 @@ public class MenuOpzioniConsole {
     
     private ImpostazioniMenu richiediImpostazione() {
         ImpostazioniMenu impostazioni_prov = null;
-        Scanner scanner = new Scanner(System.in);        
+        Scanner scanner = new Scanner(System.in); 
+        System.out.print("                                         ");
         String input = scanner.next();
+        System.out.print("\n");
             
         try { 
                 if(input.equals("1") || input.toLowerCase().equals("musica")) {
