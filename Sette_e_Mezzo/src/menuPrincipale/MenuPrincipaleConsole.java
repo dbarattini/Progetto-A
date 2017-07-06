@@ -2,6 +2,7 @@ package menuPrincipale;
 
 import dominio.classi_dati.OpzioniMenu;
 import java.util.Scanner;
+import menuOpzioni.MenuOpzioniConsole;
 import menuPrePartita.MenuPrePartitaConsole;
 import menuRegole.RegoleConsole;
 
@@ -10,9 +11,11 @@ public class MenuPrincipaleConsole {
     private OpzioniMenu opzione;
     private String opzione_inserita;
     private RegoleConsole regole;
+    private MenuOpzioniConsole opzioni;
 
     public MenuPrincipaleConsole() {
         this.regole = new RegoleConsole();
+        this.opzioni = new MenuOpzioniConsole();
         while (true) {
             run();
         }
@@ -72,7 +75,7 @@ public class MenuPrincipaleConsole {
                 System.out.println("Online");
                 break;
             case Impostazioni:
-                System.out.println("Impostazioni");
+                opzioni.run();
                 break;
             case RegoleDiGioco:
                 regole.run();

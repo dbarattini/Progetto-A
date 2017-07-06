@@ -83,7 +83,7 @@ public class Musica {
                         break;
                     case Indietro:
                         MenuOpzioniConsole imp = new MenuOpzioniConsole();
-                        imp.selezionaImpostazione();
+                        imp.run();
                         break;
                 }
             } catch (NullPointerException e) {    

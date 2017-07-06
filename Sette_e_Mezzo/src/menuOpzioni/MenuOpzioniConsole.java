@@ -1,37 +1,35 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package menuOpzioni;
 
 import dominio.classi_dati.ImpostazioniMenu;
 import dominio.eccezioni.CanzoneNonTrovataException;
 import dominio.eccezioni.CaricamentoCanzoneException;
-import static java.lang.System.in;
-import static java.lang.System.out;
 import java.util.Scanner;
 
 
 public class MenuOpzioniConsole {
     
-    ImpostazioniMenu impostazioni;
+    private ImpostazioniMenu impostazioni;
+    private Musica musica;
+    private Riconoscimenti riconoscimenti;
+    private Profilo profilo;
+    private boolean indietro = false;
 
     public MenuOpzioniConsole() {
+        this.musica = new Musica();
+        this.profilo = new Profilo();
+        this.riconoscimenti = new Riconoscimenti();
     }
     
     /**
      * Stampa le impostazioni da scegliere, inizializza a null il valore di impostazioni (enum) e poi lo setta in base al valore inserito da terminale
      * 
-     * @throws InterruptedException
-     * @throws CanzoneNonTrovataException
-     * @throws CaricamentoCanzoneException 
      */
     
-    public void selezionaImpostazione() throws InterruptedException, CanzoneNonTrovataException, CaricamentoCanzoneException {
+    public void run(){
+        indietro = false;
         while(true) {
             printImpostazioni();
-            ImpostazioniMenu impostazioni = null;
+            impostazioni = null;
             impostazioni = richiediImpostazione();
         
             try {
@@ -39,35 +37,50 @@ public class MenuOpzioniConsole {
                 switch(impostazioni) {
                 
                     case Musica: 
-                        Musica music = new Musica();
-                        music.selezionaImpostazione();
+                        try {
+                            try {
+                                musica.selezionaImpostazione();
+                            } catch (CanzoneNonTrovataException ex) {
+                                System.err.println("Errore: Impossibile trovare la canzone.");
+                            } catch (CaricamentoCanzoneException ex) {
+                                System.err.println("Errore: Impossibile caricare la canzone.");
+                            }
+                        } catch (InterruptedException ex) {
+
+                        }
                         break;
                     case Profilo:
-                        Profilo profilo = new Profilo();
                         profilo.selezionaProfilo();
                         break;
                     case Riconoscimenti:
-                        Riconoscimenti riconoscimenti = new Riconoscimenti();
                         riconoscimenti.printRiconoscimenti();
                         break;
+                    case Indietro:
+                        indietro = true;
                 }
             } catch (NullPointerException e) {    
           }
+            if(indietro){
+                break;
+            }
         }
     }
     
     private void printImpostazioni() {
         
-        out.println("\n");
-        out.println("SELEZIONA UN'IMPOSTAZIONE:");
-        out.println("1. Musica\n");
-        out.println("2. Profilo\n");
-        out.println("3. Riconoscimenti\n");
+        System.out.println("\n");
+        System.out.println("  -----------------------------  ");
+        System.out.println("< SELEZIONA UN OPZIONE DAL MENU >");
+        System.out.println("  -----------------------------  ");
+        System.out.println("         1. Musica               ");
+        System.out.println("         2. Profilo              ");
+        System.out.println("         3. Riconoscimenti       ");
+        System.out.println("         4. Indietro             ");
     }
     
     private ImpostazioniMenu richiediImpostazione() {
         ImpostazioniMenu impostazioni_prov = null;
-        Scanner scanner = new Scanner(in);        
+        Scanner scanner = new Scanner(System.in);        
         String input = scanner.next();
             
         try { 
@@ -78,15 +91,16 @@ public class MenuOpzioniConsole {
                     impostazioni_prov=ImpostazioniMenu.Profilo;
                 }
                 if (input.equals("3") || input.toLowerCase().equals("riconoscimenti")) {
-                impostazioni_prov=ImpostazioniMenu.Riconoscimenti;
+                    impostazioni_prov=ImpostazioniMenu.Riconoscimenti;
                 } 
-            }   
-                catch (IllegalArgumentException ex){
-                System.out.println("IMPOSTAZIONE NON VALIDA\n");
+                if (input.equals("4") || input.toLowerCase().equals("indietro")){
+                    impostazioni_prov = ImpostazioniMenu.Indietro;
                 }
-
-//                if(impostazioni_prov == null) {
-//                    System.out.println("IMPOSTAZIONE NON VALIDA");
+            }   
+        catch (IllegalArgumentException ex){
+                System.err.println("Errore: La scelta effettuata non é valida.\n");
+            }
+        
         return impostazioni_prov;
     }
 }
