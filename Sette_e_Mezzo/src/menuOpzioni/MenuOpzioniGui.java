@@ -11,13 +11,13 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 
-public class OpzioniGui  extends JFrame implements ActionListener {
+public class MenuOpzioniGui  extends JFrame implements ActionListener {
     RiconoscimentiGui opzioni_riconoscimenti; 
     private Sfondo sfondo;
     private JButton musica, profilo, riconoscimenti, indietro;
     private ImageIcon musicaOn, musicaOff;
     
-    public OpzioniGui() {
+    public MenuOpzioniGui() {
         this.opzioni_riconoscimenti = new RiconoscimentiGui();
         opzioni_riconoscimenti.addIndietroActionListener(this);
         
