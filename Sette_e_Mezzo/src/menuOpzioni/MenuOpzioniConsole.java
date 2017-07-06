@@ -39,7 +39,7 @@ public class MenuOpzioniConsole {
                     case Musica: 
                         try {
                             try {
-                                musica.selezionaImpostazione();
+                                musica.run();
                             } catch (CanzoneNonTrovataException ex) {
                                 System.err.println("Errore: Impossibile trovare la canzone.");
                             } catch (CaricamentoCanzoneException ex) {
@@ -57,6 +57,7 @@ public class MenuOpzioniConsole {
                         break;
                     case Indietro:
                         indietro = true;
+                        break;
                 }
             } catch (NullPointerException e) {    
           }
@@ -69,13 +70,13 @@ public class MenuOpzioniConsole {
     private void printImpostazioni() {
         
         System.out.println("\n");
-        System.out.println("  -----------------------------  ");
-        System.out.println("< SELEZIONA UN OPZIONE DAL MENU >");
-        System.out.println("  -----------------------------  ");
-        System.out.println("         1. Musica               ");
-        System.out.println("         2. Profilo              ");
-        System.out.println("         3. Riconoscimenti       ");
-        System.out.println("         4. Indietro             ");
+        System.out.println("  ---------------------------------------------------------------------------  ");
+        System.out.println("                       < SELEZIONA UN OPZIONE DAL MENU >                       ");
+        System.out.println("  ---------------------------------------------------------------------------  ");
+        System.out.println("                                1. Musica                                      ");
+        System.out.println("                                2. Profilo                                     ");
+        System.out.println("                                3. Riconoscimenti                              ");
+        System.out.println("                                4. Indietro                                    ");
     }
     
     private ImpostazioniMenu richiediImpostazione() {

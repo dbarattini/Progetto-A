@@ -15,6 +15,7 @@ public class Musica {
     private ImpostazioniMusica impostazioni;
     private boolean on=false;
     private boolean off=true;
+    private boolean indietro = false;
 
     public Musica() {
        this.audio = new AudioPlayer();
@@ -27,7 +28,8 @@ public class Musica {
      * @throws CaricamentoCanzoneException 
      */
     
-    public void selezionaImpostazione() throws InterruptedException, CanzoneNonTrovataException, CaricamentoCanzoneException {
+    public void run() throws InterruptedException, CanzoneNonTrovataException, CaricamentoCanzoneException {
+        indietro = false;
         while(true) {
             printOpzioniMusica();
             ImpostazioniMusica impostazioni = null;
@@ -82,24 +84,28 @@ public class Musica {
                         audio.riproduci(input2);
                         break;
                     case Indietro:
-                        MenuOpzioniConsole imp = new MenuOpzioniConsole();
-                        imp.run();
+                        indietro = true;
                         break;
                 }
             } catch (NullPointerException e) {    
           }
+            if(indietro){
+                break;
+            }
         }
     }
     
     private void printOpzioniMusica() {
         out.println("\n");
-        out.println("SELEZIONA UN'IMPOSTAZIONE DELLA MUSICA");
-        out.println("1. PLAY");
-        out.println("2. STOP");
-        out.println("3. RIAVVIA");
-        out.println("4. RIPRODUCI IN LOOP");
-        out.println("5. CARICA CANZONE");
-        out.println("6. INDIETRO");
+        System.out.println("  ---------------------------------------------------------------------------  ");
+        System.out.println("                       < SELEZIONA UN OPZIONE DAL MENU >                       ");
+        System.out.println("  ---------------------------------------------------------------------------  ");
+        System.out.println("                                1. Play                                        ");
+        System.out.println("                                2. Stop                                        ");
+        System.out.println("                                3. Riavvia                                     ");
+        System.out.println("                                4. Riproduci in loop                           ");
+        System.out.println("                                5. Carica canzone                              ");
+        System.out.println("                                6. Indietro                                    ");
     }
     
     private ImpostazioniMusica richiediImpostazioneMusica() {
@@ -134,7 +140,7 @@ public class Musica {
                 }
             }   
                 catch (IllegalArgumentException ex){
-                System.out.println("IMPOSTAZIONE NON VALIDA");
+                System.err.println("Errore: La scelta effettuata non é valida.\n");
                 }
 
 //                if(impostazioni_prov == null) {
