@@ -1,5 +1,6 @@
 package menuPrincipale;
 
+import dominio.classi_dati.Banners;
 import dominio.classi_dati.OpzioniMenu;
 import java.util.Scanner;
 import menuOpzioni.MenuOpzioniConsole;
@@ -12,10 +13,14 @@ public class MenuPrincipaleConsole {
     private String opzione_inserita;
     private RegoleConsole regole;
     private MenuOpzioniConsole opzioni;
+    private Banners banner;
 
     public MenuPrincipaleConsole() {
         this.regole = new RegoleConsole();
         this.opzioni = new MenuOpzioniConsole();
+        this.banner = new Banners();
+        
+        System.out.println(banner.randomBanner());
         while (true) {
             run();
         }
@@ -33,15 +38,15 @@ public class MenuPrincipaleConsole {
     }
 
     private void printScelte() {
-        System.out.println("  -----------------------------  ");
-        System.out.println("< SELEZIONA UN OPZIONE DAL MENU >");
-        System.out.println("  -----------------------------  ");
-        System.out.println("         1. GiocaOffline         ");
-        System.out.println("         2. GiocaOnline          ");
-        System.out.println("         3. Impostazioni         ");
-        System.out.println("         4. RegoleDiGioco        ");
+        System.out.println("  ---------------------------------------------------------------------------  ");
+        System.out.println("                       < SELEZIONA UN OPZIONE DAL MENU >                       ");
+        System.out.println("  ---------------------------------------------------------------------------  ");
+        System.out.println("                                1. GiocaOffline                                ");
+        System.out.println("                                2. GiocaOnline                                 ");
+        System.out.println("                                3. Impostazioni                                ");
+        System.out.println("                                4. RegoleDiGioco                               ");
         System.out.print("\n");
-        System.out.print("            ");
+        System.out.print("                                         ");
     }
 
     private void richiediOpzione() {
