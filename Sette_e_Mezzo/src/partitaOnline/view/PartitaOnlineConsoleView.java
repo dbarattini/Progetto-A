@@ -202,11 +202,11 @@ public class PartitaOnlineConsoleView implements  Observer{
     
     private void gestisciParticellaDiSodio(String scelta){
         if(scelta.equals("1")){
-            
+            //todo
         }else if (scelta.equals("2")){
-            
+            //todo
         }else{
-            
+            //todo
         }
     }
 }
