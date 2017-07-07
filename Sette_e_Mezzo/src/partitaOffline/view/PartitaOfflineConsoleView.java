@@ -11,6 +11,7 @@ import java.util.Scanner;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import menuPrincipale.MenuPrincipaleConsole;
 import partitaOffline.events.AggiornamentoMazziere;
 import partitaOffline.events.EstrattoMazziere;
 import partitaOffline.events.FineManoAvversario;
@@ -172,6 +173,8 @@ public class PartitaOfflineConsoleView implements PartitaOfflineView, Observer{
         fireViewEvent(new SetGiocata(giocata));
         System.out.print("\n");
     }
+    
+    
 
     private void stampaSchermataRimescolaMazzo() {
         System.out.println("\n-----------------------------> Rimescolo il mazzo <----------------------------\n");
@@ -186,6 +189,8 @@ public class PartitaOfflineConsoleView implements PartitaOfflineView, Observer{
         pausa(pausa_lunga);
     }
     
+
+    
     private void pausa(int tempo){
         try {
             Thread.sleep(tempo);
@@ -193,4 +198,6 @@ public class PartitaOfflineConsoleView implements PartitaOfflineView, Observer{
             Logger.getLogger(PartitaOfflineConsoleView.class.getName()).log(Level.SEVERE, null, ex);
         }
     } 
+
+    
 }
