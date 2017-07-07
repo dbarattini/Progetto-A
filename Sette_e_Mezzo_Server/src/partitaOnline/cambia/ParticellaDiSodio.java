@@ -13,5 +13,12 @@ public class ParticellaDiSodio {
 
     public ParticellaDiSodio() {
     }
+
+    @Override
+    public String toString() {
+        return "cambia\tParticellaDiSodio";
+    }
+    
+    
     
 }
