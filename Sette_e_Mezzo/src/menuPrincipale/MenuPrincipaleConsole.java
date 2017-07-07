@@ -6,6 +6,7 @@ import java.util.Scanner;
 import menuOpzioni.MenuOpzioniConsole;
 import menuPrePartita.MenuPrePartitaConsole;
 import menuRegole.RegoleConsole;
+import moduli.PartitaOnlineConsole;
 
 public class MenuPrincipaleConsole {
 
@@ -77,7 +78,7 @@ public class MenuPrincipaleConsole {
                 new MenuPrePartitaConsole();
                 break;
             case GiocaOnline:
-                System.out.println("Online");
+                new PartitaOnlineConsole();
                 break;
             case Impostazioni:
                 opzioni.run();

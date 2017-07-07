@@ -68,6 +68,9 @@ public class LoginConsole {
         } catch (LoginEffettuato ex) {
             controller= new PartitaOnlineController(socketClient, in);
             new PartitaOnlineConsoleView(controller);
+            while(true){
+                
+            }
         }
 
     }
