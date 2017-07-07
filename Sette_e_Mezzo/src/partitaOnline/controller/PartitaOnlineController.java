@@ -23,9 +23,11 @@ public class PartitaOnlineController extends Observable implements ViewEventList
     private ArrayList<GiocatoreOnline> giocatori = new ArrayList<>();
     private PrintWriter aServer;
     private String nomeLocale;
+    private Socket socket;
 
     public PartitaOnlineController(Socket socket, BufferedReader in) {
         try {
+            this.socket=socket;
             this.leggi = new Leggi(in);
             this.aServer = new PrintWriter(socket.getOutputStream(), true);
             leggi.addObserver(this);
@@ -298,6 +300,14 @@ public class PartitaOnlineController extends Observable implements ViewEventList
             }
         }
         return null;
+    }
+    
+    public void esci(){
+        try {
+            socket.close();
+        } catch (IOException ex) {
+            Logger.getLogger(PartitaOnlineController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     public GiocatoreOnline getGiocatoreLocale() {
