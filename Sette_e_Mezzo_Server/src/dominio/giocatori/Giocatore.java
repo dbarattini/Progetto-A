@@ -452,6 +452,10 @@ public class Giocatore implements Observer {
         return mazziere;
     }
 
+    public boolean isEsce() {
+        return esce;
+    }
+    
     public void setUsername(String username) {
         this.nome = username;
         client.scrivi("setta\tNome\t"+nome);
