@@ -83,21 +83,9 @@ public class PartitaOnlineConsoleView implements  Observer{
         } else if(arg instanceof RisultatoManoParticolare){
             stampaSchermataManoParticolare();
         } else if(arg instanceof FineManoAvversario){
-            FineManoAvversario avversario = (FineManoAvversario) arg;
-            if(avversario.getNome().equals(controller.getGiocatoreLocale().getNome()))
-              esci=richiediUscita();  
-            
-            System.out.println(avversario.getNome() + " " + avversario.getCarteScoperte() + " " + avversario.getStato() + " " + avversario.getPuntata());
+            fineMano(arg);
         } else if(arg instanceof FineRound){
-            System.out.println(((FineRound) arg).isMazziere() + " " + ((FineRound) arg).getNome() + " " + ((FineRound) arg).getCartaCoperta()+((FineRound) arg).getCarteScoperte() + " " + ((FineRound) arg).getValoreMano() + " "+ ((FineRound) arg).getStato() + " " + ((FineRound) arg).getFiches());
-            if(((FineRound) arg).equals(controller.getGiocatori().get(controller.getGiocatori().size() - 1))){
-                System.out.println("---------------------------------\n");
-            }
-            if(((FineRound) arg).getGiocatore().equals(controller.getGiocatoreLocale())){
-                System.out.print("\n");  
-                controllaUscita();
-            }
-        
+            fineRound(arg);        
         } else if(arg instanceof MazzierePerde){
             System.out.println("\n");
             System.out.println("--> Il mazziere ha perso <--");
@@ -114,8 +102,34 @@ public class PartitaOnlineConsoleView implements  Observer{
             System.err.println(((Error)arg).getMessage());
         } else if(arg instanceof RichiediGiocata){
             richiediGiocata(arg);
+        }else if(arg instanceof ParticellaDiSodio){
+            System.out.println("\n");
+            System.out.println("Sei rimasto da solo\n");
+            System.out.println("Puoi:\n");
+            System.out.println("1 -Aspettare che qualcuno si colleghi\n");
+            System.out.println("2 -Tornare al menù pricipale\n");
+            String scelta = scanner.next();
+            gestisciParticellaDiSodio(scelta);
         }
         
+    }
+
+    private void fineMano(Object arg) {
+        FineManoAvversario avversario = (FineManoAvversario) arg;
+        if(avversario.getNome().equals(controller.getGiocatoreLocale().getNome()))
+            esci=richiediUscita();
+        System.out.println(avversario.getNome() + " " + avversario.getCarteScoperte() + " " + avversario.getStato() + " " + avversario.getPuntata());
+    }
+
+    private void fineRound(Object arg) {
+        System.out.println(((FineRound) arg).isMazziere() + " " + ((FineRound) arg).getNome() + " " + ((FineRound) arg).getCartaCoperta()+((FineRound) arg).getCarteScoperte() + " " + ((FineRound) arg).getValoreMano() + " "+ ((FineRound) arg).getStato() + " " + ((FineRound) arg).getFiches());
+        if(((FineRound) arg).equals(controller.getGiocatori().get(controller.getGiocatori().size() - 1))){
+            System.out.println("---------------------------------\n");
+        }
+        if(((FineRound) arg).getGiocatore().equals(controller.getGiocatoreLocale())){
+            System.out.print("\n");
+            controllaUscita();
+        }
     }
 
     private void richiediPuntata(Object richiediPuntata) {
@@ -183,6 +197,16 @@ public class PartitaOnlineConsoleView implements  Observer{
         if(esci){
             controller.esci();
             esci();
+        }
+    }
+    
+    private void gestisciParticellaDiSodio(String scelta){
+        if(scelta.equals("1")){
+            
+        }else if (scelta.equals("2")){
+            
+        }else{
+            
         }
     }
 }
