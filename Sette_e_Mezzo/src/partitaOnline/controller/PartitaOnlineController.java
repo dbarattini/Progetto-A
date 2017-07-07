@@ -51,11 +51,6 @@ public class PartitaOnlineController extends Observable implements ViewEventList
 
     @Override
     public void ViewEventReceived(ViewEvent evt) {
-//        if (evt.getArg() instanceof SetPuntata) {
-//            aServer.println(((SetPuntata) evt.getArg()).toString());
-//        } else if (evt.getArg() instanceof SetGiocata) {
-//            aServer.println(((SetGiocata) evt.getArg()).toString());;
-//        }
     }
 
     public void riceviEventoDaVista(Object oggetto) {
