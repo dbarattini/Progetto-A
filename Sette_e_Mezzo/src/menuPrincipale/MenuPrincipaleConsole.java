@@ -1,8 +1,11 @@
 package menuPrincipale;
 
+import dominio.eccezioni.PartitaOnlineIniziata;
 import dominio.classi_dati.Banners;
 import dominio.classi_dati.OpzioniMenu;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import menuOpzioni.MenuOpzioniConsole;
 import menuPrePartita.MenuPrePartitaConsole;
 import menuRegole.RegoleConsole;
@@ -22,9 +25,8 @@ public class MenuPrincipaleConsole {
         this.banner = new Banners();
         
         System.out.println(banner.randomBanner());
-        while (true) {
-            run();
-        }
+        run();
+        
     }
 
     private void run() {
@@ -33,8 +35,11 @@ public class MenuPrincipaleConsole {
             richiediOpzione();
             controllaOpzione();
             runOpzione();
+            run();
         } catch (OpzioneSceltaNonValida ex) {
             System.err.println("Errore: La scelta effettuata non é valida.\n");
+            run();
+        } catch (PartitaOnlineIniziata ex) {
         }
     }
 
@@ -71,7 +76,7 @@ public class MenuPrincipaleConsole {
         }
     }
 
-    private void runOpzione() {
+    private void runOpzione() throws PartitaOnlineIniziata {
         switch (opzione) {
 
             case GiocaOffline:
@@ -79,7 +84,7 @@ public class MenuPrincipaleConsole {
                 break;
             case GiocaOnline:
                 new PartitaOnlineConsole();
-                break;
+                throw new PartitaOnlineIniziata();
             case Impostazioni:
                 opzioni.run();
                 break;
