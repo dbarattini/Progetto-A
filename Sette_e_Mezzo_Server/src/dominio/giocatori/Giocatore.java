@@ -44,7 +44,7 @@ public class Giocatore implements Observer {
     private String giocata_effettuata;
     private final Socket socket;
     private Client client;
-    private boolean disconnesso=false;
+    private boolean disconnesso=false, esce=false;
 
     /**
      *
@@ -71,7 +71,8 @@ public class Giocatore implements Observer {
                     PuntataInserita(dati[2]);
                 } else if (dati[1].equals("SetGiocata")) {
                     GiocataInserita(dati[2]);
-                }
+                }else if(dati[1].equals("Esce"))
+                    esce=true;
             }
         }
     }

@@ -1,6 +1,5 @@
 package partitaOnline.view;
 
-import static dominio.classi_dati.OpzioniMenu.Esci;
 import partitaOnline.events.SetGiocata;
 import partitaOnline.events.SetPuntata;
 import dominio.giocatori.GiocatoreOnline;
@@ -14,6 +13,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import menuPrincipale.MenuPrincipaleConsole;
 import partitaOnline.events.*;
+import partitaOnline.events.Esce;
 import partitaOnline.controller.PartitaOnlineController;
 
 public class PartitaOnlineConsoleView implements  Observer{
@@ -170,8 +170,8 @@ public class PartitaOnlineConsoleView implements  Observer{
     
     private boolean elaboraRispostaUscita(String uscita) {
         if(uscita.toLowerCase().equals("y")){
-            return true;
-            controller.riceviEventoDaVista( new Esci());
+            controller.riceviEventoDaVista( new Esce());
+            return true;            
         }
         else 
             return false;
