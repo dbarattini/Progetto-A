@@ -113,7 +113,7 @@ public class Partita extends Thread {
     private void controllaConnessione() throws IOException {
         if (!giocatori.isEmpty()) {
             for (Giocatore giocatore : giocatori) {
-                if (giocatore.isDisconnesso()) {
+                if (giocatore.isDisconnesso() || giocatore.esce()) {
                     System.out.println(giocatore.getNome() + " disconnesso");
                     this.giocatori_disconnessi.add(giocatore);
                 }
