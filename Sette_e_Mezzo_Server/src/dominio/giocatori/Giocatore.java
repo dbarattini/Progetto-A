@@ -452,7 +452,7 @@ public class Giocatore implements Observer {
         return mazziere;
     }
 
-    public boolean isEsce() {
+    public boolean esce() {
         return esce;
     }
     
