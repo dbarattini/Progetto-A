@@ -145,6 +145,8 @@ public class PartitaOnlineConsoleView implements  Observer{
         System.out.print("Vuoi uscire alla fine della mano? y/n");
         System.out.print("\n");
         String uscita = scanner.next();
+        System.out.print("\n");
+        System.out.print("\n");
         return elaboraRispostaUscita(uscita);
     }
 
