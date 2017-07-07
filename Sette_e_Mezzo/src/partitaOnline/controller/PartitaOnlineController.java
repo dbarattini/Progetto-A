@@ -56,11 +56,7 @@ public class PartitaOnlineController extends Observable implements ViewEventList
     }
 
     public void riceviEventoDaVista(Object oggetto) {
-        if (oggetto instanceof SetPuntata) {
-            aServer.println(((SetPuntata) oggetto).toString());
-        } else if (oggetto instanceof SetGiocata) {
-            aServer.println(((SetGiocata) oggetto).toString());;
-        }
+        aServer.println(oggetto.toString());
     }
 
     @Override
