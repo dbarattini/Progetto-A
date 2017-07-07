@@ -1,5 +1,6 @@
 package partitaOnline.view;
 
+import static dominio.classi_dati.OpzioniMenu.Esci;
 import partitaOnline.events.SetGiocata;
 import partitaOnline.events.SetPuntata;
 import dominio.giocatori.GiocatoreOnline;
@@ -83,16 +84,18 @@ public class PartitaOnlineConsoleView implements  Observer{
             stampaSchermataManoParticolare();
         } else if(arg instanceof FineManoAvversario){
             FineManoAvversario avversario = (FineManoAvversario) arg;
+            if(avversario.getNome().equals(controller.getGiocatoreLocale().getNome()))
+              esci=richiediUscita();  
+            
             System.out.println(avversario.getNome() + " " + avversario.getCarteScoperte() + " " + avversario.getStato() + " " + avversario.getPuntata());
         } else if(arg instanceof FineRound){
-            if(((FineRound) arg).equals(controller.getGiocatoreLocale())){
-                esci=richiediUscita();
-                System.out.print("\n");                
-            }
             System.out.println(((FineRound) arg).isMazziere() + " " + ((FineRound) arg).getNome() + " " + ((FineRound) arg).getCartaCoperta()+((FineRound) arg).getCarteScoperte() + " " + ((FineRound) arg).getValoreMano() + " "+ ((FineRound) arg).getStato() + " " + ((FineRound) arg).getFiches());
             if(((FineRound) arg).equals(controller.getGiocatori().get(controller.getGiocatori().size() - 1))){
-                controllaUscita();
                 System.out.println("---------------------------------\n");
+            }
+            if(((FineRound) arg).getGiocatore().equals(controller.getGiocatoreLocale())){
+                System.out.print("\n");  
+                controllaUscita();
             }
         
         } else if(arg instanceof MazzierePerde){
@@ -140,6 +143,7 @@ public class PartitaOnlineConsoleView implements  Observer{
     private boolean richiediUscita(){
         System.out.print("\n");
         System.out.print("Vuoi uscire alla fine della mano? y/n");
+        System.out.print("\n");
         String uscita = scanner.next();
         return elaboraRispostaUscita(uscita);
     }
@@ -165,8 +169,10 @@ public class PartitaOnlineConsoleView implements  Observer{
     }
     
     private boolean elaboraRispostaUscita(String uscita) {
-        if(uscita.toLowerCase().equals("y"))
+        if(uscita.toLowerCase().equals("y")){
             return true;
+            controller.riceviEventoDaVista( new Esci());
+        }
         else 
             return false;
     }
