@@ -1,5 +1,6 @@
 package partita;
 
+import partitaOnline.cambia.ParticellaDiSodio;
 import dominio.eccezioni.PartitaPiena;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -61,7 +62,9 @@ public class Partita extends Thread {
                 iniziaPartita();
                 iniziata = true;
             }
-        } else if (iniziata) {
+        } else if(iniziata && giocatori.size()==1){
+            giocatori.get(0).scriviOggetto(new ParticellaDiSodio()); //c'è nessunoooo?!
+        }else if (iniziata) {
             iniziata = false;
         }
     }
