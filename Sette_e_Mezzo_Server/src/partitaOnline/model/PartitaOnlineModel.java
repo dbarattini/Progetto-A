@@ -287,8 +287,8 @@ public class PartitaOnlineModel extends Observable {
                 try {
                     Carta buff= carta_estratta;
                     giocatore.chiedi_carta(carta_estratta);
-                    this.eventoPerTutti(new UltimaCartaOttenuta(giocatore.getNome(), buff, giocatore.getCarteScoperte().size()));
                     this.eventoPerTutti(new ValoreMano(giocatore.getNome(), giocatore.getValoreMano()));
+                    this.eventoPerTutti(new UltimaCartaOttenuta(giocatore.getNome(), buff, giocatore.getCarteScoperte().size()));
 
                 } catch (SballatoException ex) {
                     this.eventoPerTutti(new ValoreMano(giocatore.getNome(), giocatore.getValoreMano()));
