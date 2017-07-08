@@ -247,6 +247,7 @@ public class PartitaOnlineGuiView extends JFrame implements Observer{
     private JLabel stampaValoreMano(GiocatoreOnline giocatore) {
         int numAvversari = controller.getGiocatori().size() - 1;
         int index = controller.getGiocatori().indexOf(giocatore);
+        String nomeGiocatore = giocatore.getNome();
         if(index > controller.getGiocatori().indexOf(controller.getGiocatoreLocale()))
             index--;
         
@@ -440,8 +441,10 @@ public class PartitaOnlineGuiView extends JFrame implements Observer{
     }
     
     private void stampaStatoAvversario(String nome) {
-        sfondo.remove(valoriMano.get(nome));
-        valoriMano.remove(nome);
+        if(valoriMano.get(nome) != null) {
+            sfondo.remove(valoriMano.get(nome));
+            valoriMano.remove(nome);
+        }
         valoriMano.put(nome, stampaStato(getGiocatore(nome)));        
         pausa(pausa_breve);
     }
@@ -492,14 +495,17 @@ public class PartitaOnlineGuiView extends JFrame implements Observer{
         int indexGioc = controller.getGiocatori().indexOf(giocatore);
         if(indexGioc > controller.getGiocatori().indexOf(controller.getGiocatoreLocale()))
             indexGioc--;
-        int indexCarta = giocatore.getNumCarteScoperte();// - 1;
+        int indexCarta = giocatore.getNumCarteScoperte() - 1;
         
-        valoriMano.put(nomeGioc, stampaValoreManoAttualeAvversario(giocatore));
+        if(valoriMano.get(nomeGioc) == null)
+            valoriMano.put(nomeGioc, stampaValoreManoAttualeAvversario(giocatore));
+        else
+            aggiornaValoreManoAttualeAvversario(giocatore);
         Carta lastCard = giocatore.getUltimaCartaOttenuta();            
         stampaCarta((this.getWidth()*(2*indexGioc+1))/((controller.getGiocatori().size()-1)*2) - 95 + indexCarta*35, 180, lastCard.toString());
     }
     
-    // serve durante la stampa della mano avversario per aggiornare il valore mano
+    // stampa il valore mano dell'avversario
     private JLabel stampaValoreManoAttualeAvversario(GiocatoreOnline giocatore) {
         int nGioc = controller.getGiocatori().size() - 1;
         int index = controller.getGiocatori().indexOf(giocatore);
@@ -525,6 +531,20 @@ public class PartitaOnlineGuiView extends JFrame implements Observer{
         sfondo.repaint();
         
         return valoreManoGiocatore;
+    }
+    
+    // aggiorna il valore mano dell'avversario
+    private void aggiornaValoreManoAttualeAvversario(GiocatoreOnline giocatore) {
+        double valoreMano = 0;
+        
+        try {
+            valoreMano = giocatore.getValoreMano() - giocatore.getCartaCoperta().getValoreNumerico();
+        } catch (MattaException ex) {
+            ex.printStackTrace();
+        }
+        
+        valoriMano.get(giocatore.getNome()).setText("Valore attuale:   " + valoreMano);
+        sfondo.repaint();
     }
     
     // stampa il messaggio passato (usato per stampare " giocatore sta puntando/giocando ")
