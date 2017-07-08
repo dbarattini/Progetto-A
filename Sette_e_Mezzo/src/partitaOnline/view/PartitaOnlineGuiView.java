@@ -53,8 +53,6 @@ public class PartitaOnlineGuiView extends JFrame implements Observer{
         this.controller.addObserver(this);
         listeners.add(controller);
         
-        inizializza_salaAttesa();
-        
         setTitle("Sette e Mezzo");
         setPreferredSize(new Dimension(1280, 720));
 	setMinimumSize(new Dimension(1280, 720));		
@@ -66,6 +64,9 @@ public class PartitaOnlineGuiView extends JFrame implements Observer{
         sfondo = new Sfondo("dominio/immagini/sfondo.png", 1275, 690);
         sfondo.setBounds(0, 0, 1280, 720);
         add(sfondo);
+        
+        if(imgSalaAttesa == null || fraseSalaAttesa == null)
+            inizializza_salaAttesa();
         
         try {
             inizializza_audio();
@@ -178,10 +179,10 @@ public class PartitaOnlineGuiView extends JFrame implements Observer{
                     stampaStatoPlayer();
             }
         } else if(arg instanceof IniziaPartita){
-//            if(imgSalaAttesa == null)
-//                imgSalaAttesa = new JLabel();
-//            if(fraseSalaAttesa == null)
-//                fraseSalaAttesa = new JLabel();
+            if(imgSalaAttesa == null)
+                imgSalaAttesa = new JLabel();
+            if(fraseSalaAttesa == null)
+                fraseSalaAttesa = new JLabel();
             
             sfondo.remove(imgSalaAttesa);
             sfondo.remove(fraseSalaAttesa);
