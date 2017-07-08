@@ -65,9 +65,6 @@ public class PartitaOnlineGuiView extends JFrame implements Observer{
         sfondo.setBounds(0, 0, 1280, 720);
         add(sfondo);
         
-        if(imgSalaAttesa == null || fraseSalaAttesa == null)
-            inizializza_salaAttesa();
-        
         try {
             inizializza_audio();
             audio.riproduciInLoop("soundTrack");
@@ -78,6 +75,9 @@ public class PartitaOnlineGuiView extends JFrame implements Observer{
         }
         
         setVisible(true);
+        
+        if(imgSalaAttesa == null || fraseSalaAttesa == null)
+            inizializza_salaAttesa();
     }
     
     private void inizializza_salaAttesa() {
