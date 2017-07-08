@@ -68,13 +68,13 @@ public class PartitaOnlineGuiView extends JFrame implements Observer{
         imgSalaAttesa = new JLabel(caricaImmagine("dominio/immagini/salaAttesa.jpg"));
         fraseSalaAttesa = new JLabel("In attesa di altri giocatori");
         
-        Font font = new Font("Sala Attesa", Font.BOLD, 30);
+        Font font = new Font("Sala Attesa", Font.BOLD, 40);
         fraseSalaAttesa.setFont(font);
         fraseSalaAttesa.setForeground(Color.black);
         int strWidth = fraseSalaAttesa.getFontMetrics(font).stringWidth("In attesa di altri giocatori");
         
-        imgSalaAttesa.setBounds(this.getWidth()/2 - 350, 150, 700, 557);
-        fraseSalaAttesa.setBounds(this.getWidth()/2 - strWidth/2, 50, strWidth, 100);
+        imgSalaAttesa.setBounds(this.getWidth()/2 - 350, 100, 700, 557);
+        fraseSalaAttesa.setBounds(this.getWidth()/2 - strWidth/2, 20, strWidth, 100);
         
         sfondo.add(imgSalaAttesa);
         sfondo.add(fraseSalaAttesa);
