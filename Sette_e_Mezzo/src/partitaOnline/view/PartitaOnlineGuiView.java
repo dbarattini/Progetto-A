@@ -174,6 +174,7 @@ public class PartitaOnlineGuiView extends JFrame implements Observer{
                     stampaStatoPlayer();
             }
         } else if(arg instanceof IniziaPartita){
+            pausa(20);
             sfondo.remove(imgSalaAttesa);
             sfondo.remove(fraseSalaAttesa);
             sfondo.repaint();
