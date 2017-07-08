@@ -430,9 +430,9 @@ public class PartitaOnlineGuiView extends JFrame implements Observer{
     
     // stampa l'ultima carta del giocatore in seguito a una mano particolare ( sballato, 7 e mezzo o 7 e mezzo reale )
     private void stampaStatoPlayer() {
-        Carta ultimaOttenuta = controller.getGiocatoreLocale().getUltimaCartaOttenuta();
+        Carta lastCard = controller.getGiocatoreLocale().getUltimaCartaOttenuta();
         int index = controller.getGiocatoreLocale().getNumCarteScoperte() - 1;
-        stampaCarta(this.getWidth()/2 - 95 + index*35, 3*this.getHeight()/4 - 60, ultimaOttenuta.toString());
+        stampaCarta(this.getWidth()/2 - 95 + index*35, 3*this.getHeight()/4 - 60, lastCard.toString());
         
         sfondo.remove(valoriMano.get(controller.getGiocatoreLocale().getNome()));
         valoriMano.remove(controller.getGiocatoreLocale().getNome());
@@ -441,6 +441,12 @@ public class PartitaOnlineGuiView extends JFrame implements Observer{
     }
     
     private void stampaStatoAvversario(String nome) {
+        GiocatoreOnline giocatore = getGiocatore(nome);
+        Carta lastCard = giocatore.getUltimaCartaOttenuta();
+        int indexCarta = giocatore.getNumCarteScoperte() - 1;
+        int indexGioc = controller.getGiocatori().indexOf(giocatore);
+        stampaCarta((this.getWidth()*(2*indexGioc+1))/((controller.getGiocatori().size()-1)*2) - 95 + indexCarta*35, 180, lastCard.toString());
+        
         if(valoriMano.get(nome) != null) {
             sfondo.remove(valoriMano.get(nome));
             valoriMano.remove(nome);
