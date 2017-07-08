@@ -284,14 +284,15 @@ public class PartitaOnlineModel extends Observable {
                         //////////////////////////////
                     }
                 }
+                Carta buff= carta_estratta;
                 try {
-                    Carta buff= carta_estratta;
                     giocatore.chiedi_carta(carta_estratta);
                     this.eventoPerTutti(new ValoreMano(giocatore.getNome(), giocatore.getValoreMano()));
                     this.eventoPerTutti(new UltimaCartaOttenuta(giocatore.getNome(), buff, giocatore.getCarteScoperte().size()));
 
                 } catch (SballatoException ex) {
                     this.eventoPerTutti(new ValoreMano(giocatore.getNome(), giocatore.getValoreMano()));
+                    this.eventoPerTutti(new UltimaCartaOttenuta(giocatore.getNome(), buff, giocatore.getCarteScoperte().size()));
                     giocatore.setStato(Stato.Sballato);
                     this.eventoPerTutti(new StatoCambiato(giocatore.getNome(), Stato.Sballato));
                     if (!giocatore.isMazziere()) {
@@ -300,11 +301,13 @@ public class PartitaOnlineModel extends Observable {
                     continua = false;
                 } catch (SetteeMezzoRealeException ex) {
                     this.eventoPerTutti(new ValoreMano(giocatore.getNome(), giocatore.getValoreMano()));
+                    this.eventoPerTutti(new UltimaCartaOttenuta(giocatore.getNome(), buff, giocatore.getCarteScoperte().size()));
                     giocatore.setStato(Stato.SetteeMezzoReale);
                     this.eventoPerTutti(new StatoCambiato(giocatore.getNome(), Stato.SetteeMezzoReale));
                     continua = false;
                 } catch (SetteeMezzoException ex) {
                     this.eventoPerTutti(new ValoreMano(giocatore.getNome(), giocatore.getValoreMano()));
+                    this.eventoPerTutti(new UltimaCartaOttenuta(giocatore.getNome(), buff, giocatore.getCarteScoperte().size()));
                     giocatore.setStato(Stato.SetteeMezzo);
                     this.eventoPerTutti(new StatoCambiato(giocatore.getNome(), Stato.SetteeMezzo));
                     continua = false;
