@@ -120,8 +120,6 @@ public class PartitaOnlineConsoleView implements  Observer{
 
     private void fineMano(Object arg) {
         FineManoAvversario avversario = (FineManoAvversario) arg;
-        if(avversario.getNome().equals(controller.getGiocatoreLocale().getNome()))
-            esci=richiediUscita();
         System.out.println(avversario.getNome() + " " + avversario.getCarteScoperte() + " " + avversario.getStato() + " " + avversario.getPuntata());
     }
 
@@ -148,6 +146,8 @@ public class PartitaOnlineConsoleView implements  Observer{
     }
     
     private void richiediGiocata(Object richiediGiocata){
+        if(controller.getGiocatoreLocale().getNumCarteScoperte()==0)
+            esci=richiediUscita();
         System.out.print("\n");
         System.out.println("Valore Mano : " + ((RichiediGiocata) richiediGiocata).getValoreMano());
         System.out.println("Carta coperta: " + ((RichiediGiocata) richiediGiocata).getCartaCoperta());
