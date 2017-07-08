@@ -44,7 +44,7 @@ public class Giocatore implements Observer {
     private String giocata_effettuata;
     private final Socket socket;
     private Client client;
-    private boolean disconnesso=false, esce=false;
+    private boolean disconnesso=false, esce=false, particellaDiSodio=false;
 
     /**
      *
@@ -437,6 +437,14 @@ public class Giocatore implements Observer {
         fiches = 0;
     }
 
+    public boolean isParticellaDiSodio() {
+        return particellaDiSodio;
+    }
+
+    public void setParticellaDiSodio(boolean particellaDiSodio) {
+        this.particellaDiSodio = particellaDiSodio;
+    }    
+    
     /**
      * Imposta il booleano perso a true.
      */

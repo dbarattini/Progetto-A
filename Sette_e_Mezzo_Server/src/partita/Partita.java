@@ -63,7 +63,11 @@ public class Partita extends Thread {
                 iniziata = true;
             }
         } else if(iniziata && giocatori.size()==1){
-            giocatori.get(0).scriviOggetto(new ParticellaDiSodio()); //c'è nessunoooo?!
+            if(!giocatori.get(0).isParticellaDiSodio()){
+                giocatori.get(0).scriviOggetto(new ParticellaDiSodio()); //c'è nessunoooo?!
+                giocatori.get(0).setParticellaDiSodio(true);
+                iniziata=false;
+            }
         }else if (iniziata) {
             iniziata = false;
         }
@@ -79,6 +83,7 @@ public class Partita extends Thread {
 
     private void iniziaPartita() {
         try {
+            giocatori.get(0).setParticellaDiSodio(false);
             this.model.inizializza_partita((ArrayList<Giocatore>) giocatori.clone());
         } catch (InterruptedException ex) {
             Logger.getLogger(Partita.class.getName()).log(Level.SEVERE, null, ex);
