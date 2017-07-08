@@ -102,13 +102,24 @@ public class PartitaOnlineConsoleView implements  Observer{
             System.err.println(((Error)arg).getMessage());
         } else if(arg instanceof RichiediGiocata){
             richiediGiocata(arg);
-        }        
+        }else if(arg instanceof ParticellaDiSodio){
+            particellaDiSodio();
+        }
+        
+    }
+
+    private void particellaDiSodio() {
+        System.out.println("\n");
+        System.out.println("Sei rimasto da solo\n");
+        System.out.println("Puoi:\n");
+        System.out.println("1 -Aspettare che qualcuno si colleghi\n");
+        System.out.println("2 -Tornare al menù pricipale\n");
+        String scelta = scanner.next();
+        gestisciParticellaDiSodio(scelta);
     }
 
     private void fineMano(Object arg) {
         FineManoAvversario avversario = (FineManoAvversario) arg;
-        if(avversario.getNome().equals(controller.getGiocatoreLocale().getNome()))
-            esci=richiediUscita();
         System.out.println(avversario.getNome() + " " + avversario.getCarteScoperte() + " " + avversario.getStato() + " " + avversario.getPuntata());
     }
 
@@ -135,6 +146,8 @@ public class PartitaOnlineConsoleView implements  Observer{
     }
     
     private void richiediGiocata(Object richiediGiocata){
+        if(controller.getGiocatoreLocale().getNumCarteScoperte()==0)
+            esci=richiediUscita();
         System.out.print("\n");
         System.out.println("Valore Mano : " + ((RichiediGiocata) richiediGiocata).getValoreMano());
         System.out.println("Carta coperta: " + ((RichiediGiocata) richiediGiocata).getCartaCoperta());
@@ -193,11 +206,13 @@ public class PartitaOnlineConsoleView implements  Observer{
     
     private void gestisciParticellaDiSodio(String scelta){
         if(scelta.equals("1")){
-            //todo
+            System.out.println("Aspettiamo!");
         }else if (scelta.equals("2")){
-            //todo
+            controller.esci();
+            esci();
         }else{
-            //todo
+            System.out.println("Errore, inserire 1 o 2.\n");
+            particellaDiSodio();
         }
     }
 }
