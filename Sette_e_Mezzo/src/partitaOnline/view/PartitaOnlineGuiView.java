@@ -76,8 +76,8 @@ public class PartitaOnlineGuiView extends JFrame implements Observer{
         
         setVisible(true);
         
-        if(!partitaIniziata) {
-            inizializza_salaAttesa();
+        inizializza_salaAttesa();
+        if(!partitaIniziata) {            
             sfondo.add(imgSalaAttesa);
             sfondo.add(fraseSalaAttesa);
             sfondo.repaint();
@@ -183,8 +183,6 @@ public class PartitaOnlineGuiView extends JFrame implements Observer{
                 sfondo.remove(imgSalaAttesa);
                 sfondo.remove(fraseSalaAttesa);
                 sfondo.repaint();
-            } else {
-                inizializza_salaAttesa();
             }
             partitaIniziata = true;
         }
