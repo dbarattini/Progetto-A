@@ -23,9 +23,9 @@ public class MenuPrePartitaConsole{
     }
     
     private void run(){
-        System.out.println("  -----------------------------  ");
-        System.out.println("<      IMPOSTAZIONI PARTITA     >");
-        System.out.println("  -----------------------------  ");
+        System.out.println("  ---------------------------------------------------------------------------  ");
+        System.out.println("<                             IMPOSTAZIONI PARTITA                            >");
+        System.out.println("  ---------------------------------------------------------------------------  ");
         richiediNumeroBot();
         richiediDifficoltaBot();
         richiediFichesIniziali();
@@ -34,48 +34,49 @@ public class MenuPrePartitaConsole{
 
     private void richiediNumeroBot() {
         while(true){
-            System.out.println("Inserisci il numero di Bot che vuoi sfidare");
-            System.out.println("       (min = 1 ; max = 12)                ");
-            System.out.print("                  ");
+            System.out.println("                  Inserisci il numero di Bot che vuoi sfidare                  ");
+            System.out.println("                              (min = 1 ; max = 12)                             ");
+            System.out.print("                                         ");
             numero_bot_inserito = scanner.next();
             System.out.print("\n");
             try {
                 checkNumeroBot();
                 break;
             } catch (NumeroBotException ex) {
-                System.err.println("Errore: Il numero di bot dev'essere un numero compreso tra 1 e 12.");
+                System.err.println("       Errore: Il numero di bot dev'essere un numero compreso tra 1 e 12.      ");
             }
         }
     }
 
     private void richiediDifficoltaBot() {
        while(true){
-            System.out.println("    Inserisci la difficoltá dei Bot   ");
-            System.out.println("      (Facile, Medio, Difficile)      ");
-            System.out.print("              ");
+            System.out.println("                        Inserisci la difficoltá dei Bot                        ");
+            System.out.println("                           (Facile, Medio, Difficile)                          ");
+            System.out.print("                                         ");
             difficolta_bot_inserita = scanner.next();
             System.out.print("\n");
             try {
                 checkDifficoltaBot();
                 break;
             } catch (DifficoltaBotException ex) {
-                System.err.println("Errore: le difficolta disponibili sono Facile, Medio, Difficile.");
+                System.err.println("        Errore: le difficolta disponibili sono Facile, Medio, Difficile.       ");
             }
        }
     }
 
     private void richiediFichesIniziali() {
         while(true){
-            System.out.println("Inserisci il numero di fiches iniziali"); 
-            System.out.println("      (min = 1 ; max = 100000000)     ");
-            System.out.print("              ");
+            System.out.println("                     Inserisci il numero di fiches iniziali                    "); 
+            System.out.println("                          (min = 1 ; max = 100000000)                          ");
+            System.out.print("                                         ");
             fiches_iniziali_inserite = scanner.next();
             System.out.print("\n");
             try {
                 checkFichesIniziali();
                 break;
-            } catch (FichesInizialiException ex) {
-                System.err.println("Errore: Il numero di fiches iniziali dev'essere un numero compreso tra 1 e 100000000.");
+            } catch (FichesInizialiException ex) {                    
+                System.err.println("Errore: Il numero di fiches iniziali dev'essere un numero compreso tra 1 e "
+                                 + "                                   100000000.                                   ");
             }
         }
     }

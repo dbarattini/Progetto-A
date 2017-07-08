@@ -1,18 +1,14 @@
 package tempLoginPackage;
 
 import comunicazione.Client;
+import dominio.eccezioni.DatiNonValidiException;
 import dominio.eccezioni.LoginEffettuato;
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
-import java.util.NoSuchElementException;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -47,21 +43,32 @@ public class LoginConsole {
      */
     public void comunica() {
         try {
-            System.out.println("[3] - cosa vuoi fare? \n\t registrazione \n\t login \n\t convalida \n\t recupero");
+            System.out.println("  ---------------------------------------------------------------------------  ");
+            System.out.println("                       < SELEZIONA UN OPZIONE DAL MENU >                       ");
+            System.out.println("  ---------------------------------------------------------------------------  ");
+            System.out.println("                                1. Registrazione                               ");
+            System.out.println("                                2. Login                                       ");
+            System.out.println("                                3. Convalida                                   ");
+            System.out.println("                                4. Recupero                                    ");
+            System.out.print("\n");
+            System.out.print("                                         ");
             String messaggio = tastiera.nextLine();
+            System.out.print("\n");
 
-            if (messaggio.equals("registrazione")) {
+            if (messaggio.toLowerCase().equals("registrazione") || messaggio.equals("1")) {
                 registrazione();
-            } else if (messaggio.equals("login")) {
-
+            } else if (messaggio.toLowerCase().equals("login") || messaggio.equals("2")) {
                 login();
-
-            } else if (messaggio.equals("convalida")) {
+            } else if (messaggio.toLowerCase().equals("convalida") || messaggio.equals("3")) {
                 convalida();
-            } else if (messaggio.equals("recupero")) {
+            } else if (messaggio.toLowerCase().equals("recupero") || messaggio.equals("4")) {
                 recupero();
             } else {
-                System.err.println("operazione non valida");
+                System.err.println("                   Errore: la scelta effettuata non é valida.                  \n");
+                try {
+                    Thread.sleep(2000);
+                } catch (InterruptedException ex1) {
+                }
             }
 
             comunica();
@@ -72,113 +79,137 @@ public class LoginConsole {
 
     }
 
-    private void registrazione() {
-        System.out.println("[4] - inserire email, user e psw separate da uno spazio:");
+    private void registrazione(){
+        System.out.println("          inserisci email, username e password separati da uno spazio          ");
+        System.out.print("\n");
+        System.out.print("            ");
         String messaggio = tastiera.nextLine();
-        String[] stringa_per_verifica = new String[3];
+        System.out.print("\n");
+        String[] stringa_per_verifica;
         try {
 
             //effettuo una verifica sul messaggio digitato: controllo che il messaggio sia di tre parole e che non sia vuoto
             stringa_per_verifica = messaggio.split(" ");
-            for (String s : stringa_per_verifica) {
-                if (s != null) {
-                    continue;
-                } else {
-                    System.err.println("messaggio inserito non valido");
-                }
+            
+            if(stringa_per_verifica.length != 3){
+                throw new DatiNonValidiException();
+            }
+            
+            if (stringa_per_verifica[0].contains("@")) {
+                //do nothing
+            } else {
+                throw new DatiNonValidiException();
             }
 
             String messaggio_da_inviare = "registrazione " + messaggio;
             out.println(messaggio_da_inviare);
             String risposta = in.readLine();
-            System.out.println("[5] - " + risposta);
+            System.out.println("     " + risposta);
 
-        } catch (ArrayIndexOutOfBoundsException ex) {
-            System.err.println("messaggio inserito non valido");
         } catch (IOException ex) {
             Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (DatiNonValidiException ex) {
+            System.err.println("                 Errore: alcuni dati inseriti non sono validi.                 ");
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException ex1) {
+            }
         }
     }
 
     private void login() throws LoginEffettuato {
-
-        System.out.println("[4] - inserire username (o email) e psw separate da uno spazio: ");
+        System.out.println("          inserisci username (o email) e password separati da uno spazio       ");
+        System.out.print("\n");
+        System.out.print("            ");
         String credenziali = tastiera.nextLine();
-        String[] stringa_per_verifica = new String[2];
+        System.out.print("\n");
+        String[] stringa_per_verifica;
 
         try {
-
-            //effettuo un controllo sul messaggio digitato
             stringa_per_verifica = credenziali.split(" ");
-            for (String s : stringa_per_verifica) {
-                if (s != null) {
-                    //do nothing
-                } else {
-                    System.err.println("messaggio inserito non valido");
-                }
+            
+            if(stringa_per_verifica.length != 2){
+                throw new DatiNonValidiException();
             }
 
             String messaggio_da_inviare = "login " + credenziali;
             out.println(messaggio_da_inviare);
             String risposta = in.readLine();
-            System.out.println("[5] - " + risposta);
+            System.out.println("            " + risposta);
             if (risposta.equals("login effetuato")) {
                 throw new LoginEffettuato();
             }
 
         } catch (IOException ex) {
             Logger.getLogger(LoginConsole.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ArrayIndexOutOfBoundsException ex) {
-            System.err.println("messaggio inserito non valido");
+        } catch (DatiNonValidiException ex) {
+            System.err.println("                 Errore: alcuni dati inseriti non sono validi.                 ");
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException ex1) {
+            }
         }
-
     }
 
     private void convalida() {
-        System.out.println("[4] - inserire il codice di convalida:");
+        System.out.println("                          inserisci il codice di convalida                     ");
+        System.out.print("\n");
+        System.out.print("                                       ");
         String codice = tastiera.nextLine();
+        System.out.print("\n");
 
         try {
-
-            //verifica sul messaggio digitato
             if (codice.contains(" ")) {
-                System.err.println("codice inserito non valido");
+                throw new DatiNonValidiException();
             }
 
             String messaggio_da_inviare = "convalida " + codice;
             out.println(messaggio_da_inviare);
             String risposta = in.readLine();
-            System.out.println("[5] - " + risposta);
+            System.out.println("          " + risposta);
 
         } catch (IOException ex) {
             Logger.getLogger(LoginConsole.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (DatiNonValidiException ex) {
+            System.err.println("                    Errore: il codice inserito non é valido.                   ");
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException ex1) {
+            }
         }
 
     }
 
     private void recupero() {
-        System.out.println("[4] - inserire l'email per il recupero della psw:");
+        System.out.println("                   inserisci l'email per il recupero della password            ");
+        System.out.print("\n");
+        System.out.print("                               ");
         String email = tastiera.nextLine();
+        System.out.print("\n");
 
         try {
-
-            //controllo sul messaggio digitato
             if (email.contains("@")) {
                 //do nothing
             } else {
-                System.err.println("email inserita non valida");
+                throw new DatiNonValidiException();
             }
             if (email.contains(" ")) {
-                System.err.println("email inserita non valida");
+                throw new DatiNonValidiException();
             }
 
             String messaggio_da_inviare = "recupero " + email;
             out.println(messaggio_da_inviare);
             String risposta = in.readLine();
-            System.out.println("[5] - " + risposta);
+            System.out.println("                                         " + risposta);
 
         } catch (IOException ex) {
             Logger.getLogger(LoginConsole.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (DatiNonValidiException ex) {
+            System.err.println("                     Errore: l'email inserita non é valida.                    ");
+            try {
+                Thread.sleep(2000);
+            } catch (InterruptedException ex1) {
+            }
         }
     }
 }

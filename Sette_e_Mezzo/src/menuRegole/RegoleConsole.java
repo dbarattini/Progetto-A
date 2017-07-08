@@ -12,7 +12,10 @@ public class RegoleConsole {
     }
     
     public void run(){
-        System.out.println("\nRegole di gioco:\n" + regole.getRegole());
+        System.out.println("\n  ---------------------------------------------------------------------------  ");
+        System.out.println("                             < REGOLE DI GIOCO >                               ");
+        System.out.println("  ---------------------------------------------------------------------------  \n");
+        System.out.println(regole.getRegole());
         scanner.nextLine();
     }
 }

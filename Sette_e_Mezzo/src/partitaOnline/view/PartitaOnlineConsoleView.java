@@ -11,13 +11,16 @@ import java.util.Scanner;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import menuPrincipale.MenuPrincipaleConsole;
 import partitaOnline.events.*;
+import partitaOnline.events.Esce;
 import partitaOnline.controller.PartitaOnlineController;
 
 public class PartitaOnlineConsoleView implements  Observer{
     private final CopyOnWriteArrayList<ViewEventListener> listeners;
     private PartitaOnlineController controller;
     private Scanner scanner;
+    private boolean esci=false;
     int pausa_breve = 1000; //ms
     int pausa_lunga = 2000; //ms
 
@@ -80,17 +83,9 @@ public class PartitaOnlineConsoleView implements  Observer{
         } else if(arg instanceof RisultatoManoParticolare){
             stampaSchermataManoParticolare();
         } else if(arg instanceof FineManoAvversario){
-            FineManoAvversario avversario = (FineManoAvversario) arg;
-            System.out.println(avversario.getNome() + " " + avversario.getCarteScoperte() + " " + avversario.getStato() + " " + avversario.getPuntata());
+            fineMano(arg);
         } else if(arg instanceof FineRound){
-            if(((FineRound) arg).equals(controller.getGiocatori().get(0))){
-                System.out.print("\n");
-            }
-            System.out.println(((FineRound) arg).isMazziere() + " " + ((FineRound) arg).getNome() + " " + ((FineRound) arg).getCartaCoperta()+((FineRound) arg).getCarteScoperte() + " " + ((FineRound) arg).getValoreMano() + " "+ ((FineRound) arg).getStato() + " " + ((FineRound) arg).getFiches());
-            if(((FineRound) arg).equals(controller.getGiocatori().get(controller.getGiocatori().size() - 1))){
-                System.out.println("---------------------------------\n");
-            }
-        
+            fineRound(arg);        
         } else if(arg instanceof MazzierePerde){
             System.out.println("\n");
             System.out.println("--> Il mazziere ha perso <--");
@@ -100,9 +95,6 @@ public class PartitaOnlineConsoleView implements  Observer{
         } else if(arg instanceof GameOver){
             System.out.println("\n");
             System.out.println("--> Game Over <--");
-        } else if(arg instanceof Vittoria){
-            System.out.println("\n");
-            System.out.println("--> Complimenti! Hai sconfitto tutti i bot <--");
         }
         else if(arg instanceof RichiediPuntata){
             richiediPuntata(arg);
@@ -110,8 +102,34 @@ public class PartitaOnlineConsoleView implements  Observer{
             System.err.println(((Error)arg).getMessage());
         } else if(arg instanceof RichiediGiocata){
             richiediGiocata(arg);
+        }else if(arg instanceof ParticellaDiSodio){
+            System.out.println("\n");
+            System.out.println("Sei rimasto da solo\n");
+            System.out.println("Puoi:\n");
+            System.out.println("1 -Aspettare che qualcuno si colleghi\n");
+            System.out.println("2 -Tornare al menù pricipale\n");
+            String scelta = scanner.next();
+            gestisciParticellaDiSodio(scelta);
         }
         
+    }
+
+    private void fineMano(Object arg) {
+        FineManoAvversario avversario = (FineManoAvversario) arg;
+        if(avversario.getNome().equals(controller.getGiocatoreLocale().getNome()))
+            esci=richiediUscita();
+        System.out.println(avversario.getNome() + " " + avversario.getCarteScoperte() + " " + avversario.getStato() + " " + avversario.getPuntata());
+    }
+
+    private void fineRound(Object arg) {
+        System.out.println(((FineRound) arg).isMazziere() + " " + ((FineRound) arg).getNome() + " " + ((FineRound) arg).getCartaCoperta()+((FineRound) arg).getCarteScoperte() + " " + ((FineRound) arg).getValoreMano() + " "+ ((FineRound) arg).getStato() + " " + ((FineRound) arg).getFiches());
+        if(((FineRound) arg).equals(controller.getGiocatori().get(controller.getGiocatori().size() - 1))){
+            System.out.println("---------------------------------\n");
+        }
+        if(((FineRound) arg).getGiocatore().equals(controller.getGiocatoreLocale())){
+            System.out.print("\n");
+            controllaUscita();
+        }
     }
 
     private void richiediPuntata(Object richiediPuntata) {
@@ -135,6 +153,16 @@ public class PartitaOnlineConsoleView implements  Observer{
         controller.riceviEventoDaVista(new SetGiocata(giocata));
         System.out.print("\n");
     }
+    
+    private boolean richiediUscita(){
+        System.out.print("\n");
+        System.out.print("Vuoi uscire alla fine della mano? y/n");
+        System.out.print("\n");
+        String uscita = scanner.next();
+        System.out.print("\n");
+        System.out.print("\n");
+        return elaboraRispostaUscita(uscita);
+    }
 
     private void stampaSchermataRimescolaMazzo() {
         System.out.println("\n--> Rimescolo il mazzo <--\n");
@@ -152,6 +180,33 @@ public class PartitaOnlineConsoleView implements  Observer{
         System.out.print("\n");
     }
 
+    private void esci(){
+        new MenuPrincipaleConsole();
+    }
     
+    private boolean elaboraRispostaUscita(String uscita) {
+        if(uscita.toLowerCase().equals("y")){
+            controller.riceviEventoDaVista( new Esce());
+            return true;            
+        }
+        else 
+            return false;
+    }
+
+    private void controllaUscita() {
+        if(esci){
+            controller.esci();
+            esci();
+        }
+    }
     
+    private void gestisciParticellaDiSodio(String scelta){
+        if(scelta.equals("1")){
+            //todo
+        }else if (scelta.equals("2")){
+            //todo
+        }else{
+            //todo
+        }
+    }
 }

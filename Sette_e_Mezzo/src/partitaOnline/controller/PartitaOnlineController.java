@@ -23,9 +23,24 @@ public class PartitaOnlineController extends Observable implements ViewEventList
     private ArrayList<GiocatoreOnline> giocatori = new ArrayList<>();
     private PrintWriter aServer;
     private String nomeLocale;
+    private Socket socket;
 
     public PartitaOnlineController(Socket socket, BufferedReader in) {
         try {
+            this.socket=socket;
+            this.leggi = new Leggi(in);
+            this.aServer = new PrintWriter(socket.getOutputStream(), true);
+            leggi.addObserver(this);
+            Thread t = new Thread(leggi);
+            t.start();
+        } catch (IOException ex) {
+            Logger.getLogger(PartitaOnlineController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public PartitaOnlineController(Socket socket, BufferedReader in, String nome) {
+        try {
+            this.nomeLocale=nome;
             this.leggi = new Leggi(in);
             this.aServer = new PrintWriter(socket.getOutputStream(), true);
             leggi.addObserver(this);
@@ -38,19 +53,10 @@ public class PartitaOnlineController extends Observable implements ViewEventList
 
     @Override
     public void ViewEventReceived(ViewEvent evt) {
-//        if (evt.getArg() instanceof SetPuntata) {
-//            aServer.println(((SetPuntata) evt.getArg()).toString());
-//        } else if (evt.getArg() instanceof SetGiocata) {
-//            aServer.println(((SetGiocata) evt.getArg()).toString());;
-//        }
     }
 
     public void riceviEventoDaVista(Object oggetto) {
-        if (oggetto instanceof SetPuntata) {
-            aServer.println(((SetPuntata) oggetto).toString());
-        } else if (oggetto instanceof SetGiocata) {
-            aServer.println(((SetGiocata) oggetto).toString());;
-        }
+        aServer.println(oggetto.toString());
     }
 
     @Override
@@ -94,6 +100,10 @@ public class PartitaOnlineController extends Observable implements ViewEventList
             case "ValoreMano":
                 componenti = dati[2].split(" ");
                 giocatoreDaNome(componenti[0]).setValoreMano(Double.valueOf(componenti[1]));
+                break;
+            case "ParticellaDiSodio":
+                this.setChanged();
+                this.notifyObservers(new ParticellaDiSodio());
                 break;
             
         }
@@ -290,6 +300,14 @@ public class PartitaOnlineController extends Observable implements ViewEventList
             }
         }
         return null;
+    }
+    
+    public void esci(){
+        try {
+            socket.close();
+        } catch (IOException ex) {
+            Logger.getLogger(PartitaOnlineController.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     public GiocatoreOnline getGiocatoreLocale() {

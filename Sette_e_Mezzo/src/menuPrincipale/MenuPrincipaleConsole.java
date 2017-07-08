@@ -1,21 +1,32 @@
 package menuPrincipale;
 
+import dominio.eccezioni.PartitaOnlineIniziata;
+import dominio.classi_dati.Banners;
 import dominio.classi_dati.OpzioniMenu;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import menuOpzioni.MenuOpzioniConsole;
 import menuPrePartita.MenuPrePartitaConsole;
 import menuRegole.RegoleConsole;
+import moduli.PartitaOnlineConsole;
 
 public class MenuPrincipaleConsole {
 
     private OpzioniMenu opzione;
     private String opzione_inserita;
     private RegoleConsole regole;
+    private MenuOpzioniConsole opzioni;
+    private Banners banner;
 
     public MenuPrincipaleConsole() {
         this.regole = new RegoleConsole();
-        while (true) {
-            run();
-        }
+        this.opzioni = new MenuOpzioniConsole();
+        this.banner = new Banners();
+        
+        System.out.println(banner.randomBanner());
+        run();
+        
     }
 
     private void run() {
@@ -24,21 +35,24 @@ public class MenuPrincipaleConsole {
             richiediOpzione();
             controllaOpzione();
             runOpzione();
+            run();
         } catch (OpzioneSceltaNonValida ex) {
             System.err.println("Errore: La scelta effettuata non é valida.\n");
+            run();
+        } catch (PartitaOnlineIniziata ex) {
         }
     }
 
     private void printScelte() {
-        System.out.println("  -----------------------------  ");
-        System.out.println("< SELEZIONA UN OPZIONE DAL MENU >");
-        System.out.println("  -----------------------------  ");
-        System.out.println("         1. GiocaOffline         ");
-        System.out.println("         2. GiocaOnline          ");
-        System.out.println("         3. Impostazioni         ");
-        System.out.println("         4. RegoleDiGioco        ");
+        System.out.println("  ---------------------------------------------------------------------------  ");
+        System.out.println("                       < SELEZIONA UN OPZIONE DAL MENU >                       ");
+        System.out.println("  ---------------------------------------------------------------------------  ");
+        System.out.println("                                1. GiocaOffline                                ");
+        System.out.println("                                2. GiocaOnline                                 ");
+        System.out.println("                                3. Impostazioni                                ");
+        System.out.println("                                4. RegoleDiGioco                               ");
         System.out.print("\n");
-        System.out.print("            ");
+        System.out.print("                                         ");
     }
 
     private void richiediOpzione() {
@@ -62,17 +76,17 @@ public class MenuPrincipaleConsole {
         }
     }
 
-    private void runOpzione() {
+    private void runOpzione() throws PartitaOnlineIniziata {
         switch (opzione) {
 
             case GiocaOffline:
                 new MenuPrePartitaConsole();
                 break;
             case GiocaOnline:
-                System.out.println("Online");
-                break;
+                new PartitaOnlineConsole();
+                throw new PartitaOnlineIniziata();
             case Impostazioni:
-                System.out.println("Impostazioni");
+                opzioni.run();
                 break;
             case RegoleDiGioco:
                 regole.run();

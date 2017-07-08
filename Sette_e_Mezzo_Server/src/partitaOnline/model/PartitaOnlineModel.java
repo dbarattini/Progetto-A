@@ -79,6 +79,7 @@ public class PartitaOnlineModel extends Observable {
 
     public void inizializza_partita(ArrayList giocatori) throws InterruptedException {
         this.giocatori = giocatori;
+        this.eventoPerTutti(new IniziaPartita());
         inizzializza_fiches(this.giocatori);
         for (Object gioc : this.giocatori) {
             this.eventoPerTutti(new NuovoGiocatore(((Giocatore) gioc).getNome(), ((Giocatore) gioc).getFiches()));

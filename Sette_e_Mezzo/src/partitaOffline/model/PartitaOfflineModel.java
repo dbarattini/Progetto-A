@@ -32,6 +32,10 @@ import partitaOffline.events.EstrattoMazziere;
 import partitaOffline.events.GiocatoreLocaleEventListener;
 import partitaOffline.events.MazzoRimescolato;
 import partitaOffline.events.RichiediNome;
+import database.Database;
+import dominio.eccezioni.DatoGiaPresente;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 public class PartitaOfflineModel extends Observable {
@@ -49,6 +53,7 @@ public class PartitaOfflineModel extends Observable {
     private String nome_giocatore;
     private PagamentoReale pagamento_reale;
     private PagamentoVirtuale pagamento_virtuale;
+    private Database database;
     
     /**
      *
@@ -62,6 +67,7 @@ public class PartitaOfflineModel extends Observable {
         this.fiches_iniziali = fiches_iniziali;
         this.pagamento_reale = new PagamentoReale();
         this.pagamento_virtuale = new PagamentoVirtuale();
+        this.database = new Database();
         
         try {
             inizializza_audio();
@@ -147,6 +153,11 @@ public class PartitaOfflineModel extends Observable {
         this.notifyObservers(new RichiediNome());
         giocatore_locale = new GiocatoreUmano(nome_giocatore,fiches_iniziali);
         giocatori.add(giocatore_locale);
+        
+        try {
+            database.inserisciProfilo(nome_giocatore, fiches_iniziali);
+        } catch (DatoGiaPresente ex) {
+        }
     }
     
     public void setNomeGiocatore(String nome_giocatore){
@@ -385,6 +396,7 @@ public class PartitaOfflineModel extends Observable {
     }
 
     private void vittoria(){
+        database.vittoria(giocatore_locale);
         System.exit(0);
     }
 

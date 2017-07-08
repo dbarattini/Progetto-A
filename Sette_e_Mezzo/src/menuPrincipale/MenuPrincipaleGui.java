@@ -5,7 +5,7 @@
  */
 package menuPrincipale;
 
-import menuOpzioni.OpzioniGui;
+import menuOpzioni.MenuOpzioniGui;
 import menuRegole.RegoleGui;
 import dominio.classi_dati.OpzioniMenu;
 import dominio.gui.Sfondo;
@@ -21,7 +21,7 @@ import menuPrePartita.MenuPrePartitaGui;
 public class MenuPrincipaleGui extends JFrame implements ActionListener{
     MenuPrePartitaGui menu_pre_partita;
     RegoleGui menu_regole;
-    OpzioniGui menu_opzioni;
+    MenuOpzioniGui menu_opzioni;
     private JButton partita_off, partita_on, regole, opzioni;
     private Sfondo sfondo;
     
@@ -30,7 +30,7 @@ public class MenuPrincipaleGui extends JFrame implements ActionListener{
         this.menu_regole.addIndietroActionListener(this);
         this.menu_pre_partita = new MenuPrePartitaGui();
         menu_pre_partita.addIndietroActionListener(this);
-        this.menu_opzioni = new OpzioniGui();
+        this.menu_opzioni = new MenuOpzioniGui();
         menu_opzioni.addIndietroActionListener(this);
         
         

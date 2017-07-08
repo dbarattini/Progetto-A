@@ -1,5 +1,6 @@
 package partita;
 
+import partitaOnline.cambia.ParticellaDiSodio;
 import dominio.eccezioni.PartitaPiena;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -52,11 +53,6 @@ public class Partita extends Thread {
             Logger.getLogger(Partita.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
-    private void gira() {
-        run();
-    }
-
     private void giocaPartita() {
         if (giocatori.size() > 1) {
             if (iniziata) {
@@ -66,7 +62,9 @@ public class Partita extends Thread {
                 iniziaPartita();
                 iniziata = true;
             }
-        } else if (iniziata) {
+        } else if(iniziata && giocatori.size()==1){
+            giocatori.get(0).scriviOggetto(new ParticellaDiSodio()); //c'è nessunoooo?!
+        }else if (iniziata) {
             iniziata = false;
         }
     }
@@ -118,7 +116,7 @@ public class Partita extends Thread {
     private void controllaConnessione() throws IOException {
         if (!giocatori.isEmpty()) {
             for (Giocatore giocatore : giocatori) {
-                if (giocatore.isDisconnesso()) {
+                if (giocatore.isDisconnesso() || giocatore.esce()) {
                     System.out.println(giocatore.getNome() + " disconnesso");
                     this.giocatori_disconnessi.add(giocatore);
                 }
