@@ -174,12 +174,12 @@ public class Giocatore implements Observer {
      * @return il valore della puntata scelta
      */
     public int decidi_puntata() {
-        puntata_effettuata=-42;
+        puntata_effettuata=0;
         this.scriviOggetto(new RichiediPuntata(this.carta_coperta, this.valore_mano, this.getFiches()));
         while (true) {
             try {
                 sleep(20);
-                if (puntata_effettuata != -42) {
+                if (puntata_effettuata != 0) {
                     return puntata_effettuata;
                 }
             } catch (InterruptedException ex) {
@@ -198,19 +198,20 @@ public class Giocatore implements Observer {
             } else {
                 this.puntata_effettuata = 0;
                 this.scriviOggetto(new Error("Puntata non valida."));
+                effettua_puntata();
             }
         } catch (PuntataTroppoAltaException ex) {
             this.puntata_effettuata = 0;
             this.scriviOggetto(new Error("Errore: il valore inserito é troppo alto. Il massimo valore che puoi puntare é: " + this.getFiches() + "."));
-            decidi_puntata();
+            effettua_puntata();
         } catch (PuntataNegativaException ex) {
             this.puntata_effettuata = 0;
             this.scriviOggetto(new Error("Errore: il valore inserito non puó essere negativo."));
-            decidi_puntata();
+            effettua_puntata();
         } catch (PuntataNullaException ex) {
             this.puntata_effettuata = 0;
             this.scriviOggetto(new Error("Errore: il valore inserito non puó essere nullo."));
-            decidi_puntata();
+            effettua_puntata();
         }
     }
 
