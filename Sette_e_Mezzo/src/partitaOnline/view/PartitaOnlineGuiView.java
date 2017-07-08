@@ -180,9 +180,9 @@ public class PartitaOnlineGuiView extends JFrame implements Observer{
             }
         } else if(arg instanceof IniziaPartita){
             if(imgSalaAttesa == null)
-                imgSalaAttesa = new JLabel();
+                imgSalaAttesa = new JLabel(caricaImmagine("dominio/immagini/salaAttesa.jpg"));        
             if(fraseSalaAttesa == null)
-                fraseSalaAttesa = new JLabel();
+                fraseSalaAttesa = new JLabel("In attesa di altri giocatori");
             
             sfondo.remove(imgSalaAttesa);
             sfondo.remove(fraseSalaAttesa);
