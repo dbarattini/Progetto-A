@@ -63,7 +63,10 @@ public class Partita extends Thread {
                 iniziata = true;
             }
         } else if(iniziata && giocatori.size()==1){
-            giocatori.get(0).scriviOggetto(new ParticellaDiSodio()); //c'è nessunoooo?!
+            if(!giocatori.get(0).isParticellaDiSodio()){
+                giocatori.get(0).scriviOggetto(new ParticellaDiSodio()); //c'è nessunoooo?!
+                giocatori.get(0).setParticellaDiSodio(true);
+            }
         }else if (iniziata) {
             iniziata = false;
         }
