@@ -103,15 +103,19 @@ public class PartitaOnlineConsoleView implements  Observer{
         } else if(arg instanceof RichiediGiocata){
             richiediGiocata(arg);
         }else if(arg instanceof ParticellaDiSodio){
-            System.out.println("\n");
-            System.out.println("Sei rimasto da solo\n");
-            System.out.println("Puoi:\n");
-            System.out.println("1 -Aspettare che qualcuno si colleghi\n");
-            System.out.println("2 -Tornare al menù pricipale\n");
-            String scelta = scanner.next();
-            gestisciParticellaDiSodio(scelta);
+            particellaDiSodio();
         }
         
+    }
+
+    private void particellaDiSodio() {
+        System.out.println("\n");
+        System.out.println("Sei rimasto da solo\n");
+        System.out.println("Puoi:\n");
+        System.out.println("1 -Aspettare che qualcuno si colleghi\n");
+        System.out.println("2 -Tornare al menù pricipale\n");
+        String scelta = scanner.next();
+        gestisciParticellaDiSodio(scelta);
     }
 
     private void fineMano(Object arg) {
@@ -202,11 +206,13 @@ public class PartitaOnlineConsoleView implements  Observer{
     
     private void gestisciParticellaDiSodio(String scelta){
         if(scelta.equals("1")){
-            //todo
+            System.out.println("Aspettiamo!");
         }else if (scelta.equals("2")){
-            //todo
+            controller.esci();
+            esci();
         }else{
-            //todo
+            System.out.println("Errore, inserire 1 o 2.\n");
+            particellaDiSodio();
         }
     }
 }
