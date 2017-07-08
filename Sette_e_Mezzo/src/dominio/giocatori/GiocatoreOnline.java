@@ -6,6 +6,7 @@
 package dominio.giocatori;
 
 import dominio.classi_dati.StatoMano;
+import static dominio.classi_dati.StatoMano.OK;
 import dominio.elementi_di_gioco.Carta;
 
 /**
@@ -27,6 +28,12 @@ public class GiocatoreOnline {
         this.nome = nome;
         this.fiches = fiches;
     }  
+    
+    public void inizializza(){
+        valoreMano=0;
+        stato=OK;
+        numCarteScoperte=0;
+    }
 
     public int getNumCarteScoperte() {
         return numCarteScoperte;
