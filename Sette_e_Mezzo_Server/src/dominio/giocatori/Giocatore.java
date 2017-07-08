@@ -68,7 +68,7 @@ public class Giocatore implements Observer {
             String dati[] = messaggio.split(" ");
             if(dati[0].equals("evento")){
                 if (dati[1].equals("SetPuntata")) {
-                    PuntataInserita(dati[2]);
+                    puntataInserita(dati[2]);
                 } else if (dati[1].equals("SetGiocata")) {
                     GiocataInserita(dati[2]);
                 }else if(dati[1].equals("Esce"))
@@ -188,7 +188,7 @@ public class Giocatore implements Observer {
         }
     }
 
-    public void PuntataInserita(String puntata_effettuata) {
+    public void puntataInserita(String puntata_effettuata) {
         try {
             this.puntata_effettuata = Integer.valueOf(puntata_effettuata);
             controlla_puntata(this.puntata_effettuata);
