@@ -179,18 +179,13 @@ public class PartitaOnlineGuiView extends JFrame implements Observer{
                     stampaStatoPlayer();
             }
         } else if(arg instanceof IniziaPartita){
-            if(imgSalaAttesa == null) {
-                imgSalaAttesa = new JLabel(caricaImmagine("dominio/immagini/salaAttesa.jpg"));
-                sfondo.add(imgSalaAttesa);
-            }
-            if(fraseSalaAttesa == null) {
-                fraseSalaAttesa = new JLabel("In attesa di altri giocatori");
-                sfondo.add(fraseSalaAttesa);
-            }
+            if(imgSalaAttesa != null) {
+                
                         
             sfondo.remove(imgSalaAttesa);
             sfondo.remove(fraseSalaAttesa);
             sfondo.repaint();
+            }
         }
     }
     
