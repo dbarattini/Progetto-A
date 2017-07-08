@@ -199,6 +199,9 @@ public class PartitaOnlineController extends Observable implements ViewEventList
                 ritorno= new GiocatoreIniziaTurno(dati[2]);
                 break;
             case "DistribuiteCarteCoperte":
+                for(GiocatoreOnline giocatore: giocatori){
+                    giocatore.inizializza();
+                }
                 ritorno= new DistribuiteCarteCoperte();
                 break;
             case "IniziaPartita":
