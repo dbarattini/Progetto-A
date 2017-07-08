@@ -285,11 +285,12 @@ public class PartitaOnlineModel extends Observable {
                     }
                 }
                 try {
-                    if(giocatore.getCarteScoperte().isEmpty())
-                        this.eventoPerTutti(new UltimaCartaOttenuta(giocatore.getNome(), carta_estratta, 0));
-                    else
-                        this.eventoPerTutti(new UltimaCartaOttenuta(giocatore.getNome(), carta_estratta, giocatore.getCarteScoperte().size()+1));
+                    Carta buff= carta_estratta;
                     giocatore.chiedi_carta(carta_estratta);
+                    if(giocatore.getCarteScoperte().isEmpty())
+                        this.eventoPerTutti(new UltimaCartaOttenuta(giocatore.getNome(), buff, 0));
+                    else
+                        this.eventoPerTutti(new UltimaCartaOttenuta(giocatore.getNome(), buff, giocatore.getCarteScoperte().size()));
                     this.eventoPerTutti(new ValoreMano(giocatore.getNome(), giocatore.getValoreMano()));
 
                 } catch (SballatoException ex) {
