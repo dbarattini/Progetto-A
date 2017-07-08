@@ -30,7 +30,6 @@ public class GiocatoreOnline {
     }  
     
     public void inizializza(){
-        valoreMano=0;
         stato=OK;
         numCarteScoperte=0;
     }
