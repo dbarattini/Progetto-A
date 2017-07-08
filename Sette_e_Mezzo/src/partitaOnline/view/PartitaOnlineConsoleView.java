@@ -102,16 +102,7 @@ public class PartitaOnlineConsoleView implements  Observer{
             System.err.println(((Error)arg).getMessage());
         } else if(arg instanceof RichiediGiocata){
             richiediGiocata(arg);
-        }else if(arg instanceof ParticellaDiSodio){
-            System.out.println("\n");
-            System.out.println("Sei rimasto da solo\n");
-            System.out.println("Puoi:\n");
-            System.out.println("1 -Aspettare che qualcuno si colleghi\n");
-            System.out.println("2 -Tornare al menù pricipale\n");
-            String scelta = scanner.next();
-            gestisciParticellaDiSodio(scelta);
-        }
-        
+        }        
     }
 
     private void fineMano(Object arg) {

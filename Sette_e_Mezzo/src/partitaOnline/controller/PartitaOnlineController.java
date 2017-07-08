@@ -101,11 +101,6 @@ public class PartitaOnlineController extends Observable implements ViewEventList
                 componenti = dati[2].split(" ");
                 giocatoreDaNome(componenti[0]).setValoreMano(Double.valueOf(componenti[1]));
                 break;
-            case "ParticellaDiSodio":
-                this.setChanged();
-                this.notifyObservers(new ParticellaDiSodio());
-                break;
-            
         }
     }
 
