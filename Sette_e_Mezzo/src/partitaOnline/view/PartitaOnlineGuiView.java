@@ -45,6 +45,7 @@ public class PartitaOnlineGuiView extends JFrame implements Observer{
     private final int pausa_breve = 1000; //ms
     private final int pausa_lunga = 2000; //ms
     private AudioPlayer audio = new AudioPlayer();
+    private JLabel imgSalaAttesa, fraseSalaAttesa;
     
     public PartitaOnlineGuiView(PartitaOnlineController controller) {
         listeners = new CopyOnWriteArrayList<>();                
@@ -63,6 +64,21 @@ public class PartitaOnlineGuiView extends JFrame implements Observer{
         sfondo = new Sfondo("dominio/immagini/sfondo.png", 1275, 690);
         sfondo.setBounds(0, 0, 1280, 720);
         add(sfondo);
+        
+        imgSalaAttesa = new JLabel(caricaImmagine("dominio/immagini/salaAttesa.jpg"));
+        fraseSalaAttesa = new JLabel("In attesa di altri giocatori");
+        
+        Font font = new Font("Sala Attesa", Font.BOLD, 30);
+        fraseSalaAttesa.setFont(font);
+        fraseSalaAttesa.setForeground(Color.black);
+        int strWidth = fraseSalaAttesa.getFontMetrics(font).stringWidth("In attesa di altri giocatori");
+        
+        imgSalaAttesa.setBounds(this.getWidth()/2 - 350, 150, 700, 557);
+        fraseSalaAttesa.setBounds(this.getWidth()/2 - strWidth/2, 50, strWidth, 100);
+        
+        sfondo.add(imgSalaAttesa);
+        sfondo.add(fraseSalaAttesa);
+        sfondo.repaint();
         
         try {
             inizializza_audio();
@@ -158,7 +174,9 @@ public class PartitaOnlineGuiView extends JFrame implements Observer{
                     stampaStatoPlayer();
             }
         } else if(arg instanceof IniziaPartita){
-            //todo
+            sfondo.remove(imgSalaAttesa);
+            sfondo.remove(fraseSalaAttesa);
+            sfondo.repaint();
         }
     }
     

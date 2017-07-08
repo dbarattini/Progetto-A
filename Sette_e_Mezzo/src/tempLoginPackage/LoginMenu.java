@@ -99,7 +99,9 @@ public class LoginMenu extends JFrame {
                 idString = id.getText();
                 passwordString = new String(password.getPassword());
                 if (checkLogin(idString, passwordString)) {
-                    IniziaPartita();
+                    controller = new PartitaOnlineController(socketClient, in);
+                    new PartitaOnlineGuiView(controller);
+                    dispose();
                 } else {
                     loginErrato();
                 }
@@ -129,16 +131,6 @@ public class LoginMenu extends JFrame {
         sfondo.add(richiediLogin);
         sfondo.add(idLabel);
         sfondo.add(passwordLabel);
-    }
-
-    private void IniziaPartita() {
-        SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                new SalaDiAspetto(socketClient, in);
-            }
-        });
-        this.dispose();
-
     }
 
     private boolean checkLogin(String id, String pass) {
