@@ -101,6 +101,7 @@ public class PartitaOnlineModel extends Observable {
     }
 
     public void aggiungiGiocatori(ArrayList giocatori) {
+        
         inizzializza_fiches(giocatori);
         for (Object gioc : this.giocatori) {
             ((Giocatore) gioc).scriviOggetto(new IniziaPartita());
@@ -108,6 +109,9 @@ public class PartitaOnlineModel extends Observable {
         this.giocatori.addAll(giocatori);
         for (Object gioc : this.giocatori) {
             this.eventoPerTutti(new NuovoGiocatore(((Giocatore) gioc).getNome(), ((Giocatore) gioc).getFiches()));
+        }
+        for(Object giocatore : giocatori){
+            ((Giocatore)giocatore).scriviOggetto(new Mazziere(mazziere.getNome()));
         }
     }
 
