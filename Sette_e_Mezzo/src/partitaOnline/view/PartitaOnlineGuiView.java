@@ -451,7 +451,8 @@ public class PartitaOnlineGuiView extends JFrame implements Observer{
             sfondo.remove(valoriMano.get(nome));
             valoriMano.remove(nome);
         }
-        valoriMano.put(nome, stampaStato(getGiocatore(nome)));        
+        valoriMano.put(nome, stampaStato(getGiocatore(nome)));
+        scopriCartaCoperta(giocatore);
         pausa(pausa_breve);
     }
     
@@ -631,8 +632,10 @@ public class PartitaOnlineGuiView extends JFrame implements Observer{
     private void stampaValoreManoFineRound(GiocatoreOnline giocatore) {
         if(giocatore != controller.getGiocatoreLocale()) {
             if(giocatore.getStatoMano() == StatoMano.OK) {
-                stampaValoreMano(giocatore);
-                valoriMano.get(giocatore.getNome()).setText("Valore mano:   " + giocatore.getValoreMano());
+                if(valoriMano.get(giocatore.getNome()) == null)
+                    valoriMano.put(giocatore.getNome(), stampaValoreMano(giocatore));
+                else
+                    valoriMano.get(giocatore.getNome()).setText("Valore mano:   " + giocatore.getValoreMano());
                 sfondo.repaint();
 
                 pausa(pausa_breve);
