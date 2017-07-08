@@ -53,6 +53,8 @@ public class PartitaOnlineGuiView extends JFrame implements Observer{
         this.controller.addObserver(this);
         listeners.add(controller);
         
+        inizializza_salaAttesa();
+        
         setTitle("Sette e Mezzo");
         setPreferredSize(new Dimension(1280, 720));
 	setMinimumSize(new Dimension(1280, 720));		
@@ -65,6 +67,19 @@ public class PartitaOnlineGuiView extends JFrame implements Observer{
         sfondo.setBounds(0, 0, 1280, 720);
         add(sfondo);
         
+        try {
+            inizializza_audio();
+            audio.riproduciInLoop("soundTrack");
+        } catch (CanzoneNonTrovataException ex) {
+            Logger.getLogger(PartitaOnlineGuiView.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (CaricamentoCanzoneException ex) {
+            Logger.getLogger(PartitaOnlineGuiView.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        setVisible(true);
+    }
+    
+    private void inizializza_salaAttesa() {
         imgSalaAttesa = new JLabel(caricaImmagine("dominio/immagini/salaAttesa.jpg"));
         fraseSalaAttesa = new JLabel("In attesa di altri giocatori");
         
@@ -79,17 +94,6 @@ public class PartitaOnlineGuiView extends JFrame implements Observer{
         sfondo.add(imgSalaAttesa);
         sfondo.add(fraseSalaAttesa);
         sfondo.repaint();
-        
-        try {
-            inizializza_audio();
-            audio.riproduciInLoop("soundTrack");
-        } catch (CanzoneNonTrovataException ex) {
-            Logger.getLogger(PartitaOnlineGuiView.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (CaricamentoCanzoneException ex) {
-            Logger.getLogger(PartitaOnlineGuiView.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-        setVisible(true);
     }
     
     private void inizializza_audio() throws CaricamentoCanzoneException {
@@ -174,7 +178,11 @@ public class PartitaOnlineGuiView extends JFrame implements Observer{
                     stampaStatoPlayer();
             }
         } else if(arg instanceof IniziaPartita){
-            pausa(20);
+//            if(imgSalaAttesa == null)
+//                imgSalaAttesa = new JLabel();
+//            if(fraseSalaAttesa == null)
+//                fraseSalaAttesa = new JLabel();
+            
             sfondo.remove(imgSalaAttesa);
             sfondo.remove(fraseSalaAttesa);
             sfondo.repaint();
