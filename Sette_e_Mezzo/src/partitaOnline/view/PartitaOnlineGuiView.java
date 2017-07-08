@@ -39,7 +39,7 @@ public class PartitaOnlineGuiView extends JFrame implements Observer{
     private String puntataStr, giocataStr;
     private JTextField puntata;
     private JLabel msgPuntata_Giocata;
-    private boolean needCartaCoperta = true, needToMarkMazziere = false, needStatoCambiato = false;
+    private boolean needCartaCoperta = true, needToMarkMazziere = false, needStatoCambiato = false, partitaIniziata = false;
     private ArrayList<JLabel> carteCoperteAvversari = new ArrayList<>();
     private Map<String, JLabel> valoriMano = new HashMap<>();
     private final int pausa_breve = 1000; //ms
@@ -76,8 +76,12 @@ public class PartitaOnlineGuiView extends JFrame implements Observer{
         
         setVisible(true);
         
-        if(imgSalaAttesa == null || fraseSalaAttesa == null)
+        if(!partitaIniziata) {
             inizializza_salaAttesa();
+            sfondo.add(imgSalaAttesa);
+            sfondo.add(fraseSalaAttesa);
+            sfondo.repaint();
+        }
     }
     
     private void inizializza_salaAttesa() {
@@ -91,10 +95,6 @@ public class PartitaOnlineGuiView extends JFrame implements Observer{
         
         imgSalaAttesa.setBounds(this.getWidth()/2 - 350, 100, 700, 557);
         fraseSalaAttesa.setBounds(this.getWidth()/2 - strWidth/2, 10, strWidth, 100);
-        
-        sfondo.add(imgSalaAttesa);
-        sfondo.add(fraseSalaAttesa);
-        sfondo.repaint();
     }
     
     private void inizializza_audio() throws CaricamentoCanzoneException {
@@ -179,13 +179,14 @@ public class PartitaOnlineGuiView extends JFrame implements Observer{
                     stampaStatoPlayer();
             }
         } else if(arg instanceof IniziaPartita){
-            if(imgSalaAttesa != null) {
-                
-                        
-            sfondo.remove(imgSalaAttesa);
-            sfondo.remove(fraseSalaAttesa);
-            sfondo.repaint();
+            if(imgSalaAttesa != null && fraseSalaAttesa != null) {                                        
+                sfondo.remove(imgSalaAttesa);
+                sfondo.remove(fraseSalaAttesa);
+                sfondo.repaint();
+            } else {
+                inizializza_salaAttesa();
             }
+            partitaIniziata = true;
         }
     }
     
