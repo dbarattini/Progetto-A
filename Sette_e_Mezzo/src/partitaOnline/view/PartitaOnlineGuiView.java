@@ -333,7 +333,7 @@ public class PartitaOnlineGuiView extends JFrame implements Observer{
         Carta lastCard;
         if(controller.getGiocatoreLocale().getNumCarteScoperte() != 0) {
             lastCard = controller.getGiocatoreLocale().getUltimaCartaOttenuta();
-            int index = controller.getGiocatoreLocale().getNumCarteScoperte();// - 1;            
+            int index = controller.getGiocatoreLocale().getNumCarteScoperte() - 1;            
             stampaCarta(this.getWidth()/2 - 95 + index*35, 3*this.getHeight()/4 - 60, lastCard.toString());
         }
         aggiornaValoreManoPlayer();
@@ -486,7 +486,7 @@ public class PartitaOnlineGuiView extends JFrame implements Observer{
         needCartaCoperta = false;
     }
     
-    // stampa il messaggio " giocatore sta giocando " e la carta che pesca se decide di pescare
+    // stampa la carta che l'avversario ha appena pescato
     private void stampaGiocatoreHaPescato(GiocatoreOnline giocatore) {
         String nomeGioc = giocatore.getNome();
         int indexGioc = controller.getGiocatori().indexOf(giocatore);
@@ -527,7 +527,7 @@ public class PartitaOnlineGuiView extends JFrame implements Observer{
         return valoreManoGiocatore;
     }
     
-    // stampa il messaggio passato (usato per stampare " giocatore sta puntando/giocando )
+    // stampa il messaggio passato (usato per stampare " giocatore sta puntando/giocando ")
     private void stampaMsg(String msg) {
         Font font = new Font("MsgGiocataAvversario", Font.BOLD, 70);
         msgPuntata_Giocata = new JLabel(msg);
@@ -540,7 +540,7 @@ public class PartitaOnlineGuiView extends JFrame implements Observer{
         sfondo.repaint();
     }
     
-    // scopre la carta coperta ( usato se sballato o a fine round per vedere il valore a fine round)
+    // scopre la carta coperta (usato se sballato o a fine round per vedere il valore a fine round)
     private void scopriCartaCoperta(GiocatoreOnline giocatore) {
         int index = controller.getGiocatori().indexOf(giocatore);
         if(index > controller.getGiocatori().indexOf(controller.getGiocatoreLocale()))
