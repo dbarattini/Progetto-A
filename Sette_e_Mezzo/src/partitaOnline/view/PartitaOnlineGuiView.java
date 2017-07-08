@@ -39,7 +39,8 @@ public class PartitaOnlineGuiView extends JFrame implements Observer{
     private String puntataStr, giocataStr;
     private JTextField puntata;
     private JLabel msgPuntata_Giocata;
-    private boolean needCartaCoperta = true, needToMarkMazziere = false, needStatoCambiato = false, partitaIniziata = false;
+    private boolean needCartaCoperta = true, mazziereEstratto = false, 
+            needToMarkMazziere = false, needStatoCambiato = false, partitaIniziata = false;
     private ArrayList<JLabel> carteCoperteAvversari = new ArrayList<>();
     private Map<String, JLabel> valoriMano = new HashMap<>();
     private final int pausa_breve = 1000; //ms
@@ -227,6 +228,7 @@ public class PartitaOnlineGuiView extends JFrame implements Observer{
         
         sfondo.removeAll();
         needToMarkMazziere = true;
+        mazziereEstratto = true;
         for(int i = 0; i < nGiocatori; i++)
             stampaNomeFiches(controller.getGiocatori().get(i));
                 
@@ -487,6 +489,12 @@ public class PartitaOnlineGuiView extends JFrame implements Observer{
         int nGiocatori = controller.getGiocatori().size();
         sfondo.removeAll();
         sfondo.repaint();
+        
+        if(!mazziereEstratto) {  // serve per far in modo che anche il 3° e 4° giocatore vedano il mazziere in arancione
+            needToMarkMazziere = true;
+            mazziereEstratto = true;
+        }
+        
         for(int i = 0; i < nGiocatori; i++)
             stampaNomeFiches(controller.getGiocatori().get(i));
         
