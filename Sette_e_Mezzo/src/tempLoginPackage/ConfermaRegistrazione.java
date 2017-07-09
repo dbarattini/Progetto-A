@@ -5,21 +5,20 @@ import dominio.gui.Sfondo;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.net.Socket;
 import java.net.URL;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import menuPrincipale.MenuPrincipaleGui;
 
-public class ScegliRegistrazioneLogin extends JFrame {
+public class ConfermaRegistrazione  extends JFrame {
     
-    private Sfondo sfondo;
+        private Sfondo sfondo;
     private JButton login, regis, indietro;
     private Client client;
     
-    public ScegliRegistrazioneLogin() {
-        setTitle("Fai il Login o Registrati !");
+    public ConfermaRegistrazione() {
+        setTitle("Conferma registrazione");
         setPreferredSize(new Dimension(1000, 800));
         setMinimumSize(new Dimension(1000, 800));
         pack();

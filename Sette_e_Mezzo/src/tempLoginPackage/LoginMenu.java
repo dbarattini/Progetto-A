@@ -42,7 +42,7 @@ public class LoginMenu extends JFrame {
 
     public LoginMenu(Socket socketClient) {
         inizializzaConnessione(socketClient);
-        setTitle("Sette e Mezzo");
+        setTitle("Login");
         setPreferredSize(new Dimension(1000, 800));
         setMinimumSize(new Dimension(1000, 800));
         pack();
