@@ -104,7 +104,7 @@ public class Login extends Thread {
     }
 
     private void gestisciLogin(String[] dati) throws InterruptedException, SqlOccupato, GiocatoreNonTrovato {
-        if (dati[1].contains("@")) {
+        if (sql.esisteEmail(dati[1])) {
             username = sql.getUser(dati[1]);
         } else {
             username = dati[1];
