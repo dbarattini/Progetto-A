@@ -17,11 +17,13 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import menuPrePartita.MenuPrePartitaGui;
+import tempLoginPackage.ScegliRegistrazioneLogin;
 
 public class MenuPrincipaleGui extends JFrame implements ActionListener{
     MenuPrePartitaGui menu_pre_partita;
     RegoleGui menu_regole;
     MenuOpzioniGui menu_opzioni;
+    ScegliRegistrazioneLogin menu_online;
     private JButton partita_off, partita_on, regole, opzioni;
     private Sfondo sfondo;
     
@@ -32,6 +34,8 @@ public class MenuPrincipaleGui extends JFrame implements ActionListener{
         menu_pre_partita.addIndietroActionListener(this);
         this.menu_opzioni = new MenuOpzioniGui();
         menu_opzioni.addIndietroActionListener(this);
+        this.menu_online = new ScegliRegistrazioneLogin();
+        menu_online.addIndietroActionListener(this);
         
         
         inizializza_GUI();       
@@ -106,7 +110,7 @@ public class MenuPrincipaleGui extends JFrame implements ActionListener{
         switch(opzione){
             case GiocaOffline:  menu_pre_partita.setVisible(true);
                                 break;
-            case GiocaOnline : System.out.println("on");
+            case GiocaOnline :  menu_online.setVisible(true);
                                 break;
             case Impostazioni: menu_opzioni.setVisible(true);
                                 break;
@@ -123,6 +127,8 @@ public class MenuPrincipaleGui extends JFrame implements ActionListener{
             menu_regole.setVisible(false);
         else if (menu_opzioni.isVisible())
             menu_opzioni.setVisible(false);
+        else if(menu_online.isVisible())
+            menu_online.setVisible(false);
         this.setVisible(true);
     }
 }
