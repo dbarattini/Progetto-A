@@ -1,8 +1,11 @@
 package comunicazione;
 
+import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 public class Client {
@@ -29,6 +32,14 @@ public class Client {
 
     public Socket getSocketClient() {
         return socketClient;
+    }
+
+    public void close() {
+        try {
+            socketClient.close();
+        } catch (IOException ex) {
+            Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
 
