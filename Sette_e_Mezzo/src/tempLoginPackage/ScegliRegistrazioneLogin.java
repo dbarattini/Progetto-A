@@ -9,6 +9,7 @@ import java.net.URL;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import menuPrincipale.MenuPrincipaleGui;
 
 public class ScegliRegistrazioneLogin extends JFrame {
     
@@ -34,8 +35,8 @@ public class ScegliRegistrazioneLogin extends JFrame {
         sfondo.setBounds(0, 0, 1000, 800);
         add(sfondo);
                 
-        login = new JButton(caricaImmagine("dominio/immagini/riprova.png"));
-        regis = new JButton(caricaImmagine("dominio/immagini/riprova.png"));
+        login = new JButton(caricaImmagine("dominio/immagini/login.png"));
+        regis = new JButton(caricaImmagine("dominio/immagini/registrati.png"));
         indietro = new JButton(caricaImmagine("dominio/immagini/indietro.png"));
         
         login.setBounds(this.getWidth() / 2 - 100, 200, 200, 80);
@@ -57,6 +58,13 @@ public class ScegliRegistrazioneLogin extends JFrame {
                 Socket tempSocket = null;  // x mark: idem :D
                 new RegistrazioneMenu(tempSocket);
                 dispose();
+            }
+        });
+        
+        indietro.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new MenuPrincipaleGui();
             }
         });
         
