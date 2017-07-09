@@ -176,7 +176,7 @@ public class Giocatore implements Observer {
     public int decidi_puntata() {
         puntata_effettuata=0;
         this.scriviOggetto(new RichiediPuntata(this.carta_coperta, this.valore_mano, this.getFiches()));
-        while (true) {
+        while (!disconnesso) {
             try {
                 sleep(20);
                 if (puntata_effettuata != 0) {
@@ -186,6 +186,7 @@ public class Giocatore implements Observer {
                 Logger.getLogger(Giocatore.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+        return 1;
     }
 
     public void puntataInserita(String puntata_effettuata) {
