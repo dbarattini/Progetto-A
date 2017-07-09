@@ -5,12 +5,10 @@ import dominio.gui.Sfondo;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.net.Socket;
 import java.net.URL;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import menuPrincipale.MenuPrincipaleGui;
 
 public class ScegliRegistrazioneLogin extends JFrame {
     
