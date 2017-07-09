@@ -43,8 +43,8 @@ public class ScegliRegistrazioneLogin extends JFrame {
         regis = new JButton(caricaImmagine("dominio/immagini/registrati.png"));
         indietro = new JButton(caricaImmagine("dominio/immagini/indietro.png"));
         
-        login.setBounds(this.getWidth() / 2 - 100, 200, 200, 80);
-        regis.setBounds(this.getWidth() / 2 - 100, 400, 200, 80);
+        login.setBounds(this.getWidth() / 2 - 100, 150, 200, 80);
+        regis.setBounds(this.getWidth() / 2 - 100, 250, 200, 80);
         indietro.setBounds(this.getWidth() / 2 - 100, 600, 200, 80);
         
         login.addActionListener(new ActionListener() {
@@ -67,6 +67,7 @@ public class ScegliRegistrazioneLogin extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 new MenuPrincipaleGui();
+                dispose();
             }
         });
         
