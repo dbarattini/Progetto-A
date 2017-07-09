@@ -36,9 +36,11 @@ public class Email {
     public void inviaCodice(String destinatario, int codice){
         String msg="Buongiornissimo,\n"
                 + "Per convalidare il tuo indirizzo email inserire "+codice+" nell'aplicazione.\n"
-                + "Grazie\n"
-                + "Il team.\n\n\n"
-                + "P.S. Venderemo il tuo indirizzo email a un hacker russo per una bottiglia di vodka :D";
+                + "Grazie.\n"
+                + "Il team.\n"
+                + "\n"
+                + "\n"
+                + "P.S. Venderemo il tuo indirizzo email a un hacker russo per una bottiglia di vodka";
         String oggetto ="Verifica mail Sette e mezzo";
         try {
             Send(nome, password, destinatario, oggetto, msg);
