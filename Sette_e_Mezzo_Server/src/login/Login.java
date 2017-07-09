@@ -104,7 +104,7 @@ public class Login extends Thread {
     }
 
     private void gestisciLogin(String[] dati) throws InterruptedException, SqlOccupato, GiocatoreNonTrovato {
-        if (dati[1].contains("@")) {
+        if (sql.esisteEmail(dati[1])) {
             username = sql.getUser(dati[1]);
         } else {
             username = dati[1];
@@ -122,14 +122,23 @@ public class Login extends Thread {
 
     private void recuperoPw(String[] dati) throws SqlOccupato {
         mail = dati[1];
-        if (!sql.esisteEmail(mail)) {
-            giocatore.scrivi("recupero errato");
-        } else {
+        if (sql.esisteEmail(mail) ){
             Email email = new Email();
             String password = sql.getPassword(mail);
-            email.inviaPassword(mail, password);
+            try {
+                email.inviaPassword(mail, sql.getUser(mail), password);
+            } catch (GiocatoreNonTrovato ex) {
+                //impossibile ma lo richiede
+            }
             giocatore.scrivi("recupero inviato");
-        }
+        } else if(sql.esisteUsername(mail)){
+            Email email = new Email();
+            String veraEmail=sql.getEmail(mail);
+            email.inviaPassword(veraEmail, mail, password);
+            
+        }else{            
+            giocatore.scrivi("recupero errato");            
+        } 
         run();
     }
 

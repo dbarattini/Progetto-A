@@ -97,7 +97,7 @@ public class CriptazioneTest {
     public void testSetKey() {
         try {
             System.out.println("setKey");
-            String key = "SambaPis";
+            String key = "PaSsWoRd";
             cript.setKey(key);
             String msg1 = cript.codificaMessaggio("#La su io & te 4ever!");
             key = "Catrame1";
@@ -116,7 +116,7 @@ public class CriptazioneTest {
     public void testSetKeySbagliata() {
         try {
             System.out.println("setKey");
-            String key = "SambaPisogeno";
+            String key = "passwordlunga";
             cript.setKey(key);
              fail();
         } catch (ChiaveNonValida ex) {

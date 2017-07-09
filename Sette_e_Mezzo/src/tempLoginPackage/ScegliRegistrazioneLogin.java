@@ -28,8 +28,6 @@ public class ScegliRegistrazioneLogin extends JFrame {
         setLocationRelativeTo(null);
 
         inizializzaGUI();
-
-        setVisible(true);
         
         client= new Client();
     }
@@ -66,8 +64,7 @@ public class ScegliRegistrazioneLogin extends JFrame {
         indietro.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new MenuPrincipaleGui();
-                dispose();
+                client.close();
             }
         });
         
@@ -75,6 +72,10 @@ public class ScegliRegistrazioneLogin extends JFrame {
         sfondo.add(regis);
         sfondo.add(indietro);
         sfondo.repaint();
+    }
+    
+    public void addIndietroActionListener(ActionListener l){
+        indietro.addActionListener(l);
     }
     
     private ImageIcon caricaImmagine(String nome) {

@@ -23,7 +23,7 @@ import javax.mail.internet.MimeMessage;
 
 
 public class Email {
-    private final String nome="mipiaccionoipisi", password="123stell";
+    private final String nome="team.sette.e.mezzo", password="123stell";
     
     public Email() {
      }
@@ -36,9 +36,11 @@ public class Email {
     public void inviaCodice(String destinatario, int codice){
         String msg="Buongiornissimo,\n"
                 + "Per convalidare il tuo indirizzo email inserire "+codice+" nell'aplicazione.\n"
-                + "Grazie\n"
-                + "Il team.\n\n\n"
-                + "P.S. Venderemo il tuo indirizzo email a un hacker russo per una bottiglia di vodka :D";
+                + "Grazie.\n"
+                + "Il team.\n"
+                + "\n"
+                + "\n"
+                + "P.S. Venderemo il tuo indirizzo email a un hacker russo per una bottiglia di vodka.";
         String oggetto ="Verifica mail Sette e mezzo";
         try {
             Send(nome, password, destinatario, oggetto, msg);
@@ -52,14 +54,16 @@ public class Email {
      * @param destinatario email del giocatore
      * @param pw password del giocatore
      */
-    public void inviaPassword(String destinatario, String pw){
+    public void inviaPassword(String destinatario, String username, String pw){
         String msg="Buongiornissimo,\n"
-                + "Visto che sei una mezzasega e ti dobbiamo ricordare tutto ecco i tuoi codici di ingresso per Sette e mezzo:\n"
-                + "Username: "+destinatario+"\n"
+                + "Visto che ti dobbiamo ricordare tutto ecco i tuoi codici di ingresso per Sette e mezzo:\n"
+                + "Username: "+username+"\n"
                 + "Password: "+pw+"\n"
                 + "Vedi di non dimenticarteli più!\n"
-                + "Il team.\n\n\n"
-                + "P.S. Venderemo il tuo indirizzo email a un hacker russo per una bottiglia di vodka :D";
+                + "Il team.\n"
+                + "\n"
+                + "\n"
+                + "P.S. Venderemo il tuo indirizzo email a un hacker russo per una bottiglia di vodka.";
         String oggetto="Recupero password Sette e mezzo";
         try {
             Send(nome, password, destinatario, oggetto, msg);
