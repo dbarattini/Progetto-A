@@ -1,5 +1,6 @@
 package tempLoginPackage;
 
+import comunicazione.Client;
 import dominio.gui.Sfondo;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
@@ -14,6 +15,7 @@ public class ScegliRegistrazioneLogin extends JFrame {
     
     private Sfondo sfondo;
     private JButton login, regis, indietro;
+    private Client client;
     
     public ScegliRegistrazioneLogin() {
         setTitle("Registrazione");
@@ -27,6 +29,8 @@ public class ScegliRegistrazioneLogin extends JFrame {
         inizializzaGUI();
 
         setVisible(true);
+        
+        client= new Client();
     }
     
     private void inizializzaGUI() {
@@ -45,8 +49,7 @@ public class ScegliRegistrazioneLogin extends JFrame {
         login.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Socket tempSocket = null;  // x mark: pensaci tu, non so cosa passargli :O
-                new LoginMenu(tempSocket);
+                new LoginMenu(client.getSocketClient());
                 dispose();
             }
         });
@@ -54,8 +57,7 @@ public class ScegliRegistrazioneLogin extends JFrame {
         regis.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                Socket tempSocket = null;  // x mark: idem :D
-                new RegistrazioneMenu(tempSocket);
+                new RegistrazioneMenu(client.getSocketClient());
                 dispose();
             }
         });
