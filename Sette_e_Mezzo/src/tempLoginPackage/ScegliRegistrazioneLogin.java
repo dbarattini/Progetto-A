@@ -66,6 +66,7 @@ public class ScegliRegistrazioneLogin extends JFrame {
         indietro.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                client.close();
                 new MenuPrincipaleGui();
                 dispose();
             }
