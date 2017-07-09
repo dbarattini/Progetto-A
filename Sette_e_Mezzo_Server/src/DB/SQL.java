@@ -454,4 +454,32 @@ public class SQL {
         }
     }
 
+    public String getEmail(String username) throws SqlOccupato {
+        try {
+            Class.forName("org.sqlite.JDBC");
+            c = DriverManager.getConnection("jdbc:sqlite:setteEmezzo.db");
+            c.setAutoCommit(false);
+            stmt = c.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT * FROM GIOCATORI;");
+            while (rs.next()) {
+                String user = rs.getString("USERNAME");
+                String mail = rs.getString("EMAIL");
+                if (user.equals(username)) {
+                    rs.close();
+                    chiudiDatabase();
+                    return mail;
+                }
+            }
+            rs.close();
+            chiudiDatabase();
+        } catch (Exception e) {
+            chiudiDatabase();
+            if (e.getMessage().equals("[SQLITE_BUSY]  The database file is locked (database is locked)")) {
+                throw new SqlOccupato();
+            }
+            System.err.println(e.getClass().getName() + ": " + e.getMessage());
+        }
+        return null;
+    }
+
 }
