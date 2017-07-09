@@ -70,6 +70,8 @@ public class Partita extends Thread {
             }
         }else if (iniziata) {
             iniziata = false;
+        }else if(giocatori.size()==1){
+            
         }
     }
 
