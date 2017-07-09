@@ -23,7 +23,7 @@ import javax.mail.internet.MimeMessage;
 
 
 public class Email {
-    private final String nome="mipiaccionoipisi", password="123stell";
+    private final String nome="team.sette.e.mezzo", password="123stell";
     
     public Email() {
      }
