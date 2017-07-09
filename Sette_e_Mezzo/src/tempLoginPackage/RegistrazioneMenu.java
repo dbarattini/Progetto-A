@@ -102,7 +102,7 @@ public class RegistrazioneMenu extends JFrame {
                 idString = id.getText();
                 passwordString = Arrays.toString(password.getPassword());
                 if (checkReg(idString, passwordString, emailString)) {
-                    // registra e salva nel DB
+                    // c'è da fare partire la convlaida!
                 }
             }
         ;
