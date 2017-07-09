@@ -247,7 +247,7 @@ public class Giocatore implements Observer {
     protected Giocata decidi_giocata() {
         giocata_effettuata = "";
         this.scriviOggetto(new RichiediGiocata(this.getCartaCoperta(), this.getCarteScoperte(), this.getValoreMano()));
-        while (true) {
+        while (!disconnesso) {
             try {
                 sleep(20);
                 if (!giocata_effettuata.equals("")) {
@@ -260,6 +260,7 @@ public class Giocatore implements Observer {
                 Logger.getLogger(Giocatore.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+        return Giocata.Sto;
     }
 
     private Giocata seleziona_giocata(String giocata) throws GiocataNonValidaException {
