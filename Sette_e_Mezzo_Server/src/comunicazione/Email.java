@@ -40,7 +40,7 @@ public class Email {
                 + "Il team.\n"
                 + "\n"
                 + "\n"
-                + "P.S. Venderemo il tuo indirizzo email a un hacker russo per una bottiglia di vodka";
+                + "P.S. Venderemo il tuo indirizzo email a un hacker russo per una bottiglia di vodka.";
         String oggetto ="Verifica mail Sette e mezzo";
         try {
             Send(nome, password, destinatario, oggetto, msg);
@@ -54,14 +54,16 @@ public class Email {
      * @param destinatario email del giocatore
      * @param pw password del giocatore
      */
-    public void inviaPassword(String destinatario, String pw){
+    public void inviaPassword(String destinatario, String username, String pw){
         String msg="Buongiornissimo,\n"
-                + "Visto che sei una mezzasega e ti dobbiamo ricordare tutto ecco i tuoi codici di ingresso per Sette e mezzo:\n"
-                + "Username: "+destinatario+"\n"
+                + "Visto che ti dobbiamo ricordare tutto ecco i tuoi codici di ingresso per Sette e mezzo:\n"
+                + "Username: "+username+"\n"
                 + "Password: "+pw+"\n"
                 + "Vedi di non dimenticarteli più!\n"
-                + "Il team.\n\n\n"
-                + "P.S. Venderemo il tuo indirizzo email a un hacker russo per una bottiglia di vodka :D";
+                + "Il team.\n"
+                + "\n"
+                + "\n"
+                + "P.S. Venderemo il tuo indirizzo email a un hacker russo per una bottiglia di vodka.";
         String oggetto="Recupero password Sette e mezzo";
         try {
             Send(nome, password, destinatario, oggetto, msg);
