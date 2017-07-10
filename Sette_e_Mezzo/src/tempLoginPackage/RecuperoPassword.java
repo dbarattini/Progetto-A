@@ -8,11 +8,14 @@ import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.net.URL;
 import java.net.UnknownHostException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -34,8 +37,8 @@ public class RecuperoPassword extends JFrame {
     private Socket socketClient;
     private PartitaOnlineController controller;
     
-    public RecuperoPassword(Client client1) {
-        client = client1;
+    public RecuperoPassword(Client client) {
+        this.client = client;
         inizializzaConnessione(client.getSocketClient());
         setTitle("Conferma registrazione");
         setPreferredSize(new Dimension(1000, 800));
@@ -50,11 +53,11 @@ public class RecuperoPassword extends JFrame {
         setVisible(true);        
     }
     
-    private void inizializzaConnessione(Socket socketClient1) {
+    private void inizializzaConnessione(Socket socketClient) {
         try {
-            this.socketClient = socketClient1;
-            in = new BufferedReader(new InputStreamReader(socketClient1.getInputStream()));
-            out = new PrintWriter(socketClient1.getOutputStream(), true);
+            this.socketClient = socketClient;
+            in = new BufferedReader(new InputStreamReader(socketClient.getInputStream()));
+            out = new PrintWriter(socketClient.getOutputStream(), true);
         } catch (UnknownHostException ex) {
             System.err.println("Host sconosciuto");
         } catch (Exception e) {
@@ -110,7 +113,8 @@ public class RecuperoPassword extends JFrame {
         indietro.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // torna indietro a RegistrazioneMenu
+                new ScegliRegistrazioneLogin(client);
+                dispose();
             }
         });
         
@@ -122,9 +126,17 @@ public class RecuperoPassword extends JFrame {
     }
     
     private boolean checkInfo(String info) {
-        
-        // controlla mail o id, tutto per te Mark :P
-        
+        try {
+            String messaggio_da_inviare = "recupero " + info;
+            out.println(messaggio_da_inviare);
+            String risposta = in.readLine();
+            if (risposta.equals("recupero inviato"))
+                return true;
+            
+            
+        } catch (IOException ex) {
+            Logger.getLogger(RecuperoPassword.class.getName()).log(Level.SEVERE, null, ex);
+        }
         return false;
     }
     
