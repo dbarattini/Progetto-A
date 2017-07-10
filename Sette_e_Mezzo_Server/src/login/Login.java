@@ -18,6 +18,7 @@ import dominio.eccezioni.GiocatoreDisconnessoException;
 import dominio.eccezioni.GiocatoreNonTrovato;
 import dominio.eccezioni.PartitaPiena;
 import dominio.eccezioni.SqlOccupato;
+import javax.mail.SendFailedException;
 
 public class Login extends Thread {
 
@@ -157,8 +158,13 @@ public class Login extends Thread {
             giocatore.scrivi("registrazione username gia esistente");
         } else {
             Email email = new Email();
-            email.inviaCodice(mail, codice);
-            giocatore.scrivi("convalida inviata");
+            try {
+                email.inviaCodice(mail, codice);
+                giocatore.scrivi("convalida inviata");
+            } catch (SendFailedException ex) {
+                Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            giocatore.scrivi("registrazione email non valida");
         }
         run();
     }
