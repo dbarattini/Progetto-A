@@ -13,7 +13,7 @@ import javax.swing.JFrame;
 public class ScegliRegistrazioneLogin extends JFrame {
     
     private Sfondo sfondo;
-    private JButton login, regis, indietro;
+    private JButton login, regis, recupero, indietro;
     private Client client;
     
     public ScegliRegistrazioneLogin() {
@@ -28,6 +28,8 @@ public class ScegliRegistrazioneLogin extends JFrame {
         inizializzaGUI();
         
         client= new Client();
+        
+        setVisible(true);
     }
     
     public ScegliRegistrazioneLogin(Client client) {
@@ -42,6 +44,8 @@ public class ScegliRegistrazioneLogin extends JFrame {
         inizializzaGUI();
         
         this.client= client;
+        
+        setVisible(true);
     }
     
     private void inizializzaGUI() {
@@ -51,10 +55,12 @@ public class ScegliRegistrazioneLogin extends JFrame {
                 
         login = new JButton(caricaImmagine("dominio/immagini/login.png"));
         regis = new JButton(caricaImmagine("dominio/immagini/registrati.png"));
+        recupero = new JButton(caricaImmagine("dominio/immagini/recuperoPw.png"));
         indietro = new JButton(caricaImmagine("dominio/immagini/indietro.png"));
         
         login.setBounds(this.getWidth() / 2 - 100, 150, 200, 80);
         regis.setBounds(this.getWidth() / 2 - 100, 250, 200, 80);
+        recupero.setBounds(this.getWidth() / 2 - 100, 350, 200, 80);
         indietro.setBounds(this.getWidth() / 2 - 100, 600, 200, 80);
         
         login.addActionListener(new ActionListener() {
@@ -73,6 +79,14 @@ public class ScegliRegistrazioneLogin extends JFrame {
             }
         });
         
+        recupero.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                new RecuperoPassword(client);
+                dispose();
+            }
+        });
+        
         indietro.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -82,6 +96,7 @@ public class ScegliRegistrazioneLogin extends JFrame {
         
         sfondo.add(login);
         sfondo.add(regis);
+        sfondo.add(recupero);
         sfondo.add(indietro);
         sfondo.repaint();
     }

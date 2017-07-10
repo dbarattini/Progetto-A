@@ -28,7 +28,7 @@ import javax.swing.JTextField;
 public class RegistrazioneMenu extends JFrame {
 
     private Sfondo sfondo;
-    private JButton fatto, riprova;
+    private JButton fatto, riprova, indietro;
     private JTextField id, email;
     private JPasswordField password;
     private JLabel richiediReg, idLabel, passwordLabel, emailLabel, messRegFallita;
@@ -77,6 +77,7 @@ public class RegistrazioneMenu extends JFrame {
 
         fatto = new JButton(caricaImmagine("dominio/immagini/fatto.png"));
         riprova = new JButton(caricaImmagine("dominio/immagini/riprova.png"));
+        indietro = new JButton(caricaImmagine("dominio/immagini/indietro.png"));
         id = new JTextField();
         password = new JPasswordField();
         email = new JTextField();
@@ -90,15 +91,16 @@ public class RegistrazioneMenu extends JFrame {
         password.setFont(font);
         email.setFont(font);
 
-        fatto.setBounds(this.getWidth() / 2 - 100, 600, 200, 80);
-        riprova.setBounds(this.getWidth() / 2 - 100, 600, 200, 80);
-        id.setBounds(510, 250, 300, 80);
-        password.setBounds(510, 350, 300, 80);
-        email.setBounds(510, 450, 300, 80);
+        fatto.setBounds(this.getWidth() / 2 - 100, 530, 200, 80);
+        riprova.setBounds(this.getWidth() / 2 - 100, 530, 200, 80);
+        indietro.setBounds(this.getWidth()/2 - 100, 630, 200, 80);
+        id.setBounds(510, 230, 300, 80);
+        password.setBounds(510, 330, 300, 80);
+        email.setBounds(510, 430, 300, 80);
         richiediReg.setBounds(this.getWidth() / 2 - 271, 30, 542, 119);
-        idLabel.setBounds(211, 251, 120, 78);
-        passwordLabel.setBounds(100, 338, 342, 105);
-        emailLabel.setBounds(173, 458, 195, 75);
+        idLabel.setBounds(211, 231, 120, 78);
+        passwordLabel.setBounds(100, 318, 342, 105);
+        emailLabel.setBounds(173, 438, 195, 75);
 
         fatto.addActionListener(new ActionListener() {
             @Override
@@ -111,7 +113,6 @@ public class RegistrazioneMenu extends JFrame {
                     dispose();
                 }
             }
-        ;
         });
         
         riprova.addActionListener(new ActionListener() {
@@ -129,10 +130,17 @@ public class RegistrazioneMenu extends JFrame {
                 sfondo.add(emailLabel);
                 sfondo.repaint();
             }
-        ;
+        });
+        
+        indietro.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // torna a scegli registrazione login
+            }
         });
         
         sfondo.add(fatto);
+        sfondo.add(indietro);
         sfondo.add(id);
         sfondo.add(password);
         sfondo.add(email);
@@ -143,6 +151,12 @@ public class RegistrazioneMenu extends JFrame {
     }
 
     private boolean checkReg(String id, String pass, String email) {
+        if(id.equals(""))
+            id = "-";
+        if(pass.equals(""))
+            pass = "-";
+        if(email.equals(""))
+            email = "-";
         try {
             String messaggio_da_inviare = "registrazione " + email + " " + id + " " + pass;
             out.println(messaggio_da_inviare);

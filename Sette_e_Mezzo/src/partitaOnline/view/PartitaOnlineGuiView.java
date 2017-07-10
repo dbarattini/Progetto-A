@@ -33,7 +33,7 @@ import menuPrincipale.MenuPrincipaleGui;
 import partitaOnline.events.*;
 import partitaOnline.controller.PartitaOnlineController;
 
-public class PartitaOnlineGuiView extends JFrame implements Observer{
+public class PartitaOnlineGuiView extends JFrame implements Observer {
     private CopyOnWriteArrayList<ViewEventListener> listeners;
     private PartitaOnlineController controller;
     private Sfondo sfondo;
@@ -48,6 +48,7 @@ public class PartitaOnlineGuiView extends JFrame implements Observer{
     private final int pausa_lunga = 2000; //ms
     private AudioPlayer audio = new AudioPlayer();
     private JLabel imgSalaAttesa, fraseSalaAttesa;
+    private JButton esci;
     
     public PartitaOnlineGuiView(PartitaOnlineController controller) {
         listeners = new CopyOnWriteArrayList<>();                
@@ -78,6 +79,7 @@ public class PartitaOnlineGuiView extends JFrame implements Observer{
         
         setVisible(true);
         
+        inizializzaExitButton();
         inizializza_salaAttesa();
         if(!partitaIniziata) {            
             sfondo.add(imgSalaAttesa);
@@ -97,6 +99,17 @@ public class PartitaOnlineGuiView extends JFrame implements Observer{
         
         imgSalaAttesa.setBounds(this.getWidth()/2 - 350, 100, 700, 557);
         fraseSalaAttesa.setBounds(this.getWidth()/2 - strWidth/2, 10, strWidth, 100);
+    }
+    
+    private void inizializzaExitButton() {
+        esci = new JButton(caricaImmagine("dominio/immagini/esci.png"));
+        esci.setBounds(35, 600, 96, 58);
+        esci.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                
+            }
+        });
     }
     
     private void inizializza_audio() throws CaricamentoCanzoneException {
@@ -190,7 +203,7 @@ public class PartitaOnlineGuiView extends JFrame implements Observer{
         } else if(arg instanceof ParticellaDiSodio){
             // se rimane un giocatore solo c'è da mostrargli la schermata di aspetto. NB. ricomincia la partita
         } else if(arg instanceof PartitaPiena){
-            // dopo il login ha provato a connettersi ma il tavoo è già al completo: mostrare messaggio di indietro
+            // dopo il login ha provato a connettersi ma il tavolo è già al completo: mostrare messaggio di indietro
             controller.esci();
             new MenuPrincipaleGui();
             dispose();
@@ -235,6 +248,7 @@ public class PartitaOnlineGuiView extends JFrame implements Observer{
         pausa(pausa_lunga);
         
         sfondo.removeAll();
+        sfondo.add(esci);
         needToMarkMazziere = true;
         mazziereEstratto = true;
         for(int i = 0; i < nGiocatori; i++)
@@ -283,7 +297,6 @@ public class PartitaOnlineGuiView extends JFrame implements Observer{
     private JLabel stampaValoreMano(GiocatoreOnline giocatore) {
         int numAvversari = controller.getGiocatori().size() - 1;
         int index = controller.getGiocatori().indexOf(giocatore);
-        String nomeGiocatore = giocatore.getNome();
         if(index > controller.getGiocatori().indexOf(controller.getGiocatoreLocale()))
             index--;
         
@@ -496,6 +509,7 @@ public class PartitaOnlineGuiView extends JFrame implements Observer{
     private void stampaCartaCoperta() {
         int nGiocatori = controller.getGiocatori().size();
         sfondo.removeAll();
+        sfondo.add(esci);
         sfondo.repaint();
         
         if(!mazziereEstratto) {  // serve per far in modo che anche il 3° e 4° giocatore vedano il mazziere in arancione

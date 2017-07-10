@@ -6,6 +6,7 @@ public class provaRecuperoPw {
     
     public static void main(String[] args) {
         Client client = new Client();
-        new RecuperoPassword(client);
+        new RegistrazioneMenu(client);
+        new LoginMenu(client);
     }
 }
