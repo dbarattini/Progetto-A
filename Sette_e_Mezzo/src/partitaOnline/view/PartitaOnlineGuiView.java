@@ -29,7 +29,6 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
-import menuPrincipale.MenuPrincipaleConsole;
 import menuPrincipale.MenuPrincipaleGui;
 import partitaOnline.events.*;
 import partitaOnline.controller.PartitaOnlineController;
@@ -43,7 +42,7 @@ public class PartitaOnlineGuiView extends JFrame implements Observer {
     private JTextField puntata;
     private JLabel msgPuntata_Giocata;
     private boolean needCartaCoperta = true, mazziereEstratto = false,
-            needToMarkMazziere = false, needStatoCambiato = false, partitaIniziata = false, esciAllaFine = false;
+            needToMarkMazziere = false, needStatoCambiato = false, partitaIniziata = false, esciAFineRound = false;
     private ArrayList<JLabel> carteCoperteAvversari = new ArrayList<>();
     private Map<String, JLabel> valoriMano = new HashMap<>();
     private final int pausa_breve = 1000; //ms
@@ -109,8 +108,8 @@ public class PartitaOnlineGuiView extends JFrame implements Observer {
         esci.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                esciAllaFine = true;
-                controller.riceviEventoDaVista( new Esce());
+                esciAFineRound = true;
+                controller.riceviEventoDaVista(new Esce());
             }
         });
     }
@@ -800,7 +799,7 @@ public class PartitaOnlineGuiView extends JFrame implements Observer {
     }
 
     private void controllaUscita() {
-        if (esciAllaFine) {
+        if (esciAFineRound) {
             controller.esci();
             new MenuPrincipaleGui();
             dispose();
