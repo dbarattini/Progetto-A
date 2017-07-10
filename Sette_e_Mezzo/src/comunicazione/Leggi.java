@@ -5,7 +5,6 @@
  */
 package comunicazione;
 
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.PrintStream;
@@ -21,7 +20,7 @@ import java.util.logging.Logger;
 public class Leggi extends Observable implements Runnable {
 
     private BufferedReader reader;
-    private String message="";
+    private String message = "";
     private boolean disconnesso = false;
     PrintStream out;
 
@@ -31,19 +30,22 @@ public class Leggi extends Observable implements Runnable {
     }
 
     public void run() {
+        while (!disconnesso) {
 
-        try {
-            message = reader.readLine();
-            printMessage();
+            try {
+                message = reader.readLine();
+                printMessage();
 
-        } catch (SocketTimeoutException e) {
+            } catch (SocketTimeoutException e) {
                 run();
 
-        } catch (IOException ex) {
-            Logger.getLogger(Leggi.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IOException ex) {
+                Logger.getLogger(Leggi.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            if (message != null) {
+                run();
+            }
         }
-        if(message!=null)
-            run();
     }
 
     public void printMessage() {
@@ -51,6 +53,11 @@ public class Leggi extends Observable implements Runnable {
             this.setChanged();
             this.notifyObservers(message);
         }
+    }
+
+    public void close() throws IOException {
+        disconnesso = true;
+        reader.close();
     }
 
 }

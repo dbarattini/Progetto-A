@@ -376,9 +376,11 @@ public class PartitaOnlineModel extends Observable {
             Thread.sleep(pausa_breve);
             this.eventoPerTutti(new FineRound(giocatore.getNome(), giocatore.getCartaCoperta(), giocatore.getCarteScoperte(), giocatore.getFiches(), giocatore.getValoreMano(), giocatore.getStato(), giocatore.isMazziere(), giocatore.getPuntata()));
 
-            if (giocatore.getFiches() == 0 && !giocatore.haPerso() && !giocatore.isDisconnesso()) {
+            if (giocatore.getFiches() <= 0 && !giocatore.haPerso() && !giocatore.isDisconnesso()) {
                 this.eventoPerTutti(new GameOver(giocatore.getNome()));
                 giocatore.perde();
+                giocatore.azzera_fiches();
+                
                 if (giocatore.isMazziere()) {
                     this.eventoPerTutti(new MazzierePerde());
                     mazziere_successivo();

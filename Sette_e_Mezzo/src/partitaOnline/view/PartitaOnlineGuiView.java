@@ -148,8 +148,6 @@ public class PartitaOnlineGuiView extends JFrame implements Observer {
             stampaValoreManoFineRound(giocatore);
             stampaMessaggioFineRound(giocatore);
             checkFineRound(giocatore);
-            if (((FineRound) arg).getGiocatore().equals(controller.getGiocatoreLocale())) 
-                controllaUscita();
         } else if (arg instanceof MazzierePerde) {
             //todo mostra che il mazziere ha perso
         } else if (arg instanceof AggiornamentoMazziere) {
@@ -783,6 +781,7 @@ public class PartitaOnlineGuiView extends JFrame implements Observer {
         int nGioc = controller.getGiocatori().size();
         int indexGioc = controller.getGiocatori().indexOf(giocatore);
         if (indexGioc == (nGioc - 1)) {
+            controllaUscita();
             carteCoperteAvversari.clear();
             valoriMano.clear();
             sfondo.repaint();

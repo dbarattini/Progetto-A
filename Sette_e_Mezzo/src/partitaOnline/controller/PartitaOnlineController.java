@@ -310,7 +310,8 @@ public class PartitaOnlineController extends Observable implements ViewEventList
     
     public void esci(){
         try {
-            socket.close();
+            leggi.close();
+            socket.close();            
         } catch (IOException ex) {
             Logger.getLogger(PartitaOnlineController.class.getName()).log(Level.SEVERE, null, ex);
         }
