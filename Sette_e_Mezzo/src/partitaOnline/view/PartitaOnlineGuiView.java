@@ -168,13 +168,11 @@ public class PartitaOnlineGuiView extends JFrame implements Observer {
             //todo mostra che é stato scelto un nuovo mazziere
         } else if (arg instanceof GameOver) {
             //todo mostra che il giocatore ha perso (da testare)
-            if (((GameOver) arg).getNome().equals(controller.getGiocatoreLocale().getNome())) {
-                stampaMsg("Hai terminato le fiches! Game Over", 50);
-                pausa(pausa_lunga);
-                controller.esci();
-                new MenuPrincipaleGui();
-                dispose();
-            }
+            stampaMsg("Hai terminato le fiches! Game Over", 50);
+            pausa(pausa_lunga);
+            controller.esci();
+            new MenuPrincipaleGui();
+            dispose();
         } else if (arg instanceof Vittoria) {
             //todo mostra che il giocatore ha vinto (da testare)
             stampaMsg("Gli avversari non hanno più fiches, hai vinto!", 40);
