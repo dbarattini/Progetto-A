@@ -28,7 +28,7 @@ import partitaOnline.view.PartitaOnlineGuiView;
 public class LoginMenu extends JFrame {
 
     private Sfondo sfondo;
-    private JButton fatto, riprova;
+    private JButton fatto, riprova, indietro;
     private JTextField id;
     private JPasswordField password;
     private JLabel richiediLogin, idLabel, passwordLabel, messLogErrato;
@@ -78,6 +78,7 @@ public class LoginMenu extends JFrame {
 
         fatto = new JButton(caricaImmagine("dominio/immagini/fatto.png"));
         riprova = new JButton(caricaImmagine("dominio/immagini/riprova.png"));
+        indietro = new JButton(caricaImmagine("dominio/immagini/indietro.png"));
         id = new JTextField();
         password = new JPasswordField();
         richiediLogin = new JLabel(caricaImmagine("dominio/immagini/richiediLogin.png"));
@@ -88,8 +89,9 @@ public class LoginMenu extends JFrame {
         id.setFont(font);
         password.setFont(font);
 
-        fatto.setBounds(this.getWidth() / 2 - 100, 600, 200, 80);
-        riprova.setBounds(this.getWidth() / 2 - 100, 600, 200, 80);
+        fatto.setBounds(this.getWidth() / 2 - 100, 480, 200, 80);
+        riprova.setBounds(this.getWidth() / 2 - 100, 480, 200, 80);
+        indietro.setBounds(this.getWidth()/2 - 100, 600, 200, 80);
         id.setBounds(510, 250, 300, 80);
         password.setBounds(510, 350, 300, 80);
         richiediLogin.setBounds(this.getWidth() / 2 - 308, 30, 617, 135);
@@ -109,7 +111,6 @@ public class LoginMenu extends JFrame {
                     loginErrato();
                 }
             }
-        ;
         });
         
         riprova.addActionListener(new ActionListener() {
@@ -125,10 +126,17 @@ public class LoginMenu extends JFrame {
                 sfondo.add(passwordLabel);
                 sfondo.repaint();
             }
-        ;
+        });
+        
+        indietro.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                // torna a scegli registrazione login
+            }
         });
         
         sfondo.add(fatto);
+        sfondo.add(indietro);
         sfondo.add(id);
         sfondo.add(password);
         sfondo.add(richiediLogin);
@@ -137,6 +145,10 @@ public class LoginMenu extends JFrame {
     }
 
     private boolean checkLogin(String id, String pass) {
+        if(id.equals(""))
+            id = "-";
+        if(pass.equals(""))
+            pass = "-";
         try {
             String credenziali = id + " " + pass;
             String messaggio_da_inviare = "login " + credenziali;
@@ -158,7 +170,7 @@ public class LoginMenu extends JFrame {
                 + "<br> riprova per favore</html>");
         messLogErrato.setFont(font);
         messLogErrato.setForeground(Color.black);
-        messLogErrato.setBounds(this.getWidth() / 2 - 270, 150, 800, 400);
+        messLogErrato.setBounds(this.getWidth() / 2 - 270, 100, 800, 400);
 
         id.setText("");
         password.setText("");

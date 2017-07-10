@@ -202,14 +202,6 @@ public class MenuPrePartitaGui extends JFrame{
             };
         });        
         
-        indietro.addActionListener(new ActionListener(){
-            @Override
-            public void actionPerformed(ActionEvent e) {
-//                new GuiMenu();
-//                chiudi();
-            };
-        });
-        
         gioca.addActionListener(new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e) {
