@@ -132,7 +132,6 @@ public class LoginMenu extends JFrame {
         indietro.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                client.close();
             }
         });
         

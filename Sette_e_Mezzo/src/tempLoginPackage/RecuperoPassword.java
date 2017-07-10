@@ -115,8 +115,6 @@ public class RecuperoPassword extends JFrame {
         indietro.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                client.close();
-                dispose();
             }
         });
         
