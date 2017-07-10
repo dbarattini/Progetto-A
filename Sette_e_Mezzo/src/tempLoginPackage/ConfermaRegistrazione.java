@@ -92,7 +92,7 @@ public class ConfermaRegistrazione  extends JFrame {
                 codiceString = codice.getText();
                 if(checkCodice(codiceString)) {
                    new ScegliRegistrazioneLogin(client);
-                   //come prima
+                   dispose();
                 } else
                     codiceErrato();
             }
@@ -115,7 +115,7 @@ public class ConfermaRegistrazione  extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 new ScegliRegistrazioneLogin(client);
-                   //come prima
+                   dispose();
             }
         });
         

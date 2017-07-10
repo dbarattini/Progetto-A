@@ -134,7 +134,7 @@ public class RecuperoPassword extends JFrame {
                 + "<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp riprova per favore</html>");
         messInfoCorretta.setFont(font);
         messInfoCorretta.setForeground(Color.black);
-        messInfoCorretta.setBounds(this.getWidth() / 2 - 340, 50, 800, 400);
+        messInfoCorretta.setBounds(this.getWidth() / 2 - 350, 50, 800, 400);
 
         recupero.setText("");
 
@@ -148,12 +148,12 @@ public class RecuperoPassword extends JFrame {
     }
     
     private void infoCorretta() {
-        Font font = new Font("InfoCorrettaMsg", Font.BOLD, 40);
+        Font font = new Font("InfoCorrettaMsg", Font.BOLD, 35);
         messInfoCorretta = new JLabel("<html> La password è stata inviata all'email registrata,"
-                + "<br>&nbsp&nbsp&nbsp&nbsp fare click su indietro per uscire</html>");
+                + "<br>&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp fare click su indietro per uscire</html>");
         messInfoCorretta.setFont(font);
         messInfoCorretta.setForeground(Color.black);
-        messInfoCorretta.setBounds(this.getWidth() / 2 - 330, 50, 800, 400);
+        messInfoCorretta.setBounds(this.getWidth() / 2 - 370, 50, 800, 400);
         
         sfondo.add(messInfoCorretta);
         sfondo.remove(richiediRecupero);

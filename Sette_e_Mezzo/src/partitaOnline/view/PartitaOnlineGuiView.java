@@ -29,12 +29,13 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
+import menuPrincipale.MenuPrincipaleGui;
 import partitaOnline.events.*;
 import partitaOnline.controller.PartitaOnlineController;
 
 public class PartitaOnlineGuiView extends JFrame implements Observer{
     private CopyOnWriteArrayList<ViewEventListener> listeners;
-    private PartitaOnlineController controller;    
+    private PartitaOnlineController controller;
     private Sfondo sfondo;
     private String puntataStr, giocataStr;
     private JTextField puntata;
@@ -187,9 +188,12 @@ public class PartitaOnlineGuiView extends JFrame implements Observer{
             }
             partitaIniziata = true;
         } else if(arg instanceof ParticellaDiSodio){
-            // se rimane un giocatore solo c'è da mostrargli la schermata di aspetto
+            // se rimane un giocatore solo c'è da mostrargli la schermata di aspetto. NB. ricomincia la partita
         } else if(arg instanceof PartitaPiena){
-            // dopo il login ha provato a connettersi ma il tavoo è già al completo
+            // dopo il login ha provato a connettersi ma il tavoo è già al completo: mostrare messaggio di indietro
+            controller.esci();
+            new MenuPrincipaleGui();
+            dispose();
         }
     }
     
