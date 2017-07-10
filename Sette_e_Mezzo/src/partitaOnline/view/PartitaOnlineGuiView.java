@@ -118,7 +118,7 @@ public class PartitaOnlineGuiView extends JFrame implements Observer {
         audio.carica("LoungeBeat.wav", "soundTrack");
         audio.carica("deckShuffle.wav", "deckShuffle");
     }
-    
+
     private void resettaPartita() {
         sfondo.removeAll();
         needCartaCoperta = true;
@@ -168,11 +168,13 @@ public class PartitaOnlineGuiView extends JFrame implements Observer {
             //todo mostra che é stato scelto un nuovo mazziere
         } else if (arg instanceof GameOver) {
             //todo mostra che il giocatore ha perso (da testare)
-            stampaMsg("Hai terminato le fiches! Game Over", 50);
-            pausa(pausa_lunga);
-            controller.esci();
-            new MenuPrincipaleGui();
-            dispose();
+            if (((GameOver) arg).getNome().equals(controller.getGiocatoreLocale().getNome())) {
+                stampaMsg("Hai terminato le fiches! Game Over", 50);
+                pausa(pausa_lunga);
+                controller.esci();
+                new MenuPrincipaleGui();
+                dispose();
+            }
         } else if (arg instanceof Vittoria) {
             //todo mostra che il giocatore ha vinto (da testare)
             stampaMsg("Gli avversari non hanno più fiches, hai vinto!", 40);
@@ -226,8 +228,9 @@ public class PartitaOnlineGuiView extends JFrame implements Observer {
             }
         } else if (arg instanceof IniziaPartita) {
             if (imgSalaAttesa != null && fraseSalaAttesa != null) {
-                if(esci != null)
+                if (esci != null) {
                     sfondo.remove(esci);
+                }
                 sfondo.remove(imgSalaAttesa);
                 sfondo.remove(fraseSalaAttesa);
                 sfondo.repaint();
@@ -240,7 +243,7 @@ public class PartitaOnlineGuiView extends JFrame implements Observer {
             sfondo.add(fraseSalaAttesa);
             sfondo.add(esci);
             sfondo.repaint();
-            
+
         } else if (arg instanceof PartitaPiena) {
             // dopo il login ha provato a connettersi ma il tavolo è già al completo: mostrare messaggio di indietro (da testare)
             stampaMsg("Tavolo pieno, riprova tra poco!", 60);
