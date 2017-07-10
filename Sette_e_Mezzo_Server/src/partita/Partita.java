@@ -70,6 +70,7 @@ public class Partita extends Thread {
             }
         }else if (iniziata) {
             iniziata = false;
+            model= new PartitaOnlineModel();
         }
     }
 
