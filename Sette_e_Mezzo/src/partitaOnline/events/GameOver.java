@@ -7,16 +7,9 @@ import java.io.Serializable;
  * @author xXEgoOneXx
  */
 public class GameOver implements Serializable{
-    private String nome;
 
-    public GameOver(String nome) {
-        this.nome=nome;
+    public GameOver() {
     }
-
-    public String getNome() {
-        return nome;
-    }
-    
 
     /**
      *
