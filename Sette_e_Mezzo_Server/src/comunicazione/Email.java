@@ -16,6 +16,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.mail.Message;
 import javax.mail.MessagingException;
+import javax.mail.SendFailedException;
 import javax.mail.Session;
 import javax.mail.internet.AddressException;
 import javax.mail.internet.InternetAddress;
@@ -33,7 +34,7 @@ public class Email {
      * @param destinatario email del destinatario
      * @param codice codice da mandare
      */
-    public void inviaCodice(String destinatario, int codice){
+    public void inviaCodice(String destinatario, int codice)throws SendFailedException{
         String msg="Buongiornissimo,\n"
                 + "Per convalidare il tuo indirizzo email inserire "+codice+" nell'aplicazione.\n"
                 + "Grazie.\n"
@@ -75,7 +76,7 @@ public class Email {
      
 
     
-    private static void Send(final String username, final String password, String recipientEmail, String title, String message) throws AddressException, MessagingException {
+    private static void Send(final String username, final String password, String recipientEmail, String title, String message) throws AddressException, MessagingException, SendFailedException {
         Email.Send(username, password, recipientEmail, "", title, message);
     }
 
@@ -91,7 +92,7 @@ public class Email {
      * @throws AddressException if the email address parse failed
      * @throws MessagingException if the connection is dead or not in the connected state or if the message is not a MimeMessage
      */
-    private static void Send(final String username, final String password, String recipientEmail, String ccEmail, String title, String message) throws AddressException, MessagingException {
+    private static void Send(final String username, final String password, String recipientEmail, String ccEmail, String title, String message) throws AddressException, MessagingException, SendFailedException {
         Security.addProvider(new com.sun.net.ssl.internal.ssl.Provider());
         final String SSL_FACTORY = "javax.net.ssl.SSLSocketFactory";
 
@@ -134,12 +135,7 @@ public class Email {
         SMTPTransport t = (SMTPTransport)session.getTransport("smtps");
 
         t.connect("smtp.gmail.com", username, password);
-        try{
         t.sendMessage(msg, msg.getAllRecipients());   
-        }
-        catch( Error e){
-            System.out.println("Errore, "+recipientEmail+" non esiste");
-        }
         t.close();
     }
     
