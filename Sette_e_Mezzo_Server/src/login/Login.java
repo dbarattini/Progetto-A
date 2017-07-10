@@ -162,9 +162,8 @@ public class Login extends Thread {
                 email.inviaCodice(mail, codice);
                 giocatore.scrivi("convalida inviata");
             } catch (SendFailedException ex) {
-                Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
-            }
-            giocatore.scrivi("registrazione email non valida");
+                giocatore.scrivi("registrazione email non valida");
+            }            
         }
         run();
     }
