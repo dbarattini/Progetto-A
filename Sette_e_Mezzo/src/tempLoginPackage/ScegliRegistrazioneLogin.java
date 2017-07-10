@@ -28,8 +28,6 @@ public class ScegliRegistrazioneLogin extends JFrame {
         inizializzaGUI();
         
         client= new Client();
-        
-        setVisible(true);
     }
     
     public ScegliRegistrazioneLogin(Client client) {
@@ -44,8 +42,6 @@ public class ScegliRegistrazioneLogin extends JFrame {
         inizializzaGUI();
         
         this.client= client;
-        
-        setVisible(true);
     }
     
     private void inizializzaGUI() {
