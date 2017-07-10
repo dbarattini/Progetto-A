@@ -104,7 +104,8 @@ public class RegistrazioneMenu extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 idString = id.getText();
-                passwordString = Arrays.toString(password.getPassword());
+                passwordString = new String(password.getPassword());
+                emailString = email.getText();
                 if (checkReg(idString, passwordString, emailString)) {
                     new ConfermaRegistrazione(client);
                     dispose();
