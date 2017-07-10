@@ -107,7 +107,7 @@ public class RegistrazioneMenu extends JFrame {
                 passwordString = Arrays.toString(password.getPassword());
                 if (checkReg(idString, passwordString, emailString)) {
                     new ConfermaRegistrazione(client);
-                    //quì chè da fare dispose
+                    dispose();
                 }
             }
         ;

@@ -2,7 +2,7 @@ package tempLoginPackage;
 
 import comunicazione.Client;
 
-public class provaConfReg {
+public class provaRecuperoPw {
     
     public static void main(String[] args) {
         Client client = new Client();
