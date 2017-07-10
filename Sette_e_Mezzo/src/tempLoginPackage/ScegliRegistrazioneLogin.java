@@ -30,6 +30,20 @@ public class ScegliRegistrazioneLogin extends JFrame {
         client= new Client();
     }
     
+    public ScegliRegistrazioneLogin(Client client) {
+        setTitle("Fai il Login o Registrati !");
+        setPreferredSize(new Dimension(1000, 800));
+        setMinimumSize(new Dimension(1000, 800));
+        pack();
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setResizable(false);
+        setLocationRelativeTo(null);
+
+        inizializzaGUI();
+        
+        this.client= client;
+    }
+    
     private void inizializzaGUI() {
         sfondo = new Sfondo("dominio/immagini/sfondo.png", 995, 765);
         sfondo.setBounds(0, 0, 1000, 800);
@@ -46,7 +60,7 @@ public class ScegliRegistrazioneLogin extends JFrame {
         login.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new LoginMenu(client.getSocketClient());
+                new LoginMenu(client);
                 dispose();
             }
         });
@@ -54,7 +68,7 @@ public class ScegliRegistrazioneLogin extends JFrame {
         regis.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new RegistrazioneMenu(client.getSocketClient());
+                new RegistrazioneMenu(client);
                 dispose();
             }
         });

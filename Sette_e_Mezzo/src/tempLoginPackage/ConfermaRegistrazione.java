@@ -21,7 +21,6 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
-import menuPrincipale.MenuPrincipaleGui;
 import partitaOnline.controller.PartitaOnlineController;
 
 public class ConfermaRegistrazione  extends JFrame {
@@ -31,16 +30,17 @@ public class ConfermaRegistrazione  extends JFrame {
     private JTextField codice;
     private JLabel richiediCodice, messCodErrato;
     private String codiceString = null;
-    
     private Client client;
+    
     private BufferedReader in;
     private PrintWriter out;
     private Socket socketClient;
     private PartitaOnlineController controller;
     
-    public ConfermaRegistrazione() {   // x Mark: se vuoi passargli client o socket della registrazione modifica come vuoi
-        client = new Client();
-        inizializzaConnessione(client.getSocketClient());
+    public ConfermaRegistrazione(Client client) { 
+        this.client=client;
+        this.socketClient=client.getSocketClient();
+        inizializzaConnessione();
         setTitle("Conferma registrazione");
         setPreferredSize(new Dimension(1000, 800));
         setMinimumSize(new Dimension(1000, 800));
@@ -54,11 +54,10 @@ public class ConfermaRegistrazione  extends JFrame {
         setVisible(true);        
     }
     
-    private void inizializzaConnessione(Socket socketClient1) {
+    private void inizializzaConnessione() {
         try {
-            this.socketClient = socketClient1;
-            in = new BufferedReader(new InputStreamReader(socketClient1.getInputStream()));
-            out = new PrintWriter(socketClient1.getOutputStream(), true);
+            in = new BufferedReader(new InputStreamReader(socketClient.getInputStream()));
+            out = new PrintWriter(socketClient.getOutputStream(), true);
         } catch (UnknownHostException ex) {
             System.err.println("Host sconosciuto");
         } catch (Exception e) {
@@ -92,7 +91,8 @@ public class ConfermaRegistrazione  extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 codiceString = codice.getText();
                 if(checkCodice(codiceString)) {
-                    // vai su LoginMenu per loggarti e giocare
+                   new ScegliRegistrazioneLogin(client);
+                   //come prima
                 } else
                     codiceErrato();
             }
@@ -114,7 +114,8 @@ public class ConfermaRegistrazione  extends JFrame {
         indietro.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // torna indietro a RegistrazioneMenu
+                new ScegliRegistrazioneLogin(client);
+                   //come prima
             }
         });
         
@@ -126,9 +127,16 @@ public class ConfermaRegistrazione  extends JFrame {
     }
     
     private boolean checkCodice(String codice) {
-        
-        // controlla codice, tutto per te Mark :P
-        
+        try {
+            String messaggio_da_inviare = "convalida " + codice;
+            out.println(messaggio_da_inviare);
+            String risposta = in.readLine();
+            if(risposta.equals("registrazione effetuata"))
+                return true;          
+            
+        } catch (IOException ex) {
+            Logger.getLogger(ConfermaRegistrazione.class.getName()).log(Level.SEVERE, null, ex);
+        }
         return false;
     }
     

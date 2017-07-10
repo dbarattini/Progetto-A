@@ -15,6 +15,6 @@ import tempLoginPackage.LoginMenu;
 public class PartitaOnlineGui {
     public static void main(String[] args) {
         Client client= new Client();
-        LoginMenu login=new LoginMenu(client.getSocketClient());
+        LoginMenu login=new LoginMenu(client);
     }
 }

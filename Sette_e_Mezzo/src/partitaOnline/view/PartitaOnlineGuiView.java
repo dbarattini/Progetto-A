@@ -186,6 +186,10 @@ public class PartitaOnlineGuiView extends JFrame implements Observer{
                 sfondo.repaint();
             }
             partitaIniziata = true;
+        } else if(arg instanceof ParticellaDiSodio){
+            // se rimane un giocatore solo c'è da mostrargli la schermata di aspetto
+        } else if(arg instanceof PartitaPiena){
+            // dopo il login ha provato a connettersi ma il tavoo è già al completo
         }
     }
     

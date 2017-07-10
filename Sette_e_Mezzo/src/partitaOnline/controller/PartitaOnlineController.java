@@ -70,6 +70,9 @@ public class PartitaOnlineController extends Observable implements ViewEventList
             gestisciSettaggio(dati);
         } else if (dati[0].equals("cambia")) {
             gestisciCambiamento(dati);
+        } else if(dati[0].equals("partitaPiena")){
+            this.setChanged();
+            this.notifyObservers(new PartitaPiena());
         }
 
     }
