@@ -121,9 +121,9 @@ public class RecuperoPassword extends JFrame {
         sfondo.repaint();
     }
     
-    private boolean checkInfo(String info) { if(info.equals("1")) return true;
+    private boolean checkInfo(String info) {
         
-        // controlla codice, tutto per te Mark :P
+        // controlla mail o id, tutto per te Mark :P
         
         return false;
     }
