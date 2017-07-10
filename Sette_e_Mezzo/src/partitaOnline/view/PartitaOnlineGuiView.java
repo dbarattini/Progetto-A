@@ -118,8 +118,22 @@ public class PartitaOnlineGuiView extends JFrame implements Observer {
         audio.carica("LoungeBeat.wav", "soundTrack");
         audio.carica("deckShuffle.wav", "deckShuffle");
     }
+    
+    private void resettaPartita() {
+        sfondo.removeAll();
+        needCartaCoperta = true;
+        mazziereEstratto = false;
+        needToMarkMazziere = false;
+        needStatoCambiato = false;
+        partitaIniziata = false;
+        esciAFineRound = false;
+        controllaUscita();
+        carteCoperteAvversari.clear();
+        valoriMano.clear();
+        sfondo.repaint();
+    }
 
-    public ImageIcon caricaImmagine(String nome) {
+    private ImageIcon caricaImmagine(String nome) {
         ClassLoader caricatore = getClass().getClassLoader();
         URL percorso = caricatore.getResource(nome);
         return new ImageIcon(percorso);
@@ -202,15 +216,25 @@ public class PartitaOnlineGuiView extends JFrame implements Observer {
             }
         } else if (arg instanceof IniziaPartita) {
             if (imgSalaAttesa != null && fraseSalaAttesa != null) {
+                if(esci != null)
+                    sfondo.remove(esci);
                 sfondo.remove(imgSalaAttesa);
                 sfondo.remove(fraseSalaAttesa);
                 sfondo.repaint();
             }
             partitaIniziata = true;
         } else if (arg instanceof ParticellaDiSodio) {
-            // se rimane un giocatore solo c'è da mostrargli la schermata di aspetto. NB. ricomincia la partita
+            // se rimane un giocatore solo c'è da mostrargli la schermata di attesa. NB: ricomincia la partita
+            resettaPartita();
+            sfondo.add(imgSalaAttesa);
+            sfondo.add(fraseSalaAttesa);
+            sfondo.add(esci);
+            sfondo.repaint();
+            
         } else if (arg instanceof PartitaPiena) {
             // dopo il login ha provato a connettersi ma il tavolo è già al completo: mostrare messaggio di indietro
+            stampaMsg("Tavolo pieno, riprova tra poco!");
+            pausa(1500);
             controller.esci();
             new MenuPrincipaleGui();
             dispose();
@@ -797,6 +821,7 @@ public class PartitaOnlineGuiView extends JFrame implements Observer {
         }
     }
 
+    // controlla se il giocatore ha premuto il bottone esci, se si chiude la partita e torna al menù principale
     private void controllaUscita() {
         if (esciAFineRound) {
             controller.esci();
