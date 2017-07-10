@@ -1,5 +1,6 @@
 package tempLoginPackage;
 
+import comunicazione.Client;
 import dominio.gui.Sfondo;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -38,8 +39,11 @@ public class LoginMenu extends JFrame {
     private PrintWriter out;
     private Socket socketClient;
     private PartitaOnlineController controller;
+    private Client client;
 
-    public LoginMenu(Socket socketClient) {
+    public LoginMenu(Client client) {
+        this.client=client;
+        this.socketClient=client.getSocketClient();
         inizializzaConnessione(socketClient);
         setTitle("Login");
         setPreferredSize(new Dimension(1000, 800));
