@@ -134,7 +134,12 @@ public class Email {
         SMTPTransport t = (SMTPTransport)session.getTransport("smtps");
 
         t.connect("smtp.gmail.com", username, password);
-        t.sendMessage(msg, msg.getAllRecipients());      
+        try{
+        t.sendMessage(msg, msg.getAllRecipients());   
+        }
+        catch( Error e){
+            System.out.println("Errore, "+recipientEmail+" non esiste");
+        }
         t.close();
     }
     
