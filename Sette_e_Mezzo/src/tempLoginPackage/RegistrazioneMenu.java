@@ -106,7 +106,8 @@ public class RegistrazioneMenu extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 idString = id.getText();
-                passwordString = Arrays.toString(password.getPassword());
+                passwordString = new String(password.getPassword());
+                emailString = email.getText();
                 if (checkReg(idString, passwordString, emailString)) {
                     new ConfermaRegistrazione(client);
                     dispose();
@@ -163,9 +164,11 @@ public class RegistrazioneMenu extends JFrame {
             if (risposta.equals("convalida inviata")) {
                 return true;
             } else if (risposta.equals("registrazione email gia esistente")) {
-                regFallita("email");
+                regFallita("email già esistente.");
             } else if (risposta.equals("registrazione username gia esistente")) {
-                regFallita("username");
+                regFallita("username già esistente.");
+            } else if (risposta.equals("registrazione email non valida")){
+                regFallita("email non valida.");
             }
 
         } catch (IOException ex) {
@@ -177,7 +180,7 @@ public class RegistrazioneMenu extends JFrame {
     private void regFallita(String motivo) {
         Font font = new Font("RegFallitaMsg", Font.BOLD, 60);
         messRegFallita = new JLabel("<html>Registrazione non riuscita,<br>"
-                + motivo + " già esistente."
+                + motivo 
                 + "&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp Riprova per favore</html>");
         messRegFallita.setFont(font);
         messRegFallita.setForeground(Color.black);

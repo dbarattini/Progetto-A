@@ -12,12 +12,14 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import DB.SQL;
+import comunicazione.EmailInesistente;
 import partita.Partita;
 import dominio.giocatori.Giocatore;
 import dominio.eccezioni.GiocatoreDisconnessoException;
 import dominio.eccezioni.GiocatoreNonTrovato;
 import dominio.eccezioni.PartitaPiena;
 import dominio.eccezioni.SqlOccupato;
+import javax.mail.SendFailedException;
 
 public class Login extends Thread {
 
@@ -157,8 +159,12 @@ public class Login extends Thread {
             giocatore.scrivi("registrazione username gia esistente");
         } else {
             Email email = new Email();
-            email.inviaCodice(mail, codice);
-            giocatore.scrivi("convalida inviata");
+            try {
+                email.inviaCodice(mail, codice);
+                giocatore.scrivi("convalida inviata");
+            } catch (EmailInesistente ex) {
+                giocatore.scrivi("registrazione email non valida");
+            }            
         }
         run();
     }
