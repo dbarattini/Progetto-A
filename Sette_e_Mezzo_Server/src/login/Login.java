@@ -91,9 +91,6 @@ public class Login extends Thread {
         }
     }
 
-    private void gestisciRecupero(String[] dati) throws SqlOccupato {
-        recuperoPw(dati);
-    }
 
     private void gestisciConvalida(String[] dati) throws NumberFormatException, SqlOccupato {
         if (Integer.valueOf(dati[1]) == codice) {
@@ -121,7 +118,7 @@ public class Login extends Thread {
         }
     }
 
-    private void recuperoPw(String[] dati) throws SqlOccupato {
+    private void gestisciRecupero(String[] dati) throws SqlOccupato {
         mail = dati[1];
         if (sql.esisteEmail(mail) ){
             Email email = new Email();

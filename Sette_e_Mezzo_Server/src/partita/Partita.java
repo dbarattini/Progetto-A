@@ -94,10 +94,10 @@ public class Partita extends Thread {
         if (iniziata) {
             aggiungiGiocatori();
             rimuoviGiocatori();
-        } else if(giocatori.size()==1) {
-            rimuoviGiocatori();
-        }
+        } 
         else {
+            if(!giocatori.isEmpty())
+                rimuoviGiocatori();
             if (!giocatori_in_attesa.isEmpty()) {
                 giocatori.addAll(giocatori_in_attesa);
                 giocatori_in_attesa.clear();

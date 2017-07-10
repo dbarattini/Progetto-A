@@ -1,14 +1,14 @@
 package moduli;
 
 import comunicazione.Client;
-import tempLoginPackage.LoginConsole;
+import tempLoginPackage.PrePartitaOnlineConsole;
 
 
 public class PartitaOnlineConsole {
 
     public PartitaOnlineConsole(){
         Client client= new Client();
-        LoginConsole login = new LoginConsole(client.getSocketClient());
+        PrePartitaOnlineConsole login = new PrePartitaOnlineConsole(client.getSocketClient());
         login.comunica();
     }
 }
