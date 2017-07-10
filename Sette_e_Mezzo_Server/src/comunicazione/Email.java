@@ -34,7 +34,7 @@ public class Email {
      * @param destinatario email del destinatario
      * @param codice codice da mandare
      */
-    public void inviaCodice(String destinatario, int codice)throws SendFailedException{
+    public void inviaCodice(String destinatario, int codice)throws EmailInesistente{
         String msg="Buongiornissimo,\n"
                 + "Per convalidare il tuo indirizzo email inserire "+codice+" nell'aplicazione.\n"
                 + "Grazie.\n"
@@ -70,13 +70,15 @@ public class Email {
             Send(nome, password, destinatario, oggetto, msg);
         } catch (MessagingException ex) {
             Logger.getLogger(Email.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (EmailInesistente ex) {
+            Logger.getLogger(Email.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
      
 
     
-    private static void Send(final String username, final String password, String recipientEmail, String title, String message) throws AddressException, MessagingException, SendFailedException {
+    private static void Send(final String username, final String password, String recipientEmail, String title, String message) throws AddressException, MessagingException, EmailInesistente {
         Email.Send(username, password, recipientEmail, "", title, message);
     }
 
@@ -92,7 +94,7 @@ public class Email {
      * @throws AddressException if the email address parse failed
      * @throws MessagingException if the connection is dead or not in the connected state or if the message is not a MimeMessage
      */
-    private static void Send(final String username, final String password, String recipientEmail, String ccEmail, String title, String message) throws AddressException, MessagingException, SendFailedException {
+    private static void Send(final String username, final String password, String recipientEmail, String ccEmail, String title, String message) throws AddressException, MessagingException, EmailInesistente {
         Security.addProvider(new com.sun.net.ssl.internal.ssl.Provider());
         final String SSL_FACTORY = "javax.net.ssl.SSLSocketFactory";
 
@@ -135,7 +137,12 @@ public class Email {
         SMTPTransport t = (SMTPTransport)session.getTransport("smtps");
 
         t.connect("smtp.gmail.com", username, password);
-        t.sendMessage(msg, msg.getAllRecipients());   
+        try{
+            t.sendMessage(msg, msg.getAllRecipients()); 
+        }
+        catch (SendFailedException e){
+            throw new EmailInesistente();
+        }
         t.close();
     }
     

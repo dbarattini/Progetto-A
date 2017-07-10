@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import DB.SQL;
+import comunicazione.EmailInesistente;
 import partita.Partita;
 import dominio.giocatori.Giocatore;
 import dominio.eccezioni.GiocatoreDisconnessoException;
@@ -161,7 +162,7 @@ public class Login extends Thread {
             try {
                 email.inviaCodice(mail, codice);
                 giocatore.scrivi("convalida inviata");
-            } catch (SendFailedException ex) {
+            } catch (EmailInesistente ex) {
                 giocatore.scrivi("registrazione email non valida");
             }            
         }
