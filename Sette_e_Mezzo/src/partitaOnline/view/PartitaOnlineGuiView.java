@@ -167,7 +167,7 @@ public class PartitaOnlineGuiView extends JFrame implements Observer {
         } else if (arg instanceof AggiornamentoMazziere) {
             //todo mostra che é stato scelto un nuovo mazziere
         } else if (arg instanceof GameOver) {
-            //todo mostra che il giocatore ha perso (da testare) testato, il pulsante esci non funziona
+            //todo mostra che il giocatore ha perso (da testare)
             stampaMsg("Hai terminato le fiches! Game Over", 50);
             pausa(pausa_lunga);
             controller.esci();
@@ -234,7 +234,7 @@ public class PartitaOnlineGuiView extends JFrame implements Observer {
             }
             partitaIniziata = true;
         } else if (arg instanceof ParticellaDiSodio) {
-            // se rimane un giocatore solo c'è da mostrargli la schermata di attesa. NB: ricomincia la partita (da testare)
+            // se rimane un giocatore solo c'è da mostrargli la schermata di attesa. NB: ricomincia la partita  testato, il pulsante esci non funziona
             resettaPartita();
             sfondo.add(imgSalaAttesa);
             sfondo.add(fraseSalaAttesa);
