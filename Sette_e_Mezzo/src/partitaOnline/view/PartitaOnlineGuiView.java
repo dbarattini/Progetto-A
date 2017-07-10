@@ -167,7 +167,7 @@ public class PartitaOnlineGuiView extends JFrame implements Observer {
         } else if (arg instanceof AggiornamentoMazziere) {
             //todo mostra che é stato scelto un nuovo mazziere
         } else if (arg instanceof GameOver) {
-            //todo mostra che il giocatore ha perso (da testare)
+            //todo mostra che il giocatore ha perso (da testare) testato, il pulsante esci non funziona
             stampaMsg("Hai terminato le fiches! Game Over", 50);
             pausa(pausa_lunga);
             controller.esci();
