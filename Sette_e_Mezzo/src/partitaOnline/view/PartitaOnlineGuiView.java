@@ -102,8 +102,8 @@ public class PartitaOnlineGuiView extends JFrame implements Observer {
     }
     
     private void inizializzaExitButton() {
-        esci = new JButton(caricaImmagine("dominio/immagini/fatto.png"));
-        esci.setBounds(50, 540, 96, 58);
+        esci = new JButton(caricaImmagine("dominio/immagini/esci.png"));
+        esci.setBounds(35, 600, 96, 58);
         esci.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -200,7 +200,6 @@ public class PartitaOnlineGuiView extends JFrame implements Observer {
                 sfondo.repaint();
             }
             partitaIniziata = true;
-            sfondo.add(esci);
         } else if(arg instanceof ParticellaDiSodio){
             // se rimane un giocatore solo c'è da mostrargli la schermata di aspetto. NB. ricomincia la partita
         } else if(arg instanceof PartitaPiena){
@@ -249,6 +248,7 @@ public class PartitaOnlineGuiView extends JFrame implements Observer {
         pausa(pausa_lunga);
         
         sfondo.removeAll();
+        sfondo.add(esci);
         needToMarkMazziere = true;
         mazziereEstratto = true;
         for(int i = 0; i < nGiocatori; i++)
@@ -509,6 +509,7 @@ public class PartitaOnlineGuiView extends JFrame implements Observer {
     private void stampaCartaCoperta() {
         int nGiocatori = controller.getGiocatori().size();
         sfondo.removeAll();
+        sfondo.add(esci);
         sfondo.repaint();
         
         if(!mazziereEstratto) {  // serve per far in modo che anche il 3° e 4° giocatore vedano il mazziere in arancione
