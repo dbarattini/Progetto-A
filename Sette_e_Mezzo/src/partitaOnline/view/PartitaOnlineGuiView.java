@@ -110,6 +110,7 @@ public class PartitaOnlineGuiView extends JFrame implements Observer {
             @Override
             public void actionPerformed(ActionEvent e) {
                 esciAllaFine = true;
+                controller.riceviEventoDaVista( new Esce());
             }
         });
     }
@@ -801,7 +802,8 @@ public class PartitaOnlineGuiView extends JFrame implements Observer {
     private void controllaUscita() {
         if (esciAllaFine) {
             controller.esci();
-            new MenuPrincipaleConsole();
+            new MenuPrincipaleGui();
+            dispose();
         }
     }
 }
