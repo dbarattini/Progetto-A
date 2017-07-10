@@ -40,7 +40,7 @@ public class PartitaOnlineGuiView extends JFrame implements Observer {
     private Sfondo sfondo;
     private String puntataStr, giocataStr;
     private JTextField puntata;
-    private JLabel msgPuntata_Giocata;
+    private JLabel msgDaStampare;
     private boolean needCartaCoperta = true, mazziereEstratto = false,
             needToMarkMazziere = false, needStatoCambiato = false, partitaIniziata = false, esciAFineRound = false;
     private ArrayList<JLabel> carteCoperteAvversari = new ArrayList<>();
@@ -167,9 +167,19 @@ public class PartitaOnlineGuiView extends JFrame implements Observer {
         } else if (arg instanceof AggiornamentoMazziere) {
             //todo mostra che é stato scelto un nuovo mazziere
         } else if (arg instanceof GameOver) {
-            //todo mostra che il giocatore ha perso
+            //todo mostra che il giocatore ha perso (da testare)
+            stampaMsg("Hai terminato le fiches! Game Over", 50);
+            pausa(pausa_lunga);
+            controller.esci();
+            new MenuPrincipaleGui();
+            dispose();
         } else if (arg instanceof Vittoria) {
-            //todo mostra che il giocatore ha vinto
+            //todo mostra che il giocatore ha vinto (da testare)
+            stampaMsg("Gli avversari non hanno più fiches, hai vinto!", 40);
+            pausa(pausa_lunga);
+            controller.esci();
+            new MenuPrincipaleGui();
+            dispose();
         } else if (arg instanceof RichiediPuntata) {
             stampaPuntataPlayer();
             needStatoCambiato = true;
@@ -178,19 +188,19 @@ public class PartitaOnlineGuiView extends JFrame implements Observer {
         } else if (arg instanceof GiocatoreStaPuntando) {
             String nomeGioc = ((GiocatoreStaPuntando) arg).getNome();
             if (getGiocatore(nomeGioc) != controller.getGiocatoreLocale()) {
-                stampaMsg(nomeGioc + " sta puntando");
+                stampaMsg(nomeGioc + " sta puntando", 70);
             }
             needStatoCambiato = true;
         } else if (arg instanceof GiocatoreHaPuntato) {
             String nomeGioc = ((GiocatoreHaPuntato) arg).getGiocatore();
             if (getGiocatore(nomeGioc) != controller.getGiocatoreLocale()) {
-                sfondo.remove(msgPuntata_Giocata);
+                sfondo.remove(msgDaStampare);
                 sfondo.repaint();
             }
         } else if (arg instanceof GiocatoreIniziaTurno) {
             String nomeGioc = ((GiocatoreIniziaTurno) arg).getGiocatore();
             if (getGiocatore(nomeGioc) != controller.getGiocatoreLocale()) {
-                stampaMsg(nomeGioc + " sta giocando");
+                stampaMsg(nomeGioc + " sta giocando", 70);
             }
         } else if (arg instanceof GiocatoreHaPescato) {
             GiocatoreOnline giocatore = ((GiocatoreHaPescato) arg).getGiocatore();
@@ -200,7 +210,7 @@ public class PartitaOnlineGuiView extends JFrame implements Observer {
         } else if (arg instanceof GiocatoreSta) {
             String nomeGioc = ((GiocatoreSta) arg).getGiocatore();
             if (getGiocatore(nomeGioc) != controller.getGiocatoreLocale()) {
-                sfondo.remove(msgPuntata_Giocata);
+                sfondo.remove(msgDaStampare);
                 sfondo.repaint();
             }
         } else if (arg instanceof StatoCambiato) {
@@ -208,7 +218,7 @@ public class PartitaOnlineGuiView extends JFrame implements Observer {
                 String nomeGioc = ((StatoCambiato) arg).getNome();
                 if (getGiocatore(nomeGioc) != controller.getGiocatoreLocale()) {
                     stampaStatoAvversario(nomeGioc);
-                    sfondo.remove(msgPuntata_Giocata);
+                    sfondo.remove(msgDaStampare);
                     sfondo.repaint();
                 } else {
                     stampaStatoPlayer();
@@ -224,7 +234,7 @@ public class PartitaOnlineGuiView extends JFrame implements Observer {
             }
             partitaIniziata = true;
         } else if (arg instanceof ParticellaDiSodio) {
-            // se rimane un giocatore solo c'è da mostrargli la schermata di attesa. NB: ricomincia la partita
+            // se rimane un giocatore solo c'è da mostrargli la schermata di attesa. NB: ricomincia la partita (da testare)
             resettaPartita();
             sfondo.add(imgSalaAttesa);
             sfondo.add(fraseSalaAttesa);
@@ -232,8 +242,8 @@ public class PartitaOnlineGuiView extends JFrame implements Observer {
             sfondo.repaint();
             
         } else if (arg instanceof PartitaPiena) {
-            // dopo il login ha provato a connettersi ma il tavolo è già al completo: mostrare messaggio di indietro
-            stampaMsg("Tavolo pieno, riprova tra poco!");
+            // dopo il login ha provato a connettersi ma il tavolo è già al completo: mostrare messaggio di indietro (da testare)
+            stampaMsg("Tavolo pieno, riprova tra poco!", 60);
             pausa(1500);
             controller.esci();
             new MenuPrincipaleGui();
@@ -657,16 +667,16 @@ public class PartitaOnlineGuiView extends JFrame implements Observer {
         sfondo.repaint();
     }
 
-    // stampa il messaggio passato (usato per stampare " giocatore sta puntando/giocando ")
-    private void stampaMsg(String msg) {
-        Font font = new Font("MsgGiocataAvversario", Font.BOLD, 70);
-        msgPuntata_Giocata = new JLabel(msg);
-        msgPuntata_Giocata.setFont(font);
-        msgPuntata_Giocata.setForeground(Color.black);
-        int strWidth = msgPuntata_Giocata.getFontMetrics(font).stringWidth(msg);
-        msgPuntata_Giocata.setBounds(this.getWidth() / 2 - strWidth / 2, this.getHeight() / 2 - 60, strWidth, 90);
+    // stampa il messaggio passato
+    private void stampaMsg(String msg, int dimensione) {
+        Font font = new Font("MsgGiocataAvversario", Font.BOLD, dimensione);
+        msgDaStampare = new JLabel(msg);
+        msgDaStampare.setFont(font);
+        msgDaStampare.setForeground(Color.black);
+        int strWidth = msgDaStampare.getFontMetrics(font).stringWidth(msg);
+        msgDaStampare.setBounds(this.getWidth() / 2 - strWidth / 2, this.getHeight() / 2 - 60, strWidth, 90);
 
-        sfondo.add(msgPuntata_Giocata);
+        sfondo.add(msgDaStampare);
         sfondo.repaint();
     }
 
