@@ -1,5 +1,6 @@
 package tempLoginPackage;
 
+import comunicazione.Client;
 import dominio.gui.Sfondo;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -33,12 +34,15 @@ public class RegistrazioneMenu extends JFrame {
     private JLabel richiediReg, idLabel, passwordLabel, emailLabel, messRegFallita;
     private String idString = null, passwordString = null, emailString = null;
     private boolean regConfermata = false;
+    private Client client;
 
     private BufferedReader in;
     private PrintWriter out;
     private Socket socketClient;
 
-    public RegistrazioneMenu(Socket socketClient) {
+    public RegistrazioneMenu(Client client) {
+        this.client=client;
+        this.socketClient=client.getSocketClient();
         inizializzaConnessione(socketClient);
         setTitle("Registrazione");
         setPreferredSize(new Dimension(1000, 800));
@@ -102,7 +106,8 @@ public class RegistrazioneMenu extends JFrame {
                 idString = id.getText();
                 passwordString = Arrays.toString(password.getPassword());
                 if (checkReg(idString, passwordString, emailString)) {
-                    // c'è da fare partire la convlaida!
+                    new ConfermaRegistrazione(client);
+                    //quì chè da fare dispose
                 }
             }
         ;
