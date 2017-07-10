@@ -95,7 +95,6 @@ public class ScegliRegistrazioneLogin extends JFrame implements ActionListener{
         indietro.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                client.close();
             }
         });
         
