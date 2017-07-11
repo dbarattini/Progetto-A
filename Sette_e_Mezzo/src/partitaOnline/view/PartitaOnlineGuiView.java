@@ -850,6 +850,7 @@ public class PartitaOnlineGuiView extends JFrame implements Observer {
         int indexGioc = controller.getGiocatori().indexOf(giocatore);
         if (indexGioc == (nGioc - 1)) {
             controllaUscita();
+            sfondo.remove(esci);
             carteCoperteAvversari.clear();
             valoriMano.clear();
             sfondo.repaint();
