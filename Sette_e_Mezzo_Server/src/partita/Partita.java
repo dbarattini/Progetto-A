@@ -26,16 +26,16 @@ public class Partita extends Thread {
     }
 
     public void aggiungiGiocatore(Giocatore giocatore) throws PartitaPiena {
-        if (giocatori.size()+giocatori_in_attesa.size() < 5) {
+        if (giocatori.size() + giocatori_in_attesa.size() < 5) {
             this.giocatori_in_attesa.add(giocatore);
             try {
                 Thread.sleep(100); //da il tempo di stabilizzare la connessione e caricare eventuali gui
             } catch (InterruptedException ex) {
                 Logger.getLogger(Partita.class.getName()).log(Level.SEVERE, null, ex);
             }
-        }
-        else
+        } else {
             throw new PartitaPiena();
+        }
     }
 
     @Override
@@ -53,6 +53,7 @@ public class Partita extends Thread {
             Logger.getLogger(Partita.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+
     private void giocaPartita() {
         if (giocatori.size() > 1) {
             if (iniziata) {
@@ -62,16 +63,16 @@ public class Partita extends Thread {
                 iniziaPartita();
                 iniziata = true;
             }
-        } else if(iniziata && giocatori.size()==1){
-            if(!giocatori.get(0).isParticellaDiSodio()){
+        } else if (iniziata && giocatori.size() == 1) {
+            if (!giocatori.get(0).isParticellaDiSodio()) {
                 giocatori.get(0).scriviOggetto(new ParticellaDiSodio()); //c'è nessunoooo?!
                 giocatori.get(0).setParticellaDiSodio(true);
-                iniziata=false;
-                model= new PartitaOnlineModel();
+                iniziata = false;
+                model = new PartitaOnlineModel();
             }
-        }else if (iniziata) {
+        } else if (iniziata) {
             iniziata = false;
-            model= new PartitaOnlineModel();
+            model = new PartitaOnlineModel();
         }
     }
 
@@ -85,7 +86,9 @@ public class Partita extends Thread {
 
     private void iniziaPartita() {
         try {
-            giocatori.get(0).setParticellaDiSodio(false);
+            for (Giocatore gioc : giocatori) {
+                gioc.inizzializzaGiocatore();
+            }
             this.model.inizializza_partita((ArrayList<Giocatore>) giocatori.clone());
         } catch (InterruptedException ex) {
             Logger.getLogger(Partita.class.getName()).log(Level.SEVERE, null, ex);
@@ -96,10 +99,10 @@ public class Partita extends Thread {
         if (iniziata) {
             aggiungiGiocatori();
             rimuoviGiocatori();
-        } 
-        else {
-            if(!giocatori.isEmpty())
+        } else {
+            if (!giocatori.isEmpty()) {
                 rimuoviGiocatori();
+            }
             if (!giocatori_in_attesa.isEmpty()) {
                 giocatori.addAll(giocatori_in_attesa);
                 giocatori_in_attesa.clear();
