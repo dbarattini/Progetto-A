@@ -44,7 +44,6 @@ public class Login extends Thread {
         } catch (PartitaPiena ex) {
             System.out.println("Partita piena, prego riprovare più tardi");
             giocatore.scrivi("partitaPiena");
-            Logger.getLogger(Login.class.getName()).log(Level.SEVERE, null, ex);
         }
 
     }
