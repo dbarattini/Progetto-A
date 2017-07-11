@@ -78,7 +78,7 @@ public class Giocatore implements Observer {
     }
 
     
-    public void inizzializza_giocatore(){
+    public void inizzializzaGiocatore(){
         mazziere=false;
         valore_mano=0;
         particellaDiSodio=false;
