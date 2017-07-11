@@ -77,6 +77,12 @@ public class Giocatore implements Observer {
         }
     }
 
+    
+    public void inizzializza_giocatore(){
+        mazziere=false;
+        valore_mano=0;
+        particellaDiSodio=false;
+    }
     /**
      * Inizializzazione prima di giocare una nuova mano. - Elimina la carta
      * coperta della mano precedente - Elimina le carte scoperte della mano
