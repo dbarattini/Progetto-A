@@ -41,8 +41,8 @@ public class PartitaOnlineGuiView extends JFrame implements Observer {
     private String puntataStr, giocataStr;
     private JTextField puntata;
     private JLabel msgDaStampare;
-    private boolean needCartaCoperta = true, mazziereEstratto = false,
-            needToMarkMazziere = false, needStatoCambiato = false, partitaIniziata = false, esciAFineRound = false;
+    private boolean needCartaCoperta = true, mazziereEstratto = false, needToMarkMazziere = false,
+            needStatoCambiato = false, partitaIniziata = false, esciAFineRound = false, partitaPiena = false;
     private ArrayList<JLabel> carteCoperteAvversari = new ArrayList<>();
     private Map<String, JLabel> valoriMano = new HashMap<>();
     private final int pausa_breve = 1000; //ms
@@ -86,7 +86,8 @@ public class PartitaOnlineGuiView extends JFrame implements Observer {
             sfondo.add(imgSalaAttesa);
             sfondo.add(fraseSalaAttesa);
             sfondo.repaint();
-        }
+        } else if(partitaPiena)
+            partitaPienaExit();
     }
 
     private void inizializza_salaAttesa() {
@@ -110,6 +111,17 @@ public class PartitaOnlineGuiView extends JFrame implements Observer {
             public void actionPerformed(ActionEvent e) {
                 esciAFineRound = true;
                 controller.riceviEventoDaVista(new Esce());
+                
+                Font font = new Font("ExitMsg", Font.BOLD, 25);
+                JLabel msg = new JLabel("Uscita a fine round");
+                msg.setFont(font);
+                msg.setForeground(Color.red);
+                int strWidth = msg.getFontMetrics(font).stringWidth("Uscita a fine round");
+                msg.setBounds(35, 610, strWidth, 60);
+
+                sfondo.remove(esci);
+                sfondo.add(msg);
+                sfondo.repaint();
             }
         });
     }
@@ -117,6 +129,7 @@ public class PartitaOnlineGuiView extends JFrame implements Observer {
     private void inizializza_audio() throws CaricamentoCanzoneException {
         audio.carica("LoungeBeat.wav", "soundTrack");
         audio.carica("deckShuffle.wav", "deckShuffle");
+        audio.carica("ApplausiSetteEMezzo.wav", "applausiSEM");
     }
 
     private void resettaPartita() {
@@ -127,10 +140,24 @@ public class PartitaOnlineGuiView extends JFrame implements Observer {
         needStatoCambiato = false;
         partitaIniziata = false;
         esciAFineRound = false;
-        controllaUscita();
         carteCoperteAvversari.clear();
         valoriMano.clear();
         sfondo.repaint();
+        controllaUscita();
+    }
+    
+    private void partitaPienaExit() {
+        stampaMsg("Tavolo pieno, riprova tra poco!", 60);
+        pausa(1500);
+        try {
+            audio.ferma("soundTrack");
+            audio.riavvolgi("soundTrack");
+        } catch (CanzoneNonTrovataException ex) {
+            Logger.getLogger(PartitaOnlineGuiView.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        controller.esci();
+        new MenuPrincipaleGui();
+        dispose();
     }
 
     private ImageIcon caricaImmagine(String nome) {
@@ -170,6 +197,12 @@ public class PartitaOnlineGuiView extends JFrame implements Observer {
             //todo mostra che il giocatore ha perso (da testare)
             stampaMsg("Hai terminato le fiches! Game Over", 50);
             pausa(pausa_lunga);
+            try {
+                audio.ferma("soundTrack");
+                audio.riavvolgi("soundTrack");
+            } catch (CanzoneNonTrovataException ex) {
+                Logger.getLogger(PartitaOnlineGuiView.class.getName()).log(Level.SEVERE, null, ex);
+            }
             controller.esci();
             new MenuPrincipaleGui();
             dispose();
@@ -237,11 +270,7 @@ public class PartitaOnlineGuiView extends JFrame implements Observer {
 
         } else if (arg instanceof PartitaPiena) {
             // dopo il login ha provato a connettersi ma il tavolo è già al completo: mostrare messaggio di indietro (da testare)
-            stampaMsg("Tavolo pieno, riprova tra poco!", 60);
-            pausa(1500);
-            controller.esci();
-            new MenuPrincipaleGui();
-            dispose();
+            partitaPiena = true;
         }
     }
 
@@ -285,7 +314,6 @@ public class PartitaOnlineGuiView extends JFrame implements Observer {
         pausa(pausa_lunga);
 
         sfondo.removeAll();
-        sfondo.add(esci);
         needToMarkMazziere = true;
         mazziereEstratto = true;
         for (int i = 0; i < nGiocatori; i++) {
@@ -706,11 +734,23 @@ public class PartitaOnlineGuiView extends JFrame implements Observer {
                 stato = new JLabel("SETTE E MEZZO");
                 stato.setFont(font);
                 stato.setForeground(Color.cyan);
+                try {
+                    audio.riproduci("applausiSEM");
+                    audio.riavvolgi("applausiSEM");
+                } catch (CanzoneNonTrovataException ex) {
+                    ex.printStackTrace();
+                }
                 break;
             case SetteeMezzoReale:
                 stato = new JLabel("SETTE E MEZZO REALE");
                 stato.setFont(font);
                 stato.setForeground(Color.magenta);
+                try {
+                    audio.riproduci("applausiSEM");
+                    audio.riavvolgi("applausiSEM");
+                } catch (CanzoneNonTrovataException ex) {
+                    ex.printStackTrace();
+                }
                 break;
             default:
                 break;
@@ -828,6 +868,12 @@ public class PartitaOnlineGuiView extends JFrame implements Observer {
     // controlla se il giocatore ha premuto il bottone esci, se si chiude la partita e torna al menù principale
     private void controllaUscita() {
         if (esciAFineRound) {
+            try {
+                audio.ferma("soundTrack");
+                audio.riavvolgi("soundTrack");
+            } catch (CanzoneNonTrovataException ex) {
+                Logger.getLogger(PartitaOnlineGuiView.class.getName()).log(Level.SEVERE, null, ex);
+            }            
             controller.esci();
             new MenuPrincipaleGui();
             dispose();
