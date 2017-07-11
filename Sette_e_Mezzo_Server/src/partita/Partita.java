@@ -68,11 +68,13 @@ public class Partita extends Thread {
                 giocatori.get(0).scriviOggetto(new ParticellaDiSodio()); //c'è nessunoooo?!
                 giocatori.get(0).setParticellaDiSodio(true);
                 iniziata = false;
-                model = new PartitaOnlineModel();
+                PartitaOnlineModel buff= new PartitaOnlineModel();
+                model = buff;
             }
         } else if (iniziata) {
             iniziata = false;
-            model = new PartitaOnlineModel();
+            PartitaOnlineModel buff= new PartitaOnlineModel();
+            model = buff;
         }
     }
 
