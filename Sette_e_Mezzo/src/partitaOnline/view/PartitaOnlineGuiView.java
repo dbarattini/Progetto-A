@@ -173,13 +173,6 @@ public class PartitaOnlineGuiView extends JFrame implements Observer {
             controller.esci();
             new MenuPrincipaleGui();
             dispose();
-        } else if (arg instanceof Vittoria) {
-            //todo mostra che il giocatore ha vinto (da testare)
-            stampaMsg("Gli avversari non hanno più fiches, hai vinto!", 40);
-            pausa(pausa_lunga);
-            controller.esci();
-            new MenuPrincipaleGui();
-            dispose();
         } else if (arg instanceof RichiediPuntata) {
             stampaPuntataPlayer();
             needStatoCambiato = true;
