@@ -30,7 +30,6 @@ public class RecuperoPassword extends JFrame {
     private JTextField recupero;
     private JLabel richiediRecupero, messInfoCorretta;
     private String infoString = null;
-    
     private Client client;
     private BufferedReader in;
     private PrintWriter out;
@@ -39,7 +38,7 @@ public class RecuperoPassword extends JFrame {
     
     public RecuperoPassword(Client client) {
         this.client = client;
-        inizializzaConnessione(client.getSocketClient());
+        socketClient = client.getSocketClient();
         setTitle("Conferma registrazione");
         setPreferredSize(new Dimension(1000, 800));
         setMinimumSize(new Dimension(1000, 800));
@@ -48,9 +47,12 @@ public class RecuperoPassword extends JFrame {
         setResizable(false);
         setLocationRelativeTo(null);
 
-        inizializzaGUI();
-
-        setVisible(true);        
+        inizializzaGUI();       
+    }
+    
+    public void run(){
+        inizializzaConnessione(socketClient);
+        this.setVisible(true);
     }
     
     private void inizializzaConnessione(Socket socketClient) {
@@ -113,8 +115,6 @@ public class RecuperoPassword extends JFrame {
         indietro.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new ScegliRegistrazioneLogin(client);
-                dispose();
             }
         });
         
@@ -172,6 +172,10 @@ public class RecuperoPassword extends JFrame {
         sfondo.remove(invia);
         sfondo.remove(recupero);
         sfondo.repaint();
+    }
+    
+    public void addIndietroActionListener(ActionListener l){
+        indietro.addActionListener(l);
     }
     
     private ImageIcon caricaImmagine(String nome) {

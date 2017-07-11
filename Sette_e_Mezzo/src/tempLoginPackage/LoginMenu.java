@@ -34,7 +34,6 @@ public class LoginMenu extends JFrame {
     private JLabel richiediLogin, idLabel, passwordLabel, messLogErrato;
     private String idString = null, passwordString = null;
     private boolean loginConfermato = false;
-
     private BufferedReader in;
     private PrintWriter out;
     private Socket socketClient;
@@ -44,7 +43,6 @@ public class LoginMenu extends JFrame {
     public LoginMenu(Client client) {
         this.client=client;
         this.socketClient=client.getSocketClient();
-        inizializzaConnessione(socketClient);
         setTitle("Login");
         setPreferredSize(new Dimension(1000, 800));
         setMinimumSize(new Dimension(1000, 800));
@@ -54,8 +52,11 @@ public class LoginMenu extends JFrame {
         setLocationRelativeTo(null);
 
         inizializzaGUI();
-
-        setVisible(true);
+    }
+    
+    public void run(){
+        inizializzaConnessione(socketClient);
+        this.setVisible(true);
     }
 
     private void inizializzaConnessione(Socket socketClient1) {
@@ -131,7 +132,6 @@ public class LoginMenu extends JFrame {
         indietro.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // torna a scegli registrazione login
             }
         });
         
@@ -184,6 +184,10 @@ public class LoginMenu extends JFrame {
         sfondo.remove(idLabel);
         sfondo.remove(passwordLabel);
         sfondo.repaint();
+    }
+    
+    public void addIndietroActionListener(ActionListener l){
+        indietro.addActionListener(l);
     }
 
     private ImageIcon caricaImmagine(String nome) {

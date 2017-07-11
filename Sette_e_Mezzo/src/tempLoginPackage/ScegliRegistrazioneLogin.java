@@ -1,6 +1,7 @@
 package tempLoginPackage;
 
 import comunicazione.Client;
+import dominio.classi_dati.OpzioniMenuOnline;
 import dominio.gui.Sfondo;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
@@ -10,11 +11,14 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 
-public class ScegliRegistrazioneLogin extends JFrame {
+public class ScegliRegistrazioneLogin extends JFrame implements ActionListener{
     
     private Sfondo sfondo;
     private JButton login, regis, recupero, indietro;
     private Client client;
+    private LoginMenu menu_login;
+    private RegistrazioneMenu menu_registrazione;
+    private RecuperoPassword menu_recupero_passwd;
     
     public ScegliRegistrazioneLogin() {
         setTitle("Fai il Login o Registrati !");
@@ -25,9 +29,9 @@ public class ScegliRegistrazioneLogin extends JFrame {
         setResizable(false);
         setLocationRelativeTo(null);
 
-        inizializzaGUI();
-        
         client= new Client();
+        
+        inizializzaGUI();
     }
     
     public ScegliRegistrazioneLogin(Client client) {
@@ -39,12 +43,20 @@ public class ScegliRegistrazioneLogin extends JFrame {
         setResizable(false);
         setLocationRelativeTo(null);
 
-        inizializzaGUI();
-        
         this.client= client;
+        
+        inizializzaGUI();
     }
     
     private void inizializzaGUI() {
+        menu_login = new LoginMenu(client);
+        menu_registrazione = new RegistrazioneMenu(client);
+        menu_recupero_passwd = new RecuperoPassword(client);
+        
+        menu_login.addIndietroActionListener(this);
+        menu_registrazione.addIndietroActionListener(this);
+        menu_recupero_passwd.addIndietroActionListener(this);
+        
         sfondo = new Sfondo("dominio/immagini/sfondo.png", 995, 765);
         sfondo.setBounds(0, 0, 1000, 800);
         add(sfondo);
@@ -62,31 +74,27 @@ public class ScegliRegistrazioneLogin extends JFrame {
         login.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new LoginMenu(client);
-                dispose();
+                runOpzione(OpzioniMenuOnline.Login);
             }
         });
         
         regis.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new RegistrazioneMenu(client);
-                dispose();
+                runOpzione(OpzioniMenuOnline.Registrazione);
             }
         });
         
         recupero.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new RecuperoPassword(client);
-                dispose();
+                runOpzione(OpzioniMenuOnline.Recupero);
             }
         });
         
         indietro.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                client.close();
             }
         });
         
@@ -106,4 +114,28 @@ public class ScegliRegistrazioneLogin extends JFrame {
         URL percorso = loader.getResource(nome);
         return new ImageIcon(percorso);
     }
+    
+        private void runOpzione(OpzioniMenuOnline opzione){
+        this.setVisible(false);
+        switch(opzione){
+            case Login:             menu_login.run();
+                                    break;
+            case Registrazione :    menu_registrazione.run();
+                                    break;
+            case Recupero:          menu_recupero_passwd.run();
+                                    break;
+        }
+    }
+
+    @Override
+    public void actionPerformed(ActionEvent e) {
+        if(menu_login.isVisible())
+            menu_login.setVisible(false);
+        else if(menu_registrazione.isVisible())
+            menu_registrazione.setVisible(false);
+        else if (menu_recupero_passwd.isVisible())
+            menu_recupero_passwd.setVisible(false);
+        this.setVisible(true);
+    }
+
 }

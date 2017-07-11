@@ -118,7 +118,7 @@ public class PartitaOnlineGuiView extends JFrame implements Observer {
         audio.carica("LoungeBeat.wav", "soundTrack");
         audio.carica("deckShuffle.wav", "deckShuffle");
     }
-    
+
     private void resettaPartita() {
         sfondo.removeAll();
         needCartaCoperta = true;
@@ -219,21 +219,22 @@ public class PartitaOnlineGuiView extends JFrame implements Observer {
             }
         } else if (arg instanceof IniziaPartita) {
             if (imgSalaAttesa != null && fraseSalaAttesa != null) {
-                if(esci != null)
+                if (esci != null) {
                     sfondo.remove(esci);
+                }
                 sfondo.remove(imgSalaAttesa);
                 sfondo.remove(fraseSalaAttesa);
                 sfondo.repaint();
             }
             partitaIniziata = true;
         } else if (arg instanceof ParticellaDiSodio) {
-            // se rimane un giocatore solo c'è da mostrargli la schermata di attesa. NB: ricomincia la partita (da testare)
+            // se rimane un giocatore solo c'è da mostrargli la schermata di attesa. NB: ricomincia la partita  testato, il pulsante esci non funziona
             resettaPartita();
             sfondo.add(imgSalaAttesa);
             sfondo.add(fraseSalaAttesa);
             sfondo.add(esci);
             sfondo.repaint();
-            
+
         } else if (arg instanceof PartitaPiena) {
             // dopo il login ha provato a connettersi ma il tavolo è già al completo: mostrare messaggio di indietro (da testare)
             stampaMsg("Tavolo pieno, riprova tra poco!", 60);

@@ -35,7 +35,6 @@ public class RegistrazioneMenu extends JFrame {
     private String idString = null, passwordString = null, emailString = null;
     private boolean regConfermata = false;
     private Client client;
-
     private BufferedReader in;
     private PrintWriter out;
     private Socket socketClient;
@@ -43,7 +42,6 @@ public class RegistrazioneMenu extends JFrame {
     public RegistrazioneMenu(Client client) {
         this.client=client;
         this.socketClient=client.getSocketClient();
-        inizializzaConnessione(socketClient);
         setTitle("Registrazione");
         setPreferredSize(new Dimension(1000, 800));
         setMinimumSize(new Dimension(1000, 800));
@@ -53,8 +51,11 @@ public class RegistrazioneMenu extends JFrame {
         setLocationRelativeTo(null);
 
         inizializzaGUI();
-
-        setVisible(true);
+    }
+    
+    public void run(){
+        inizializzaConnessione(socketClient);
+        this.setVisible(true);
     }
 
     private void inizializzaConnessione(Socket socketClient) {
@@ -135,7 +136,6 @@ public class RegistrazioneMenu extends JFrame {
         indietro.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // torna a scegli registrazione login
             }
         });
         
@@ -202,6 +202,10 @@ public class RegistrazioneMenu extends JFrame {
         sfondo.repaint();
     }
 
+    public void addIndietroActionListener(ActionListener l){
+        indietro.addActionListener(l);
+    }
+    
     private ImageIcon caricaImmagine(String nome) {
         ClassLoader loader = getClass().getClassLoader();
         URL percorso = loader.getResource(nome);
