@@ -29,6 +29,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
 import menuPrincipale.MenuPrincipaleGui;
 import partitaOnline.events.*;
 import partitaOnline.controller.PartitaOnlineController;
@@ -49,7 +50,7 @@ public class PartitaOnlineGuiView extends JFrame implements Observer {
     private final int pausa_lunga = 2000; //ms
     private AudioPlayer audio = new AudioPlayer();
     private JLabel imgSalaAttesa, fraseSalaAttesa;
-    private JButton esci;
+    private JButton esci, esciDaSolo;
 
     public PartitaOnlineGuiView(PartitaOnlineController controller) {
         listeners = new CopyOnWriteArrayList<>();
@@ -80,11 +81,12 @@ public class PartitaOnlineGuiView extends JFrame implements Observer {
 
         setVisible(true);
 
-        inizializzaExitButton();
+        inizializzaExitButtons();
         inizializza_salaAttesa();
         if (!partitaIniziata) {
             sfondo.add(imgSalaAttesa);
             sfondo.add(fraseSalaAttesa);
+            sfondo.add(esciDaSolo);
             sfondo.repaint();
         } else if(partitaPiena)
             partitaPienaExit();
@@ -103,7 +105,7 @@ public class PartitaOnlineGuiView extends JFrame implements Observer {
         fraseSalaAttesa.setBounds(this.getWidth() / 2 - strWidth / 2, 10, strWidth, 100);
     }
 
-    private void inizializzaExitButton() {
+    private void inizializzaExitButtons() {
         esci = new JButton(caricaImmagine("dominio/immagini/esci.png"));
         esci.setBounds(35, 600, 96, 58);
         esci.addActionListener(new ActionListener() {
@@ -122,6 +124,32 @@ public class PartitaOnlineGuiView extends JFrame implements Observer {
                 sfondo.remove(esci);
                 sfondo.add(msg);
                 sfondo.repaint();
+            }
+        });
+        
+        esciDaSolo = new JButton(caricaImmagine("dominio/immagini/esci.png"));
+        esciDaSolo.setBounds(35, 600, 96, 58);
+        esciDaSolo.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    audio.ferma("soundTrack");
+                    audio.riavvolgi("soundTrack");
+                } catch (CanzoneNonTrovataException ex) {
+                    Logger.getLogger(PartitaOnlineGuiView.class.getName()).log(Level.SEVERE, null, ex);
+                }            
+                
+                new MenuPrincipaleGui();
+                dispose();               
+                
+                Runnable runnable = new Runnable(){
+                    @Override
+                    public void run() {
+                        controller.esci();
+                    }
+                };        
+                Thread thread = new Thread(runnable);
+                thread.start();
             }
         });
     }
@@ -257,6 +285,7 @@ public class PartitaOnlineGuiView extends JFrame implements Observer {
                 }
                 sfondo.remove(imgSalaAttesa);
                 sfondo.remove(fraseSalaAttesa);
+                sfondo.remove(esciDaSolo);
                 sfondo.repaint();
             }
             partitaIniziata = true;
@@ -265,7 +294,7 @@ public class PartitaOnlineGuiView extends JFrame implements Observer {
             resettaPartita();
             sfondo.add(imgSalaAttesa);
             sfondo.add(fraseSalaAttesa);
-            sfondo.add(esci);
+            sfondo.add(esciDaSolo);
             sfondo.repaint();
 
         } else if (arg instanceof PartitaPiena) {
