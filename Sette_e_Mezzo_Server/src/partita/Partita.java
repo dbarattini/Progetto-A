@@ -87,7 +87,7 @@ public class Partita extends Thread {
     private void iniziaPartita() {
         try {
             for (Giocatore gioc : giocatori) {
-                gioc.inizzializzaGiocatore();
+                gioc.inizializzaGiocatore();
             }
             this.model.inizializza_partita((ArrayList<Giocatore>) giocatori.clone());
         } catch (InterruptedException ex) {
