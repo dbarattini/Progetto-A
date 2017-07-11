@@ -67,6 +67,7 @@ public class Partita extends Thread {
                 giocatori.get(0).scriviOggetto(new ParticellaDiSodio()); //c'è nessunoooo?!
                 giocatori.get(0).setParticellaDiSodio(true);
                 iniziata=false;
+                model= new PartitaOnlineModel();
             }
         }else if (iniziata) {
             iniziata = false;
