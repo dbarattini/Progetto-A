@@ -2,7 +2,6 @@ package partitaOnline.events;
 
 import dominio.classi_dati.StatoMano;
 import dominio.elementi_di_gioco.Carta;
-import dominio.giocatori.Giocatore;
 import dominio.giocatori.GiocatoreOnline;
 import java.io.Serializable;
 import java.util.ArrayList;
