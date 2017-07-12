@@ -1,7 +1,7 @@
 package partitaOffline.model;
 
 
-import partitaOffline.events.RichiediGiocata;
+import dominio.events.RichiediGiocata;
 import dominio.classi_dati.Giocata;
 import dominio.eccezioni.GiocataNonValidaException;
 import dominio.eccezioni.PuntataNegativaException;

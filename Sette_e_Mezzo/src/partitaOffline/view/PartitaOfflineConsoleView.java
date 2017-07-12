@@ -1,6 +1,6 @@
 package partitaOffline.view;
 
-import partitaOffline.events.SetGiocata;
+import dominio.events.SetGiocata;
 import partitaOffline.events.SetPuntata;
 import dominio.giocatori.Giocatore;
 import dominio.view.ViewEvent;
@@ -11,21 +11,17 @@ import java.util.Scanner;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import menuPrincipale.MenuPrincipaleConsole;
-import partitaOffline.events.AggiornamentoMazziere;
-import partitaOffline.events.EstrattoMazziere;
-import partitaOffline.events.FineManoAvversario;
 import partitaOffline.events.FineRound;
-import partitaOffline.events.GameOver;
+import dominio.events.*;
 import partitaOffline.events.GiocatoreLocaleEvent;
-import partitaOffline.events.MazzierePerde;
-import partitaOffline.events.MazzoRimescolato;
-import partitaOffline.events.RichiediGiocata;
-import partitaOffline.events.RichiediNome;
+import dominio.events.MazzierePerde;
+import dominio.events.MazzoRimescolato;
+import dominio.events.RichiediGiocata;
+import dominio.events.RichiediNome;
 import partitaOffline.events.RichiediPuntata;
-import partitaOffline.events.RisultatoManoParticolare;
-import partitaOffline.events.SetNome;
-import partitaOffline.events.Vittoria;
+import dominio.events.RisultatoManoParticolare;
+import dominio.events.SetNome;
+import dominio.events.Vittoria;
 import partitaOffline.model.PartitaOfflineModel;
 
 public class PartitaOfflineConsoleView implements PartitaOfflineView, Observer{

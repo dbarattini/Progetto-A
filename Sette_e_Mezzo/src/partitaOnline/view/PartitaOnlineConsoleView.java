@@ -1,6 +1,6 @@
 package partitaOnline.view;
 
-import partitaOnline.events.SetGiocata;
+import dominio.events.*;
 import partitaOnline.events.SetPuntata;
 import dominio.giocatori.GiocatoreOnline;
 import dominio.view.ViewEvent;

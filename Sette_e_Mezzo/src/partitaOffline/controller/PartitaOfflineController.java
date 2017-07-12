@@ -2,8 +2,8 @@ package partitaOffline.controller;
 
 import dominio.view.ViewEvent;
 import dominio.view.ViewEventListener;
-import partitaOffline.events.SetGiocata;
-import partitaOffline.events.SetNome;
+import dominio.events.SetGiocata;
+import dominio.events.SetNome;
 import partitaOffline.events.SetPuntata;
 import partitaOffline.model.PartitaOfflineModel;
 import partitaOffline.view.PartitaOfflineView;

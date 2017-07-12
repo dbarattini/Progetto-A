@@ -16,6 +16,7 @@ import java.util.Observer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import partitaOnline.events.*;
+import dominio.events.*;
 
 public class PartitaOnlineController extends Observable implements ViewEventListener, Observer {
 

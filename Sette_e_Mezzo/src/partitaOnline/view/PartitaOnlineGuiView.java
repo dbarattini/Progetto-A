@@ -29,10 +29,10 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
-import javax.swing.SwingUtilities;
 import menuPrincipale.MenuPrincipaleGui;
 import partitaOnline.events.*;
 import partitaOnline.controller.PartitaOnlineController;
+import dominio.events.*;
 
 public class PartitaOnlineGuiView extends JFrame implements Observer {
 

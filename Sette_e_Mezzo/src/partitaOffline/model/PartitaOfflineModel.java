@@ -1,12 +1,9 @@
 package partitaOffline.model;
 
-import partitaOffline.events.Vittoria;
-import partitaOffline.events.AggiornamentoMazziere;
-import partitaOffline.events.GameOver;
-import partitaOffline.events.MazzierePerde;
+import dominio.events.Vittoria;
+import dominio.events.MazzierePerde;
 import partitaOffline.events.FineRound;
-import partitaOffline.events.FineManoAvversario;
-import partitaOffline.events.RisultatoManoParticolare;
+import dominio.events.RisultatoManoParticolare;
 import dominio.elementi_di_gioco.Mazzo;
 import dominio.giocatori.BotFacile;
 import dominio.giocatori.Giocatore;
@@ -28,14 +25,12 @@ import dominio.elementi_di_gioco.Regole;
 import java.util.ArrayList;
 import java.util.Observable;
 import dominio.musica.AudioPlayer;
-import partitaOffline.events.EstrattoMazziere;
+import dominio.events.*;
 import partitaOffline.events.GiocatoreLocaleEventListener;
-import partitaOffline.events.MazzoRimescolato;
-import partitaOffline.events.RichiediNome;
+import dominio.events.MazzoRimescolato;
+import dominio.events.RichiediNome;
 import database.Database;
 import dominio.eccezioni.DatoGiaPresente;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 
 public class PartitaOfflineModel extends Observable {

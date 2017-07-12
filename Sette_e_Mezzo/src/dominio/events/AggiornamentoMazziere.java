@@ -1,5 +1,6 @@
-package partitaOnline.events;
+package dominio.events;
 
+import partitaOnline.events.*;
 import java.io.Serializable;
 
 /**

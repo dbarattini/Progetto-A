@@ -1,4 +1,6 @@
-package partitaOffline.events;
+package dominio.events;
+
+import partitaOffline.events.*;
 
 /**
  *

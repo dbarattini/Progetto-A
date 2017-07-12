@@ -1,4 +1,4 @@
-package partitaOffline.events;
+package dominio.events;
 
 public class RichiediNome {
     

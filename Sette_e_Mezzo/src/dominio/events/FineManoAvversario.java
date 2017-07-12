@@ -1,5 +1,6 @@
-package partitaOffline.events;
+package dominio.events;
 
+import partitaOffline.events.*;
 import dominio.classi_dati.StatoMano;
 import dominio.elementi_di_gioco.Carta;
 import java.util.ArrayList;
