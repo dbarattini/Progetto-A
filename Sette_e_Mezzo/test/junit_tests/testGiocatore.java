@@ -1,28 +1,28 @@
 package junit_tests;
 
-import classi_dati.Giocata;
-import eccezioni.FineMazzoException;
-import eccezioni.PuntataNegativaException;
-import eccezioni.PuntataNullaException;
-import eccezioni.PuntataTroppoAltaException;
-import eccezioni.SballatoException;
-import eccezioni.SetteeMezzoException;
-import eccezioni.SetteeMezzoRealeException;
-import elementi_di_gioco.Carta;
-import giocatori.Giocatore;
-import elementi_di_gioco.Mazzo;
+import dominio.classi_dati.Giocata;
+import dominio.eccezioni.FineMazzoException;
+import dominio.eccezioni.PuntataNegativaException;
+import dominio.eccezioni.PuntataNullaException;
+import dominio.eccezioni.PuntataTroppoAltaException;
+import dominio.eccezioni.SballatoException;
+import dominio.eccezioni.SetteeMezzoException;
+import dominio.eccezioni.SetteeMezzoRealeException;
+import dominio.elementi_di_gioco.Carta;
+import dominio.giocatori.Giocatore;
+import dominio.elementi_di_gioco.Mazzo;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
 public class testGiocatore {
             private Giocatore giocatore = new Giocatore("player1", 100){
                 @Override
-                public int decidi_puntata() {
+                public int decidiPuntata() {
                     return 20;
                 }
 
                 @Override
-                public Giocata decidi_giocata() {
+                public Giocata decidiGiocata() {
                     throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
                 }
         }; 
@@ -31,8 +31,8 @@ public class testGiocatore {
     public void testPrendiCartaIniziale() throws FineMazzoException{
         Mazzo mazzo = new Mazzo();
         mazzo.mischia();
-        Carta carta = mazzo.estrai_carta();
-        giocatore.prendi_carta_iniziale(carta);
+        Carta carta = mazzo.estraiCarta();
+        giocatore.prendiCartaIniziale(carta);
         
         assertEquals(carta, giocatore.getCartaCoperta());
     }
@@ -42,7 +42,7 @@ public class testGiocatore {
         int fiches_iniziali = giocatore.getFiches();
         int valore_puntato = 20;  
         
-        giocatore.effettua_puntata();
+        giocatore.effettuaPuntata();
         
         assertEquals(valore_puntato, giocatore.getPuntata());
         assertEquals(fiches_iniziali - valore_puntato, giocatore.getFiches());
@@ -51,10 +51,10 @@ public class testGiocatore {
     @Test
     public void testAggiornaValoreMano() throws FineMazzoException, SballatoException, SetteeMezzoRealeException, SetteeMezzoException{
         Mazzo mazzo = new Mazzo(); //non sono mischiate apposta
-        Carta carta = mazzo.estrai_carta();
-        giocatore.prendi_carta_iniziale(carta); //1c, non bisogna aggiornare la mano
-        carta = mazzo.estrai_carta();
-        giocatore.chiedi_carta(carta); //2c
+        Carta carta = mazzo.estraiCarta();
+        giocatore.prendiCartaIniziale(carta); //1c, non bisogna aggiornare la mano
+        carta = mazzo.estraiCarta();
+        giocatore.chiediCarta(carta); //2c
         assertEquals(3.0, giocatore.getValoreMano(), 0.001);
     }
 }
