@@ -28,7 +28,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
-import partitaOffline.events.FineRound;
+import dominio.events.FineRound;
 import dominio.events.*;
 import partitaOffline.events.GiocatoreLocaleEvent;
 import dominio.events.MazzierePerde;

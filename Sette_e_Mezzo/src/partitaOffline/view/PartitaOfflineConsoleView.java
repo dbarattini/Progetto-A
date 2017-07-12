@@ -11,7 +11,7 @@ import java.util.Scanner;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import partitaOffline.events.FineRound;
+import dominio.events.FineRound;
 import dominio.events.*;
 import partitaOffline.events.GiocatoreLocaleEvent;
 import dominio.events.MazzierePerde;

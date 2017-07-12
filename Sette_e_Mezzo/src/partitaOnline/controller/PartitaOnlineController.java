@@ -274,8 +274,8 @@ public class PartitaOnlineController extends Observable implements ViewEventList
             puntata = Integer.valueOf(componenti[i]);
             giocatoreDaNome(nome).setPuntata(puntata);
         }
-        ritorno = new FineRound(nome, cartaCoperta, carteScoperte, fiches, valoreMano, stato, isMazziere, puntata);
-        ((FineRound) ritorno).setGiocatore(giocatoreDaNome(nome));
+        ritorno = new FineRound(giocatoreDaNome(nome));
+        ((FineRound) ritorno).setCarteScoperte(carteScoperte);
         return ritorno;
     }
 

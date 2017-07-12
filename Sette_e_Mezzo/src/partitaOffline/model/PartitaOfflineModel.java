@@ -2,7 +2,7 @@ package partitaOffline.model;
 
 import dominio.events.Vittoria;
 import dominio.events.MazzierePerde;
-import partitaOffline.events.FineRound;
+import dominio.events.FineRound;
 import dominio.events.RisultatoManoParticolare;
 import dominio.elementi_di_gioco.Mazzo;
 import dominio.giocatori.BotFacile;
