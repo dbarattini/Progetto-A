@@ -14,4 +14,13 @@ public class SetPuntata {
         return puntata;
     }
     
+    
+    /**
+     *
+     * @return "evento SetPuntata "+puntata;
+     */
+    @Override
+    public String toString() {
+        return "evento SetPuntata "+puntata;
+    }
 }
