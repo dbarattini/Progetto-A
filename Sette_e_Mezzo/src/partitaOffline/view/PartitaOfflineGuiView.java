@@ -35,11 +35,11 @@ import dominio.events.MazzierePerde;
 import dominio.events.MazzoRimescolato;
 import dominio.events.RichiediGiocata;
 import dominio.events.RichiediNome;
-import partitaOffline.events.RichiediPuntata;
+import dominio.events.RichiediPuntata;
 import dominio.events.RisultatoManoParticolare;
 import dominio.events.SetGiocata;
 import dominio.events.SetNome;
-import partitaOffline.events.SetPuntata;
+import dominio.events.SetPuntata;
 import dominio.events.Vittoria;
 
 public class PartitaOfflineGuiView extends JFrame implements PartitaOfflineView, Observer{

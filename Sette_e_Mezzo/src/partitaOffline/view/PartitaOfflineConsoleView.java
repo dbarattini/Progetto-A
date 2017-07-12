@@ -1,7 +1,7 @@
 package partitaOffline.view;
 
 import dominio.events.SetGiocata;
-import partitaOffline.events.SetPuntata;
+import dominio.events.SetPuntata;
 import dominio.giocatori.Giocatore;
 import dominio.view.ViewEvent;
 import dominio.view.ViewEventListener;
@@ -18,7 +18,7 @@ import dominio.events.MazzierePerde;
 import dominio.events.MazzoRimescolato;
 import dominio.events.RichiediGiocata;
 import dominio.events.RichiediNome;
-import partitaOffline.events.RichiediPuntata;
+import dominio.events.RichiediPuntata;
 import dominio.events.RisultatoManoParticolare;
 import dominio.events.SetNome;
 import dominio.events.Vittoria;

@@ -1,4 +1,4 @@
-package partitaOffline.events;
+package dominio.events;
 
 import dominio.elementi_di_gioco.Carta;
 import dominio.giocatori.ValoreMano;

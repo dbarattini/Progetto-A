@@ -11,7 +11,7 @@ import dominio.giocatori.Giocatore;
 import java.util.concurrent.CopyOnWriteArrayList;
 import partitaOffline.events.GiocatoreLocaleEvent;
 import partitaOffline.events.GiocatoreLocaleEventListener;
-import partitaOffline.events.RichiediPuntata;
+import dominio.events.RichiediPuntata;
 
 
 public class GiocatoreUmano extends Giocatore{

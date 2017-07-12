@@ -4,7 +4,7 @@ import dominio.view.ViewEvent;
 import dominio.view.ViewEventListener;
 import dominio.events.SetGiocata;
 import dominio.events.SetNome;
-import partitaOffline.events.SetPuntata;
+import dominio.events.SetPuntata;
 import partitaOffline.model.PartitaOfflineModel;
 import partitaOffline.view.PartitaOfflineView;
 
