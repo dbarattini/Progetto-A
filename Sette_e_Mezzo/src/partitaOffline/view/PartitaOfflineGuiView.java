@@ -558,7 +558,7 @@ public class PartitaOfflineGuiView extends JFrame implements PartitaOfflineView,
             try {
                 valoreMano += giocatore.getCarteScoperte().get(i).getValoreNumerico();
             } catch (MattaException ex) {
-                ex.printStackTrace();
+                // pass
             }
         }
         
