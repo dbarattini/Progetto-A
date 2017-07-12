@@ -122,7 +122,7 @@ public class PartitaOnlineModel extends Observable {
         }
         salvaFiches(giocatori);
         for (Object giocatore : giocatori) {
-            if (((Giocatore) giocatore).isMazziere()) {
+            if (((Giocatore) giocatore).isMazziere() && giocatori.size()>1) {
                 estrai_mazziere();
 
                 this.eventoPerTutti(new EstrattoMazziere());
