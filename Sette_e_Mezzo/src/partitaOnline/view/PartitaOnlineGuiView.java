@@ -208,7 +208,7 @@ public class PartitaOnlineGuiView extends JFrame implements Observer {
                 stampaCartaCoperta();
             }
         } else if (arg instanceof FineRound) {
-            GiocatoreOnline giocatore = ((FineRound) arg).getGiocatore();
+            GiocatoreOnline giocatore = (GiocatoreOnline)((FineRound) arg).getGiocatore();
             if (giocatore != controller.getGiocatoreLocale()) {
                 scopriCartaCoperta(giocatore);
             }

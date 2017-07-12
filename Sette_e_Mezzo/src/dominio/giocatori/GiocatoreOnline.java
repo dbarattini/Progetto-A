@@ -5,6 +5,7 @@
  */
 package dominio.giocatori;
 
+import dominio.classi_dati.Giocata;
 import dominio.classi_dati.StatoMano;
 import static dominio.classi_dati.StatoMano.OK;
 import dominio.elementi_di_gioco.Carta;
@@ -13,7 +14,7 @@ import dominio.elementi_di_gioco.Carta;
  *
  * @author root
  */
-public class GiocatoreOnline {
+public class GiocatoreOnline extends Giocatore{
     private String nome;
     private Carta ultimaCartaOttenuta, CartaCoperta;
     private double valoreMano;
@@ -25,9 +26,9 @@ public class GiocatoreOnline {
     private int numCarteScoperte;
 
     public GiocatoreOnline(String nome, int fiches) {
-        this.nome = nome;
-        this.fiches = fiches;
-    }  
+        super(nome, fiches);
+    }
+
     
     public void inizializza(){
         stato=OK;
@@ -116,6 +117,16 @@ public class GiocatoreOnline {
     
     public boolean haPerso(){
         return perso;
+    }
+
+    @Override
+    protected Giocata decidiGiocata() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    protected int decidiPuntata() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
     

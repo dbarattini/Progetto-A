@@ -123,7 +123,7 @@ public class PartitaOnlineConsoleView implements  Observer{
     }
 
     private void fineRound(Object arg) {
-        GiocatoreOnline gioc= ((FineRound) arg).getGiocatore();
+        GiocatoreOnline gioc= (GiocatoreOnline)((FineRound) arg).getGiocatore();
         System.out.println(gioc.isMazziere() + " " + gioc.getNome() + " " + gioc.getCartaCoperta()+((FineRound) arg).getCarteScoperte() + " " + gioc.getValoreMano() + " "+ gioc.getStatoMano() + " " + gioc.getFiches());
         if((gioc).equals(controller.getGiocatori().get(controller.getGiocatori().size() - 1))){
             System.out.println("---------------------------------\n");
