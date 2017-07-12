@@ -15,12 +15,10 @@ import dominio.elementi_di_gioco.Carta;
  * @author root
  */
 public class GiocatoreOnline extends Giocatore{
-    private String nome;
     private Carta ultimaCartaOttenuta, CartaCoperta;
     private double valoreMano;
     private StatoMano stato;
     private boolean mazziere=false;
-    private int fiches;
     private boolean perso=false;
     private int puntata;
     private int numCarteScoperte;
@@ -51,22 +49,6 @@ public class GiocatoreOnline extends Giocatore{
         this.puntata = puntata;
     }
 
-    public int getFiches() {
-        return fiches;
-    }
-
-    public void setFiches(int fiches) {
-        this.fiches = fiches;
-    }
-        
-
-    public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
 
     public Carta getUltimaCartaOttenuta() {
         return ultimaCartaOttenuta;
@@ -121,12 +103,12 @@ public class GiocatoreOnline extends Giocatore{
 
     @Override
     protected Giocata decidiGiocata() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return null;
     }
 
     @Override
     protected int decidiPuntata() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+       return 42;
     }
     
     
