@@ -170,6 +170,10 @@ public abstract class Giocatore implements Cloneable{
     public void setStatoMano(StatoMano stato) {
         this.stato = stato;
     }
+    
+    public void setFiches(int fiches) {
+        this.fiches = fiches;
+    }
 
     public String getNome() {
         return nome;
