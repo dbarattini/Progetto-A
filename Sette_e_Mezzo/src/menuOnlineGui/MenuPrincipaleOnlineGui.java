@@ -1,6 +1,6 @@
-package tempLoginPackage;
+package menuOnlineGui;
 
-import comunicazione.Client;
+import net.Client;
 import dominio.classi_dati.OpzioniMenuOnline;
 import dominio.gui.Sfondo;
 import java.awt.Dimension;
@@ -11,16 +11,16 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 
-public class ScegliRegistrazioneLogin extends JFrame implements ActionListener{
+public class MenuPrincipaleOnlineGui extends JFrame implements ActionListener{
     
     private Sfondo sfondo;
     private JButton login, regis, recupero, indietro;
     private Client client;
-    private LoginMenu menu_login;
-    private RegistrazioneMenu menu_registrazione;
-    private RecuperoPassword menu_recupero_passwd;
+    private MenuLogin menu_login;
+    private MenuRegistrazione menu_registrazione;
+    private MenuRecuperoPassword menu_recupero_passwd;
     
-    public ScegliRegistrazioneLogin() {
+    public MenuPrincipaleOnlineGui() {
         setTitle("Fai il Login o Registrati !");
         setPreferredSize(new Dimension(1000, 800));
         setMinimumSize(new Dimension(1000, 800));
@@ -34,7 +34,7 @@ public class ScegliRegistrazioneLogin extends JFrame implements ActionListener{
         inizializzaGUI();
     }
     
-    public ScegliRegistrazioneLogin(Client client) {
+    public MenuPrincipaleOnlineGui(Client client) {
         setTitle("Fai il Login o Registrati !");
         setPreferredSize(new Dimension(1000, 800));
         setMinimumSize(new Dimension(1000, 800));
@@ -49,9 +49,9 @@ public class ScegliRegistrazioneLogin extends JFrame implements ActionListener{
     }
     
     private void inizializzaGUI() {
-        menu_login = new LoginMenu(client);
-        menu_registrazione = new RegistrazioneMenu(client);
-        menu_recupero_passwd = new RecuperoPassword(client);
+        menu_login = new MenuLogin(client);
+        menu_registrazione = new MenuRegistrazione(client);
+        menu_recupero_passwd = new MenuRecuperoPassword(client);
         
         menu_login.addIndietroActionListener(this);
         menu_registrazione.addIndietroActionListener(this);

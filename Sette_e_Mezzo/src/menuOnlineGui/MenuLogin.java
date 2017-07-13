@@ -1,6 +1,6 @@
-package tempLoginPackage;
+package menuOnlineGui;
 
-import comunicazione.Client;
+import net.Client;
 import dominio.gui.Sfondo;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -25,7 +25,7 @@ import javax.swing.JTextField;
 import partitaOnline.controller.PartitaOnlineController;
 import partitaOnline.view.PartitaOnlineGuiView;
 
-public class LoginMenu extends JFrame {
+public class MenuLogin extends JFrame {
 
     private Sfondo sfondo;
     private JButton fatto, riprova, indietro;
@@ -40,7 +40,7 @@ public class LoginMenu extends JFrame {
     private PartitaOnlineController controller;
     private Client client;
 
-    public LoginMenu(Client client) {
+    public MenuLogin(Client client) {
         this.client=client;
         this.socketClient=client.getSocketClient();
         setTitle("Login");
@@ -159,7 +159,7 @@ public class LoginMenu extends JFrame {
             }
 
         } catch (IOException ex) {
-            Logger.getLogger(LoginMenu.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(MenuLogin.class.getName()).log(Level.SEVERE, null, ex);
         }
         return false;
     }

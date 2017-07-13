@@ -1,6 +1,6 @@
-package tempLoginPackage;
+package menuOnlineConsole;
 
-import comunicazione.Client;
+import net.Client;
 import dominio.eccezioni.DatiNonValidiException;
 import dominio.eccezioni.LoginEffettuato;
 import java.io.BufferedReader;
@@ -15,7 +15,7 @@ import java.util.logging.Logger;
 import partitaOnline.controller.PartitaOnlineController;
 import partitaOnline.view.PartitaOnlineConsoleView;
 
-public class PrePartitaOnlineConsole {
+public class MenuPrincipaleOnlineConsole {
 
 
     private BufferedReader in;
@@ -24,7 +24,7 @@ public class PrePartitaOnlineConsole {
     private Socket socketClient;
     private PartitaOnlineController controller;
 
-    public PrePartitaOnlineConsole(Socket socketClient) {
+    public MenuPrincipaleOnlineConsole(Socket socketClient) {
         try {
             this.socketClient = socketClient;
             tastiera = new Scanner(System.in);
@@ -141,7 +141,7 @@ public class PrePartitaOnlineConsole {
             }
 
         } catch (IOException ex) {
-            Logger.getLogger(PrePartitaOnlineConsole.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(MenuPrincipaleOnlineConsole.class.getName()).log(Level.SEVERE, null, ex);
         } catch (DatiNonValidiException ex) {
             System.err.println("                 Errore: alcuni dati inseriti non sono validi.                 ");
             try {
@@ -169,7 +169,7 @@ public class PrePartitaOnlineConsole {
             System.out.println("          " + risposta);
 
         } catch (IOException ex) {
-            Logger.getLogger(PrePartitaOnlineConsole.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(MenuPrincipaleOnlineConsole.class.getName()).log(Level.SEVERE, null, ex);
         } catch (DatiNonValidiException ex) {
             System.err.println("                    Errore: il codice inserito non é valido.                   ");
             try {
@@ -203,7 +203,7 @@ public class PrePartitaOnlineConsole {
             System.out.println("                                         " + risposta);
 
         } catch (IOException ex) {
-            Logger.getLogger(PrePartitaOnlineConsole.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(MenuPrincipaleOnlineConsole.class.getName()).log(Level.SEVERE, null, ex);
         } catch (DatiNonValidiException ex) {
             System.err.println("                     Errore: l'email inserita non é valida.                    ");
             try {

@@ -1,6 +1,6 @@
 package partitaOnline.controller;
 
-import comunicazione.Leggi;
+import net.Leggi;
 import dominio.classi_dati.StatoMano;
 import dominio.elementi_di_gioco.Carta;
 import dominio.giocatori.GiocatoreOnline;
