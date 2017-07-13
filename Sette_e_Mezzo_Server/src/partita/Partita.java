@@ -26,7 +26,7 @@ public class Partita extends Thread {
     }
 
     public void aggiungiGiocatore(Giocatore giocatore) throws PartitaPiena {
-        if (giocatori.size() + giocatori_in_attesa.size() < 2) {
+        if (giocatori.size() + giocatori_in_attesa.size() < 5) {
             this.giocatori_in_attesa.add(giocatore);
             try {
                 Thread.sleep(100); //da il tempo di stabilizzare la connessione e caricare eventuali gui

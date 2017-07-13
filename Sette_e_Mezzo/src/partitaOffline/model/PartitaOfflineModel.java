@@ -117,6 +117,7 @@ public class PartitaOfflineModel extends Observable {
     private void inizializza_audio() throws CaricamentoCanzoneException{
         audio.carica("LoungeBeat.wav", "soundTrack");
         audio.carica("deckShuffle.wav", "deckShuffle");
+        audio.carica("ApplausiSetteEMezzo.wav", "applausiSEM");
     }
     
     public void inizializza_partita(){

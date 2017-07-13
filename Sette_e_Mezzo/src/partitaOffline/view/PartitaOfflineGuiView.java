@@ -402,6 +402,18 @@ public class PartitaOfflineGuiView extends JFrame implements PartitaOfflineView,
         sfondo.repaint();
     }
     
+    // stampa l'ultima carta del giocatore in seguito a una mano particolare ( sballato, 7 e mezzo o 7 e mezzo reale )
+    private void manoParticolarePlayer() {
+        Carta ultimaOttenuta = model.getGiocatoreLocale().getUltimaCartaOttenuta();
+        int index = model.getGiocatoreLocale().getCarteScoperte().indexOf(ultimaOttenuta);
+        stampaCarta(this.getWidth()/2 - 95 + index*35, 3*this.getHeight()/4 - 60, ultimaOttenuta.toString());
+        
+        sfondo.remove(valoriMano.get(model.getGiocatoreLocale().getNome()));
+        valoriMano.remove(model.getGiocatoreLocale().getNome());
+        valoriMano.put(model.getGiocatoreLocale().getNome(), stampaStato(model.getGiocatoreLocale()));
+        pausa(pausa_breve);
+    }
+    
     // stampa il mazzo che viene rimescolato con relativo messaggio
     private void rimescoloMazzo() {
         ArrayList<JLabel> carte = new ArrayList<>();
@@ -458,31 +470,6 @@ public class PartitaOfflineGuiView extends JFrame implements PartitaOfflineView,
         return card;
     }
     
-    // stampa l'ultima carta del giocatore in seguito a una mano particolare ( sballato, 7 e mezzo o 7 e mezzo reale )
-    private void manoParticolarePlayer() {
-        StatoMano stato = model.getGiocatoreLocale().getStatoMano();
-        Carta ultimaOttenuta = model.getGiocatoreLocale().getUltimaCartaOttenuta();
-        int index = model.getGiocatoreLocale().getCarteScoperte().indexOf(ultimaOttenuta);
-        stampaCarta(this.getWidth()/2 - 95 + index*35, 3*this.getHeight()/4 - 60, ultimaOttenuta.toString());
-        if(null != stato) switch (stato) {
-            case Sballato:
-                sfondo.remove(valoriMano.get(model.getGiocatoreLocale().getNome()));
-                valoriMano.remove(model.getGiocatoreLocale().getNome());
-                valoriMano.put(model.getGiocatoreLocale().getNome(), stampaSballato(model.getGiocatoreLocale()));
-                pausa(pausa_breve);
-                break;
-            case SetteeMezzo:
-                index++;  // stampare sette e mezzo                
-                aggiornaValoreManoPlayer();
-                break;
-            case SetteeMezzoReale:
-                index++;  // stampare sette e mezzo reale
-                break;
-            default:
-                break;
-        }
-    }
-    
     // stampa la carta coperta degli avversari non visibile e quella del giocatore locale visibile
     private void stampaCartaCoperta() {
         int nGiocatori = model.getGiocatori().size();
@@ -519,7 +506,7 @@ public class PartitaOfflineGuiView extends JFrame implements PartitaOfflineView,
         needCartaCoperta = false;
     }
     
-    // stampa le carte pescate dall'avversario ( e sballato se sballa )
+    // stampa le carte pescate dall'avversario ( e lo stato alterato, nel caso si sia alterato )    
     private void stampaManoAvversario(String nome) {
         Giocatore giocatore = getGiocatore(nome);
         JLabel valoreMano = null;
@@ -532,10 +519,10 @@ public class PartitaOfflineGuiView extends JFrame implements PartitaOfflineView,
                 pausa(pausa_breve);
                 sfondo.remove(valoreMano);
             }
-            if(giocatore.getStatoMano() != StatoMano.Sballato)
+            if(giocatore.getStatoMano() == StatoMano.OK)
                 valoriMano.put(giocatore.getNome(), stampaValoreManoAttualeAvversario(giocatore, giocatore.getCarteScoperte().size()));
             else {
-                valoriMano.put(giocatore.getNome(), stampaSballato(giocatore));
+                valoriMano.put(giocatore.getNome(), stampaStato(giocatore));
                 scopriCartaCoperta(giocatore);
                 pausa(pausa_breve);
             }                 
@@ -577,7 +564,7 @@ public class PartitaOfflineGuiView extends JFrame implements PartitaOfflineView,
         return valoreManoGiocatore;
     }
     
-    // scopre la carta coperta ( usato se sballato o a fine round per vedere il valore a fine round)
+    // scopre la carta coperta (usato se stato alterato o a fine round per vedere il valore a fine round)
     private void scopriCartaCoperta(Giocatore giocatore) {
         int index = model.getGiocatori().indexOf(giocatore);
 
@@ -585,25 +572,57 @@ public class PartitaOfflineGuiView extends JFrame implements PartitaOfflineView,
         sfondo.repaint();
     }
     
-    // stampa SBALLATO in rosso se un giocatore sballa
-    private JLabel stampaSballato(Giocatore giocatore) {
+    // stampa il cambio di stato di un giocatore: SBALLATO in rosso, SEM in ciano e SEMR in magenta
+    private JLabel stampaStato(Giocatore giocatore) {
         int nBot = model.getGiocatori().size() - 1;
         int index = model.getGiocatori().indexOf(giocatore);
-        JLabel valoreSballato = new JLabel("SBALLATO");
+        JLabel stato = null;
         
-        Font font = new Font("Player", Font.BOLD, 25);
-        valoreSballato.setFont(font);
-        valoreSballato.setForeground(Color.red);
+        AudioPlayer audio = model.getAudio();
+        
+        Font font = new Font("StatoMano", Font.BOLD, 25);
+        
+        switch (giocatore.getStatoMano()) {
+            case Sballato:
+                stato = new JLabel("SBALLATO");
+                stato.setFont(font);
+                stato.setForeground(Color.red);
+                break;
+            case SetteeMezzo:
+                stato = new JLabel("SETTE E MEZZO");
+                stato.setFont(font);
+                stato.setForeground(Color.cyan);
+                try {
+                    audio.riproduci("applausiSEM");
+                    audio.riavvolgi("applausiSEM");
+                } catch (CanzoneNonTrovataException ex) {
+                    ex.printStackTrace();
+                }
+                break;
+            case SetteeMezzoReale:
+                stato = new JLabel("SETTE E MEZZO REALE");
+                stato.setFont(font);
+                stato.setForeground(Color.magenta);
+                try {
+                    audio.riproduci("applausiSEM");
+                    audio.riavvolgi("applausiSEM");
+                } catch (CanzoneNonTrovataException ex) {
+                    ex.printStackTrace();
+                }
+                break;
+            default:
+                break;
+        }
         
         if(giocatore != model.getGiocatoreLocale())
-            valoreSballato.setBounds((this.getWidth()*(2*index+1))/(nBot*2) - 125, 120, 350, 40);
+            stato.setBounds((this.getWidth()*(2*index+1))/(nBot*2) - 125, 120, 350, 40);
         else
-            valoreSballato.setBounds(this.getWidth()/4 - 175, 3*this.getHeight()/4 + 20, 350, 40);
+            stato.setBounds(this.getWidth()/4 - 175, 3*this.getHeight()/4 + 20, 350, 40);
         
-        sfondo.add(valoreSballato);
+        sfondo.add(stato);
         sfondo.repaint();
         
-        return valoreSballato;
+        return stato;
     }
     
     // ritorna il giocatore dato il nome

@@ -19,7 +19,6 @@ import dominio.eccezioni.GiocatoreDisconnessoException;
 import dominio.eccezioni.GiocatoreNonTrovato;
 import dominio.eccezioni.PartitaPiena;
 import dominio.eccezioni.SqlOccupato;
-import javax.mail.SendFailedException;
 
 public class Login extends Thread {
 
