@@ -1,6 +1,6 @@
-package tempLoginPackage;
+package menuOnlineGui;
 
-import comunicazione.Client;
+import net.Client;
 import dominio.gui.Sfondo;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -23,7 +23,7 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 import partitaOnline.controller.PartitaOnlineController;
 
-public class ConfermaRegistrazione  extends JFrame {
+public class MenuConfermaRegistrazione  extends JFrame {
     
     private Sfondo sfondo;
     private JButton fatto, riprova, indietro;
@@ -37,7 +37,7 @@ public class ConfermaRegistrazione  extends JFrame {
     private Socket socketClient;
     private PartitaOnlineController controller;
     
-    public ConfermaRegistrazione(Client client) { 
+    public MenuConfermaRegistrazione(Client client) { 
         this.client=client;
         this.socketClient=client.getSocketClient();
         inizializzaConnessione();
@@ -91,7 +91,7 @@ public class ConfermaRegistrazione  extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 codiceString = codice.getText();
                 if(checkCodice(codiceString)) {
-                   new ScegliRegistrazioneLogin(client);
+                   new MenuPrincipaleOnlineGui(client);
                    dispose();
                 } else
                     codiceErrato();
@@ -114,7 +114,7 @@ public class ConfermaRegistrazione  extends JFrame {
         indietro.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                new ScegliRegistrazioneLogin(client);
+                new MenuPrincipaleOnlineGui(client);
                 dispose();
             }
         });
@@ -135,7 +135,7 @@ public class ConfermaRegistrazione  extends JFrame {
                 return true;          
             
         } catch (IOException ex) {
-            Logger.getLogger(ConfermaRegistrazione.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(MenuConfermaRegistrazione.class.getName()).log(Level.SEVERE, null, ex);
         }
         return false;
     }

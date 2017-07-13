@@ -3,15 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package menuPrePartita;
+package dominio.eccezioni;
 
 /**
  *
  * @author root
  */
-class DifficoltaBotException extends Exception {
+public class PartitaOnlineIniziataException extends Exception {
 
-    public DifficoltaBotException() {
+    public PartitaOnlineIniziataException() {
     }
     
 }

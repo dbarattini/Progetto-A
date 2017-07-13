@@ -1,6 +1,6 @@
-package tempLoginPackage;
+package menuOnlineGui;
 
-import comunicazione.Client;
+import net.Client;
 import dominio.gui.Sfondo;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -25,7 +25,7 @@ import javax.swing.JLabel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
-public class RegistrazioneMenu extends JFrame {
+public class MenuRegistrazione extends JFrame {
 
     private Sfondo sfondo;
     private JButton fatto, riprova, indietro;
@@ -39,7 +39,7 @@ public class RegistrazioneMenu extends JFrame {
     private PrintWriter out;
     private Socket socketClient;
 
-    public RegistrazioneMenu(Client client) {
+    public MenuRegistrazione(Client client) {
         this.client=client;
         this.socketClient=client.getSocketClient();
         setTitle("Registrazione");
@@ -110,7 +110,7 @@ public class RegistrazioneMenu extends JFrame {
                 passwordString = new String(password.getPassword());
                 emailString = email.getText();
                 if (checkReg(idString, passwordString, emailString)) {
-                    new ConfermaRegistrazione(client);
+                    new MenuConfermaRegistrazione(client);
                     dispose();
                 }
             }
@@ -172,7 +172,7 @@ public class RegistrazioneMenu extends JFrame {
             }
 
         } catch (IOException ex) {
-            Logger.getLogger(RegistrazioneMenu.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(MenuRegistrazione.class.getName()).log(Level.SEVERE, null, ex);
         }
         return false; // temporaneo
     }

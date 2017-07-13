@@ -5,7 +5,7 @@
  */
 package database;
 
-import dominio.eccezioni.DatoGiaPresente;
+import dominio.eccezioni.DatoGiaPresenteException;
 import dominio.giocatori.Giocatore;
 
 /**
@@ -33,7 +33,7 @@ public class Database {
      * Se la quota di ingresso è maggiore delle fiches di quel profilo, resetta le fiches di quel profilo a 0
      */
     
-    public void inserisciProfilo(String nome, int fiches) throws DatoGiaPresente {
+    public void inserisciProfilo(String nome, int fiches) throws DatoGiaPresenteException {
         if(!db.esisteNome(nome))
             db.aggiungiDato(nome, 0, 0);
         else {

@@ -1,6 +1,6 @@
-package tempLoginPackage;
+package menuOnlineGui;
 
-import comunicazione.Client;
+import net.Client;
 import dominio.gui.Sfondo;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -23,7 +23,7 @@ import javax.swing.JLabel;
 import javax.swing.JTextField;
 import partitaOnline.controller.PartitaOnlineController;
 
-public class RecuperoPassword extends JFrame {
+public class MenuRecuperoPassword extends JFrame {
     
     private Sfondo sfondo;
     private JButton invia, riprova, indietro;
@@ -36,7 +36,7 @@ public class RecuperoPassword extends JFrame {
     private Socket socketClient;
     private PartitaOnlineController controller;
     
-    public RecuperoPassword(Client client) {
+    public MenuRecuperoPassword(Client client) {
         this.client = client;
         socketClient = client.getSocketClient();
         setTitle("Conferma registrazione");
@@ -135,7 +135,7 @@ public class RecuperoPassword extends JFrame {
             
             
         } catch (IOException ex) {
-            Logger.getLogger(RecuperoPassword.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(MenuRecuperoPassword.class.getName()).log(Level.SEVERE, null, ex);
         }
         return false;
     }

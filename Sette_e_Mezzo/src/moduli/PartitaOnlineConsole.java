@@ -1,14 +1,14 @@
 package moduli;
 
-import comunicazione.Client;
-import tempLoginPackage.PrePartitaOnlineConsole;
+import net.Client;
+import menuOnlineConsole.MenuPrincipaleOnlineConsole;
 
 
 public class PartitaOnlineConsole {
 
     public PartitaOnlineConsole(){
         Client client= new Client();
-        PrePartitaOnlineConsole login = new PrePartitaOnlineConsole(client.getSocketClient());
+        MenuPrincipaleOnlineConsole login = new MenuPrincipaleOnlineConsole(client.getSocketClient());
         login.comunica();
     }
 }
