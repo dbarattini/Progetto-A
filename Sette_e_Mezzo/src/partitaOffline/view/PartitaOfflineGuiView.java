@@ -41,6 +41,7 @@ import dominio.events.SetGiocata;
 import dominio.events.SetNome;
 import dominio.events.SetPuntata;
 import dominio.events.Vittoria;
+import menuPrincipale.MenuPrincipaleGui;
 
 public class PartitaOfflineGuiView extends JFrame implements PartitaOfflineView, Observer{
     private CopyOnWriteArrayList<ViewEventListener> listeners;
@@ -54,6 +55,8 @@ public class PartitaOfflineGuiView extends JFrame implements PartitaOfflineView,
     private Map<String, JLabel> valoriMano = new HashMap<>();
     private final int pausa_breve = 1000; //ms
     private final int pausa_lunga = 2000; //ms
+    private AudioPlayer audio;
+    private JLabel msgDaStampare;
     
     
     public PartitaOfflineGuiView(PartitaOfflineModel model) {
@@ -72,6 +75,8 @@ public class PartitaOfflineGuiView extends JFrame implements PartitaOfflineView,
         sfondo = new Sfondo("dominio/immagini/sfondo.png", 1275, 690);
         sfondo.setBounds(0, 0, 1280, 720);
         add(sfondo);
+        
+        audio = model.getAudio();
         
         setVisible(true);
     }
@@ -103,28 +108,21 @@ public class PartitaOfflineGuiView extends JFrame implements PartitaOfflineView,
     @Override
     public void update(Observable o, Object arg) {
         if(arg instanceof RichiediNome) {
-            //mostra la richiesta del nome al giocatore  
             richiediNome();            
         } else if(arg instanceof Error) {
-            //mostra l'errore a video
             String errore = ((Error) arg).getMessage();
             JOptionPane.showMessageDialog(null, errore, "Errore", JOptionPane.ERROR_MESSAGE);
         } else if(arg instanceof EstrattoMazziere) {
-            //mostra l'estrazione del mazziere
             estrazioneMazziere();
         } else if(arg instanceof MazzoRimescolato) {
-            //mostra il rimescolamento del mazzo
             rimescoloMazzo();
         } else if(arg instanceof RisultatoManoParticolare) {
-            //todo mostra lo stato particolare di una mano (Sette e mezzo, reale, sballato)
             manoParticolarePlayer();
         } else if(arg instanceof FineManoAvversario) {
-            //todo mostra il risultato della mano di un avversario
             if(needCartaCoperta)
                 stampaCartaCoperta();
             stampaManoAvversario(((FineManoAvversario) arg).getNome());
         } else if(arg instanceof FineRound) {
-            //todo mostra le statistiche di fine round
             Giocatore giocatore = ((FineRound) arg).getGiocatore();
             if(giocatore != model.getGiocatoreLocale())
                 scopriCartaCoperta(giocatore);
@@ -138,9 +136,27 @@ public class PartitaOfflineGuiView extends JFrame implements PartitaOfflineView,
         } else if(arg instanceof AggiornamentoMazziere) {
             //todo mostra che é stato scelto un nuovo mazziere
         } else if(arg instanceof GameOver) {
-            //todo mostra che il giocatore ha perso
+            stampaMsg("Hai terminato le fiches! > Game Over <", 50);
+            pausa(pausa_lunga);
+            try {
+                audio.ferma("soundTrack");
+                audio.riavvolgi("soundTrack");
+            } catch (CanzoneNonTrovataException ex) {
+                ex.printStackTrace();
+            }
+            new MenuPrincipaleGui();
+            dispose();
         } else if(arg instanceof Vittoria) {
-            //todo mostra che il giocatore ha vinto
+            stampaMsg("Gli avversari hanno perso! > Vittoria <", 50);
+            pausa(pausa_lunga);
+            try {
+                audio.ferma("soundTrack");
+                audio.riavvolgi("soundTrack");
+            } catch (CanzoneNonTrovataException ex) {
+                ex.printStackTrace();
+            }
+            new MenuPrincipaleGui();
+            dispose();
         }
     }
 
@@ -427,7 +443,6 @@ public class PartitaOfflineGuiView extends JFrame implements PartitaOfflineView,
         sfondo.add(rimescoloMsg);
         sfondo.repaint();
         
-        AudioPlayer audio = model.getAudio();
         try {
             audio.ferma("soundTrack");
             audio.riproduci("deckShuffle");
@@ -542,7 +557,7 @@ public class PartitaOfflineGuiView extends JFrame implements PartitaOfflineView,
             try {
                 valoreMano += giocatore.getCarteScoperte().get(i).getValoreNumerico();
             } catch (MattaException ex) {
-                // pass
+                // alla matta stampa valore scorretto...
             }
         }
         
@@ -577,8 +592,6 @@ public class PartitaOfflineGuiView extends JFrame implements PartitaOfflineView,
         int nBot = model.getGiocatori().size() - 1;
         int index = model.getGiocatori().indexOf(giocatore);
         JLabel stato = null;
-        
-        AudioPlayer audio = model.getAudio();
         
         Font font = new Font("StatoMano", Font.BOLD, 25);
         
@@ -701,6 +714,19 @@ public class PartitaOfflineGuiView extends JFrame implements PartitaOfflineView,
             valoriMano.clear();
             sfondo.repaint();
         }
+    }
+    
+    // stampa il messaggio passato
+    private void stampaMsg(String msg, int dimensione) {
+        Font font = new Font("MsgDaStampare", Font.BOLD, dimensione);
+        msgDaStampare = new JLabel(msg);
+        msgDaStampare.setFont(font);
+        msgDaStampare.setForeground(Color.black);
+        int strWidth = msgDaStampare.getFontMetrics(font).stringWidth(msg);
+        msgDaStampare.setBounds(this.getWidth() / 2 - strWidth / 2, this.getHeight() / 2 - 60, strWidth, 90);
+
+        sfondo.add(msgDaStampare);
+        sfondo.repaint();
     }
     
     // stoppa il thread per tempo ms

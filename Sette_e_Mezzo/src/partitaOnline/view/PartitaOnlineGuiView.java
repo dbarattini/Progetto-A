@@ -221,7 +221,6 @@ public class PartitaOnlineGuiView extends JFrame implements Observer {
         } else if (arg instanceof AggiornamentoMazziere) {
             //todo mostra che é stato scelto un nuovo mazziere
         } else if (arg instanceof GameOver) {
-            //todo mostra che il giocatore ha perso (da testare)
             stampaMsg("Hai terminato le fiches! Game Over", 50);
             pausa(pausa_lunga);
             try {
@@ -718,7 +717,7 @@ public class PartitaOnlineGuiView extends JFrame implements Observer {
 
     // stampa il messaggio passato
     private void stampaMsg(String msg, int dimensione) {
-        Font font = new Font("MsgGiocataAvversario", Font.BOLD, dimensione);
+        Font font = new Font("MsgDaStampare", Font.BOLD, dimensione);
         msgDaStampare = new JLabel(msg);
         msgDaStampare.setFont(font);
         msgDaStampare.setForeground(Color.black);
