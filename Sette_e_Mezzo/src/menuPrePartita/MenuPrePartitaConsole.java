@@ -81,6 +81,11 @@ public class MenuPrePartitaConsole{
         }
     }
     
+    /**
+     * controlla le fiches iniziali della partita
+     * 
+     * @throws FichesInizialiException 
+     */
     public void checkFichesIniziali() throws FichesInizialiException{        
             try{
                 fiches_iniziali = Integer.valueOf(fiches_iniziali_inserite);
@@ -93,6 +98,10 @@ public class MenuPrePartitaConsole{
    
     }
     
+    /**
+     * controlla la difficolatà dei bot
+     * @throws DifficoltaBotException 
+     */
     public void checkDifficoltaBot() throws DifficoltaBotException{
         if(difficolta_bot_inserita.equalsIgnoreCase("facile")){
             difficolta_bot = DifficoltaBot.Facile;
@@ -105,6 +114,10 @@ public class MenuPrePartitaConsole{
         }
     }
     
+    /**
+     * effettua un controllo sul numero di bot
+     * @throws NumeroBotException 
+     */
     public void checkNumeroBot() throws NumeroBotException{
         try{
             this.numero_bot = Integer.valueOf(numero_bot_inserito);
