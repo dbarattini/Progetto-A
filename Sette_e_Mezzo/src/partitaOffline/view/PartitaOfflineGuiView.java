@@ -501,7 +501,11 @@ public class PartitaOfflineGuiView extends JFrame implements PartitaOfflineView,
             if(i != nGiocatori - 1)
                 carteCoperteBots.add(stampaCarta((this.getWidth()*(2*i+1))/((nGiocatori-1)*2) - 125, 180, "retroCarta"));
             else {
-                stampaCarta(this.getWidth()/2 - 125, 3*this.getHeight()/4 - 60, model.getGiocatori().get(i).getCartaCoperta().toString());
+                try{
+                    stampaCarta(this.getWidth()/2 - 125, 3*this.getHeight()/4 - 60, model.getGiocatori().get(i).getCartaCoperta().toString());
+                } catch(java.lang.NullPointerException e){
+                    // pass # eccezione dovuta al tentativo di stampare una carta anche a partita finita
+                }
                 valoriMano.put(model.getGiocatoreLocale().getNome(), stampaValoreMano(model.getGiocatoreLocale()));
             }
             pausa(pausa_breve);
