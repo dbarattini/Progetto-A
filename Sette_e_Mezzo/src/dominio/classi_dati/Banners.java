@@ -85,16 +85,26 @@ public class Banners {
 "       (__  )  __/ /_/ /_/  __/  /  __/  / / / / / /  __/ / /_/ /_/ /_/ /\n" +
 "      /____/\\___/\\__/\\__/\\___/   \\___/  /_/ /_/ /_/\\___/ /___/___/\\____/ \n" +
 "                                                                         ";
-    
+    /**
+     * inizzializza arraylist
+     */
     public Banners(){
         banners = new ArrayList<>(Arrays.asList(big, banner, block, lean, shadow, slant));
         inizializza();
     }
     
+    /**
+     * 
+     */
     private void inizializza(){
 
     }
     
+    /**
+     * questo meroto seleziona un banners in modo causale
+     * 
+     * @return ritorna un banner 
+     */
     public String randomBanner(){
         Collections.shuffle(banners);
         return banners.get(0);
