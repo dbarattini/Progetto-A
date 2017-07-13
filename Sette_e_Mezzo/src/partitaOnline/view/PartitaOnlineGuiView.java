@@ -685,7 +685,7 @@ public class PartitaOnlineGuiView extends JFrame implements Observer {
         try {
             valoreMano = giocatore.getValoreMano() - giocatore.getCartaCoperta().getValoreNumerico();
         } catch (MattaException ex) {
-            ex.printStackTrace();
+            // pass
         }
 
         JLabel valoreManoGiocatore = new JLabel("Valore attuale:   " + valoreMano);
