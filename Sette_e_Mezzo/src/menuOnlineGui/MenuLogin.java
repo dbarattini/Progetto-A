@@ -22,6 +22,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+import moduli.PartitaOnlineGui;
 import partitaOnline.controller.PartitaOnlineController;
 import partitaOnline.view.PartitaOnlineGuiView;
 
@@ -105,8 +106,7 @@ public class MenuLogin extends JFrame {
                 idString = id.getText();
                 passwordString = new String(password.getPassword());
                 if (checkLogin(idString, passwordString)) {
-                    controller = new PartitaOnlineController(socketClient, in);
-                    new PartitaOnlineGuiView(controller);
+                    new PartitaOnlineGui(socketClient, in);
                     dispose();
                 } else {
                     loginErrato();
