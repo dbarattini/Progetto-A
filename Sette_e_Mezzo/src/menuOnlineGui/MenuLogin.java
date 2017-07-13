@@ -99,20 +99,31 @@ public class MenuLogin extends JFrame {
         richiediLogin.setBounds(this.getWidth() / 2 - 308, 30, 617, 135);
         idLabel.setBounds(211, 251, 120, 78);
         passwordLabel.setBounds(100, 338, 342, 105);
+        
+        id.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                password.requestFocusInWindow();
+            }
+            
+        });
+        
+        password.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                iniziaPartita();
+            }
+            
+        });
 
         fatto.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                idString = id.getText();
-                passwordString = new String(password.getPassword());
-                if (checkLogin(idString, passwordString)) {
-                    new PartitaOnlineGui(socketClient, in);
-                    dispose();
-                } else {
-                    loginErrato();
-                }
+                iniziaPartita();
             }
         });
+        
+        
         
         riprova.addActionListener(new ActionListener() {
             @Override
@@ -184,6 +195,17 @@ public class MenuLogin extends JFrame {
         sfondo.remove(idLabel);
         sfondo.remove(passwordLabel);
         sfondo.repaint();
+    }
+    
+    private void iniziaPartita(){
+        idString = id.getText();
+        passwordString = new String(password.getPassword());
+        if (checkLogin(idString, passwordString)) {
+            new PartitaOnlineGui(socketClient, in);
+            dispose();
+        } else {
+            loginErrato();
+        }
     }
     
     public void addIndietroActionListener(ActionListener l){
