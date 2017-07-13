@@ -117,6 +117,7 @@ public class PartitaOfflineModel extends Observable {
     private void inizializza_audio() throws CaricamentoCanzoneException{
         audio.carica("LoungeBeat.wav", "soundTrack");
         audio.carica("deckShuffle.wav", "deckShuffle");
+        audio.carica("ApplausiSetteEMezzo.wav", "applausiSEM");
     }
     
     public void inizializza_partita(){
@@ -387,12 +388,10 @@ public class PartitaOfflineModel extends Observable {
     }
 
     private void game_over(){
-        System.exit(0);
     }
 
     private void vittoria(){
         database.vittoria(giocatore_locale);
-        System.exit(0);
     }
 
     public int getN_bot() {

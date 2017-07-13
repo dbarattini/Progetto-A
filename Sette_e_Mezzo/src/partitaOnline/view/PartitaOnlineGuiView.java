@@ -43,7 +43,7 @@ public class PartitaOnlineGuiView extends JFrame implements Observer {
     private JTextField puntata;
     private JLabel msgDaStampare;
     private boolean needCartaCoperta = true, mazziereEstratto = false, needToMarkMazziere = false,
-            needStatoCambiato = false, partitaIniziata = false, esciAFineRound = false, partitaPiena = false;
+            needStatoCambiato = false, partitaIniziata = false, esciAFineRound = false;
     private ArrayList<JLabel> carteCoperteAvversari = new ArrayList<>();
     private Map<String, JLabel> valoriMano = new HashMap<>();
     private final int pausa_breve = 1000; //ms
@@ -88,8 +88,7 @@ public class PartitaOnlineGuiView extends JFrame implements Observer {
             sfondo.add(fraseSalaAttesa);
             sfondo.add(esciDaSolo);
             sfondo.repaint();
-        } else if(partitaPiena)
-            partitaPienaExit();
+        }
     }
 
     private void inizializza_salaAttesa() {
@@ -176,7 +175,7 @@ public class PartitaOnlineGuiView extends JFrame implements Observer {
     
     private void partitaPienaExit() {
         stampaMsg("Tavolo pieno, riprova tra poco!", 60);
-        pausa(1500);
+        pausa(pausa_lunga);
         try {
             audio.ferma("soundTrack");
             audio.riavvolgi("soundTrack");
@@ -290,16 +289,15 @@ public class PartitaOnlineGuiView extends JFrame implements Observer {
             }
             partitaIniziata = true;
         } else if (arg instanceof ParticellaDiSodio) {
-            // se rimane un giocatore solo c'è da mostrargli la schermata di attesa. NB: ricomincia la partita  testato, il pulsante esci non funziona
             resettaPartita();
             sfondo.add(imgSalaAttesa);
             sfondo.add(fraseSalaAttesa);
             sfondo.add(esciDaSolo);
             sfondo.repaint();
-
         } else if (arg instanceof PartitaPiena) {
-            // dopo il login ha provato a connettersi ma il tavolo è già al completo: mostrare messaggio di indietro (da testare)
-            partitaPiena = true;
+            pausa(pausa_breve);
+            sfondo.removeAll();
+            partitaPienaExit();
         }
     }
 
