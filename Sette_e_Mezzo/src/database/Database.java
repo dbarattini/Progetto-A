@@ -16,6 +16,9 @@ public class Database {
     
     private SQL db;
 
+    /**
+     * crea database
+     */
     public Database() {
         this.db = new SQL();
     }
