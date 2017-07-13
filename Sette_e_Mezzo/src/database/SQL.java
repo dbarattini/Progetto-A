@@ -15,6 +15,9 @@ public class SQL {
         creaTabella();
     }
 
+    /**
+     * crea una nuova tabella nel database
+     */
     private void creaTabella() {
         try {
             Class.forName("org.sqlite.JDBC");
@@ -33,6 +36,14 @@ public class SQL {
         }
     }
 
+    /**
+     * aggiunge dati relativi ad un utente nel database
+     * 
+     * @param user uotente a cui si riferiscono i dati
+     * @param fiches numero di fiches dell'utente
+     * @param vittorie numero di vittorie dell'utente
+     * @throws DatoGiaPresente 
+     */
     public void aggiungiDato(String user, int fiches, int vittorie) throws DatoGiaPresente {
         try {
             Class.forName("org.sqlite.JDBC");
@@ -96,6 +107,12 @@ public class SQL {
         return dati;
     }
 
+    /**
+     * imposta il numero di fiches per un utente
+     * 
+     * @param user utente interessato
+     * @param fiches numero di fiches da settare
+     */
     public void setFiches(String user, int fiches) {
 
         try {
@@ -117,6 +134,12 @@ public class SQL {
 
     }
 
+    /**
+     * recupera il numero di fiches di un utente 
+     * 
+     * @param user utente di cui si vogliono sapere le fiches
+     * @return numero di fiches dell'utente
+     */
     public int getFiches(String user) {
         try {
             user = user.toLowerCase();
@@ -143,6 +166,11 @@ public class SQL {
         return 0;
     }
 
+    /**
+     * aggiorna il numero di vittorie di un utente
+     * 
+     * @param user untente interessato
+     */
     public void aggiungiVittoria(String user) {
         int vittorie = 0;
         try {
@@ -173,6 +201,12 @@ public class SQL {
 
     }
 
+    /**
+     * recupera il numero di vittorie di un utente
+     * 
+     * @param user utente interessato
+     * @return numero vittorie utente
+     */
     public int getVittorie(String user) {
         try {
             user = user.toLowerCase();
@@ -230,6 +264,9 @@ public class SQL {
         return false;
     }
 
+    /**
+     * chiude il database
+     */
     private void chiudiDatabase() {
         try {
             stmt.close();
