@@ -1,5 +1,6 @@
 package partitaOffline.model;
 
+import dominio.giocatori.GiocatoreUmano;
 import dominio.events.Vittoria;
 import dominio.events.MazzierePerde;
 import dominio.events.FineRound;
@@ -100,7 +101,6 @@ public class PartitaOfflineModel extends Observable {
                 this.setChanged();
                 this.notifyObservers(new MazzierePerde());
                 mazziere.azzeraFiches();
-                mazziere.perde();
                 mazziere_successivo();
                 
             }
@@ -360,12 +360,6 @@ public class PartitaOfflineModel extends Observable {
                 } else {
                     giocatore.perde();
                     n_bot_sconfitti += 1;
-                    if(giocatore.isMazziere()){
-                        this.setChanged();
-                        this.notifyObservers(new MazzierePerde());
-                        
-                        mazziere_successivo();
-                    }
                 }
             }
         }
