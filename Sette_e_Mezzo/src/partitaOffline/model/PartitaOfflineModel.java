@@ -388,12 +388,10 @@ public class PartitaOfflineModel extends Observable {
     }
 
     private void game_over(){
-        System.exit(0);
     }
 
     private void vittoria(){
         database.vittoria(giocatore_locale);
-        System.exit(0);
     }
 
     public int getN_bot() {

@@ -129,10 +129,12 @@ public class PartitaOfflineConsoleView implements PartitaOfflineView, Observer{
             System.out.println("\n");
             System.out.println("---------------------------------> Game Over <---------------------------------");
             pausa(pausa_breve);
+            System.exit(0);
         } else if(arg instanceof Vittoria){
             System.out.println("\n");
             System.out.println("-------------------> Complimenti! Hai sconfitto tutti i bot <------------------");
             pausa(pausa_breve);
+            System.exit(0);
         }
     }
 

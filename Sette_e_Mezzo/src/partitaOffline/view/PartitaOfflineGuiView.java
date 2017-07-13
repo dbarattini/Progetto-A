@@ -41,6 +41,7 @@ import dominio.events.SetGiocata;
 import dominio.events.SetNome;
 import dominio.events.SetPuntata;
 import dominio.events.Vittoria;
+import menuPrePartita.MenuPrePartitaGui;
 
 public class PartitaOfflineGuiView extends JFrame implements PartitaOfflineView, Observer{
     private CopyOnWriteArrayList<ViewEventListener> listeners;
@@ -54,12 +55,14 @@ public class PartitaOfflineGuiView extends JFrame implements PartitaOfflineView,
     private Map<String, JLabel> valoriMano = new HashMap<>();
     private final int pausa_breve = 1000; //ms
     private final int pausa_lunga = 2000; //ms
+    private MenuPrePartitaGui menu_pre_partita;
     
     
-    public PartitaOfflineGuiView(PartitaOfflineModel model) {
+    public PartitaOfflineGuiView(PartitaOfflineModel model, MenuPrePartitaGui menu_pre_partita) {
         listeners = new CopyOnWriteArrayList<>();                
         this.model = model;
         this.model.addObserver(this);
+        this.menu_pre_partita = menu_pre_partita;
         
         setTitle("Sette e Mezzo");
         setPreferredSize(new Dimension(1280, 720));
@@ -139,8 +142,12 @@ public class PartitaOfflineGuiView extends JFrame implements PartitaOfflineView,
             //todo mostra che é stato scelto un nuovo mazziere
         } else if(arg instanceof GameOver) {
             //todo mostra che il giocatore ha perso
+            menu_pre_partita.setVisible(true);
+            this.dispose();
         } else if(arg instanceof Vittoria) {
             //todo mostra che il giocatore ha vinto
+            menu_pre_partita.setVisible(true);
+            this.dispose();
         }
     }
 
