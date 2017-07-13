@@ -67,7 +67,7 @@ public abstract class Giocatore implements Cloneable{
         Giocata giocata = decidiGiocata();
         return gioca(giocata);
     }
-
+    
     private boolean gioca(Giocata giocata) {
         switch (giocata) {
             case Carta:
@@ -107,6 +107,10 @@ public abstract class Giocatore implements Cloneable{
         this.puntata = puntata;
     }
     
+    /**
+     * 
+     * @return puntata
+     */
     public int aggiungiPuntataReale() {
         fiches = fiches - puntata; //quando si punta viene gia scalata una puntata
         if (fiches < 0) {
@@ -155,54 +159,106 @@ public abstract class Giocatore implements Cloneable{
         perso = true;
     }
 
+    /**
+     * 
+     * @return perso
+     */
     public boolean haPerso() {
         return perso;
     }
 
+    /**
+     * 
+     * @return mazziere (bool)
+     */
     public boolean isMazziere() {
         return mazziere;
     }
 
+    /**
+     * 
+     * @param mazziere mazziere della mano
+     */
     public void setMazziere(boolean mazziere) {
         this.mazziere = mazziere;
     }
 
+    /**
+     * 
+     * @param stato stato mano giocatore
+     */
     public void setStatoMano(StatoMano stato) {
         this.stato = stato;
     }
     
+    /**
+     * 
+     * @param fiches fiches del giocatore
+     */
     public void setFiches(int fiches) {
         this.fiches = fiches;
     }
 
+    /**
+     * 
+     * @return nome del giocatore
+     */
     public String getNome() {
         return nome;
     }
 
+    /**
+     * 
+     * @return fiches del giocatore
+     */
     public int getFiches() {
         return fiches;
     }
 
+    /**
+     * 
+     * @return puntata del giocatore
+     */
     public int getPuntata() {
         return puntata;
     }
 
+    /**
+     * 
+     * @return valore mano del giocatore
+     */
     public double getValoreMano() {
         return valore_mano.getValore();
     }
 
+    /**
+     * 
+     * @return stato mano del giocatore
+     */
     public StatoMano getStatoMano() {
         return stato;
     }
 
+    /**
+     * 
+     * @return carta coperta del giocatore
+     */
     public Carta getCartaCoperta() {
         return carta_coperta;
     }
 
+    /**
+     * 
+     * @return carte scoperte del giocatore
+     */
     public ArrayList<Carta> getCarteScoperte() {
         return carte_scoperte;
     }
 
+    /**
+     * 
+     * @return carte coperte e scoperte del giocatore
+     */
     public ArrayList<Carta> getTutteLeCarte() {
         ArrayList<Carta> carte = new ArrayList<>();
         carte.add(carta_coperta);
@@ -210,11 +266,15 @@ public abstract class Giocatore implements Cloneable{
         return carte;
     }
 
+    /**
+     * 
+     * @return ultima carta ottenuta
+     */
     public Carta getUltimaCartaOttenuta() {
         return carte_scoperte.get(carte_scoperte.size() - 1);
     }
     
-    @Override
+        @Override
     public Object clone(){
             try {
                     return super.clone();
