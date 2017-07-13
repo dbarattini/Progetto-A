@@ -13,7 +13,7 @@ public class GiocatoreOnline extends Giocatore{
 
     /**
      * 
-     * @param nome nomme del giocatore
+     * @param nome nome del giocatore
      * @param fiches fiches del giocatore
      */
     public GiocatoreOnline(String nome, int fiches) {
@@ -28,10 +28,18 @@ public class GiocatoreOnline extends Giocatore{
         numero_carte_scoperte = 0;
     }
 
+    /**
+     *
+     * @return numero carte scoperte
+     */
     public int getNumeroCarteScoperte() {
         return numero_carte_scoperte;
     }
 
+    /**
+     *
+     * @param numero_carte_scoperte numero carte scoperte
+     */
     public void setNumeroCarteScoperte(int numero_carte_scoperte) {
         this.numero_carte_scoperte = numero_carte_scoperte;
     }    
@@ -63,6 +71,10 @@ public class GiocatoreOnline extends Giocatore{
         this.ultima_carta_ottenuta = ultimaCartaOttenuta;
     }
 
+    /**
+     *
+     * @param carta_coperta carta coperta del giocatore
+     */
     public void setCartaCoperta(Carta carta_coperta) {
         this.carta_coperta = carta_coperta;
     }
