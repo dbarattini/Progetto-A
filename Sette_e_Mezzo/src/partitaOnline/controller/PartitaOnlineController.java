@@ -94,7 +94,7 @@ public class PartitaOnlineController extends Observable implements ViewEventList
                 break;
             case "StatoCambiato":
                 String[] componenti = dati[2].split(" ");
-                giocatoreDaNome(componenti[0]).setStato(StatoMano.valueOf(componenti[1]));
+                giocatoreDaNome(componenti[0]).setStatoMano(StatoMano.valueOf(componenti[1]));
                 this.setChanged();
                 this.notifyObservers(new StatoCambiato(componenti[0],StatoMano.valueOf(componenti[1]) ));
                 break;
@@ -119,7 +119,7 @@ public class PartitaOnlineController extends Observable implements ViewEventList
         String nome=componenti[0];
         GiocatoreOnline giocatore=giocatoreDaNome(nome);
         giocatore.setUltimaCartaOttenuta(new Carta(componenti[1].substring(0, 1), componenti[1].substring(1, 2)));
-        giocatore.setNumCarteScoperte(Integer.valueOf(componenti[2]));
+        giocatore.setNumeroCarteScoperte(Integer.valueOf(componenti[2]));
         this.setChanged();
         this.notifyObservers(new GiocatoreHaPescato(giocatore));
     }
