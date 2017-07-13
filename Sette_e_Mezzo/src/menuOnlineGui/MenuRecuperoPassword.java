@@ -24,7 +24,7 @@ import javax.swing.JTextField;
 import partitaOnline.controller.PartitaOnlineController;
 
 public class MenuRecuperoPassword extends JFrame {
-    
+
     private Sfondo sfondo;
     private JButton invia, riprova, indietro;
     private JTextField recupero;
@@ -35,7 +35,7 @@ public class MenuRecuperoPassword extends JFrame {
     private PrintWriter out;
     private Socket socketClient;
     private PartitaOnlineController controller;
-    
+
     public MenuRecuperoPassword(Client client) {
         this.client = client;
         socketClient = client.getSocketClient();
@@ -47,14 +47,14 @@ public class MenuRecuperoPassword extends JFrame {
         setResizable(false);
         setLocationRelativeTo(null);
 
-        inizializzaGUI();       
+        inizializzaGUI();
     }
-    
-    public void run(){
+
+    public void run() {
         inizializzaConnessione(socketClient);
         this.setVisible(true);
     }
-    
+
     private void inizializzaConnessione(Socket socketClient) {
         try {
             this.socketClient = socketClient;
@@ -67,38 +67,41 @@ public class MenuRecuperoPassword extends JFrame {
             System.err.println("Impossibile connnettersi al server");
         }
     }
-    
+
     private void inizializzaGUI() {
         sfondo = new Sfondo("dominio/immagini/sfondo.png", 995, 765);
         sfondo.setBounds(0, 0, 1000, 800);
         add(sfondo);
-                
+
         richiediRecupero = new JLabel(caricaImmagine("dominio/immagini/richiediRecupero.png"));
         invia = new JButton(caricaImmagine("dominio/immagini/invia.png"));
         riprova = new JButton(caricaImmagine("dominio/immagini/riprova.png"));
         recupero = new JTextField();
         indietro = new JButton(caricaImmagine("dominio/immagini/indietro.png"));
-        
+
         Font font = new Font("Recupero Password", 1, 40);
         recupero.setFont(font);
-        
-        richiediRecupero.setBounds(this.getWidth()/2 - 313, 50, 626, 132);
-        invia.setBounds(this.getWidth()/2 - 100, 400, 200, 80);
-        riprova.setBounds(this.getWidth()/2 - 100, 400, 200, 80);
-        recupero.setBounds(this.getWidth()/2 - 150, 300, 300, 80);;
-        indietro.setBounds(this.getWidth()/2 - 100, 600, 200, 80);
-        
+
+        richiediRecupero.setBounds(this.getWidth() / 2 - 313, 50, 626, 132);
+        invia.setBounds(this.getWidth() / 2 - 100, 400, 200, 80);
+        riprova.setBounds(this.getWidth() / 2 - 100, 400, 200, 80);
+        recupero.setBounds(this.getWidth() / 2 - 150, 300, 300, 80);;
+        indietro.setBounds(this.getWidth() / 2 - 100, 600, 200, 80);
+
+        recupero.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                inviaRecupero();
+            }
+
+        });
         invia.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                infoString = recupero.getText();
-                if(checkInfo(infoString)) {
-                    infoCorretta();
-                } else
-                    infoErrata();
+                inviaRecupero();
             }
         });
-        
+
         riprova.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -111,35 +114,38 @@ public class MenuRecuperoPassword extends JFrame {
                 sfondo.repaint();
             }
         });
-        
-        indietro.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-            }
-        });
-        
+
         sfondo.add(richiediRecupero);
         sfondo.add(invia);
         sfondo.add(recupero);
         sfondo.add(indietro);
         sfondo.repaint();
     }
-    
+
     private boolean checkInfo(String info) {
         try {
             String messaggio_da_inviare = "recupero " + info;
             out.println(messaggio_da_inviare);
             String risposta = in.readLine();
-            if (risposta.equals("recupero inviato"))
+            if (risposta.equals("recupero inviato")) {
                 return true;
-            
-            
+            }
+
         } catch (IOException ex) {
             Logger.getLogger(MenuRecuperoPassword.class.getName()).log(Level.SEVERE, null, ex);
         }
         return false;
     }
-    
+
+    private void inviaRecupero() {
+        infoString = recupero.getText();
+        if (checkInfo(infoString)) {
+            infoCorretta();
+        } else {
+            infoErrata();
+        }
+    }
+
     private void infoErrata() {
         Font font = new Font("InfoErrataMsg", Font.BOLD, 60);
         messInfoCorretta = new JLabel("<html> Nessuna corrispondenza,"
@@ -158,7 +164,7 @@ public class MenuRecuperoPassword extends JFrame {
         sfondo.remove(indietro);
         sfondo.repaint();
     }
-    
+
     private void infoCorretta() {
         Font font = new Font("InfoCorrettaMsg", Font.BOLD, 35);
         messInfoCorretta = new JLabel("<html> La password è stata inviata all'email registrata,"
@@ -166,18 +172,18 @@ public class MenuRecuperoPassword extends JFrame {
         messInfoCorretta.setFont(font);
         messInfoCorretta.setForeground(Color.black);
         messInfoCorretta.setBounds(this.getWidth() / 2 - 370, 50, 800, 400);
-        
+
         sfondo.add(messInfoCorretta);
         sfondo.remove(richiediRecupero);
         sfondo.remove(invia);
         sfondo.remove(recupero);
         sfondo.repaint();
     }
-    
-    public void addIndietroActionListener(ActionListener l){
+
+    public void addIndietroActionListener(ActionListener l) {
         indietro.addActionListener(l);
     }
-    
+
     private ImageIcon caricaImmagine(String nome) {
         ClassLoader loader = getClass().getClassLoader();
         URL percorso = loader.getResource(nome);
