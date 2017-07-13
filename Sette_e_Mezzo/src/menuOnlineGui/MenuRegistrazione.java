@@ -40,8 +40,8 @@ public class MenuRegistrazione extends JFrame {
     private Socket socketClient;
 
     public MenuRegistrazione(Client client) {
-        this.client=client;
-        this.socketClient=client.getSocketClient();
+        this.client = client;
+        this.socketClient = client.getSocketClient();
         setTitle("Registrazione");
         setPreferredSize(new Dimension(1000, 800));
         setMinimumSize(new Dimension(1000, 800));
@@ -52,8 +52,8 @@ public class MenuRegistrazione extends JFrame {
 
         inizializzaGUI();
     }
-    
-    public void run(){
+
+    public void run() {
         inizializzaConnessione(socketClient);
         this.setVisible(true);
     }
@@ -94,7 +94,7 @@ public class MenuRegistrazione extends JFrame {
 
         fatto.setBounds(this.getWidth() / 2 - 100, 530, 200, 80);
         riprova.setBounds(this.getWidth() / 2 - 100, 530, 200, 80);
-        indietro.setBounds(this.getWidth()/2 - 100, 630, 200, 80);
+        indietro.setBounds(this.getWidth() / 2 - 100, 630, 200, 80);
         id.setBounds(510, 230, 300, 80);
         password.setBounds(510, 330, 300, 80);
         email.setBounds(510, 430, 300, 80);
@@ -103,19 +103,37 @@ public class MenuRegistrazione extends JFrame {
         passwordLabel.setBounds(100, 318, 342, 105);
         emailLabel.setBounds(173, 438, 195, 75);
 
+        id.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                password.requestFocusInWindow();
+            }
+
+        });
+
+        password.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                email.requestFocusInWindow();
+            }
+
+        });
+
+        email.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                confermaRegistrazione();
+            }
+
+        });
+
         fatto.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                idString = id.getText();
-                passwordString = new String(password.getPassword());
-                emailString = email.getText();
-                if (checkReg(idString, passwordString, emailString)) {
-                    new MenuConfermaRegistrazione(client);
-                    dispose();
-                }
+                confermaRegistrazione();
             }
         });
-        
+
         riprova.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -132,13 +150,7 @@ public class MenuRegistrazione extends JFrame {
                 sfondo.repaint();
             }
         });
-        
-        indietro.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-            }
-        });
-        
+
         sfondo.add(fatto);
         sfondo.add(indietro);
         sfondo.add(id);
@@ -150,13 +162,26 @@ public class MenuRegistrazione extends JFrame {
         sfondo.add(emailLabel);
     }
 
+    private void confermaRegistrazione() {
+        idString = id.getText();
+        passwordString = new String(password.getPassword());
+        emailString = email.getText();
+        if (checkReg(idString, passwordString, emailString)) {
+            new MenuConfermaRegistrazione(client);
+            indietro.doClick();
+        }
+    }
+
     private boolean checkReg(String id, String pass, String email) {
-        if(id.equals(""))
+        if (id.equals("")) {
             id = "-";
-        if(pass.equals(""))
+        }
+        if (pass.equals("")) {
             pass = "-";
-        if(email.equals(""))
+        }
+        if (email.equals("")) {
             email = "-";
+        }
         try {
             String messaggio_da_inviare = "registrazione " + email + " " + id + " " + pass;
             out.println(messaggio_da_inviare);
@@ -167,7 +192,7 @@ public class MenuRegistrazione extends JFrame {
                 regFallita("email già esistente.");
             } else if (risposta.equals("registrazione username gia esistente")) {
                 regFallita("username già esistente.");
-            } else if (risposta.equals("registrazione email non valida")){
+            } else if (risposta.equals("registrazione email non valida")) {
                 regFallita("email non valida.");
             }
 
@@ -180,7 +205,7 @@ public class MenuRegistrazione extends JFrame {
     private void regFallita(String motivo) {
         Font font = new Font("RegFallitaMsg", Font.BOLD, 60);
         messRegFallita = new JLabel("<html>Registrazione non riuscita,<br>"
-                + motivo 
+                + motivo
                 + "&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp Riprova per favore</html>");
         messRegFallita.setFont(font);
         messRegFallita.setForeground(Color.black);
@@ -202,10 +227,10 @@ public class MenuRegistrazione extends JFrame {
         sfondo.repaint();
     }
 
-    public void addIndietroActionListener(ActionListener l){
+    public void addIndietroActionListener(ActionListener l) {
         indietro.addActionListener(l);
     }
-    
+
     private ImageIcon caricaImmagine(String nome) {
         ClassLoader loader = getClass().getClassLoader();
         URL percorso = loader.getResource(nome);

@@ -20,26 +20,27 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import partitaOnline.controller.PartitaOnlineController;
 
-public class MenuConfermaRegistrazione  extends JFrame {
-    
+public class MenuConfermaRegistrazione extends JFrame {
+
     private Sfondo sfondo;
     private JButton fatto, riprova, indietro;
     private JTextField codice;
     private JLabel richiediCodice, messCodErrato;
     private String codiceString = null;
     private Client client;
-    
+
     private BufferedReader in;
     private PrintWriter out;
     private Socket socketClient;
     private PartitaOnlineController controller;
-    
-    public MenuConfermaRegistrazione(Client client) { 
-        this.client=client;
-        this.socketClient=client.getSocketClient();
+
+    public MenuConfermaRegistrazione(Client client) {
+        this.client = client;
+        this.socketClient = client.getSocketClient();
         inizializzaConnessione();
         setTitle("Conferma registrazione");
         setPreferredSize(new Dimension(1000, 800));
@@ -51,9 +52,9 @@ public class MenuConfermaRegistrazione  extends JFrame {
 
         inizializzaGUI();
 
-        setVisible(true);        
+        setVisible(true);
     }
-    
+
     private void inizializzaConnessione() {
         try {
             in = new BufferedReader(new InputStreamReader(socketClient.getInputStream()));
@@ -65,39 +66,42 @@ public class MenuConfermaRegistrazione  extends JFrame {
             System.err.println("Impossibile connnettersi al server");
         }
     }
-    
+
     private void inizializzaGUI() {
         sfondo = new Sfondo("dominio/immagini/sfondo.png", 995, 765);
         sfondo.setBounds(0, 0, 1000, 800);
         add(sfondo);
-                
+
         richiediCodice = new JLabel(caricaImmagine("dominio/immagini/richiediCodice.png"));
         fatto = new JButton(caricaImmagine("dominio/immagini/fatto.png"));
         riprova = new JButton(caricaImmagine("dominio/immagini/riprova.png"));
         codice = new JTextField();
         indietro = new JButton(caricaImmagine("dominio/immagini/indietro.png"));
-        
+
         Font font = new Font("Codice Conferma", 1, 40);
         codice.setFont(font);
-        
-        richiediCodice.setBounds(this.getWidth()/2 - 313, 50, 626, 132);
-        fatto.setBounds(this.getWidth()/2 - 100, 400, 200, 80);
-        riprova.setBounds(this.getWidth()/2 - 100, 400, 200, 80);
-        codice.setBounds(this.getWidth()/2 - 100, 300, 200, 80);;
-        indietro.setBounds(this.getWidth()/2 - 100, 600, 200, 80);
+
+        richiediCodice.setBounds(this.getWidth() / 2 - 313, 50, 626, 132);
+        fatto.setBounds(this.getWidth() / 2 - 100, 400, 200, 80);
+        riprova.setBounds(this.getWidth() / 2 - 100, 400, 200, 80);
+        codice.setBounds(this.getWidth() / 2 - 100, 300, 200, 80);;
+        indietro.setBounds(this.getWidth() / 2 - 100, 600, 200, 80);
+
+        codice.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                registraCodice();
+            }
+
+        });
         
         fatto.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                codiceString = codice.getText();
-                if(checkCodice(codiceString)) {
-                   new MenuPrincipaleOnlineGui(client);
-                   dispose();
-                } else
-                    codiceErrato();
+                registraCodice();
             }
         });
-        
+
         riprova.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -110,7 +114,7 @@ public class MenuConfermaRegistrazione  extends JFrame {
                 sfondo.repaint();
             }
         });
-        
+
         indietro.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -118,28 +122,39 @@ public class MenuConfermaRegistrazione  extends JFrame {
                 dispose();
             }
         });
-        
+
         sfondo.add(richiediCodice);
         sfondo.add(fatto);
         sfondo.add(codice);
         sfondo.add(indietro);
         sfondo.repaint();
     }
-    
+
     private boolean checkCodice(String codice) {
         try {
             String messaggio_da_inviare = "convalida " + codice;
             out.println(messaggio_da_inviare);
             String risposta = in.readLine();
-            if(risposta.equals("registrazione effetuata"))
-                return true;          
-            
+            if (risposta.equals("registrazione effetuata")) {
+                return true;
+            }
+
         } catch (IOException ex) {
             Logger.getLogger(MenuConfermaRegistrazione.class.getName()).log(Level.SEVERE, null, ex);
         }
         return false;
     }
-    
+
+    private void registraCodice() {
+        codiceString = codice.getText();
+        if (checkCodice(codiceString)) {
+            JOptionPane.showMessageDialog(new JFrame(), "Account registrato correttamente!", "REGISTRAZIONE EFFETTUATA!", JOptionPane.INFORMATION_MESSAGE);
+            dispose();
+        } else {
+            codiceErrato();
+        }
+    }
+
     private void codiceErrato() {
         Font font = new Font("CodErratoMsg", Font.BOLD, 60);
         messCodErrato = new JLabel("<html>&nbsp&nbsp Codice errato,"
@@ -158,7 +173,7 @@ public class MenuConfermaRegistrazione  extends JFrame {
         sfondo.remove(indietro);
         sfondo.repaint();
     }
-    
+
     private ImageIcon caricaImmagine(String nome) {
         ClassLoader loader = getClass().getClassLoader();
         URL percorso = loader.getResource(nome);
