@@ -6,15 +6,10 @@ import dominio.gui.Sfondo;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.io.IOException;
 import java.net.URL;
-import java.net.UnknownHostException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 
 public class MenuPrincipaleOnlineGui extends JFrame implements ActionListener {
 
@@ -24,33 +19,6 @@ public class MenuPrincipaleOnlineGui extends JFrame implements ActionListener {
     private MenuLogin menu_login;
     private MenuRegistrazione menu_registrazione;
     private MenuRecuperoPassword menu_recupero_passwd;
-
-    public MenuPrincipaleOnlineGui() {
-        indietro = new JButton();
-
-        try {
-            connetti();
-            setTitle("Fai il Login o Registrati !");
-            setPreferredSize(new Dimension(1000, 800));
-            setMinimumSize(new Dimension(1000, 800));
-            pack();
-            setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            setResizable(false);
-            setLocationRelativeTo(null);
-
-            inizializzaGUI();
-            this.setVisible(true);
-        } catch (Exception e) {
-            JOptionPane.showMessageDialog(new JFrame(), "Impossibile contattare il Server.", "Errore!", JOptionPane.ERROR_MESSAGE);
-            indietro.doClick();
-        }
-
-    }
-
-    public void connetti() throws IOException {
-        client = new Client();
-        client.connetti();
-    }
 
     public MenuPrincipaleOnlineGui(Client client) {
         setTitle("Fai il Login o Registrati !");
@@ -64,6 +32,7 @@ public class MenuPrincipaleOnlineGui extends JFrame implements ActionListener {
         this.client = client;
 
         inizializzaGUI();
+        this.setVisible(true);
     }
 
     private void inizializzaGUI() {

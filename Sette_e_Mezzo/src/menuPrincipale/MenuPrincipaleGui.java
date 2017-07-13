@@ -16,8 +16,10 @@ import java.net.URL;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import menuPrePartita.MenuPrePartitaGui;
 import menuOnlineGui.MenuPrincipaleOnlineGui;
+import net.Client;
 
 public class MenuPrincipaleGui extends JFrame implements ActionListener{
     MenuPrePartitaGui menu_pre_partita;
@@ -26,13 +28,15 @@ public class MenuPrincipaleGui extends JFrame implements ActionListener{
     MenuPrincipaleOnlineGui menu_online;
     private JButton partita_off, partita_on, regole, opzioni;
     private Sfondo sfondo;
+    private Client client;
     
     public MenuPrincipaleGui() { 
-        this.menu_regole = new RegoleGui();
-        this.menu_regole.addIndietroActionListener(this);
-        this.menu_pre_partita = new MenuPrePartitaGui();
+        client = new Client();
+        menu_regole = new RegoleGui();
+        menu_regole.addIndietroActionListener(this);
+        menu_pre_partita = new MenuPrePartitaGui();
         menu_pre_partita.addIndietroActionListener(this);
-        this.menu_opzioni = new MenuOpzioniGui();
+        menu_opzioni = new MenuOpzioniGui();
         menu_opzioni.addIndietroActionListener(this);   
         
         inizializza_GUI();       
@@ -103,17 +107,26 @@ public class MenuPrincipaleGui extends JFrame implements ActionListener{
     }
     
     private void runOpzione(OpzioniMenu opzione){
-        this.setVisible(false);
+
         switch(opzione){
-            case GiocaOffline:  menu_pre_partita.setVisible(true);
+            case GiocaOffline:  this.setVisible(false);
+                                menu_pre_partita.setVisible(true);
                                 break;
-            case GiocaOnline :  menu_online= new MenuPrincipaleOnlineGui();
-                                menu_online.addIndietroActionListener(this);
-                                this.setVisible(false);
+            case GiocaOnline : 
+                                try {
+                                    client.connetti();
+                                    menu_online = new MenuPrincipaleOnlineGui(client);
+                                    menu_online.addIndietroActionListener(this);
+                                    this.setVisible(false);                                 
+                                } catch (Exception e) {
+                                    JOptionPane.showMessageDialog(new JFrame(), "Impossibile contattare il Server.", "Errore!", JOptionPane.ERROR_MESSAGE);
+                                }
                                 break;
-            case Impostazioni: menu_opzioni.setVisible(true);
+            case Impostazioni:  this.setVisible(false);
+                                menu_opzioni.setVisible(true);
                                 break;
-            case RegoleDiGioco: menu_regole.setVisible(true);
+            case RegoleDiGioco: this.setVisible(false);
+                                menu_regole.setVisible(true);
                                 break;
         }
     }
@@ -124,8 +137,12 @@ public class MenuPrincipaleGui extends JFrame implements ActionListener{
             menu_pre_partita.setVisible(false);
         else if(menu_regole.isVisible())
             menu_regole.setVisible(false);
-        else if(menu_online.isVisible())
-            menu_online.setVisible(false);
+        else if(menu_opzioni.isVisible()){
+            menu_opzioni.setVisible(false);
+        }
+        else if(menu_online.isVisible()){
+            menu_opzioni.setVisible(false);
+        }
         this.setVisible(true);
     }
 }
