@@ -13,6 +13,9 @@ public class Client {
     private Socket socketClient;
     private InetAddress indirizzo;
 
+    /**
+     * apre il client e prova a connettersi al server
+     */
     public Client() {
         
         try {
@@ -30,10 +33,17 @@ public class Client {
         }
     }
 
+    /**
+     * 
+     * @return socket del client 
+     */
     public Socket getSocketClient() {
         return socketClient;
     }
 
+    /**
+     * chiude il client
+     */
     public void close() {
         try {
             socketClient.close();
