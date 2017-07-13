@@ -268,7 +268,10 @@ public class MenuPrePartitaGui extends JFrame{
             throw new DifficoltaBotException();
         }
     }
-    
+    /**
+     * aggiunge un action listener
+     * @param l 
+     */
     public void addIndietroActionListener(ActionListener l){
         indietro.addActionListener(l);
     }
