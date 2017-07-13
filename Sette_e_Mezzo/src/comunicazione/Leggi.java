@@ -24,11 +24,18 @@ public class Leggi extends Observable implements Runnable {
     private boolean disconnesso = false;
     PrintStream out;
 
+    /**
+     * 
+     * @param in apre il bufferedReader per leggere
+     */
     public Leggi(BufferedReader in) {
         reader = in;
 
     }
 
+    /**
+     * legge sul socket quando connesso
+     */
     public void run() {
         while (!disconnesso) {
 
@@ -48,6 +55,9 @@ public class Leggi extends Observable implements Runnable {
         }
     }
 
+    /**
+     * stampa messaggio
+     */
     public void printMessage() {
         if (message != null) {
             this.setChanged();
@@ -55,6 +65,12 @@ public class Leggi extends Observable implements Runnable {
         }
     }
 
+    /**
+     * 
+     * @throws IOException 
+     * 
+     * chiude il bufferedReader
+     */
     public void close() throws IOException {
         disconnesso = true;
         reader.close();
