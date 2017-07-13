@@ -6,8 +6,7 @@ import menuOnlineConsole.MenuPrincipaleOnlineConsole;
 
 public class PartitaOnlineConsole {
 
-    public PartitaOnlineConsole(){
-        Client client= new Client();
+    public PartitaOnlineConsole(Client client){
         MenuPrincipaleOnlineConsole login = new MenuPrincipaleOnlineConsole(client.getSocketClient());
         login.comunica();
     }

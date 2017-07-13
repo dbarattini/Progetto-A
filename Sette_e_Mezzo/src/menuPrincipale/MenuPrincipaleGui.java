@@ -12,7 +12,10 @@ import dominio.gui.Sfondo;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 import java.net.URL;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -118,7 +121,7 @@ public class MenuPrincipaleGui extends JFrame implements ActionListener{
                                     menu_online = new MenuPrincipaleOnlineGui(client);
                                     menu_online.addIndietroActionListener(this);
                                     this.setVisible(false);                                 
-                                } catch (Exception e) {
+                                } catch (IOException e) {
                                     JOptionPane.showMessageDialog(new JFrame(), "Impossibile contattare il Server.", "Errore!", JOptionPane.ERROR_MESSAGE);
                                 }
                                 break;

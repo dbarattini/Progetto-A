@@ -4,6 +4,7 @@ import dominio.eccezioni.OpzioneSceltaNonValidaException;
 import dominio.eccezioni.PartitaOnlineIniziataException;
 import dominio.classi_dati.Banners;
 import dominio.classi_dati.OpzioniMenu;
+import java.io.IOException;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -11,6 +12,7 @@ import menuOpzioni.MenuOpzioniConsole;
 import menuPrePartita.MenuPrePartitaConsole;
 import menuRegole.RegoleConsole;
 import moduli.PartitaOnlineConsole;
+import net.Client;
 
 public class MenuPrincipaleConsole {
 
@@ -19,11 +21,13 @@ public class MenuPrincipaleConsole {
     private RegoleConsole regole;
     private MenuOpzioniConsole opzioni;
     private Banners banner;
+    private Client client;
 
     public MenuPrincipaleConsole() {
         this.regole = new RegoleConsole();
         this.opzioni = new MenuOpzioniConsole();
         this.banner = new Banners();
+        this.client = new Client();
         
         System.out.println(banner.randomBanner());
         run();
@@ -84,8 +88,14 @@ public class MenuPrincipaleConsole {
                 new MenuPrePartitaConsole();
                 break;
             case GiocaOnline:
-                new PartitaOnlineConsole();
-                throw new PartitaOnlineIniziataException();
+                try{
+                    client.connetti();
+                    new PartitaOnlineConsole(client);
+                    throw new PartitaOnlineIniziataException();
+                } catch (IOException e){
+                    System.err.println("Errore: Impossibile connettersi al server.");
+                }
+                break;
             case Impostazioni:
                 opzioni.run();
                 break;
