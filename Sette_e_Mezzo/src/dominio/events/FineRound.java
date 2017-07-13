@@ -13,19 +13,34 @@ public class FineRound {
     private ArrayList<Carta> carteScoperte;
     
 
+    /**
+     * 
+     * @param giocatore utente che finisce il round
+     */
     public FineRound(Giocatore giocatore) {
         this.giocatore = giocatore;
     }
 
+    /**
+     * 
+     * @return giocatore che finisce la mano
+     */
     public Giocatore getGiocatore() {
         return giocatore;
     }
 
+    /**
+     * 
+     * @param carteScoperte carte scoperte del giocatore
+     */
     public void setCarteScoperte(ArrayList<Carta> carteScoperte) {
         this.carteScoperte = carteScoperte;
     }
     
-    
+    /**
+     * 
+     * @return carte scoperte del giocatore
+     */
     public ArrayList<Carta> getCarteScoperte() {
         return carteScoperte;
     }
