@@ -16,6 +16,13 @@ public class FineManoAvversario {
     private StatoMano stato;
     private int puntata;
 
+    /**
+     * 
+     * @param nome nome avversario
+     * @param carteScoperte carte scoperte dell'avversario che termina la mano
+     * @param stato stato dell'avversario che termina la mano
+     * @param puntata puntata dell'avversario che termina la mano
+     */
     public FineManoAvversario(String nome, ArrayList<Carta> carteScoperte, StatoMano stato, int puntata) {
         this.nome = nome;
         this.carteScoperte = carteScoperte;
@@ -23,18 +30,34 @@ public class FineManoAvversario {
         this.puntata = puntata;
     }
 
+    /**
+     * 
+     * @return  nome avversario
+     */
     public String getNome() {
         return nome;
     }
 
+    /**
+     * 
+     * @return arrayList di carte scoperte dell'avversario
+     */
     public ArrayList<Carta> getCarteScoperte() {
         return carteScoperte;
     }
 
+    /**
+     * 
+     * @return stato dell'avversario che termina la mano
+     */
     public StatoMano getStato() {
         return stato;
     }
 
+    /**
+     * 
+     * @return puntata dell'avversario
+     */
     public int getPuntata() {
         return puntata;
     }
