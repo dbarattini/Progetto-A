@@ -17,6 +17,11 @@ public class AudioPlayer {
         musica = new HashMap<>();
     }
 
+    /**
+     * 
+     * @param nome_canzone nome della canzonea
+     * @throws CanzoneNonTrovataException 
+     */
     public void riproduci(String nome_canzone) throws CanzoneNonTrovataException {
         if (!muto) {
             try {
@@ -27,6 +32,11 @@ public class AudioPlayer {
         }
     }
 
+    /**
+     * 
+     * @param nome_canzone nome della canzone
+     * @throws CanzoneNonTrovataException 
+     */
     public void riavvia(String nome_canzone) throws CanzoneNonTrovataException {
         if (!muto) {
             try {
@@ -38,6 +48,11 @@ public class AudioPlayer {
         }
     }
 
+    /**
+     * 
+     * @param nome_canzone nome della canzone
+     * @throws CanzoneNonTrovataException 
+     */
     public void riavvolgi(String nome_canzone) throws CanzoneNonTrovataException {
         if (!muto) {
             try {
@@ -48,6 +63,11 @@ public class AudioPlayer {
         }
     }
 
+    /**
+     * 
+     * @param nome_canzone nome della canzone
+     * @throws CanzoneNonTrovataException 
+     */
     public void riproduciInLoop(String nome_canzone) throws CanzoneNonTrovataException {
         if (!muto) {
             try {
@@ -58,6 +78,11 @@ public class AudioPlayer {
         }
     }
 
+    /**
+     * 
+     * @param nome_canzone nome della canzone
+     * @throws CanzoneNonTrovataException 
+     */
     public void riavviaInLoop(String nome_canzone) throws CanzoneNonTrovataException {
         if (!muto) {
             try {
@@ -69,6 +94,11 @@ public class AudioPlayer {
         }
     }
 
+    /**
+     * 
+     * @param nome_canzone nome della canzone
+     * @throws CanzoneNonTrovataException 
+     */
     public void ferma(String nome_canzone) throws CanzoneNonTrovataException {
         try {
             musica.get(nome_canzone).stop();
@@ -77,6 +107,11 @@ public class AudioPlayer {
         }
     }
 
+    /**
+     * 
+     * @param nome_canzone nome della canzone
+     * @throws CanzoneNonTrovataException 
+     */
     public void chiudi(String nome_canzone) throws CanzoneNonTrovataException {
         try {
             musica.get(nome_canzone).close();
@@ -85,6 +120,7 @@ public class AudioPlayer {
         }
     }
 
+    
     public void carica(String canzone, String nome_canzone) throws CaricamentoCanzoneException {
         try {
             BufferedInputStream stream = new BufferedInputStream(getClass().getResourceAsStream(canzone));

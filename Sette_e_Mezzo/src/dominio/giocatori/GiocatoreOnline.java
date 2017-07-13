@@ -11,11 +11,18 @@ public class GiocatoreOnline extends Giocatore{
     private int puntata;
     private int numero_carte_scoperte;
 
+    /**
+     * 
+     * @param nome nomme del giocatore
+     * @param fiches fiches del giocatore
+     */
     public GiocatoreOnline(String nome, int fiches) {
         super(nome, fiches);
     }
 
-    
+    /**
+     * inizializza il giocatore
+     */
     public void inizializza(){
         setStatoMano(StatoMano.OK);
         numero_carte_scoperte = 0;
@@ -34,6 +41,10 @@ public class GiocatoreOnline extends Giocatore{
         return puntata;
     }    
 
+    /**
+     * 
+     * @param puntata puntata del giocatore
+     */
     public void setPuntata(int puntata) {
         this.puntata = puntata;
     }
@@ -44,6 +55,10 @@ public class GiocatoreOnline extends Giocatore{
         return ultima_carta_ottenuta;
     }
 
+    /**
+     * 
+     * @param ultimaCartaOttenuta ultima carta ottenuta dal giocatore
+     */
     public void setUltimaCartaOttenuta(Carta ultimaCartaOttenuta) {
         this.ultima_carta_ottenuta = ultimaCartaOttenuta;
     }
@@ -57,6 +72,10 @@ public class GiocatoreOnline extends Giocatore{
         return valoreMano;
     }
 
+    /**
+     * 
+     * @param valoreMano valore della mano del giocatore
+     */
     public void setValoreMano(double valoreMano) {
         this.valoreMano = valoreMano;
     }
@@ -66,6 +85,10 @@ public class GiocatoreOnline extends Giocatore{
         return null; // non usato
     }
 
+    /**
+     * 
+     * @return puntata giocatore
+     */
     @Override
     protected int decidiPuntata() {
        return 0; // non usato

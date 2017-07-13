@@ -11,6 +11,12 @@ public class Sfondo extends JPanel {
     private BufferedImage immagine;
     private final int larghezza, altezza;
 
+    /**
+     * 
+     * @param nome_immagine nome dell'immagine sfondo
+     * @param larghezza larghezza dell'immagine
+     * @param altezza altezza immagine
+     */
     public Sfondo(String nome_immagine, int larghezza, int altezza) {
         this.larghezza = larghezza;
         this.altezza = altezza;

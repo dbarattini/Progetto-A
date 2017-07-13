@@ -23,6 +23,12 @@ public abstract class Pagamento {
      */
     public abstract void reale(Giocatore pagante, Giocatore pagato, double percentuale);
 
+    /**
+     * 
+     * @param pagante giocatore che paga
+     * @param pagato giocatore che viene pagato
+     * @return 
+     */
     protected int getPagamento(Giocatore pagante, Giocatore pagato) {
         
         if (pagante.isMazziere()) {
@@ -32,6 +38,12 @@ public abstract class Pagamento {
         }
     }
 
+    /**
+     * 
+     * @param pagante giocatore che paga
+     * @param pagato giocatore che viene pagato
+     * @return 
+     */
     protected int getPagamentoReale(Giocatore pagante, Giocatore pagato) {
         if (pagante.isMazziere()) {
             return pagato.getPuntata() * 2;
@@ -40,6 +52,12 @@ public abstract class Pagamento {
         }
     }
 
+    /**
+     * 
+     * @param pagante giocatore che paga
+     * @param pagato giocatore che viene pagato
+     * @param puntata quantità fiches
+     */
     protected void paga(Giocatore pagante, Giocatore pagato, int puntata) {
         if (pagante.isMazziere()) {
             pagante.punta(puntata);
