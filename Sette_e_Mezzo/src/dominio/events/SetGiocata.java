@@ -6,10 +6,19 @@ package dominio.events;
  */
 public class SetGiocata {
     private String giocata;
+    
+    /**
+     * 
+     * @param giocata giocata effettuata dal giocatore
+     */
     public SetGiocata(String giocata) {
         this.giocata = giocata;
     }
 
+    /**
+     * 
+     * @return giocata effettuata dal giocatore
+     */
     public String getGiocata() {
         return giocata;
     }
