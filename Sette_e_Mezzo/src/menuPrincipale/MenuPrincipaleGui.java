@@ -33,10 +33,7 @@ public class MenuPrincipaleGui extends JFrame implements ActionListener{
         this.menu_pre_partita = new MenuPrePartitaGui();
         menu_pre_partita.addIndietroActionListener(this);
         this.menu_opzioni = new MenuOpzioniGui();
-        menu_opzioni.addIndietroActionListener(this);
-        this.menu_online = new MenuPrincipaleOnlineGui();
-        menu_online.addIndietroActionListener(this);
-        
+        menu_opzioni.addIndietroActionListener(this);   
         
         inizializza_GUI();       
         setVisible(true);
@@ -110,7 +107,9 @@ public class MenuPrincipaleGui extends JFrame implements ActionListener{
         switch(opzione){
             case GiocaOffline:  menu_pre_partita.setVisible(true);
                                 break;
-            case GiocaOnline :  menu_online.setVisible(true);
+            case GiocaOnline :  menu_online= new MenuPrincipaleOnlineGui();
+                                menu_online.addIndietroActionListener(this);
+                                this.setVisible(false);
                                 break;
             case Impostazioni: menu_opzioni.setVisible(true);
                                 break;
@@ -125,8 +124,6 @@ public class MenuPrincipaleGui extends JFrame implements ActionListener{
             menu_pre_partita.setVisible(false);
         else if(menu_regole.isVisible())
             menu_regole.setVisible(false);
-        else if (menu_opzioni.isVisible())
-            menu_opzioni.setVisible(false);
         else if(menu_online.isVisible())
             menu_online.setVisible(false);
         this.setVisible(true);

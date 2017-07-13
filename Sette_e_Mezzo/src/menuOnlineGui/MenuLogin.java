@@ -60,11 +60,11 @@ public class MenuLogin extends JFrame {
         this.setVisible(true);
     }
 
-    private void inizializzaConnessione(Socket socketClient1) {
+    private void inizializzaConnessione(Socket socketClient) {
         try {
-            this.socketClient = socketClient1;
-            in = new BufferedReader(new InputStreamReader(socketClient1.getInputStream()));
-            out = new PrintWriter(socketClient1.getOutputStream(), true);
+            this.socketClient = socketClient;
+            in = new BufferedReader(new InputStreamReader(socketClient.getInputStream()));
+            out = new PrintWriter(socketClient.getOutputStream(), true);
         } catch (UnknownHostException ex) {
             System.err.println("Host sconosciuto");
         } catch (Exception e) {
