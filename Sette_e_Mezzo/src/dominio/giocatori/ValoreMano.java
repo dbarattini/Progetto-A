@@ -15,6 +15,7 @@ public class ValoreMano {
         this.valore_mano = 0;
     }
 
+    
     public void inizializza() {
         valore_mano = 0;
     }
@@ -78,6 +79,10 @@ public class ValoreMano {
         }
     }
 
+    /**
+     * 
+     * @return valore della mano
+     */
     public double getValore() {
         return valore_mano;
     }
