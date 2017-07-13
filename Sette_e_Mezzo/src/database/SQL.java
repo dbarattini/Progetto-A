@@ -1,6 +1,6 @@
 package database;
 
-import dominio.eccezioni.DatoGiaPresente;
+import dominio.eccezioni.DatoGiaPresenteException;
 import java.sql.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -42,9 +42,9 @@ public class SQL {
      * @param user uotente a cui si riferiscono i dati
      * @param fiches numero di fiches dell'utente
      * @param vittorie numero di vittorie dell'utente
-     * @throws DatoGiaPresente 
+     * @throws DatoGiaPresenteException 
      */
-    public void aggiungiDato(String user, int fiches, int vittorie) throws DatoGiaPresente {
+    public void aggiungiDato(String user, int fiches, int vittorie) throws DatoGiaPresenteException {
         try {
             Class.forName("org.sqlite.JDBC");
             c = DriverManager.getConnection("jdbc:sqlite:setteEmezzo.db");
@@ -63,7 +63,7 @@ public class SQL {
         } catch (Exception e) {
             System.out.println("dato già presente");
             chiudiDatabase();
-            throw new DatoGiaPresente(e.getMessage());
+            throw new DatoGiaPresenteException(e.getMessage());
         }
 
     }

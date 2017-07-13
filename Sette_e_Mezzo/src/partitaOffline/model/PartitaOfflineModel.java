@@ -30,7 +30,7 @@ import partitaOffline.events.GiocatoreLocaleEventListener;
 import dominio.events.MazzoRimescolato;
 import dominio.events.RichiediNome;
 import database.Database;
-import dominio.eccezioni.DatoGiaPresente;
+import dominio.eccezioni.DatoGiaPresenteException;
 
 
 public class PartitaOfflineModel extends Observable {
@@ -152,7 +152,7 @@ public class PartitaOfflineModel extends Observable {
         
         try {
             database.inserisciProfilo(nome_giocatore, fiches_iniziali);
-        } catch (DatoGiaPresente ex) {
+        } catch (DatoGiaPresenteException ex) {
         }
     }
     

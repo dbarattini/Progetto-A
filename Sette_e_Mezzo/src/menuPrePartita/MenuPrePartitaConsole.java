@@ -5,6 +5,9 @@
  */
 package menuPrePartita;
 
+import dominio.eccezioni.NumeroBotException;
+import dominio.eccezioni.DifficoltaBotException;
+import dominio.eccezioni.FichesInizialiException;
 import dominio.classi_dati.DifficoltaBot;
 import java.util.Scanner;
 import moduli.PartitaOfflineConsole;

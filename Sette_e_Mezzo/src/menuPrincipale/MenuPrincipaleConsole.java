@@ -1,6 +1,7 @@
 package menuPrincipale;
 
-import dominio.eccezioni.PartitaOnlineIniziata;
+import dominio.eccezioni.OpzioneSceltaNonValidaException;
+import dominio.eccezioni.PartitaOnlineIniziataException;
 import dominio.classi_dati.Banners;
 import dominio.classi_dati.OpzioniMenu;
 import java.util.Scanner;
@@ -36,10 +37,10 @@ public class MenuPrincipaleConsole {
             controllaOpzione();
             runOpzione();
             run();
-        } catch (OpzioneSceltaNonValida ex) {
+        } catch (OpzioneSceltaNonValidaException ex) {
             System.err.println("Errore: La scelta effettuata non é valida.\n");
             run();
-        } catch (PartitaOnlineIniziata ex) {
+        } catch (PartitaOnlineIniziataException ex) {
         }
     }
 
@@ -62,7 +63,7 @@ public class MenuPrincipaleConsole {
         System.out.print("\n");
     }
 
-    private void controllaOpzione() throws OpzioneSceltaNonValida {
+    private void controllaOpzione() throws OpzioneSceltaNonValidaException {
         if (opzione_inserita.equalsIgnoreCase("giocaoffline") || opzione_inserita.equals("1")) {
             opzione = OpzioniMenu.GiocaOffline;
         } else if (opzione_inserita.equalsIgnoreCase("giocaonline") || opzione_inserita.equals("2")) {
@@ -72,11 +73,11 @@ public class MenuPrincipaleConsole {
         } else if (opzione_inserita.equalsIgnoreCase("regoledigioco") || opzione_inserita.equals("4")) {
             opzione = OpzioniMenu.RegoleDiGioco;
         } else {
-            throw new OpzioneSceltaNonValida();
+            throw new OpzioneSceltaNonValidaException();
         }
     }
 
-    private void runOpzione() throws PartitaOnlineIniziata {
+    private void runOpzione() throws PartitaOnlineIniziataException {
         switch (opzione) {
 
             case GiocaOffline:
@@ -84,7 +85,7 @@ public class MenuPrincipaleConsole {
                 break;
             case GiocaOnline:
                 new PartitaOnlineConsole();
-                throw new PartitaOnlineIniziata();
+                throw new PartitaOnlineIniziataException();
             case Impostazioni:
                 opzioni.run();
                 break;

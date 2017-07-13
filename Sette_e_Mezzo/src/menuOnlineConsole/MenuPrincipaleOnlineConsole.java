@@ -2,7 +2,7 @@ package menuOnlineConsole;
 
 import net.Client;
 import dominio.eccezioni.DatiNonValidiException;
-import dominio.eccezioni.LoginEffettuato;
+import dominio.eccezioni.LoginEffettuatoException;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -72,7 +72,7 @@ public class MenuPrincipaleOnlineConsole {
             }
 
             comunica();
-        } catch (LoginEffettuato ex) {
+        } catch (LoginEffettuatoException ex) {
             controller= new PartitaOnlineController(socketClient, in);
             new PartitaOnlineConsoleView(controller);
         }
@@ -117,7 +117,7 @@ public class MenuPrincipaleOnlineConsole {
         }
     }
 
-    private void login() throws LoginEffettuato {
+    private void login() throws LoginEffettuatoException {
         System.out.println("          inserisci username (o email) e password separati da uno spazio       ");
         System.out.print("\n");
         System.out.print("            ");
@@ -137,7 +137,7 @@ public class MenuPrincipaleOnlineConsole {
             String risposta = in.readLine();
             System.out.println("            " + risposta);
             if (risposta.equals("login effetuato")) {
-                throw new LoginEffettuato();
+                throw new LoginEffettuatoException();
             }
 
         } catch (IOException ex) {
