@@ -47,7 +47,7 @@ public class PartitaOfflineGuiView extends JFrame implements PartitaOfflineView,
     private CopyOnWriteArrayList<ViewEventListener> listeners;
     private PartitaOfflineModel model;    
     private Sfondo sfondo;
-    private String nome, puntataStr, giocata;
+    private String nome, puntataStr, giocataStr;
     private JTextField askNome, puntata;
     private JButton carta, stai;
     private boolean needCartaCoperta = true, needToMarkMazziere = false;
@@ -58,6 +58,7 @@ public class PartitaOfflineGuiView extends JFrame implements PartitaOfflineView,
     private MenuPrePartitaGui menu_pre_partita;
     private AudioPlayer audio;
     private JLabel msgDaStampare;
+    private JButton esci;
     
     
     public PartitaOfflineGuiView(PartitaOfflineModel model, MenuPrePartitaGui menu_pre_partita) {
@@ -79,8 +80,50 @@ public class PartitaOfflineGuiView extends JFrame implements PartitaOfflineView,
         add(sfondo);
         
         audio = model.getAudio();
+        inizializzaCartaStaiButtons();
+        inizializzaExitButton();
         
         setVisible(true);
+    }
+    
+    private void inizializzaCartaStaiButtons() {
+        carta = new JButton(caricaImmagine("dominio/immagini/carta.png"));
+        stai = new JButton(caricaImmagine("dominio/immagini/stai.png"));
+
+        carta.setBounds(1060, 580, 140, 56);
+        stai.setBounds(1060, 500, 140, 56);
+
+        carta.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                giocataStr = "carta";
+            }
+        });
+        
+        stai.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                giocataStr = "sto";
+            }
+        });
+    }
+    
+    private void inizializzaExitButton() {
+        esci = new JButton(caricaImmagine("dominio/immagini/esci.png"));
+        esci.setBounds(35, 600, 96, 58);
+        esci.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    audio.ferma("soundTrack");
+                    audio.riavvolgi("soundTrack");
+                } catch (CanzoneNonTrovataException ex) {
+                    ex.printStackTrace();
+                }
+                menu_pre_partita.setVisible(true);
+                dispose();
+            }
+        });
     }
     
     public ImageIcon caricaImmagine(String nome) {
@@ -135,8 +178,15 @@ public class PartitaOfflineGuiView extends JFrame implements PartitaOfflineView,
             checkFineRound(giocatore);
         } else if(arg instanceof MazzierePerde) {
             //todo mostra che il mazziere ha perso
+            stampaMsg(model.getMazziere().getNome() + " ha perso!", 60);
+            pausa(pausa_breve);
+            sfondo.remove(msgDaStampare);
+            sfondo.repaint();
         } else if(arg instanceof AggiornamentoMazziere) {
             //todo mostra che é stato scelto un nuovo mazziere
+            needToMarkMazziere = false;
+            sfondo.removeAll();
+            estrazioneMazziere();
         } else if(arg instanceof GameOver) {
             stampaMsg("Hai terminato le fiches! > Game Over <", 50);
             pausa(pausa_lunga);
@@ -165,16 +215,13 @@ public class PartitaOfflineGuiView extends JFrame implements PartitaOfflineView,
     @Override
     public void GiocatoreLocaleEventReceived(GiocatoreLocaleEvent evt) {
         if(evt.getArg() instanceof RichiediPuntata) {
-            //richiede la puntata al giocatore
             if(needCartaCoperta)
                 stampaCartaCoperta();
             richiediPuntata();
         } else if(evt.getArg() instanceof Error) {
-            //mostra l'errore al giocatore
             String errore = ((Error) evt.getArg()).getMessage();
             JOptionPane.showMessageDialog(null, errore, "Errore", JOptionPane.ERROR_MESSAGE);
         } else if(evt.getArg() instanceof RichiediGiocata) {
-            //richiede la giocata al giocatore
             stampaGiocataPlayer();
             if(needCartaCoperta)
                 stampaCartaCoperta();
@@ -377,7 +424,7 @@ public class PartitaOfflineGuiView extends JFrame implements PartitaOfflineView,
     
     // stampa i bottoni stai e carta per permettere al giocatore di scegliere la mossa, nel caso di carta stampa la carta
     private void stampaGiocataPlayer() {
-        giocata = null;
+        giocataStr = null;
         Carta lastCard;
         if(!model.getGiocatoreLocale().getCarteScoperte().isEmpty()) {
             lastCard = model.getGiocatoreLocale().getUltimaCartaOttenuta();
@@ -385,35 +432,16 @@ public class PartitaOfflineGuiView extends JFrame implements PartitaOfflineView,
             stampaCarta(this.getWidth()/2 - 95 + index*35, 3*this.getHeight()/4 - 60, lastCard.toString());
         }
         aggiornaValoreManoPlayer();
-        carta = new JButton(caricaImmagine("dominio/immagini/carta.png"));
-        stai = new JButton(caricaImmagine("dominio/immagini/stai.png"));
-        
-        carta.setBounds(1060, 580, 140, 56);
-        stai.setBounds(1060, 500, 140, 56);
-        
-        carta.addActionListener(new ActionListener(){
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                giocata = "carta";
-            };
-        });
-        
-        stai.addActionListener(new ActionListener(){
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                giocata = "sto";
-            };
-        });
         
         sfondo.add(carta);
         sfondo.add(stai);
         sfondo.repaint();
         
-        while(giocata == null) {
+        while(giocataStr == null) {
             pausa(pausa_breve);
         }
         
-        fireViewEvent(new SetGiocata(giocata));
+        fireViewEvent(new SetGiocata(giocataStr));
             
         sfondo.remove(carta);
         sfondo.remove(stai);
@@ -522,6 +550,7 @@ public class PartitaOfflineGuiView extends JFrame implements PartitaOfflineView,
         }
         
         sfondo.remove(messaggioCartaCoperta);
+        sfondo.add(esci);
         sfondo.repaint();
         
         needCartaCoperta = false;
@@ -563,7 +592,7 @@ public class PartitaOfflineGuiView extends JFrame implements PartitaOfflineView,
             try {
                 valoreMano += giocatore.getCarteScoperte().get(i).getValoreNumerico();
             } catch (MattaException ex) {
-                // alla matta stampa valore scorretto...
+                valoreMano = 7;
             }
         }
         
@@ -694,6 +723,8 @@ public class PartitaOfflineGuiView extends JFrame implements PartitaOfflineView,
                     msg = giocatore.getNome() + " riceve " + giocatore.getPuntata() + " dal mazziere";
                 else if ((giocatore.getStatoMano() == StatoMano.SetteeMezzoReale) && (giocatore.getValoreMano() > mazziere.getValoreMano()))
                     msg = giocatore.getNome() + " riceve " + 2*giocatore.getPuntata() + " dal mazziere";
+                else if(mazziere.getStatoMano() == StatoMano.SetteeMezzoReale)
+                    msg = giocatore.getNome() + " paga " + 2*giocatore.getPuntata() + " al mazziere";
             }
         } else
             msg = "Il mazziere regola i suoi conti";
@@ -718,6 +749,7 @@ public class PartitaOfflineGuiView extends JFrame implements PartitaOfflineView,
         if(giocatore == model.getGiocatoreLocale()) {
             carteCoperteBots.clear();
             valoriMano.clear();
+            sfondo.remove(esci);
             sfondo.repaint();
         }
     }
