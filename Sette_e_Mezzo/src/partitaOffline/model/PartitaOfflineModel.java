@@ -1,10 +1,7 @@
 package partitaOffline.model;
 
 import dominio.giocatori.GiocatoreUmano;
-import dominio.events.Vittoria;
-import dominio.events.MazzierePerde;
-import dominio.events.FineRound;
-import dominio.events.RisultatoManoParticolare;
+import dominio.events.*;
 import dominio.elementi_di_gioco.Mazzo;
 import dominio.giocatori.BotFacile;
 import dominio.giocatori.Giocatore;
@@ -26,7 +23,6 @@ import dominio.elementi_di_gioco.Regole;
 import java.util.ArrayList;
 import java.util.Observable;
 import dominio.musica.AudioPlayer;
-import dominio.events.*;
 import partitaOffline.events.GiocatoreLocaleEventListener;
 import dominio.events.MazzoRimescolato;
 import dominio.events.RichiediNome;
