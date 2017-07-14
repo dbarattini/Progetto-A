@@ -65,6 +65,10 @@ public class Login extends Thread {
             giocatore.scrivi("login non effetuato");
             run();
         } catch (GiocatoreDisconnessoException ex) {
+            String nome = giocatore.getNome();
+            if (nome == null) {
+                nome = "ignoto";
+            }
             System.out.println("Giocatore " + giocatore.getNome() + " disconnesso");
 
         }
@@ -90,7 +94,6 @@ public class Login extends Thread {
             scomponiMessaggio(messaggio);
         }
     }
-
 
     private void gestisciConvalida(String[] dati) throws NumberFormatException, SqlOccupato {
         if (Integer.valueOf(dati[1]) == codice) {
@@ -120,7 +123,7 @@ public class Login extends Thread {
 
     private void gestisciRecupero(String[] dati) throws SqlOccupato {
         mail = dati[1];
-        if (sql.esisteEmail(mail) ){
+        if (sql.esisteEmail(mail)) {
             Email email = new Email();
             String password = sql.getPassword(mail);
             try {
@@ -129,14 +132,14 @@ public class Login extends Thread {
                 //impossibile ma lo richiede
             }
             giocatore.scrivi("recupero inviato");
-        } else if(sql.esisteUsername(mail)){
+        } else if (sql.esisteUsername(mail)) {
             Email email = new Email();
-            String veraEmail=sql.getEmail(mail);
+            String veraEmail = sql.getEmail(mail);
             email.inviaPassword(veraEmail, mail, password);
-            
-        }else{            
-            giocatore.scrivi("recupero errato");            
-        } 
+
+        } else {
+            giocatore.scrivi("recupero errato");
+        }
         run();
     }
 
@@ -162,7 +165,7 @@ public class Login extends Thread {
                 giocatore.scrivi("convalida inviata");
             } catch (EmailInesistente ex) {
                 giocatore.scrivi("registrazione email non valida");
-            }            
+            }
         }
         run();
     }
