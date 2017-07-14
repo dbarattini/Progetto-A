@@ -7,12 +7,12 @@
  */
 package login;
 
-import comunicazione.Email;
+import net.Email;
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import DB.SQL;
-import comunicazione.EmailInesistente;
+import dominio.eccezioni.EmailInesistente;
 import partita.Partita;
 import dominio.giocatori.Giocatore;
 import dominio.eccezioni.GiocatoreDisconnessoException;

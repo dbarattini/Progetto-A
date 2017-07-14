@@ -1,7 +1,7 @@
 package dominio.giocatori;
 
 import DB.SQL;
-import comunicazione.Client;
+import net.Client;
 import dominio.eccezioni.SetteeMezzoException;
 import dominio.eccezioni.SetteeMezzoRealeException;
 import dominio.eccezioni.SballatoException;
