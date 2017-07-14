@@ -136,7 +136,7 @@ public class Login extends Thread {
             Email email = new Email();
             String veraEmail = sql.getEmail(mail);
             email.inviaPassword(veraEmail, mail, password);
-
+            giocatore.scrivi("recupero inviato");
         } else {
             giocatore.scrivi("recupero errato");
         }
