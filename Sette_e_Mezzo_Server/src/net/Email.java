@@ -5,9 +5,10 @@
  * Dept of Electrical, Computer and Biomedical Engineering,
  * University of Pavia.
  */
-package comunicazione;
+package net;
 // File Name SendEmail.java
 
+import dominio.eccezioni.EmailInesistente;
 import com.sun.mail.smtp.SMTPTransport;
 import java.security.Security;
 import java.util.Date;

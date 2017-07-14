@@ -5,6 +5,7 @@
  */
 package comunicazione;
 
+import net.Criptazione;
 import dominio.eccezioni.ChiaveNonValida;
 import java.util.logging.Level;
 import java.util.logging.Logger;

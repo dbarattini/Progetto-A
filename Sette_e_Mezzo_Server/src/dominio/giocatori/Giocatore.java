@@ -1,7 +1,7 @@
 package dominio.giocatori;
 
 import DB.SQL;
-import comunicazione.Client;
+import net.Client;
 import dominio.eccezioni.SetteeMezzoException;
 import dominio.eccezioni.SetteeMezzoRealeException;
 import dominio.eccezioni.SballatoException;
@@ -26,7 +26,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import partitaOnline.events.RichiediGiocata;
 import partitaOnline.events.RichiediPuntata;
-import partitaOnline.events.Error;
+import partitaOnline.events.Errore;
 
 
 public class Giocatore implements Observer {
@@ -208,20 +208,20 @@ public class Giocatore implements Observer {
                 this.puntata_effettuata = this.getFiches();
             } else {
                 this.puntata_effettuata = 0;
-                this.scriviOggetto(new Error("Puntata non valida."));
+                this.scriviOggetto(new Errore("Puntata non valida."));
                 this.scriviOggetto(new RichiediPuntata(this.carta_coperta, this.valore_mano, this.getFiches()));
             }
         } catch (PuntataTroppoAltaException ex) {
             this.puntata_effettuata = 0;
-            this.scriviOggetto(new Error("Errore: il valore inserito é troppo alto. Il massimo valore che puoi puntare é: " + this.getFiches() + "."));
+            this.scriviOggetto(new Errore("Errore: il valore inserito é troppo alto. Il massimo valore che puoi puntare é: " + this.getFiches() + "."));
             this.scriviOggetto(new RichiediPuntata(this.carta_coperta, this.valore_mano, this.getFiches()));
         } catch (PuntataNegativaException ex) {
             this.puntata_effettuata = 0;
-            this.scriviOggetto(new Error("Errore: il valore inserito non puó essere negativo."));
+            this.scriviOggetto(new Errore("Errore: il valore inserito non puó essere negativo."));
             this.scriviOggetto(new RichiediPuntata(this.carta_coperta, this.valore_mano, this.getFiches()));
         } catch (PuntataNullaException ex) {
             this.puntata_effettuata = 0;
-            this.scriviOggetto(new Error("Errore: il valore inserito non puó essere nullo."));
+            this.scriviOggetto(new Errore("Errore: il valore inserito non puó essere nullo."));
             this.scriviOggetto(new RichiediPuntata(this.carta_coperta, this.valore_mano, this.getFiches()));
         }
     }
@@ -265,7 +265,7 @@ public class Giocatore implements Observer {
                     return seleziona_giocata(giocata_effettuata);
                 }
             } catch (GiocataNonValidaException ex) {
-                this.scriviOggetto(new Error("Errore: La giocata non é stata riconosciuta.I valori possibili sono: carta o sto."));
+                this.scriviOggetto(new Errore("Errore: La giocata non é stata riconosciuta.I valori possibili sono: carta o sto."));
                 decidi_giocata();
             } catch (InterruptedException ex) {
                 Logger.getLogger(Giocatore.class.getName()).log(Level.SEVERE, null, ex);

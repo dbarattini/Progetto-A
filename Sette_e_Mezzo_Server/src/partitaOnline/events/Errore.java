@@ -9,16 +9,16 @@ package partitaOnline.events;
  *
  * @author root
  */
-public class Error {
+public class Errore {
     String messaggio;
     
-    public Error(String messaggio) {
+    public Errore(String messaggio) {
         this.messaggio=messaggio;
     }
     
     /**
      *
-     * @return "evento " + "Errore: " + "messaggiodierrorecondati";
+     * @return "evento " + "Error: " + "messaggiodierrorecondati";
      */
     @Override
     public String toString() {

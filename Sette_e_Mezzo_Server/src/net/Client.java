@@ -1,4 +1,4 @@
-package comunicazione;
+package net;
 
 import dominio.eccezioni.GiocatoreDisconnessoException;
 import java.io.BufferedReader;
