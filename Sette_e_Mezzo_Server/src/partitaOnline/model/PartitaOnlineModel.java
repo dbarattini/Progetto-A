@@ -1,10 +1,7 @@
 package partitaOnline.model;
 
-import partitaOnline.events.AggiornamentoMazziere;
-import partitaOnline.events.MazzierePerde;
-import partitaOnline.events.FineRound;
-import partitaOnline.events.FineManoAvversario;
-import partitaOnline.events.RisultatoManoParticolare;
+import partitaOnline.events.*;
+import partitaOnline.cambia.*;
 import dominio.elementi_di_gioco.Mazzo;
 import dominio.giocatori.Giocatore;
 import dominio.classi_dati.Stato;
@@ -18,22 +15,8 @@ import dominio.gioco.RegoleDiGioco;
 import dominio.gioco.StatoGioco;
 import java.util.ArrayList;
 import java.util.Observable;
-import partitaOnline.cambia.CartaCoperta;
-import partitaOnline.cambia.GiocatoreDisconnesso;
-import partitaOnline.events.GiocatoreStaPuntando;
-import partitaOnline.cambia.Mazziere;
-import partitaOnline.cambia.NuovoGiocatore;
-import partitaOnline.cambia.StatoCambiato;
-import partitaOnline.cambia.UltimaCartaOttenuta;
-import partitaOnline.cambia.ValoreMano;
-import partitaOnline.events.DistribuiteCarteCoperte;
-import partitaOnline.events.EstrattoMazziere;
-import partitaOnline.events.GameOver;
-import partitaOnline.events.GiocatoreHaPuntato;
-import partitaOnline.events.GiocatoreIniziaTurno;
-import partitaOnline.events.GiocatoreSta;
-import partitaOnline.events.IniziaPartita;
-import partitaOnline.events.MazzoRimescolato;
+
+
 
 public class PartitaOnlineModel extends Observable {
 
