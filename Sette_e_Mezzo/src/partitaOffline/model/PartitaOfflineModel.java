@@ -344,6 +344,7 @@ public class PartitaOfflineModel extends Observable {
    }
     
     private void fine_round(){
+        ArrayList<Giocatore> giocatori_sconfitti = new ArrayList<>();
         boolean game_over = false;
         for(Giocatore giocatore : giocatori){
             
@@ -356,9 +357,11 @@ public class PartitaOfflineModel extends Observable {
                 } else {
                     giocatore.perde();
                     n_bot_sconfitti += 1;
+                    giocatori_sconfitti.add(giocatore);
                 }
             }
         }
+        giocatori.removeAll(giocatori_sconfitti);
         if(game_over){
             this.setChanged();
             this.notifyObservers(new GameOver());
