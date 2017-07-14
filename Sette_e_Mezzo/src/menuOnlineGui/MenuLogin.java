@@ -1,6 +1,6 @@
-package tempLoginPackage;
+package menuOnlineGui;
 
-import comunicazione.Client;
+import net.Client;
 import dominio.gui.Sfondo;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -22,10 +22,11 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
+import moduli.PartitaOnlineGui;
 import partitaOnline.controller.PartitaOnlineController;
 import partitaOnline.view.PartitaOnlineGuiView;
 
-public class LoginMenu extends JFrame {
+public class MenuLogin extends JFrame {
 
     private Sfondo sfondo;
     private JButton fatto, riprova, indietro;
@@ -40,7 +41,7 @@ public class LoginMenu extends JFrame {
     private PartitaOnlineController controller;
     private Client client;
 
-    public LoginMenu(Client client) {
+    public MenuLogin(Client client) {
         this.client=client;
         this.socketClient=client.getSocketClient();
         setTitle("Login");
@@ -59,11 +60,11 @@ public class LoginMenu extends JFrame {
         this.setVisible(true);
     }
 
-    private void inizializzaConnessione(Socket socketClient1) {
+    private void inizializzaConnessione(Socket socketClient) {
         try {
-            this.socketClient = socketClient1;
-            in = new BufferedReader(new InputStreamReader(socketClient1.getInputStream()));
-            out = new PrintWriter(socketClient1.getOutputStream(), true);
+            this.socketClient = socketClient;
+            in = new BufferedReader(new InputStreamReader(socketClient.getInputStream()));
+            out = new PrintWriter(socketClient.getOutputStream(), true);
         } catch (UnknownHostException ex) {
             System.err.println("Host sconosciuto");
         } catch (Exception e) {
@@ -98,21 +99,31 @@ public class LoginMenu extends JFrame {
         richiediLogin.setBounds(this.getWidth() / 2 - 308, 30, 617, 135);
         idLabel.setBounds(211, 251, 120, 78);
         passwordLabel.setBounds(100, 338, 342, 105);
+        
+        id.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                password.requestFocusInWindow();
+            }
+            
+        });
+        
+        password.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                iniziaPartita();
+            }
+            
+        });
 
         fatto.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                idString = id.getText();
-                passwordString = new String(password.getPassword());
-                if (checkLogin(idString, passwordString)) {
-                    controller = new PartitaOnlineController(socketClient, in);
-                    new PartitaOnlineGuiView(controller);
-                    dispose();
-                } else {
-                    loginErrato();
-                }
+                iniziaPartita();
             }
         });
+        
+        
         
         riprova.addActionListener(new ActionListener() {
             @Override
@@ -159,7 +170,7 @@ public class LoginMenu extends JFrame {
             }
 
         } catch (IOException ex) {
-            Logger.getLogger(LoginMenu.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(MenuLogin.class.getName()).log(Level.SEVERE, null, ex);
         }
         return false;
     }
@@ -184,6 +195,17 @@ public class LoginMenu extends JFrame {
         sfondo.remove(idLabel);
         sfondo.remove(passwordLabel);
         sfondo.repaint();
+    }
+    
+    private void iniziaPartita(){
+        idString = id.getText();
+        passwordString = new String(password.getPassword());
+        if (checkLogin(idString, passwordString)) {
+            new PartitaOnlineGui(socketClient, in);
+            dispose();
+        } else {
+            loginErrato();
+        }
     }
     
     public void addIndietroActionListener(ActionListener l){

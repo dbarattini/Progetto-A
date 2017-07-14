@@ -1,4 +1,4 @@
-package partitaOffline.model;
+package dominio.giocatori;
 
 
 import dominio.events.RichiediGiocata;

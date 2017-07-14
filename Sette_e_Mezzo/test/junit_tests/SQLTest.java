@@ -1,6 +1,6 @@
 package junit_tests;
 
-import dominio.eccezioni.DatoGiaPresente;
+import dominio.eccezioni.DatoGiaPresenteException;
 import database.SQL;
 import org.junit.Before;
 import org.junit.Test;
@@ -35,7 +35,7 @@ public class SQLTest {
         int vittorie = 0;
         try {
             sql.aggiungiDato(user, fiches, vittorie);
-        } catch (DatoGiaPresente ex) {
+        } catch (DatoGiaPresenteException ex) {
             assertTrue(true);
         }
         assertTrue(true);

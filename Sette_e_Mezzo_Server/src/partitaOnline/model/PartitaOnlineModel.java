@@ -68,7 +68,6 @@ public class PartitaOnlineModel extends Observable {
         } catch (MazzierePerdeException ex) {
             this.eventoPerTutti(new MazzierePerde());
             mazziere.azzera_fiches();
-            mazziere.perde();
             mazziere_successivo();
 
         }
@@ -380,11 +379,6 @@ public class PartitaOnlineModel extends Observable {
                 this.eventoPerTutti(new GameOver(giocatore.getNome()));
                 giocatore.perde();
                 giocatore.azzera_fiches();
-                
-                if (giocatore.isMazziere()) {
-                    this.eventoPerTutti(new MazzierePerde());
-                    mazziere_successivo();
-                }
             }
         }
         if (next_mazziere != null) {

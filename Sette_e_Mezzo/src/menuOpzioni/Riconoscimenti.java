@@ -52,7 +52,9 @@ public class Riconoscimenti {
     public Riconoscimenti() {
         banner = new Banners();
     }
-    
+    /**
+     * stampa i riconoscimenti
+     */
     public void printRiconoscimenti() {
         System.out.println(banner.randomBanner());
         System.out.println(dbarattini);

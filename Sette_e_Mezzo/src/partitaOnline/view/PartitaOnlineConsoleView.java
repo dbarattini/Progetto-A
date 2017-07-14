@@ -146,7 +146,7 @@ public class PartitaOnlineConsoleView implements  Observer{
     }
     
     private void richiediGiocata(Object richiediGiocata){
-        if(controller.getGiocatoreLocale().getNumCarteScoperte()==0)
+        if(controller.getGiocatoreLocale().getNumeroCarteScoperte()==0)
             esci=richiediUscita();
         System.out.print("\n");
         System.out.println("Valore Mano : " + ((RichiediGiocata) richiediGiocata).getValoreMano());

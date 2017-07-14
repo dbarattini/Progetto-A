@@ -1,5 +1,6 @@
 package partitaOffline.model;
 
+import dominio.giocatori.GiocatoreUmano;
 import dominio.events.Vittoria;
 import dominio.events.MazzierePerde;
 import dominio.events.FineRound;
@@ -30,7 +31,7 @@ import partitaOffline.events.GiocatoreLocaleEventListener;
 import dominio.events.MazzoRimescolato;
 import dominio.events.RichiediNome;
 import database.Database;
-import dominio.eccezioni.DatoGiaPresente;
+import dominio.eccezioni.DatoGiaPresenteException;
 
 
 public class PartitaOfflineModel extends Observable {
@@ -100,7 +101,6 @@ public class PartitaOfflineModel extends Observable {
                 this.setChanged();
                 this.notifyObservers(new MazzierePerde());
                 mazziere.azzeraFiches();
-                mazziere.perde();
                 mazziere_successivo();
                 
             }
@@ -152,7 +152,7 @@ public class PartitaOfflineModel extends Observable {
         
         try {
             database.inserisciProfilo(nome_giocatore, fiches_iniziali);
-        } catch (DatoGiaPresente ex) {
+        } catch (DatoGiaPresenteException ex) {
         }
     }
     
@@ -360,12 +360,6 @@ public class PartitaOfflineModel extends Observable {
                 } else {
                     giocatore.perde();
                     n_bot_sconfitti += 1;
-                    if(giocatore.isMazziere()){
-                        this.setChanged();
-                        this.notifyObservers(new MazzierePerde());
-                        
-                        mazziere_successivo();
-                    }
                 }
             }
         }
@@ -388,12 +382,10 @@ public class PartitaOfflineModel extends Observable {
     }
 
     private void game_over(){
-        System.exit(0);
     }
 
     private void vittoria(){
         database.vittoria(giocatore_locale);
-        System.exit(0);
     }
 
     public int getN_bot() {

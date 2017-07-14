@@ -21,6 +21,11 @@ public abstract class Bot extends Giocatore {
         this.calcolo_statistico = new CalcoloStatistico();
     }
 
+    /**
+     * decide la giocata del bot
+     * 
+     * @return puntata del bot
+     */
     @Override
     protected int decidiPuntata() {
         double percentuale_sballo = calcolo_statistico.calcolaPercentualeSballo(valore_mano, mazzo);
@@ -40,6 +45,11 @@ public abstract class Bot extends Giocatore {
 
     protected abstract int getPercentualePerPuntareTanto();
 
+    /**
+     * decide la giocata del bot
+     * 
+     * @return giocata del bot
+     */
     @Override
     protected Giocata decidiGiocata() {
         double percentuale_sballo = calcolo_statistico.calcolaPercentualeSballo(valore_mano, mazzo);
@@ -51,5 +61,10 @@ public abstract class Bot extends Giocatore {
         }
     }
 
+    /**
+     * calcola la probabilità di sballare se si chiede un'altra carta
+     * 
+     * @return percentuale di sballare
+     */
     protected abstract int getPercentualePerChiedereCarta();
 }

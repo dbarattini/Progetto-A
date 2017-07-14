@@ -41,7 +41,7 @@ import dominio.events.SetGiocata;
 import dominio.events.SetNome;
 import dominio.events.SetPuntata;
 import dominio.events.Vittoria;
-import menuPrincipale.MenuPrincipaleGui;
+import menuPrePartita.MenuPrePartitaGui;
 
 public class PartitaOfflineGuiView extends JFrame implements PartitaOfflineView, Observer{
     private CopyOnWriteArrayList<ViewEventListener> listeners;
@@ -55,14 +55,16 @@ public class PartitaOfflineGuiView extends JFrame implements PartitaOfflineView,
     private Map<String, JLabel> valoriMano = new HashMap<>();
     private final int pausa_breve = 1000; //ms
     private final int pausa_lunga = 2000; //ms
+    private MenuPrePartitaGui menu_pre_partita;
     private AudioPlayer audio;
     private JLabel msgDaStampare;
     
     
-    public PartitaOfflineGuiView(PartitaOfflineModel model) {
+    public PartitaOfflineGuiView(PartitaOfflineModel model, MenuPrePartitaGui menu_pre_partita) {
         listeners = new CopyOnWriteArrayList<>();                
         this.model = model;
         this.model.addObserver(this);
+        this.menu_pre_partita = menu_pre_partita;
         
         setTitle("Sette e Mezzo");
         setPreferredSize(new Dimension(1280, 720));
@@ -144,7 +146,7 @@ public class PartitaOfflineGuiView extends JFrame implements PartitaOfflineView,
             } catch (CanzoneNonTrovataException ex) {
                 ex.printStackTrace();
             }
-            new MenuPrincipaleGui();
+            menu_pre_partita.setVisible(true);
             dispose();
         } else if(arg instanceof Vittoria) {
             stampaMsg("Gli avversari hanno perso! > Vittoria <", 50);
@@ -155,7 +157,7 @@ public class PartitaOfflineGuiView extends JFrame implements PartitaOfflineView,
             } catch (CanzoneNonTrovataException ex) {
                 ex.printStackTrace();
             }
-            new MenuPrincipaleGui();
+            menu_pre_partita.setVisible(true);
             dispose();
         }
     }
@@ -509,7 +511,11 @@ public class PartitaOfflineGuiView extends JFrame implements PartitaOfflineView,
             if(i != nGiocatori - 1)
                 carteCoperteBots.add(stampaCarta((this.getWidth()*(2*i+1))/((nGiocatori-1)*2) - 125, 180, "retroCarta"));
             else {
-                stampaCarta(this.getWidth()/2 - 125, 3*this.getHeight()/4 - 60, model.getGiocatori().get(i).getCartaCoperta().toString());
+                try{
+                    stampaCarta(this.getWidth()/2 - 125, 3*this.getHeight()/4 - 60, model.getGiocatori().get(i).getCartaCoperta().toString());
+                } catch(java.lang.NullPointerException e){
+                    // pass # eccezione dovuta al tentativo di stampare una carta anche a partita finita
+                }
                 valoriMano.put(model.getGiocatoreLocale().getNome(), stampaValoreMano(model.getGiocatoreLocale()));
             }
             pausa(pausa_breve);

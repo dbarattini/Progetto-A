@@ -10,6 +10,7 @@ import java.net.URL;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 
 public class MenuOpzioniGui  extends JFrame implements ActionListener {
     RiconoscimentiGui opzioni_riconoscimenti; 
@@ -71,6 +72,7 @@ public class MenuOpzioniGui  extends JFrame implements ActionListener {
             @Override
             public void actionPerformed(ActionEvent e) {
                 // codice per gioca online
+                JOptionPane.showMessageDialog(new JFrame(), "Questa funzione non é ancora disponibile.","Work In Progress", JOptionPane.WARNING_MESSAGE);
             };
         });
         

@@ -1,8 +1,8 @@
-package tempLoginPackage;
+package menuOnlineConsole;
 
-import comunicazione.Client;
+import net.Client;
 import dominio.eccezioni.DatiNonValidiException;
-import dominio.eccezioni.LoginEffettuato;
+import dominio.eccezioni.LoginEffettuatoException;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -15,7 +15,7 @@ import java.util.logging.Logger;
 import partitaOnline.controller.PartitaOnlineController;
 import partitaOnline.view.PartitaOnlineConsoleView;
 
-public class PrePartitaOnlineConsole {
+public class MenuPrincipaleOnlineConsole {
 
 
     private BufferedReader in;
@@ -24,7 +24,7 @@ public class PrePartitaOnlineConsole {
     private Socket socketClient;
     private PartitaOnlineController controller;
 
-    public PrePartitaOnlineConsole(Socket socketClient) {
+    public MenuPrincipaleOnlineConsole(Socket socketClient) {
         try {
             this.socketClient = socketClient;
             tastiera = new Scanner(System.in);
@@ -72,7 +72,7 @@ public class PrePartitaOnlineConsole {
             }
 
             comunica();
-        } catch (LoginEffettuato ex) {
+        } catch (LoginEffettuatoException ex) {
             controller= new PartitaOnlineController(socketClient, in);
             new PartitaOnlineConsoleView(controller);
         }
@@ -117,7 +117,7 @@ public class PrePartitaOnlineConsole {
         }
     }
 
-    private void login() throws LoginEffettuato {
+    private void login() throws LoginEffettuatoException {
         System.out.println("          inserisci username (o email) e password separati da uno spazio       ");
         System.out.print("\n");
         System.out.print("            ");
@@ -137,11 +137,11 @@ public class PrePartitaOnlineConsole {
             String risposta = in.readLine();
             System.out.println("            " + risposta);
             if (risposta.equals("login effetuato")) {
-                throw new LoginEffettuato();
+                throw new LoginEffettuatoException();
             }
 
         } catch (IOException ex) {
-            Logger.getLogger(PrePartitaOnlineConsole.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(MenuPrincipaleOnlineConsole.class.getName()).log(Level.SEVERE, null, ex);
         } catch (DatiNonValidiException ex) {
             System.err.println("                 Errore: alcuni dati inseriti non sono validi.                 ");
             try {
@@ -169,7 +169,7 @@ public class PrePartitaOnlineConsole {
             System.out.println("          " + risposta);
 
         } catch (IOException ex) {
-            Logger.getLogger(PrePartitaOnlineConsole.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(MenuPrincipaleOnlineConsole.class.getName()).log(Level.SEVERE, null, ex);
         } catch (DatiNonValidiException ex) {
             System.err.println("                    Errore: il codice inserito non é valido.                   ");
             try {
@@ -203,7 +203,7 @@ public class PrePartitaOnlineConsole {
             System.out.println("                                         " + risposta);
 
         } catch (IOException ex) {
-            Logger.getLogger(PrePartitaOnlineConsole.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(MenuPrincipaleOnlineConsole.class.getName()).log(Level.SEVERE, null, ex);
         } catch (DatiNonValidiException ex) {
             System.err.println("                     Errore: l'email inserita non é valida.                    ");
             try {

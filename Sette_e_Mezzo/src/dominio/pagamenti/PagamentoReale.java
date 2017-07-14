@@ -6,6 +6,12 @@ import static java.lang.Math.ceil; //arrotonda per eccesso
 
 public class PagamentoReale extends Pagamento {
 
+    /**
+     * 
+     * @param pagante giocatore che paga
+     * @param pagato giocatore che viene pagato
+     * @param percentuale percentuale del pagamento
+     */
     @Override
     public void normale(Giocatore pagante, Giocatore pagato, double percentuale) {
         int pagamento_percentuale;
@@ -16,6 +22,12 @@ public class PagamentoReale extends Pagamento {
         this.paga(pagante, pagato, pagamento_percentuale);
     }
 
+    /**
+     * 
+     * @param pagante giocatore che paga
+     * @param pagato giocatore che viene pagato
+     * @param percentuale percentuale del pagamento
+     */
     @Override
     public void reale(Giocatore pagante, Giocatore pagato, double percentuale) {
         int pagamento_percentuale;

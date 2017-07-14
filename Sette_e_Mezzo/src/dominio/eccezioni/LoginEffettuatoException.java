@@ -9,9 +9,9 @@ package dominio.eccezioni;
  *
  * @author root
  */
-public class LoginEffettuato extends Exception {
+public class LoginEffettuatoException extends Exception {
 
-    public LoginEffettuato() {
+    public LoginEffettuatoException() {
     }
     
 }

@@ -131,6 +131,12 @@ public class Regole {
         return next_mazziere;
     }
 
+    /**
+     * 
+     * @param giocatore
+     * @param next_mazziere prossimo mazziere
+     * @return il giocatore che sara il prossimo mazziere
+     */
     private Giocatore scegliNextMazziere(Giocatore giocatore, Giocatore next_mazziere) {
         if (next_mazziere == null) {
             return giocatore;

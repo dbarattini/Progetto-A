@@ -5,6 +5,9 @@
  */
 package menuPrePartita;
 
+import dominio.eccezioni.NumeroBotException;
+import dominio.eccezioni.DifficoltaBotException;
+import dominio.eccezioni.FichesInizialiException;
 import dominio.classi_dati.DifficoltaBot;
 import dominio.gui.Sfondo;
 import java.awt.Dimension;
@@ -207,11 +210,7 @@ public class MenuPrePartitaGui extends JFrame{
             public void actionPerformed(ActionEvent e) {
                 fiches_iniziali_inserite = fiches.getText();
                 try {
-                    checkFichesIniziali();
-                    checkNumeroBot();
-                    checkDifficoltaBot();
-                    dispose();
-                    new PartitaOfflineGui(numero_bot, difficolta_bot, fiches_iniziali);
+                    NuovaPartita();
                 } catch (FichesInizialiException ex) {
                     JOptionPane.showMessageDialog(null, "Errore: Il numero di fiches iniziali dev'essere un numero compreso tra 1 e 100000000.", "Errore", JOptionPane.ERROR_MESSAGE);
                 } catch (NumeroBotException ex) {
@@ -240,6 +239,15 @@ public class MenuPrePartitaGui extends JFrame{
 	return new ImageIcon(percorso);
     }
     
+    private void NuovaPartita() throws NumeroBotException, FichesInizialiException, DifficoltaBotException{
+        checkFichesIniziali();
+        checkNumeroBot();
+        checkDifficoltaBot();
+        this.setVisible(false);
+
+        new PartitaOfflineGui(numero_bot, difficolta_bot, fiches_iniziali, this);
+    }
+    
     private void checkFichesIniziali() throws FichesInizialiException{
         try{
             fiches_iniziali = Integer.valueOf(fiches_iniziali_inserite);
@@ -263,7 +271,10 @@ public class MenuPrePartitaGui extends JFrame{
             throw new DifficoltaBotException();
         }
     }
-    
+    /**
+     * aggiunge un action listener
+     * @param l 
+     */
     public void addIndietroActionListener(ActionListener l){
         indietro.addActionListener(l);
     }
