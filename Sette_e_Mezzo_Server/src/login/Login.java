@@ -135,6 +135,7 @@ public class Login extends Thread {
         } else if (sql.esisteUsername(mail)) {
             Email email = new Email();
             String veraEmail = sql.getEmail(mail);
+            String password = sql.getPassword(veraEmail);
             email.inviaPassword(veraEmail, mail, password);
             giocatore.scrivi("recupero inviato");
         } else {
