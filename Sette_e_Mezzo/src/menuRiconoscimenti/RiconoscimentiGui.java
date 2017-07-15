@@ -84,10 +84,19 @@ public class RiconoscimentiGui extends JFrame{
 //        add(pulsanteIndietro, BorderLayout.SOUTH);
     }
     
+    /**
+     * 
+     * @param l listener
+     */
     public void addIndietroActionListener(ActionListener l){
         indietro.addActionListener(l);
     }
      
+    /**
+     * 
+     * @param nome nome dell'immagine
+     * @return immagine
+     */
     public ImageIcon caricaImmagine(String nome) {
 	ClassLoader caricatore = getClass().getClassLoader();
 	URL percorso = caricatore.getResource(nome);
