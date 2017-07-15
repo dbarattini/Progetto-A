@@ -25,6 +25,9 @@ public class MenuPrePartitaConsole{
         run();
     }
     
+    /**
+     * stampa le impostazioni della partita e chiede il numero, la difficoltà dei bot e la quantità di fiches iniziali
+     */
     private void run(){
         System.out.println("  ---------------------------------------------------------------------------  ");
         System.out.println("<                             IMPOSTAZIONI PARTITA                            >");
