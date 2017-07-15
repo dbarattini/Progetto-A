@@ -30,6 +30,10 @@ public class GiocatoreUmano extends Giocatore{
         listeners = new CopyOnWriteArrayList<>();
     }
     
+    /**
+     * 
+     * @return puntata del giocatore
+     */
     @Override
     protected int decidiPuntata() {
         while(true){
@@ -40,6 +44,10 @@ public class GiocatoreUmano extends Giocatore{
         }
     }
     
+    /**
+     * 
+     * @param puntata_effettuata puntata effettuata dal giocatore
+     */
     public void PuntataInserita(String puntata_effettuata){
         try{
             this.puntata_effettuata = Integer.valueOf(puntata_effettuata);
@@ -70,6 +78,14 @@ public class GiocatoreUmano extends Giocatore{
 //        out.println("Carta Coperta: " + this.carta_coperta);
 //    }
     
+    /**
+     * controlla la puntata del giocatore
+     * 
+     * @param puntata puntata del giocatore
+     * @throws PuntataTroppoAltaException lanciata quando il giocatore punta più delle fiches disponibili
+     * @throws PuntataNegativaException lanciata quando il giocatore punta un valore negativo
+     * @throws PuntataNullaException lanciata quando il giocatore punta 0
+     */
     private void controlla_puntata(int puntata) throws PuntataTroppoAltaException, PuntataNegativaException, PuntataNullaException{
         if(this.getFiches() - puntata < 0){
             throw new PuntataTroppoAltaException();
@@ -80,6 +96,10 @@ public class GiocatoreUmano extends Giocatore{
         }
     }
     
+    /**
+     * 
+     * @return giocata effettuata dal giocatore
+     */
     @Override
     protected Giocata decidiGiocata() {
         while(true){
@@ -92,6 +112,10 @@ public class GiocatoreUmano extends Giocatore{
         }
     }
     
+    /**
+     * 
+     * @param giocata_effettuata giocata effettuata dal giocatore
+     */
     public void GiocataInserita(String giocata_effettuata){
         this.giocata_effettuata = giocata_effettuata;
     }
@@ -108,15 +132,27 @@ public class GiocatoreUmano extends Giocatore{
         }   
     } 
     
+    /**
+     * 
+     * @param l evento
+     */
     public void addGiocatoreLocaleEventListener(GiocatoreLocaleEventListener l) {
         this.listeners.add(l);
     }
 
+    /**
+     * 
+     * @param l evento
+     */
     public void removeGiocatoreLocaleEventListener(GiocatoreLocaleEventListener l) {
         this.listeners.remove(l);
     }
 
 
+    /**
+     * 
+     * @param arg argomenti dell'evento
+     */
     protected void fireGiocatoreLocaleEvent(Object arg) {
         GiocatoreLocaleEvent evt = new GiocatoreLocaleEvent(this, arg);
 

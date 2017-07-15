@@ -44,6 +44,10 @@ public class GiocatoreOnline extends Giocatore{
         this.numero_carte_scoperte = numero_carte_scoperte;
     }    
     
+    /**
+     * 
+     * @return puntata del giocatore
+     */
     @Override
     public int getPuntata() {
         return puntata;
@@ -58,6 +62,10 @@ public class GiocatoreOnline extends Giocatore{
     }
 
 
+    /**
+     * 
+     * @return ultima carta ottenuta dal giocatore
+     */
     @Override
     public Carta getUltimaCartaOttenuta() {
         return ultima_carta_ottenuta;
@@ -79,6 +87,10 @@ public class GiocatoreOnline extends Giocatore{
         this.carta_coperta = carta_coperta;
     }
 
+    /**
+     * 
+     * @return valore della mano del giocatore
+     */
     @Override
     public double getValoreMano() {
         return valoreMano;
@@ -92,6 +104,10 @@ public class GiocatoreOnline extends Giocatore{
         this.valoreMano = valoreMano;
     }
 
+    /**
+     * 
+     * @return 
+     */
     @Override
     protected Giocata decidiGiocata() {
         return null; // non usato
