@@ -5,6 +5,7 @@ public class CanzoneNonTrovataException extends Exception {
     private String canzone;
 
     /**
+     * eccezione lanciata quando non viene trovata la canzone del gioco
      * 
      * @param canzone canzone del gioco
      */
