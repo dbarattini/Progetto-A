@@ -132,6 +132,7 @@ public class Regole {
     }
 
     /**
+     * sceglie chi sarà il mazziere nella mano successiva in base alle regole del sette e mezzo
      * 
      * @param giocatore
      * @param next_mazziere prossimo mazziere
