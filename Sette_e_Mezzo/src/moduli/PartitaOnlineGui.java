@@ -8,6 +8,11 @@ import partitaOnline.view.PartitaOnlineGuiView;
 
 public class PartitaOnlineGui {
     
+    /**
+     * 
+     * @param socketClient socket del client
+     * @param in buffered reader per la lettura
+     */
     public PartitaOnlineGui(Socket socketClient, BufferedReader in){
         PartitaOnlineController controller = new PartitaOnlineController(socketClient, in);
         new PartitaOnlineGuiView(controller);
