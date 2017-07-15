@@ -53,6 +53,10 @@ public class PartitaOnlineGuiView extends JFrame implements Observer {
     private JLabel imgSalaAttesa, fraseSalaAttesa;
     private JButton esci, esciDaSolo;
 
+    /**
+     * 
+     * @param controller controller della partita online
+     */
     public PartitaOnlineGuiView(PartitaOnlineController controller) {
         listeners = new CopyOnWriteArrayList<>();
         this.controller = controller;
