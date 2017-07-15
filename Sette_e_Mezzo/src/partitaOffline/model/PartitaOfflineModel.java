@@ -116,6 +116,9 @@ public class PartitaOfflineModel extends Observable {
         audio.carica("ApplausiSetteEMezzo.wav", "applausiSEM");
     }
     
+    /**
+     * inizializza la partita settando il numero di bot, le fiches iniziali e la difficoltà dei bot
+     */
     public void inizializza_partita(){
         inizializza_bots(n_bot, fiches_iniziali, difficolta_bot); 
         inizializza_giocatore(fiches_iniziali);
@@ -152,6 +155,10 @@ public class PartitaOfflineModel extends Observable {
         }
     }
     
+    /**
+     * 
+     * @param nome_giocatore nome del giocatore
+     */
     public void setNomeGiocatore(String nome_giocatore){
         this.nome_giocatore = nome_giocatore;
     }
@@ -387,38 +394,74 @@ public class PartitaOfflineModel extends Observable {
         database.vittoria(giocatore_locale);
     }
 
+    /**
+     * 
+     * @return numero dei bot
+     */
     public int getN_bot() {
         return n_bot;
     }
 
+    /**
+     * 
+     * @return difficoltà dei bot
+     */
     public DifficoltaBot getDifficolta_bot() {
         return difficolta_bot;
     }
 
+    /**
+     * 
+     * @return quantità di fiches iniziali
+     */
     public int getFiches_iniziali() {
         return fiches_iniziali;
     }
     
+    /**
+     * 
+     * @param l evento
+     */
     public void addGiocatoreLocaleEventListener(GiocatoreLocaleEventListener l){
         giocatore_locale.addGiocatoreLocaleEventListener(l);
     }
     
+    /**
+     * 
+     * @param l evento
+     */
     public void removeGiocatoreLocaleEventListener(GiocatoreLocaleEventListener l){
         giocatore_locale.removeGiocatoreLocaleEventListener(l);
     }
 
+    /**
+     * 
+     * @return lista di giocatori
+     */
     public ArrayList<Giocatore> getGiocatori() {
         return giocatori;
     }
 
+    /**
+     * 
+     * @return mazziere
+     */
     public Giocatore getMazziere() {
         return mazziere;
     }
 
+    /**
+     * 
+     * @return giocatore locale
+     */
     public GiocatoreUmano getGiocatoreLocale() {
         return giocatore_locale;
     }
     
+    /**
+     * 
+     * @return audio 
+     */
     public AudioPlayer getAudio() {
         return audio;
     }
