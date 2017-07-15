@@ -376,7 +376,7 @@ public class PartitaOnlineController extends Observable implements ViewEventList
 
     /**
      * 
-     * @param nome nome del mazziere
+     * @param nome nome del  mazziere
      */
     private void setMazziere(String nome) {
         for (GiocatoreOnline gioc : giocatori) {
