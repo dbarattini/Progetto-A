@@ -87,6 +87,12 @@ public class RegoleGui extends JFrame{
         return regole;
     }
   
+    /**
+     * carica l'immagine delle regole
+     * 
+     * @param nome nome dell'immagine
+     * @return ritorna il percorso dell'immagine
+     */
     public ImageIcon caricaImmagine(String nome) {
 	ClassLoader caricatore = getClass().getClassLoader();
 	URL percorso = caricatore.getResource(nome);

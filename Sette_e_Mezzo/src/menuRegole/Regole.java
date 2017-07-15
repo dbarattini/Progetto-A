@@ -23,6 +23,11 @@ public class Regole {
                 + "                             BUON SETTE E MEZZO!                              ";
     }
 
+    /**
+     * stampa le regole di sette e mezzo
+     * 
+     * @return regole 
+     */
     public String getRegole() {
         return regole;
     }

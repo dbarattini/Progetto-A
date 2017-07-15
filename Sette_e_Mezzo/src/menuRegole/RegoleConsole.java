@@ -11,6 +11,9 @@ public class RegoleConsole {
         this.regole = new Regole();
     }
     
+    /**
+     * stampa le regole di gioco
+     */
     public void run(){
         System.out.println("\n  ---------------------------------------------------------------------------  ");
         System.out.println("                             < REGOLE DI GIOCO >                               ");
