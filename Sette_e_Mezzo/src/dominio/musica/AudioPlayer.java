@@ -18,9 +18,10 @@ public class AudioPlayer {
     }
 
     /**
+     * riproduce l'audio
      * 
      * @param nome_canzone nome della canzonea
-     * @throws CanzoneNonTrovataException 
+     * @throws CanzoneNonTrovataException lanciata quando il file audio non viene trovato
      */
     public void riproduci(String nome_canzone) throws CanzoneNonTrovataException {
         if (!muto) {
@@ -33,9 +34,10 @@ public class AudioPlayer {
     }
 
     /**
+     * riavvia l'audio
      * 
      * @param nome_canzone nome della canzone
-     * @throws CanzoneNonTrovataException 
+     * @throws CanzoneNonTrovataException lanciata quando il file audio non viene trovato
      */
     public void riavvia(String nome_canzone) throws CanzoneNonTrovataException {
         if (!muto) {
@@ -49,9 +51,10 @@ public class AudioPlayer {
     }
 
     /**
+     * riavvolge l'audio
      * 
      * @param nome_canzone nome della canzone
-     * @throws CanzoneNonTrovataException 
+     * @throws CanzoneNonTrovataException lanciata quando il file audio non viene trovato
      */
     public void riavvolgi(String nome_canzone) throws CanzoneNonTrovataException {
         if (!muto) {
@@ -64,9 +67,10 @@ public class AudioPlayer {
     }
 
     /**
+     * riproduce l'audio in loop
      * 
      * @param nome_canzone nome della canzone
-     * @throws CanzoneNonTrovataException 
+     * @throws CanzoneNonTrovataException lanciata quando il file audio non viene trovato
      */
     public void riproduciInLoop(String nome_canzone) throws CanzoneNonTrovataException {
         if (!muto) {
@@ -79,9 +83,10 @@ public class AudioPlayer {
     }
 
     /**
+     * riavvia l'audio in loop
      * 
      * @param nome_canzone nome della canzone
-     * @throws CanzoneNonTrovataException 
+     * @throws CanzoneNonTrovataException lanciata quando il file audio non viene trovato
      */
     public void riavviaInLoop(String nome_canzone) throws CanzoneNonTrovataException {
         if (!muto) {
@@ -95,9 +100,10 @@ public class AudioPlayer {
     }
 
     /**
+     * ferma l'audio
      * 
      * @param nome_canzone nome della canzone
-     * @throws CanzoneNonTrovataException 
+     * @throws CanzoneNonTrovataException lanciata quando il file audio non viene trovato
      */
     public void ferma(String nome_canzone) throws CanzoneNonTrovataException {
         try {
@@ -108,9 +114,10 @@ public class AudioPlayer {
     }
 
     /**
+     * chiude l'audio
      * 
      * @param nome_canzone nome della canzone
-     * @throws CanzoneNonTrovataException 
+     * @throws CanzoneNonTrovataException lanciata quando il file audio non viene trovato
      */
     public void chiudi(String nome_canzone) throws CanzoneNonTrovataException {
         try {
@@ -120,7 +127,13 @@ public class AudioPlayer {
         }
     }
 
-    
+    /**
+     * carica il file audio
+     * 
+     * @param canzone
+     * @param nome_canzone
+     * @throws CaricamentoCanzoneException lanciata quando fallisce il caricamento del file audio
+     */
     public void carica(String canzone, String nome_canzone) throws CaricamentoCanzoneException {
         try {
             BufferedInputStream stream = new BufferedInputStream(getClass().getResourceAsStream(canzone));
