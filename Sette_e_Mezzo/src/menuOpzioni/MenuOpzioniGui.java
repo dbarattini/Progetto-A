@@ -101,6 +101,10 @@ public class MenuOpzioniGui  extends JFrame implements ActionListener {
         dispose();
     }
     
+    /**
+     * 
+     * @param l listener
+     */
     public void addIndietroActionListener(ActionListener l){
         indietro.addActionListener(l);
     }

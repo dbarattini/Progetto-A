@@ -18,6 +18,9 @@ public class Profilo {
          this.db = new SQL();
     }
 
+    /**
+     * sceglie il profilo
+     */
     public void selezionaProfilo() {
         while(true) {
             printOpzioniProfilo();
