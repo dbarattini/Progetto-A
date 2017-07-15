@@ -60,7 +60,11 @@ public class PartitaOfflineGuiView extends JFrame implements PartitaOfflineView,
     private JLabel msgDaStampare;
     private JButton esci;
     
-    
+    /**
+     * 
+     * @param model modello partita offline
+     * @param menu_pre_partita menu prepartita offline
+     */
     public PartitaOfflineGuiView(PartitaOfflineModel model, MenuPrePartitaGui menu_pre_partita) {
         listeners = new CopyOnWriteArrayList<>();                
         this.model = model;
@@ -126,22 +130,39 @@ public class PartitaOfflineGuiView extends JFrame implements PartitaOfflineView,
         });
     }
     
+    /**
+     * 
+     * @param nome nome dell'immagine
+     * @return immagine
+     */
     public ImageIcon caricaImmagine(String nome) {
 	ClassLoader caricatore = getClass().getClassLoader();
 	URL percorso = caricatore.getResource(nome);
 	return new ImageIcon(percorso);
     }
     
+    /**
+     * 
+     * @param l evento
+     */
     @Override
     public void addPartitaOfflineViewEventListener(ViewEventListener l) {
         listeners.add(l);
     }
 
+    /**
+     * 
+     * @param l evento
+     */
     @Override
     public void removePartitaOfflineViewEventListener(ViewEventListener l) {
         listeners.remove(l);
     }
 
+    /**
+     * 
+     * @param arg argomenti dell'evento
+     */
     protected void fireViewEvent(Object arg) {
         ViewEvent evt = new ViewEvent(this, arg);
 
@@ -150,6 +171,11 @@ public class PartitaOfflineGuiView extends JFrame implements PartitaOfflineView,
         }
     }
     
+    /**
+     * 
+     * @param o
+     * @param arg argomenti dell'evento
+     */
     @Override
     public void update(Observable o, Object arg) {
         if(arg instanceof RichiediNome) {
@@ -212,6 +238,10 @@ public class PartitaOfflineGuiView extends JFrame implements PartitaOfflineView,
         }
     }
 
+    /**
+     * 
+     * @param evt evento
+     */
     @Override
     public void GiocatoreLocaleEventReceived(GiocatoreLocaleEvent evt) {
         if(evt.getArg() instanceof RichiediPuntata) {
