@@ -11,7 +11,7 @@ public class PartitaOnlineGui {
     /**
      * 
      * @param socketClient socket del client
-     * @param in buffered reader per la lettura
+     * @param in buffered per la lettura
      */
     public PartitaOnlineGui(Socket socketClient, BufferedReader in){
         PartitaOnlineController controller = new PartitaOnlineController(socketClient, in);
