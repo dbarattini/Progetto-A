@@ -20,6 +20,10 @@ public class MenuPrincipaleOnlineGui extends JFrame implements ActionListener {
     private MenuRegistrazione menu_registrazione;
     private MenuRecuperoPassword menu_recupero_passwd;
 
+    /**
+     * 
+     * @param client oggetto client
+     */
     public MenuPrincipaleOnlineGui(Client client) {
         setTitle("Fai il Login o Registrati !");
         setPreferredSize(new Dimension(1000, 800));
@@ -94,6 +98,10 @@ public class MenuPrincipaleOnlineGui extends JFrame implements ActionListener {
         sfondo.repaint();
     }
 
+    /**
+     * 
+     * @param l action listener
+     */
     public void addIndietroActionListener(ActionListener l) {
         indietro.addActionListener(l);
     }
@@ -119,6 +127,10 @@ public class MenuPrincipaleOnlineGui extends JFrame implements ActionListener {
         }
     }
 
+    /**
+     * 
+     * @param e evento
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
         if (menu_login.isVisible()) {

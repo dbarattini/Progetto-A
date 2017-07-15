@@ -38,6 +38,10 @@ public class MenuConfermaRegistrazione extends JFrame {
     private Socket socketClient;
     private PartitaOnlineController controller;
 
+    /**
+     * 
+     * @param client oggetto client
+     */
     public MenuConfermaRegistrazione(Client client) {
         this.client = client;
         this.socketClient = client.getSocketClient();
