@@ -12,6 +12,10 @@ package partitaOnline.events;
 public class GiocatoreStaPuntando {
     private String nome;
 
+    /**
+     * 
+     * @param nome nome del giocatore che sta puntando
+     */
     public GiocatoreStaPuntando(String nome) {
         this.nome = nome;
     }
@@ -21,6 +25,10 @@ public class GiocatoreStaPuntando {
         return "evento\tGiocatoreStaPuntando\t" + nome ;
     }
     
+    /**
+     * 
+     * @return nome del giocatore che sta puntando
+     */
     public String getNome(){
         return nome;
     }

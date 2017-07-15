@@ -15,10 +15,18 @@ import dominio.giocatori.GiocatoreOnline;
 public class GiocatoreHaPescato {
     private GiocatoreOnline giocatore;
 
+    /**
+     * 
+     * @param giocatore giocatore che ha pescato
+     */
     public GiocatoreHaPescato(GiocatoreOnline giocatore) {
         this.giocatore = giocatore;
     }
 
+    /**
+     * 
+     * @return giocatore
+     */
     public GiocatoreOnline getGiocatore() {
         return giocatore;
     }

@@ -13,10 +13,18 @@ public class GiocatoreHaPuntato {
      
     private String giocatore;
 
+    /**
+     * 
+     * @param giocatore giocatore che ha puntato
+     */
     public GiocatoreHaPuntato(String giocatore) {
         this.giocatore = giocatore;
     }
 
+    /**
+     * 
+     * @return giocaotre
+     */
     public String getGiocatore() {
         return giocatore;
     }
