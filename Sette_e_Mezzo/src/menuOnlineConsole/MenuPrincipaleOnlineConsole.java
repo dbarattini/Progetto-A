@@ -24,6 +24,10 @@ public class MenuPrincipaleOnlineConsole {
     private Socket socketClient;
     private PartitaOnlineController controller;
 
+    /**
+     * 
+     * @param socketClient socket del client per comunicazione client-server
+     */
     public MenuPrincipaleOnlineConsole(Socket socketClient) {
         try {
             this.socketClient = socketClient;
@@ -39,7 +43,7 @@ public class MenuPrincipaleOnlineConsole {
     }
 
     /**
-     *
+     * comunica con l'utente, il quale può scegliere se registrarsi, loggarsi, convalidare la registrazione o recuperare la psw
      */
     public void comunica() {
         try {
