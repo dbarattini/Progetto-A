@@ -33,6 +33,9 @@ public class MenuPrincipaleGui extends JFrame implements ActionListener{
     private Sfondo sfondo;
     private Client client;
     
+    /**
+     * inizializza la gui del menu principale
+     */
     public MenuPrincipaleGui() { 
         client = new Client();
         menu_regole = new RegoleGui();
@@ -134,6 +137,10 @@ public class MenuPrincipaleGui extends JFrame implements ActionListener{
         }
     }
 
+    /**
+     * 
+     * @param e evento
+     */
     @Override
     public void actionPerformed(ActionEvent e) {
         if(menu_pre_partita.isVisible())
