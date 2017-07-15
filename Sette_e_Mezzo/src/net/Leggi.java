@@ -67,7 +67,7 @@ public class Leggi extends Observable implements Runnable {
 
     /**
      * 
-     * @throws IOException 
+     * @throws IOException lanciata quando si verifica un errore di input output
      * 
      * chiude il bufferedReader
      */
