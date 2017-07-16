@@ -1,5 +1,6 @@
 package partitaOffline.model;
 
+import dominio.eccezioni.GameOverException;
 import dominio.giocatori.GiocatoreUmano;
 import dominio.events.*;
 import dominio.elementi_di_gioco.Mazzo;
@@ -7,6 +8,7 @@ import dominio.giocatori.BotFacile;
 import dominio.giocatori.Giocatore;
 import dominio.classi_dati.DifficoltaBot;
 import dominio.classi_dati.StatoMano;
+import dominio.classi_dati.TipoPagamento;
 import dominio.eccezioni.CanzoneNonTrovataException;
 import dominio.eccezioni.CaricamentoCanzoneException;
 import dominio.eccezioni.FineMazzoException;
@@ -17,14 +19,16 @@ import dominio.eccezioni.SetteeMezzoRealeException;
 import dominio.elementi_di_gioco.Carta;
 import dominio.giocatori.BotDifficile;
 import dominio.giocatori.BotMedio;
-import dominio.pagamenti.PagamentoReale;
-import dominio.pagamenti.PagamentoVirtuale;
 import dominio.elementi_di_gioco.Regole;
 import java.util.ArrayList;
 import java.util.Observable;
 import dominio.musica.AudioPlayer;
 import partitaOffline.events.GiocatoreLocaleEventListener;
 import dominio.eccezioni.DatoGiaPresenteException;
+import dominio.pagamenti.Pagamento;
+import dominio.pagamenti.PagamentoFactory;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 
 public class PartitaOfflineModel extends Observable {
@@ -40,8 +44,6 @@ public class PartitaOfflineModel extends Observable {
     private DifficoltaBot difficolta_bot;
     private int fiches_iniziali;
     private String nome_giocatore;
-    private PagamentoReale pagamento_reale;
-    private PagamentoVirtuale pagamento_virtuale;
 
     
     /**
@@ -54,8 +56,6 @@ public class PartitaOfflineModel extends Observable {
         this.n_bot = numero_bot;
         this.difficolta_bot = difficolta_bot;
         this.fiches_iniziali = fiches_iniziali;
-        this.pagamento_reale = new PagamentoReale();
-        this.pagamento_virtuale = new PagamentoVirtuale();
         
         try {
             inizializza_audio();
@@ -96,11 +96,16 @@ public class PartitaOfflineModel extends Observable {
                 mazziere_successivo();
                 
             }
-            fine_round();
+            try {
+                fine_round();
+            } catch (GameOverException ex) {
+                break;
+            }
             mazzo.aggiornaFineRound();
             if(n_bot_sconfitti == n_bot){
                 this.setChanged();
                 this.notifyObservers(new Vittoria());
+                break;
             }
         }
     }
@@ -253,6 +258,7 @@ public class PartitaOfflineModel extends Observable {
     private void esegui_mano(Giocatore giocatore) throws MazzierePerdeException{
         Carta carta_estratta = null;
         boolean continua = true;
+        Pagamento pagamento = PagamentoFactory.getPagamento(TipoPagamento.Reale);
         
         while(continua){
             continua = giocatore.effettuaGiocata();
@@ -277,7 +283,7 @@ public class PartitaOfflineModel extends Observable {
                 } catch (SballatoException ex) {
                     giocatore.setStatoMano(StatoMano.Sballato);
                     if(!giocatore.isMazziere()){
-                        pagamento_reale.normale(giocatore, mazziere, 1); //giocatore se sballa paga subito.
+                        pagamento.normale(giocatore, mazziere, 1); //giocatore se sballa paga subito.
                     }
                     continua = false;
                 } catch (SetteeMezzoRealeException ex) {
@@ -294,10 +300,12 @@ public class PartitaOfflineModel extends Observable {
     private void calcola_risultato() throws MazzierePerdeException{ 
         Giocatore mazziere_prova = controllaMazziere();
         double fichesMazziereProva = (double) mazziere_prova.getFiches();
+        Pagamento pagamento = PagamentoFactory.getPagamento(TipoPagamento.Reale);
+        
         if(fichesMazziereProva >0){
             for(Giocatore giocatore : giocatori){
                 if(! giocatore.isMazziere()){              
-                    next_mazziere = regole_di_gioco.risultatoMano(mazziere, giocatore, next_mazziere, 1, pagamento_reale);
+                    next_mazziere = regole_di_gioco.risultatoMano(mazziere, giocatore, next_mazziere, 1, pagamento);
                 }
             }
         }
@@ -306,7 +314,7 @@ public class PartitaOfflineModel extends Observable {
             double percentuale=(double)(fichesAttualiMazziere/(fichesAttualiMazziere-fichesMazziereProva));            
             for(Giocatore giocatore : giocatori){
                 if(! giocatore.isMazziere()){              
-                    next_mazziere = regole_di_gioco.risultatoMano(mazziere, giocatore, next_mazziere, percentuale, pagamento_reale);
+                    next_mazziere = regole_di_gioco.risultatoMano(mazziere, giocatore, next_mazziere, percentuale, pagamento);
                 }
             }
              throw new MazzierePerdeException();
@@ -316,9 +324,11 @@ public class PartitaOfflineModel extends Observable {
 
     private Giocatore controllaMazziere() {
         Giocatore mazziere_prova = (Giocatore) mazziere.clone(); //clone del mazziere su cui verranno effettuati i calcoli
+        Pagamento pagamento = PagamentoFactory.getPagamento(TipoPagamento.Virtuale);
+        
         for(Giocatore giocatore : giocatori){
             if(! giocatore.isMazziere()){
-                this.regole_di_gioco.risultatoMano(mazziere_prova, giocatore, next_mazziere, 1, pagamento_virtuale);                      
+                this.regole_di_gioco.risultatoMano(mazziere_prova, giocatore, next_mazziere, 1, pagamento);                      
             }
         }
         return mazziere_prova;
@@ -342,7 +352,7 @@ public class PartitaOfflineModel extends Observable {
        }
    }
     
-    private void fine_round(){
+    private void fine_round() throws GameOverException{
         ArrayList<Giocatore> giocatori_sconfitti = new ArrayList<>();
         boolean game_over = false;
         for(Giocatore giocatore : giocatori){
@@ -379,7 +389,8 @@ public class PartitaOfflineModel extends Observable {
         mazziere = next_mazziere;
     }
 
-    private void game_over(){
+    private void game_over() throws GameOverException{
+        throw new GameOverException();
     }
 
 
