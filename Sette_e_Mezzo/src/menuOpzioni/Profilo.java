@@ -14,9 +14,13 @@ public class Profilo {
     
 
     public Profilo() {
-         System.out.println("Il profilo non è ancora disponibile.");
+         
     }
 
+    
+    public void selezionaProfilo() {
+        System.out.println("Il profilo non è ancora disponibile.");
+    }
 //    /**
 //     * sceglie il profilo
 //     */
