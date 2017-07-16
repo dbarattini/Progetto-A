@@ -24,7 +24,6 @@ import java.util.ArrayList;
 import java.util.Observable;
 import dominio.musica.AudioPlayer;
 import partitaOffline.events.GiocatoreLocaleEventListener;
-import database.Database;
 import dominio.eccezioni.DatoGiaPresenteException;
 
 
@@ -43,7 +42,7 @@ public class PartitaOfflineModel extends Observable {
     private String nome_giocatore;
     private PagamentoReale pagamento_reale;
     private PagamentoVirtuale pagamento_virtuale;
-    private Database database;
+
     
     /**
      *
@@ -57,7 +56,6 @@ public class PartitaOfflineModel extends Observable {
         this.fiches_iniziali = fiches_iniziali;
         this.pagamento_reale = new PagamentoReale();
         this.pagamento_virtuale = new PagamentoVirtuale();
-        this.database = new Database();
         
         try {
             inizializza_audio();
@@ -103,7 +101,6 @@ public class PartitaOfflineModel extends Observable {
             if(n_bot_sconfitti == n_bot){
                 this.setChanged();
                 this.notifyObservers(new Vittoria());
-                vittoria();
             }
         }
     }
@@ -147,10 +144,7 @@ public class PartitaOfflineModel extends Observable {
         giocatore_locale = new GiocatoreUmano(nome_giocatore,fiches_iniziali);
         giocatori.add(giocatore_locale);
         
-        try {
-            database.inserisciProfilo(nome_giocatore, fiches_iniziali);
-        } catch (DatoGiaPresenteException ex) {
-        }
+        
     }
     
     /**
@@ -388,9 +382,6 @@ public class PartitaOfflineModel extends Observable {
     private void game_over(){
     }
 
-    private void vittoria(){
-        database.vittoria(giocatore_locale);
-    }
 
     /**
      * 
