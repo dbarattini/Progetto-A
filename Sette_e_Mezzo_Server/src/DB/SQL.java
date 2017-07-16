@@ -454,6 +454,13 @@ public class SQL {
         }
     }
 
+    /**
+     * ritorna l'email dell'utente data l'username
+     * 
+     * @param username user dell'utente
+     * @return email utente
+     * @throws SqlOccupato lanciata quando il database non è accessibile
+     */
     public String getEmail(String username) throws SqlOccupato {
         try {
             Class.forName("org.sqlite.JDBC");
