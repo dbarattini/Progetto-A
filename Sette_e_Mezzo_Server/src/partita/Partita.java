@@ -25,6 +25,12 @@ public class Partita extends Thread {
         this.model = new PartitaOnlineModel();
     }
 
+    /**
+     * aggiunge un giocatore alla partita
+     * 
+     * @param giocatore giocatore da aggiungere
+     * @throws PartitaPiena lanciata quando non sono più disponibili posti per la partita
+     */
     public void aggiungiGiocatore(Giocatore giocatore) throws PartitaPiena {
         if (giocatori.size() + giocatori_in_attesa.size() < 5) {
             this.giocatori_in_attesa.add(giocatore);
@@ -38,6 +44,9 @@ public class Partita extends Thread {
         }
     }
 
+    /**
+     * esegue la partita
+     */
     @Override
     public void run() {
         try {
