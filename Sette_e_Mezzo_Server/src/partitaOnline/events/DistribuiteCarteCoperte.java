@@ -11,6 +11,10 @@ package partitaOnline.events;
  */
 public class DistribuiteCarteCoperte {
 
+    /**
+     * 
+     * @return  evento DistribuiteCarteCoperte
+     */
     @Override
     public String toString() {
         return "evento\tDistribuiteCarteCoperte";

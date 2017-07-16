@@ -16,6 +16,13 @@ public class FineManoAvversario implements Serializable{
     private Stato stato;
     private int puntata;
 
+    /**
+     * 
+     * @param nome nome giocatore
+     * @param carteScoperte carte scoperte del giocatore
+     * @param stato stato del giocatore
+     * @param puntata puntata del giocatore
+     */
     public FineManoAvversario(String nome, ArrayList<Carta> carteScoperte, Stato stato, int puntata) {
         this.nome = nome;
         this.carteScoperte = carteScoperte;

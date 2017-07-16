@@ -13,6 +13,12 @@ public class RichiediGiocata implements Serializable{
     ArrayList<Carta> carteScoperte; 
     double valoreMano;
     
+    /**
+     * 
+     * @param carta_coperta carta coperta del giocatore
+     * @param carte_scoperte carte scoperte del giocatore
+     * @param valore_mano valore della mano del giocatore
+     */
     public RichiediGiocata(Carta carta_coperta, ArrayList<Carta> carte_scoperte, double valore_mano) {
         this.cartaCoperta = carta_coperta;
         this.carteScoperte = carte_scoperte;

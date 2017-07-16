@@ -16,6 +16,10 @@ public class GiocatoreStaPuntando {
         this.nome = nome;
     }
 
+    /**
+     * 
+     * @return evento GiocatoreStaPuntando
+     */
     @Override
     public String toString() {
         return "evento\tGiocatoreStaPuntando\t" + nome ;

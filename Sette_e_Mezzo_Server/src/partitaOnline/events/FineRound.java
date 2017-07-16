@@ -20,6 +20,17 @@ public class FineRound implements Serializable {
     private Stato stato;
     
 
+    /**
+     * 
+     * @param nome nome giocatore
+     * @param cartaCoperta carta coperta giocatore
+     * @param carteScoperte carte scoperte del giocatore
+     * @param fiches fiches del giocatore
+     * @param valoreMano valore mano del giocatore
+     * @param stato stato del giocatore
+     * @param isMazziere se il giocatore è mazziere o meno
+     * @param puntata puntata del giocatore
+     */
     public FineRound(String nome, Carta cartaCoperta,  ArrayList<Carta> carteScoperte, int fiches, double valoreMano, Stato stato, boolean isMazziere, int puntata) {
         this.nome=nome;
         this.cartaCoperta=cartaCoperta;

@@ -11,6 +11,10 @@ package partitaOnline.events;
  */
 public class IniziaPartita {
 
+    /**
+     * 
+     * @return evento IniziaPartita
+     */
     @Override
     public String toString() {
         return "evento\tIniziaPartita";

@@ -9,6 +9,12 @@ public class RichiediPuntata implements Serializable{
     double valore_mano;
     int fiches;
 
+    /**
+     * 
+     * @param carta_coperta carta coperta del giocatore
+     * @param valore_mano valore della mano del giocatore
+     * @param fiches fiches del giocatore
+     */
     public RichiediPuntata(Carta carta_coperta, double valore_mano, int fiches) {
         this.carta_coperta = carta_coperta;
         this.valore_mano = valore_mano;

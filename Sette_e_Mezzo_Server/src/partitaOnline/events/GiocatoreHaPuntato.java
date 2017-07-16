@@ -21,6 +21,10 @@ public class GiocatoreHaPuntato {
         return giocatore;
     }
 
+    /**
+     * 
+     * @return evento GiocatoreHaPuntato
+     */
     @Override
     public String toString() {
         return "evento\tGiocatoreHaPuntato\t" + giocatore;
