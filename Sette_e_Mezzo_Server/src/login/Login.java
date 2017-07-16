@@ -29,6 +29,12 @@ public class Login extends Thread {
     private Partita partita;
     private final int fichesIniziali = 1000;
 
+    /**
+     * 
+     * @param giocatore giocatore che vuole collegarsi
+     * @param partita partita a cui collegarsi
+     * @throws IOException lanciata quando si verifica un errore di input output
+     */
     public Login(Giocatore giocatore, Partita partita) throws IOException {
         this.giocatore = giocatore;
         this.partita = partita;
@@ -47,6 +53,9 @@ public class Login extends Thread {
 
     }
 
+    /**
+     * logga il giocatore
+     */
     @Override
     public void run() {
         try {
