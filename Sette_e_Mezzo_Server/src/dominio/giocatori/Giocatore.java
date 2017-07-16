@@ -77,7 +77,10 @@ public class Giocatore implements Observer {
         }
     }
 
-    
+
+    /**
+     * inizializza il giocatore per la mano
+     */
     public void inizializzaGiocatore(){
         carte_scoperte.clear();
         mazziere=false;
@@ -127,6 +130,9 @@ public class Giocatore implements Observer {
 
     }
 
+    /**
+     * salva le fiches nel database
+     */
     public void memorizzaFiches() {
         SQL sql = new SQL();
         try {
@@ -199,6 +205,10 @@ public class Giocatore implements Observer {
         return 1;
     }
 
+    /**
+     * 
+     * @param puntata_effettuata puntata effettuata dal giocatore
+     */
     public void puntataInserita(String puntata_effettuata) {
         try {
             this.puntata_effettuata = Integer.valueOf(puntata_effettuata);
@@ -284,6 +294,10 @@ public class Giocatore implements Observer {
         }
     }
 
+    /**
+     * 
+     * @param giocata_effettuata giocata effettuata dal giocatore
+     */
     public void GiocataInserita(String giocata_effettuata) {
         this.giocata_effettuata = giocata_effettuata;
     }
@@ -446,6 +460,9 @@ public class Giocatore implements Observer {
         fiches = fiches + puntata + vincita;
     }
 
+    /**
+     * azzera le fiches
+     */
     public void azzera_fiches() {
         fiches = 0;
     }
@@ -494,6 +511,10 @@ public class Giocatore implements Observer {
         this.stato = stato;
     }
 
+    /**
+     * 
+     * @return tutte le carte della partita
+     */
     public ArrayList<Carta> getTutteLeCarte() {
         ArrayList<Carta> carte = new ArrayList<>();
         carte.add(carta_coperta);
@@ -501,6 +522,10 @@ public class Giocatore implements Observer {
         return carte;
     }
 
+    /**
+     * 
+     * @return ultima carta pescata
+     */
     public Carta getUltimaCartaOttenuta() {
         return carte_scoperte.get(carte_scoperte.size() - 1);
     }
