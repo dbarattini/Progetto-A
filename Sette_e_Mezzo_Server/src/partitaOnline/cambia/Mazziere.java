@@ -13,6 +13,10 @@ public class Mazziere {
     private String nome;
 
 
+    /**
+     * 
+     * @param nome nome del mazziere
+     */
     public Mazziere(String nome) {
         this.nome = nome;
 

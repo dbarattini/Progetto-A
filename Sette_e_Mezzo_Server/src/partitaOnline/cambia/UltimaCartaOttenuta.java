@@ -17,6 +17,12 @@ public class UltimaCartaOttenuta {
     private String nome;
     private int index;
     
+    /**
+     * 
+     * @param nome nome giocatore
+     * @param carta ultima carta ottenuta
+     * @param indexCarta indice ultima carta ottenuta
+     */
     public UltimaCartaOttenuta(String nome, Carta carta, int indexCarta){
         this.nome=nome;
         this.ultimaCartaOttenuta=carta;

@@ -13,6 +13,11 @@ public class ValoreMano {
     private String nome;
     private double valore;
 
+    /**
+     * 
+     * @param nome nome giocatore
+     * @param valore valore mano
+     */
     public ValoreMano(String nome, double valore) {
         this.nome = nome;
         this.valore = valore;

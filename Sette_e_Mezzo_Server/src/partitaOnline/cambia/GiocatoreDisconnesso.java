@@ -12,6 +12,10 @@ package partitaOnline.cambia;
 public class GiocatoreDisconnesso {
     private String nome;
 
+    /**
+     * 
+     * @param nome nome del giocatore disconnesso
+     */
     public GiocatoreDisconnesso(String nome) {
         this.nome = nome;
     }

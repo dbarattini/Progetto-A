@@ -13,6 +13,11 @@ public class NuovoGiocatore {
     private String nome;
     private int fiches;
 
+    /**
+     * 
+     * @param nome nome giocatore
+     * @param fiches fiches giocatore
+     */
     public NuovoGiocatore(String nome, int fiches) {
         this.nome = nome;
         this.fiches=fiches;

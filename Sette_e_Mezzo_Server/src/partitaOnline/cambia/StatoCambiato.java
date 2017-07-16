@@ -15,6 +15,11 @@ public class StatoCambiato {
     private String nome;
     private Stato stato;
 
+    /**
+     * 
+     * @param nome nome giocatore
+     * @param stato stato giocatore
+     */
     public StatoCambiato(String nome, Stato stato) {
         this.nome = nome;
         this.stato = stato;
