@@ -59,6 +59,12 @@ public class PartitaOnlineModel extends Observable {
 
     }
 
+    /**
+     * inizializza la partita
+     * 
+     * @param giocatori giocatori della partita
+     * @throws InterruptedException lanciata quando la partita viene interrotta
+     */
     public void inizializza_partita(ArrayList giocatori) throws InterruptedException {
         this.giocatori = giocatori;
         this.eventoPerTutti(new IniziaPartita());
@@ -82,6 +88,11 @@ public class PartitaOnlineModel extends Observable {
 
     }
 
+    /**
+     * aggiunge giocatori alla partita
+     * 
+     * @param giocatori giocatori da aggiungere
+     */
     public void aggiungiGiocatori(ArrayList giocatori) {
         
         inizzializza_fiches(giocatori);
@@ -97,6 +108,12 @@ public class PartitaOnlineModel extends Observable {
         }
     }
 
+    /**
+     * rimuove giocatori dala partita
+     * 
+     * @param giocatori giocatori da rimuovere
+     * @throws InterruptedException 
+     */
     public void rimuoviGiocatori(ArrayList giocatori) throws InterruptedException {
         this.giocatori.removeAll(giocatori);
         for (Object gioc : giocatori) {
