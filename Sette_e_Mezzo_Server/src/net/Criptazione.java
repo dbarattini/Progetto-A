@@ -24,7 +24,13 @@ public class Criptazione {
 
   private static String key = "PisoTino";
 
-
+/**
+ * decripta il messaggio
+ * 
+ * @param message messaggio per la decritptazione
+ * @return stringa decriptata
+ * @throws Exception 
+ */
   private String decrypt(String message) throws Exception {
     byte[] bytesrc = convertHexString(message);
     Cipher cipher = Cipher.getInstance("DES/CBC/PKCS5Padding");
@@ -38,6 +44,13 @@ public class Criptazione {
     return new String(retByte);
   }
 
+  /**
+   * encripta il messaggio
+   * 
+   * @param message messaggio da encriptare
+   * @return messaggio encriptato
+   * @throws Exception 
+   */
   private String encrypt(String message) throws Exception {
     Cipher cipher = Cipher.getInstance("DES/CBC/PKCS5Padding");
     DESKeySpec desKeySpec = new DESKeySpec(key.getBytes("UTF-8"));

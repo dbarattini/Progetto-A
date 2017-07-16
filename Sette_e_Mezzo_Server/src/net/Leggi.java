@@ -30,6 +30,9 @@ public class Leggi extends Observable implements Runnable {
 
     }
 
+    /**
+     * legge i messaggi
+     */
     public void run() {
 
         try {
@@ -49,6 +52,9 @@ public class Leggi extends Observable implements Runnable {
         }
     }
 
+    /**
+     * stampa i messaggi
+     */
     public void printMessage() {
         if (message != null) {
             this.setChanged();

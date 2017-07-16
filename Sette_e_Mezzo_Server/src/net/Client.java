@@ -19,6 +19,11 @@ public class Client extends Observable implements Observer {
     private final Socket socket;
     private Leggi leggi;
 
+    /**
+     * 
+     * @param socket socket per la comunicazione
+     * @throws IOException lanciata quando si verifica un errore di input output
+     */
     public Client(Socket socket) throws IOException {
         this.daGiocatore = new BufferedReader(new InputStreamReader(socket.getInputStream()));
         this.aGiocatore = new PrintWriter(socket.getOutputStream(), true);
@@ -26,10 +31,18 @@ public class Client extends Observable implements Observer {
 
     }
 
+    /**
+     * scrive il messaggio
+     * 
+     * @param msg messaggio da scrivere
+     */
     public void scrivi(String msg) {
         aGiocatore.println(msg);
     }
 
+    /**
+     * legge l'oggetto arrivato
+     */
     public void iniziaLetturaOggetto() {
         this.leggi=new Leggi(daGiocatore);
         leggi.addObserver(this);
@@ -37,6 +50,12 @@ public class Client extends Observable implements Observer {
         t.start();
     }
 
+    /**
+     * 
+     * @return
+     * @throws IOException lanciata quando si verifica un errore di input output
+     * @throws GiocatoreDisconnessoException lanciata quando il giocatore si disconnette
+     */
     public String leggi() throws IOException, GiocatoreDisconnessoException {
         String letto;
         try {
@@ -51,10 +70,20 @@ public class Client extends Observable implements Observer {
     }
 
 
+    /**
+     * 
+     * @param pacco oggetto da scrivere
+     * @throws IOException lanciata quando si verifica un errore di input output
+     */
     public void scriviOggetto(Object pacco) throws IOException {
         aGiocatore.println(pacco.toString());
     }
 
+    /**
+     * 
+     * @param o
+     * @param arg argomenti dell'evento
+     */
     @Override
     public void update(Observable o, Object arg) {
         this.setChanged();
