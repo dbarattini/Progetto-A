@@ -24,8 +24,6 @@ import java.util.ArrayList;
 import java.util.Observable;
 import dominio.musica.AudioPlayer;
 import partitaOffline.events.GiocatoreLocaleEventListener;
-import dominio.events.MazzoRimescolato;
-import dominio.events.RichiediNome;
 import database.Database;
 import dominio.eccezioni.DatoGiaPresenteException;
 
