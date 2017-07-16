@@ -48,7 +48,7 @@ public class SQLTest {
     @Test
     public void testSetFiches() throws SqlOccupato {
         System.out.println("setFiches");
-        String user = "ciaone";
+        String user = "test1";
         int fiches = 10;
        sql.setFiches(user, fiches);
         assertTrue(true);
@@ -62,7 +62,7 @@ public class SQLTest {
     public void testGetFiches() {
         try {
             System.out.println("getFiches");
-            String user = "ciaone";
+            String user = "test1";
             int expResult = 10;
             int result = sql.getFiches(user);        
             assertEquals(expResult, result);
@@ -77,7 +77,7 @@ public class SQLTest {
     @Test
     public void testGeteSetFiches() {
         try {
-            String user = "ciaone";
+            String user = "test1";
             int fiches = (int) Math.round(Math.random()*1000);
             sql.setFiches(user, fiches);
             int result = sql.getFiches(user);        
@@ -94,8 +94,8 @@ public class SQLTest {
     @Test
     public void testControllaPasswordEsatta() throws SqlOccupato {
         System.out.println("controllaPassword");
-        String user = "ciaone";
-        String pw = "prova";
+        String user = "test1";
+        String pw = "password";
         boolean expResult = true;
         boolean result = sql.controllaPassword(user, pw);
         assertEquals(expResult, result);
@@ -107,7 +107,7 @@ public class SQLTest {
     @Test
     public void testControllaPasswordSbagliata() throws SqlOccupato {
         System.out.println("controllaPassword");
-        String user = "ciaone";
+        String user = "test1";
         String pw = "proa";
         boolean expResult = false;
         boolean result = sql.controllaPassword(user, pw);
@@ -120,9 +120,9 @@ public class SQLTest {
     @Test
     public void testCambiaPasswordEsatta() throws SqlOccupato {
         System.out.println("cambiaPassword");
-        String user = "ciaone";
+        String user = "test1";
         String vecchiaPassword = "passera";
-        String nuovaPassword = "prova";
+        String nuovaPassword = "password";
         boolean expResult = true;
         boolean result = sql.cambiaPassword(user, vecchiaPassword, nuovaPassword);
         assertEquals(expResult, result);
@@ -135,7 +135,7 @@ public class SQLTest {
     @Test
     public void testCambiaPasswordSbagliata() throws SqlOccupato {
         System.out.println("cambiaPassword");
-        String user = "ciaone";
+        String user = "test1";
         String vecchiaPassword = "prva";
         String nuovaPassword = "passera";
         boolean expResult = false;
@@ -149,8 +149,8 @@ public class SQLTest {
     @Test
     public void testGetPassword() throws SqlOccupato {
         System.out.println("getPassword");
-        String user = "ciaone";
-        String password = "prova";
+        String user = "test1";
+        String password = "password";
         String nuovaPassword = "passera";
        boolean cambia = sql.cambiaPassword(user, password, nuovaPassword);
         String result = sql.getPassword(user);
@@ -262,19 +262,6 @@ public class SQLTest {
         }
     }
 
-    /**
-     * Test of getVittorie method, of class SQL.
-     */
-    @Test
-    public void testGetVittorie() throws SqlOccupato {
-        System.out.println("getVittorie");
-        String user = "ciaone";
-        int expResult = 1;
-        int result = sql.getVittorie(user);
-        if(result>expResult)
-            assertTrue(true);
-        else
-            fail();
-    }
+
     
 }
