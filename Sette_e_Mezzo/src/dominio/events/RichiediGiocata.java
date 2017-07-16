@@ -13,6 +13,7 @@ public class RichiediGiocata {
     double valore_mano;
     
     /**
+     * richiede la giocata da parte di un giocatore
      * 
      * @param carta_coperta carta coperta del giocatore
      * @param carte_scoperte carte scoperte del giocatore

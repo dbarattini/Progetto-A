@@ -10,6 +10,7 @@ public class RichiediPuntata {
     int fiches;
 
     /**
+     * richiede la puntata di un giocatore
      * 
      * @param carta_coperta carta coperta del giocatore
      * @param valore_mano valore totale della mano del giocatore
@@ -22,6 +23,7 @@ public class RichiediPuntata {
     }
     
     /**
+     * richiede la puntata di un giocatore
      * 
      * @param carta_coperta carta coperta del giocatore
      * @param valore_mano valore totale della mano del giocatore

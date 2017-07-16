@@ -13,12 +13,20 @@ public class PartitaOfflineController implements ViewEventListener{
     private PartitaOfflineModel model;
     private PartitaOfflineView view;
 
+    /**
+     * 
+     * @param model modello della partita offline
+     * @param view view della partita offline
+     */
     public PartitaOfflineController(PartitaOfflineModel model, PartitaOfflineView view) {
         this.model = model;
         this.view = view;
         this.view.addPartitaOfflineViewEventListener(this);
     }
     
+    /**
+     * lancia la partita
+     */
     public void run(){
         this.model.inizializza_partita();
         model.addGiocatoreLocaleEventListener(view);

@@ -15,7 +15,9 @@ public class ValoreMano {
         this.valore_mano = 0;
     }
 
-    
+    /**
+     * inizializza la mano
+     */
     public void inizializza() {
         valore_mano = 0;
     }

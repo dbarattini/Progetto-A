@@ -17,6 +17,7 @@ public class FineManoAvversario {
     private int puntata;
 
     /**
+     * gestisce la fine della mano di un avversario
      * 
      * @param nome nome avversario
      * @param carteScoperte carte scoperte dell'avversario che termina la mano

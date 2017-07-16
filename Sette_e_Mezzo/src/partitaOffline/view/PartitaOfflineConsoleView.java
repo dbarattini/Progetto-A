@@ -31,6 +31,10 @@ public class PartitaOfflineConsoleView implements PartitaOfflineView, Observer{
     int pausa_breve = 1000; //ms
     int pausa_lunga = 2000; //ms
 
+    /**
+     * 
+     * @param model modello partita offline
+     */
     public PartitaOfflineConsoleView(PartitaOfflineModel model) {
         this.listeners = new CopyOnWriteArrayList<>();
         this.model = model;
@@ -38,16 +42,28 @@ public class PartitaOfflineConsoleView implements PartitaOfflineView, Observer{
         scanner = new Scanner(System.in);
     }
 
+    /**
+     * 
+     * @param l evento
+     */
     @Override
     public void addPartitaOfflineViewEventListener(ViewEventListener l) {
         listeners.add(l);
     }
 
+    /**
+     * 
+     * @param l evento
+     */
     @Override
     public void removePartitaOfflineViewEventListener(ViewEventListener l) {
         listeners.remove(l);
     }
 
+    /**
+     * 
+     * @param arg argomenti dell'evento
+     */
     protected void fireViewEvent(Object arg) {
         ViewEvent evt = new ViewEvent(this, arg);
 
@@ -88,6 +104,11 @@ public class PartitaOfflineConsoleView implements PartitaOfflineView, Observer{
         System.out.println("\n------> il Mazziere é: " + model.getMazziere().getNome() + " <------");
     }
 
+    /**
+     * 
+     * @param o
+     * @param arg argomenti dell'evento
+     */
     @Override
     public void update(Observable o, Object arg) {
         if(arg instanceof RichiediNome){
@@ -138,6 +159,10 @@ public class PartitaOfflineConsoleView implements PartitaOfflineView, Observer{
         }
     }
 
+    /**
+     * 
+     * @param evt evento
+     */
     @Override
     public void GiocatoreLocaleEventReceived(GiocatoreLocaleEvent evt) {
         if(evt.getArg() instanceof RichiediPuntata){

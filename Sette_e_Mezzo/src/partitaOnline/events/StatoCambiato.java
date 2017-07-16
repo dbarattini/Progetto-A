@@ -15,15 +15,28 @@ public class StatoCambiato {
     private String nome;
     private StatoMano stato;
 
+    /**
+     * 
+     * @param nome nome del giocatore che cambia stato
+     * @param stato stato in cui passa il giocatore
+     */
     public StatoCambiato(String nome, StatoMano stato) {
         this.nome = nome;
         this.stato = stato;
     }
 
+    /**
+     * 
+     * @return nome del giocatore che cambia stato
+     */
     public String getNome() {
         return nome;
     }
 
+    /**
+     * 
+     * @return stato del giocatore
+     */
     public StatoMano getStato() {
         return stato;
     }

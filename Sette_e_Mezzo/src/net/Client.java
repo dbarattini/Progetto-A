@@ -19,6 +19,11 @@ public class Client {
     public Client() {
     }
     
+    /**
+     * 
+     * @throws UnknownHostException lanciata quando l'host non viene riconosciuto
+     * @throws IOException lanciata quando si verifica un errore di input-output
+     */
     public void connetti() throws UnknownHostException, IOException{
             this.indirizzo = InetAddress.getLocalHost();
 //            String indirizzo = "82.50.67.103";

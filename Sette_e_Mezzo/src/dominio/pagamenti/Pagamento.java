@@ -8,18 +8,18 @@ public abstract class Pagamento {
     /**
      * Consente i pagamenti normali.
      *
-     * @param pagante
-     * @param pagato
-     * @param percentuale
+     * @param pagante giocatore che paga
+     * @param pagato giocatore che viene pagato
+     * @param percentuale percentuale pagamento
      */
     public abstract void normale(Giocatore pagante, Giocatore pagato, double percentuale);
 
     /**
      * Consente i pagamenti reali.
      *
-     * @param pagante
-     * @param pagato
-     * @param percentuale
+     * @param pagante giocatore che paga
+     * @param pagato giocatore che viene pagato
+     * @param percentuale percentuale pagamento
      */
     public abstract void reale(Giocatore pagante, Giocatore pagato, double percentuale);
 
@@ -53,6 +53,7 @@ public abstract class Pagamento {
     }
 
     /**
+     * regola i conti del pagamento
      * 
      * @param pagante giocatore che paga
      * @param pagato giocatore che viene pagato

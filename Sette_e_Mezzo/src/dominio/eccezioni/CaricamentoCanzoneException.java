@@ -5,6 +5,7 @@ public class CaricamentoCanzoneException extends Exception {
     private String canzone;
 
     /**
+     * lanciata quando si verifica un errore nel caricamento della canzone del gioco
      * 
      * @param canzone canzone del gioco
      */

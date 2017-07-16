@@ -41,6 +41,7 @@ public class PartitaOnlineGuiView extends JFrame implements Observer {
     private Sfondo sfondo;
     private String puntataStr, giocataStr;
     private JTextField puntata;
+    private JButton carta, stai;
     private JLabel msgDaStampare;
     private boolean needCartaCoperta = true, mazziereEstratto = false, needToMarkMazziere = false,
             needStatoCambiato = false, partitaIniziata = false, esciAFineRound = false;
@@ -52,6 +53,10 @@ public class PartitaOnlineGuiView extends JFrame implements Observer {
     private JLabel imgSalaAttesa, fraseSalaAttesa;
     private JButton esci, esciDaSolo;
 
+    /**
+     * 
+     * @param controller controller della partita online
+     */
     public PartitaOnlineGuiView(PartitaOnlineController controller) {
         listeners = new CopyOnWriteArrayList<>();
         this.controller = controller;
@@ -81,6 +86,7 @@ public class PartitaOnlineGuiView extends JFrame implements Observer {
 
         setVisible(true);
 
+        inizializzaCartaStaiButtons();
         inizializzaExitButtons();
         inizializza_salaAttesa();
         if (!partitaIniziata) {
@@ -89,6 +95,28 @@ public class PartitaOnlineGuiView extends JFrame implements Observer {
             sfondo.add(esciDaSolo);
             sfondo.repaint();
         }
+    }
+    
+    private void inizializzaCartaStaiButtons() {
+        carta = new JButton(caricaImmagine("dominio/immagini/carta.png"));
+        stai = new JButton(caricaImmagine("dominio/immagini/stai.png"));
+
+        carta.setBounds(1060, 580, 140, 56);
+        stai.setBounds(1060, 500, 140, 56);
+
+        carta.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                giocataStr = "carta";
+            }
+        });
+        
+        stai.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                giocataStr = "sto";
+            }
+        });
     }
 
     private void inizializza_salaAttesa() {
@@ -218,8 +246,15 @@ public class PartitaOnlineGuiView extends JFrame implements Observer {
             checkFineRound(giocatore);
         } else if (arg instanceof MazzierePerde) {
             //todo mostra che il mazziere ha perso
+            stampaMsg(controller.getMazziere().getNome() + " ha perso!", 60);
+            pausa(pausa_breve);
+            sfondo.remove(msgDaStampare);
+            sfondo.repaint();
         } else if (arg instanceof AggiornamentoMazziere) {
             //todo mostra che é stato scelto un nuovo mazziere
+            needToMarkMazziere = false;
+            sfondo.removeAll();
+            estrazioneMazziere();
         } else if (arg instanceof GameOver) {
             stampaMsg("Hai terminato le fiches! Game Over", 50);
             pausa(pausa_lunga);
@@ -485,27 +520,6 @@ public class PartitaOnlineGuiView extends JFrame implements Observer {
             stampaCarta(this.getWidth() / 2 - 95 + index * 35, 3 * this.getHeight() / 4 - 60, lastCard.toString());
         }
         aggiornaValoreManoPlayer();
-        JButton carta = new JButton(caricaImmagine("dominio/immagini/carta.png"));
-        JButton stai = new JButton(caricaImmagine("dominio/immagini/stai.png"));
-
-        carta.setBounds(1060, 580, 140, 56);
-        stai.setBounds(1060, 500, 140, 56);
-
-        carta.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                giocataStr = "carta";
-            }
-        ;
-        });
-        
-        stai.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                giocataStr = "sto";
-            }
-        ;
-        });
         
         sfondo.add(carta);
         sfondo.add(stai);
@@ -708,7 +722,7 @@ public class PartitaOnlineGuiView extends JFrame implements Observer {
         try {
             valoreMano = giocatore.getValoreMano() - giocatore.getCartaCoperta().getValoreNumerico();
         } catch (MattaException ex) {
-            ex.printStackTrace();
+            valoreMano = 7;
         }
 
         valoriMano.get(giocatore.getNome()).setText("Valore attuale:   " + valoreMano);
@@ -835,25 +849,24 @@ public class PartitaOnlineGuiView extends JFrame implements Observer {
 
         if (!giocatore.isMazziere()) {
             if (mazziere.getStatoMano() == StatoMano.Sballato) {
-                if (giocatore.getStatoMano() == StatoMano.Sballato) {
+                if (giocatore.getStatoMano() == StatoMano.Sballato)
                     msg = giocatore.getNome() + " paga " + giocatore.getPuntata() + " al mazziere";
-                } else if ((giocatore.getStatoMano() == StatoMano.OK) || (giocatore.getStatoMano() == StatoMano.SetteeMezzo)) {
+                else if ((giocatore.getStatoMano() == StatoMano.OK) || (giocatore.getStatoMano() == StatoMano.SetteeMezzo))
                     msg = giocatore.getNome() + " riceve " + giocatore.getPuntata() + " dal mazziere";
-                } else if (giocatore.getStatoMano() == StatoMano.SetteeMezzoReale) {
+                else if (giocatore.getStatoMano() == StatoMano.SetteeMezzoReale)
                     msg = giocatore.getNome() + " riceve " + 2 * giocatore.getPuntata() + " dal mazziere";
-                }
             } else {
-                if ((giocatore.getStatoMano() == StatoMano.Sballato) || (giocatore.getValoreMano() <= mazziere.getValoreMano())) {
+                if ((giocatore.getStatoMano() == StatoMano.Sballato) || (giocatore.getValoreMano() <= mazziere.getValoreMano()))
                     msg = giocatore.getNome() + " paga " + giocatore.getPuntata() + " al mazziere";
-                } else if (giocatore.getValoreMano() > mazziere.getValoreMano()) {
+                else if (giocatore.getValoreMano() > mazziere.getValoreMano())
                     msg = giocatore.getNome() + " riceve " + giocatore.getPuntata() + " dal mazziere";
-                } else if ((giocatore.getStatoMano() == StatoMano.SetteeMezzoReale) && (giocatore.getValoreMano() > mazziere.getValoreMano())) {
+                else if ((giocatore.getStatoMano() == StatoMano.SetteeMezzoReale) && (giocatore.getValoreMano() > mazziere.getValoreMano()))
                     msg = giocatore.getNome() + " riceve " + 2 * giocatore.getPuntata() + " dal mazziere";
-                }
+                else if(mazziere.getStatoMano() == StatoMano.SetteeMezzoReale)
+                    msg = giocatore.getNome() + " paga " + 2*giocatore.getPuntata() + " al mazziere";
             }
-        } else {
+        } else
             msg = "Il mazziere regola i suoi conti";
-        }
 
         Font font = new Font("MsgFineRound", Font.BOLD, 70);
         JLabel msgFineRound = new JLabel(msg);

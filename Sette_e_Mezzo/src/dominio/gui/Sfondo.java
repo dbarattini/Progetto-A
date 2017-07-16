@@ -44,7 +44,7 @@ public class Sfondo extends JPanel {
     /**
      * Carica l'immagine dello sfondo dal package "dominio.immagini".
      *
-     * @param nome_immagine
+     * @param nome_immagine nome dell'immagine
      */
     public void caricaSfondo(String nome_immagine) {
         try {

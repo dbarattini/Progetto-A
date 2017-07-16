@@ -36,6 +36,10 @@ public class MenuRecuperoPassword extends JFrame {
     private Socket socketClient;
     private PartitaOnlineController controller;
 
+    /**
+     * 
+     * @param client oggetto client
+     */
     public MenuRecuperoPassword(Client client) {
         this.client = client;
         socketClient = client.getSocketClient();
@@ -50,6 +54,9 @@ public class MenuRecuperoPassword extends JFrame {
         inizializzaGUI();
     }
 
+    /**
+     * inizializza la connessione tra client e server
+     */
     public void run() {
         inizializzaConnessione(socketClient);
         this.setVisible(true);
@@ -180,6 +187,10 @@ public class MenuRecuperoPassword extends JFrame {
         sfondo.repaint();
     }
 
+    /**
+     * 
+     * @param l action listener
+     */
     public void addIndietroActionListener(ActionListener l) {
         indietro.addActionListener(l);
     }

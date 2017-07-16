@@ -12,6 +12,13 @@ public class PartitaOfflineGui {
     private final PartitaOfflineGuiView view;
     private final PartitaOfflineController controller;
 
+    /**
+     * 
+     * @param n_bot numero di bot per la partita
+     * @param difficolta_bot livello di difficoltà dei bot
+     * @param fiches_iniziali quantità di fiches iniziali
+     * @param menu_pre_partita menu pre partita
+     */
     public PartitaOfflineGui(int n_bot, DifficoltaBot difficolta_bot, int fiches_iniziali, MenuPrePartitaGui menu_pre_partita) {
         model = new PartitaOfflineModel(n_bot, difficolta_bot, fiches_iniziali);
         view = new PartitaOfflineGuiView(model, menu_pre_partita);

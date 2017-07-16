@@ -23,6 +23,10 @@ public class PartitaOnlineConsoleView implements  Observer{
     int pausa_breve = 1000; //ms
     int pausa_lunga = 2000; //ms
 
+    /**
+     * 
+     * @param controller controller della partita online
+     */
     public PartitaOnlineConsoleView(PartitaOnlineController controller) {
         this.listeners = new CopyOnWriteArrayList<>();
         this.controller = controller;
@@ -32,6 +36,10 @@ public class PartitaOnlineConsoleView implements  Observer{
  
     }
 
+    /**
+     * 
+     * @param arg argomenti dell'evento
+     */
     protected void fireViewEvent(Object arg) {
         ViewEvent evt = new ViewEvent(this, arg);
 

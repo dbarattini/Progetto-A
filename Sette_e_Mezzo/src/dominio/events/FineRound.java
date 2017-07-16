@@ -14,6 +14,7 @@ public class FineRound {
     
 
     /**
+     * ritorna il giocatore che termina la mano
      * 
      * @param giocatore utente che finisce il round
      */

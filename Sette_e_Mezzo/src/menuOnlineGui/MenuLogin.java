@@ -41,6 +41,10 @@ public class MenuLogin extends JFrame {
     private PartitaOnlineController controller;
     private Client client;
 
+    /**
+     * 
+     * @param client oggetto client
+     */
     public MenuLogin(Client client) {
         this.client=client;
         this.socketClient=client.getSocketClient();
@@ -55,6 +59,9 @@ public class MenuLogin extends JFrame {
         inizializzaGUI();
     }
     
+    /**
+     * inizializza la connessione tra client e server
+     */
     public void run(){
         inizializzaConnessione(socketClient);
         this.setVisible(true);
@@ -208,6 +215,10 @@ public class MenuLogin extends JFrame {
         }
     }
     
+    /**
+     * 
+     * @param l action listener
+     */
     public void addIndietroActionListener(ActionListener l){
         indietro.addActionListener(l);
     }

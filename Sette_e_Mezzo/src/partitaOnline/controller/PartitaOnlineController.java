@@ -26,6 +26,11 @@ public class PartitaOnlineController extends Observable implements ViewEventList
     private String nomeLocale;
     private Socket socket;
 
+    /**
+     * 
+     * @param socket socket per la comunicazione
+     * @param in per la lettura
+     */
     public PartitaOnlineController(Socket socket, BufferedReader in) {
         try {
             this.socket=socket;
@@ -39,6 +44,12 @@ public class PartitaOnlineController extends Observable implements ViewEventList
         }
     }
     
+    /**
+     * 
+     * @param socket socket per la cominicazione client server
+     * @param in per la lettura
+     * @param nome nome Local
+     */
     public PartitaOnlineController(Socket socket, BufferedReader in, String nome) {
         try {
             this.nomeLocale=nome;
@@ -52,14 +63,27 @@ public class PartitaOnlineController extends Observable implements ViewEventList
         }
     }
 
+    /**
+     * 
+     * @param evt evento
+     */
     @Override
     public void ViewEventReceived(ViewEvent evt) {
     }
 
+    /**
+     * 
+     * @param oggetto 
+     */
     public void riceviEventoDaVista(Object oggetto) {
         aServer.println(oggetto.toString());
     }
 
+    /**
+     * 
+     * @param o
+     * @param arg argomenti dell'evento
+     */
     @Override
     public void update(Observable o, Object arg) {
         String messaggio = arg.toString();
@@ -309,6 +333,9 @@ public class PartitaOnlineController extends Observable implements ViewEventList
         return null;
     }
     
+    /**
+     * chiude la comunicazione
+     */
     public void esci(){
         try {
             leggi.close();
@@ -318,14 +345,26 @@ public class PartitaOnlineController extends Observable implements ViewEventList
         }
     }
 
+    /**
+     * 
+     * @return giocatore locale
+     */
     public GiocatoreOnline getGiocatoreLocale() {
         return giocatoreDaNome(nomeLocale);
     }
 
+    /**
+     * 
+     * @return lista di giocatori
+     */
     public ArrayList<GiocatoreOnline> getGiocatori() {
         return giocatori;
     }
 
+    /**
+     * 
+     * @return mazziere
+     */
     public GiocatoreOnline getMazziere() {
         for (GiocatoreOnline gioc : giocatori) {
             if (gioc.isMazziere()) {
@@ -335,6 +374,10 @@ public class PartitaOnlineController extends Observable implements ViewEventList
         return null;
     }
 
+    /**
+     * 
+     * @param nome nome del  mazziere
+     */
     private void setMazziere(String nome) {
         for (GiocatoreOnline gioc : giocatori) {
             if (gioc.isMazziere()) {

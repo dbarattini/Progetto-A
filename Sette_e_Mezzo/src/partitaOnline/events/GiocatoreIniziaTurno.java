@@ -13,10 +13,18 @@ public class GiocatoreIniziaTurno {
     
     private String giocatore;
 
+    /**
+     * 
+     * @param giocatore giocatore che inizia il turno
+     */
     public GiocatoreIniziaTurno(String giocatore) {
         this.giocatore = giocatore;
     }
 
+    /**
+     * 
+     * @return giocatore che inizia il turno
+     */
     public String getGiocatore() {
         return giocatore;
     }

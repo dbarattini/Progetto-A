@@ -39,6 +39,10 @@ public class MenuRegistrazione extends JFrame {
     private PrintWriter out;
     private Socket socketClient;
 
+    /**
+     * 
+     * @param client oggetto client
+     */
     public MenuRegistrazione(Client client) {
         this.client = client;
         this.socketClient = client.getSocketClient();
@@ -53,6 +57,9 @@ public class MenuRegistrazione extends JFrame {
         inizializzaGUI();
     }
 
+    /**
+     * inizializza la connessione tra client e server
+     */
     public void run() {
         inizializzaConnessione(socketClient);
         this.setVisible(true);
@@ -227,6 +234,10 @@ public class MenuRegistrazione extends JFrame {
         sfondo.repaint();
     }
 
+    /**
+     * 
+     * @param l listener
+     */
     public void addIndietroActionListener(ActionListener l) {
         indietro.addActionListener(l);
     }
